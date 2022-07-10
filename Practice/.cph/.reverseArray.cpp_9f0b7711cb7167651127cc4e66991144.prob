@@ -1,1 +1,0 @@
-{"name":"Local: reverseArray","url":"d:\\Data Structure\\CPP_DSA Algo\\Practice\\reverseArray.cpp","tests":[{"id":1655716427481,"input":"5\n1 2 3 4 5","output":"5 4 3 2 1"}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"d:\\Data Structure\\CPP_DSA Algo\\Practice\\reverseArray.cpp","group":"local","local":true}
