@@ -28,7 +28,7 @@
 
 # Ignore `bin` dir
 bin/
-.cph/
+.cph/*
 # or
 */bin/*
 
