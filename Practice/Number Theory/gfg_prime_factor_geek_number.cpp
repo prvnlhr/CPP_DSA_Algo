@@ -1,31 +1,28 @@
-
-
 #include <iostream>
-#include <vector>
 #include <set>
+
 using namespace std;
-// if (map.find(i) != map.end())
-// {
-//     return 0;
-// }
-// else
-// {
-//     map.insert(i);
-// }
+
 int geekNumber(int N)
 {
-
     set<int> map;
 
-    for (int i = 2; i * i <= N; i++)
+    for (long long d = 2; d * d <= N; d++)
     {
-
-        if (N % i == 0)
+        while (N % d == 0)
         {
-            cout << i << " ";
+
+            if (map.find(d) != map.end())
+            {
+                return 0;
+            }
+            else
+            {
+                map.insert(d);
+            }
+            N /= d;
         }
     }
-
     return 1;
 }
 
@@ -35,7 +32,6 @@ int main()
     int n;
     cin >> n;
     int ans = geekNumber(n);
-
     if (ans)
     {
         cout << "YES" << endl;

@@ -1,17 +1,27 @@
 #include <iostream>
+#include <set>
+
 using namespace std;
+
+void printPrimes(int N)
+{
+    set<int> map;
+
+    for (int d = 2; d * d <= N; d++)
+    {
+        while (N % d == 0)
+        {
+
+            cout << d << " ";
+            N /= d;
+        }
+    }
+}
 
 int main()
 {
 
     int n;
     cin >> n;
-
-    for (int i = 2; i * i <= n; i++)
-    {
-        if (n % i == 0)
-        {
-            cout << i << " ";
-        }
-    }
+    printPrimes(n);
 }
