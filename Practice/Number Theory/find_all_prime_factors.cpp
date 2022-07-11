@@ -1,11 +1,9 @@
 #include <iostream>
-#include <set>
 
 using namespace std;
 
 void printPrimes(int N)
 {
-    set<int> map;
 
     for (int d = 2; d * d <= N; d++)
     {
