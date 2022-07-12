@@ -7,12 +7,14 @@ using namespace std;
 int N = 1000000;
 
 vector<int> sieve(N + 1);
+
 void printSieve()
 {
     for (int i = 2; i < sieve.size(); i++)
     {
         cout << sieve[i] << " ";
     }
+
     cout << endl;
 }
 void createSieve()
