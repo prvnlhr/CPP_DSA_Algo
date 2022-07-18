@@ -2,19 +2,12 @@
 #define ll long long
 using namespace std;
 
-// REFER SCALAR WEBSITE : https://www.scaler.com/topics/data-structures/binary-exponentiation/
-
-
-// TIME COMPLEXITY : O(logN)
-
-// This is fast algorithm to find a^b.
 ll binpow(ll a, ll b)
 {
 
     ll res = 1;
     while (b > 0)
     {
-        cout << a << " " << b << endl;
 
         if (b % 2 == 1)
         {
@@ -30,9 +23,11 @@ ll binpow(ll a, ll b)
 
 int main()
 {
-    
-    
-    ll a, b;
-    cin >> a >> b;
-    cout << binpow(a, b);
+
+    ll n;
+    cin >> n;
+
+    ll res = binpow(5, n);
+
+    cout << 25 << endl;
 }
