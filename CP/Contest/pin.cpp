@@ -112,6 +112,7 @@ ll expo(ll a, ll b, ll mod)
     }
     return res;
 }
+//>
 //__factorial______________________________________________
 vector<ll> fact;
 void factOfN(ll n)
