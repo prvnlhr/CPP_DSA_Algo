@@ -8,6 +8,8 @@ using namespace std;
 void negativesToOneSide(vector<int> &arr)
 {
 
+    
+
     int negIndex = 0;
     int posIndex = arr.size() - 1;
 

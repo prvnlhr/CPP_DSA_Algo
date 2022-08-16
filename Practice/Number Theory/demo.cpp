@@ -1,20 +1,28 @@
 #include <iostream>
+#include <vector>
+#include <set>
 #define ll long long
 using namespace std;
-
 int main()
 {
-	ll n;
-	cin >> n;
-	ll cnt = 1;
 
-	for (ll i = 1; i <= n; i++)
+	int t;
+	cin >> t;
+
+	while (t--)
 	{
-		if (i % 5 == 0 && i != 5 && 1 != 25)
-		{
-			cnt++;
-		}
-	}
 
-	cout << cnt << endl;
+		int n;
+		cin >> n;
+
+		set<int> s = {6, 13, 20, 27, 7, 14, 21, 28};
+
+		for (int i = 0; i < n; i++)
+		{
+			int u;
+			cin >> u;
+			s.insert(u);
+		}
+		cout << s.size() << endl;
+	}
 }

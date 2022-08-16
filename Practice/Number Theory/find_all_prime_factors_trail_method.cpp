@@ -8,6 +8,7 @@ map<long long, long long> trial_division1(long long n)
 {
     vector<long long> factorization;
     map<long long, long long> factMpp;
+    
     for (long long d = 2; d * d <= n; d++)
     {
         while (n % d == 0)

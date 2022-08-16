@@ -15,7 +15,7 @@ int gcd (int a, int b) {
 
 
 While the Euclidean algorithm calculates only the greatest common divisor (GCD) of two integers a and b,
-the extended version also finds a way to represent GCD in terms of  and , i.e. coefficients  and  for which:
+the extended version also finds a way to represent GCD in terms of a and b , i.e. coefficients a and b for which:
 
 
                                 a.x + b.y = gcd(a,b)
@@ -91,8 +91,8 @@ int main()
 {
 
     int x, y, a, b;
-    a = 34;
-    b = 24;
+    a = 2;
+    b = 7;
     int g = gcdExtended(a, b, x, y);
 
     cout << g << " " << a << " " << b << " " << x << " " << y;
