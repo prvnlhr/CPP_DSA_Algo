@@ -1,22 +1,3 @@
-// #include <bits/stdc++.h>
-// using namespace std;
-// int main()
-// {
-// #ifndef ONLINE_JUDGE
-
-//     // For getting input from input.txt file
-//     freopen("input.txt", "r", stdin);
-
-//     // Printing the Output to output.txt file
-//     freopen("output.txt", "w", stdout);
-
-// #endif
-
-//     int a, b;
-//     cin >> a >> b;
-//     cout << a + b;
-//     return 0;
-// }
 #include <iostream>
 #include <string>
 #include <vector>
@@ -42,11 +23,11 @@
 #include <assert.h>
 using namespace std;
 
-#define FOR(i, start, end) for (int i = start; i < end; i++)
-#define RFOR(i, start, end) for (int i = end; i >= start; i--)
+#define FOR(i, start, end) for (ll i = start; i < end; i++)
+#define RFOR(i, start, end) for (ll i = end; i >= start; i--)
 #define FOREACH(x, b) for (auto x : b)
 
-#define COUT(x) cout << x << endl;re
+#define COUT(x) cout << x << endl;
 #define N << endl;
 
 typedef vector<int> vi;
@@ -62,14 +43,35 @@ int main()
     ios::sync_with_stdio(0);
     cin.tie(0);
 
-    int n;
-    cin >> n;
-    cout << n << "\n";
+    ll n, x;
+    cin >> n >> x;
+    // * constraints : 1<= n <= 10^5 , 1<= n <= 10^9
+
+    ll cnt = 0;
+
+    if (n == 1 && x != 1)
+    {
+        cout << 0 << endl;
+    }
+    else
+    {
+
+        FOR(i, 2, n + 1)
+        {
+
+            //> Every row will has max  10^5 cols, so if x/i is greater then n,then no sol;
+            if (x % i == 0 && x / i <= n)
+            {
+                cout << i << endl;
+
+                cnt++;
+            }
+        }
+
+        if (n >= x)
+        {
+            cnt++;
+        }
+        cout << cnt << endl;
+    }
 }
-
-
-
-
-
-
-

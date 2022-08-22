@@ -1,0 +1,9 @@
+{
+	"": {
+		"prefix": "cc_cout",
+		"body": [
+			"cout << n << \"\\n\";"
+		],
+		"description": ""
+	}
+}

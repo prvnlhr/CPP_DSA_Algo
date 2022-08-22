@@ -1,0 +1,16 @@
+{
+	"": {
+		"prefix": "ttest_cases_input_cpp_snpt",
+		"body": [
+			"int t;",
+			"cin >> t;",
+			"while (t--)",
+			"{",
+			"",
+			"    int n;",
+			"    cin >> n;",
+			"}"
+		],
+		"description": ""
+	}
+}

@@ -1,0 +1,11 @@
+{
+	"": {
+		"prefix": "ff",
+		"body": [
+		  "FOR(i, 0, n)",
+		  "{",
+		  "}"
+		],
+		"description": ""
+	  }
+}

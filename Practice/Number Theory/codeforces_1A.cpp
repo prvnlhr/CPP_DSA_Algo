@@ -1,22 +1,3 @@
-// #include <bits/stdc++.h>
-// using namespace std;
-// int main()
-// {
-// #ifndef ONLINE_JUDGE
-
-//     // For getting input from input.txt file
-//     freopen("input.txt", "r", stdin);
-
-//     // Printing the Output to output.txt file
-//     freopen("output.txt", "w", stdout);
-
-// #endif
-
-//     int a, b;
-//     cin >> a >> b;
-//     cout << a + b;
-//     return 0;
-// }
 #include <iostream>
 #include <string>
 #include <vector>
@@ -40,13 +21,14 @@
 #include <string.h>
 #include <stdlib.h>
 #include <assert.h>
+
 using namespace std;
 
 #define FOR(i, start, end) for (int i = start; i < end; i++)
 #define RFOR(i, start, end) for (int i = end; i >= start; i--)
 #define FOREACH(x, b) for (auto x : b)
 
-#define COUT(x) cout << x << endl;re
+#define COUT(x) cout << x << endl;
 #define N << endl;
 
 typedef vector<int> vi;
@@ -62,14 +44,30 @@ int main()
     ios::sync_with_stdio(0);
     cin.tie(0);
 
-    int n;
-    cin >> n;
-    cout << n << "\n";
+    ll n, m, a;
+    cin >> n >> m >> a;
+    if (a > n && a > m)
+    {
+        cout << 1 << endl;
+    }
+    else
+    {
+
+        ll row_wise = n / a;
+        ll row_rem = n % a;
+
+        ll col_wise = m / a;
+        ll col_rem = m % a;
+
+        if (row_rem != 0)
+        {
+            row_wise = row_wise + 1;
+        }
+        if (col_rem != 0)
+        {
+            col_wise = col_wise + 1;
+        }
+
+        cout << (row_wise) * (col_wise );
+    }
 }
-
-
-
-
-
-
-

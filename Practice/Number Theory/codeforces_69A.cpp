@@ -1,22 +1,3 @@
-// #include <bits/stdc++.h>
-// using namespace std;
-// int main()
-// {
-// #ifndef ONLINE_JUDGE
-
-//     // For getting input from input.txt file
-//     freopen("input.txt", "r", stdin);
-
-//     // Printing the Output to output.txt file
-//     freopen("output.txt", "w", stdout);
-
-// #endif
-
-//     int a, b;
-//     cin >> a >> b;
-//     cout << a + b;
-//     return 0;
-// }
 #include <iostream>
 #include <string>
 #include <vector>
@@ -46,7 +27,7 @@ using namespace std;
 #define RFOR(i, start, end) for (int i = end; i >= start; i--)
 #define FOREACH(x, b) for (auto x : b)
 
-#define COUT(x) cout << x << endl;re
+#define COUT(x) cout << x << endl;
 #define N << endl;
 
 typedef vector<int> vi;
@@ -64,12 +45,28 @@ int main()
 
     int n;
     cin >> n;
-    cout << n << "\n";
+
+    int s_x = 0;
+    int s_y = 0;
+    int s_z = 0;
+    while (n--)
+    {
+
+        int x, y, z;
+
+        cin >> x >> y >> z;
+
+        s_x = s_x + x;
+        s_y = s_y + y;
+        s_z = s_z + z;
+    }
+    if (s_x == 0 && s_y == 0 && s_z == 0)
+    {
+        cout << "YES" << endl;
+    }
+    else
+    {
+        cout << "NO"
+             << "\n";
+    }
 }
-
-
-
-
-
-
-

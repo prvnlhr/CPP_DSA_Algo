@@ -1,22 +1,3 @@
-// #include <bits/stdc++.h>
-// using namespace std;
-// int main()
-// {
-// #ifndef ONLINE_JUDGE
-
-//     // For getting input from input.txt file
-//     freopen("input.txt", "r", stdin);
-
-//     // Printing the Output to output.txt file
-//     freopen("output.txt", "w", stdout);
-
-// #endif
-
-//     int a, b;
-//     cin >> a >> b;
-//     cout << a + b;
-//     return 0;
-// }
 #include <iostream>
 #include <string>
 #include <vector>
@@ -44,9 +25,9 @@ using namespace std;
 
 #define FOR(i, start, end) for (int i = start; i < end; i++)
 #define RFOR(i, start, end) for (int i = end; i >= start; i--)
-#define FOREACH(x, b) for (auto x : b)
+#define FOREACH(x, b) for (int x : b)
 
-#define COUT(x) cout << x << endl;re
+#define COUT(x) cout << x << endl;
 #define N << endl;
 
 typedef vector<int> vi;
@@ -62,14 +43,38 @@ int main()
     ios::sync_with_stdio(0);
     cin.tie(0);
 
-    int n;
-    cin >> n;
-    cout << n << "\n";
+    int s, n;
+    cin >> s >> n;
+    string ANS = "YES";
+
+    int currS = s;
+    vector<pi> arr;
+
+    // * 1. O(N)
+    while (n--)
+    {
+        int xi, yi;
+        cin >> xi >> yi;
+        pi pr{xi, yi};
+        arr.push_back({xi, yi});
+    }
+
+    // * 2. (N logN)
+    sort(arr.begin(), arr.end());
+
+    for (int i = 0; i < arr.size(); i++)
+    {
+        if (currS > arr[i].first)
+        {
+            currS = currS + arr[i].second;
+        }
+        else
+        {
+            ANS = "NO";
+            break;
+        }
+    }
+
+    //* 3. Over all TC : O(N log N) + O(N) => O(N log N)
+    cout << ANS << "\n";
 }
-
-
-
-
-
-
-

@@ -1,22 +1,3 @@
-// #include <bits/stdc++.h>
-// using namespace std;
-// int main()
-// {
-// #ifndef ONLINE_JUDGE
-
-//     // For getting input from input.txt file
-//     freopen("input.txt", "r", stdin);
-
-//     // Printing the Output to output.txt file
-//     freopen("output.txt", "w", stdout);
-
-// #endif
-
-//     int a, b;
-//     cin >> a >> b;
-//     cout << a + b;
-//     return 0;
-// }
 #include <iostream>
 #include <string>
 #include <vector>
@@ -46,7 +27,7 @@ using namespace std;
 #define RFOR(i, start, end) for (int i = end; i >= start; i--)
 #define FOREACH(x, b) for (auto x : b)
 
-#define COUT(x) cout << x << endl;re
+#define COUT(x) cout << x << endl;
 #define N << endl;
 
 typedef vector<int> vi;
@@ -62,14 +43,32 @@ int main()
     ios::sync_with_stdio(0);
     cin.tie(0);
 
-    int n;
-    cin >> n;
-    cout << n << "\n";
+    ll n, m;
+    cin >> n >> m;
+    vector<ll> arr(m);
+    ll ans = 0;
+    for (int i = 0; i < m; i++)
+    {
+
+        cin >> arr[i];
+        if (i == 0)
+        {
+            ans = ans + arr[i] - 1;
+        }
+        else
+        {
+            if (arr[i] < arr[i - 1])
+            {
+                ll steps_to_com_circuit = n - arr[i-1];
+                ans = ans + steps_to_com_circuit+arr[i];
+            }
+            else
+            {
+
+                ans = ans + arr[i] - arr[i - 1];
+            }
+        }
+    }
+
+    cout << ans << endl;
 }
-
-
-
-
-
-
-

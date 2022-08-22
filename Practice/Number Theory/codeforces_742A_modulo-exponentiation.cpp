@@ -1,22 +1,3 @@
-// #include <bits/stdc++.h>
-// using namespace std;
-// int main()
-// {
-// #ifndef ONLINE_JUDGE
-
-//     // For getting input from input.txt file
-//     freopen("input.txt", "r", stdin);
-
-//     // Printing the Output to output.txt file
-//     freopen("output.txt", "w", stdout);
-
-// #endif
-
-//     int a, b;
-//     cin >> a >> b;
-//     cout << a + b;
-//     return 0;
-// }
 #include <iostream>
 #include <string>
 #include <vector>
@@ -46,7 +27,7 @@ using namespace std;
 #define RFOR(i, start, end) for (int i = end; i >= start; i--)
 #define FOREACH(x, b) for (auto x : b)
 
-#define COUT(x) cout << x << endl;re
+#define COUT(x) cout << x << endl;
 #define N << endl;
 
 typedef vector<int> vi;
@@ -63,13 +44,27 @@ int main()
     cin.tie(0);
 
     int n;
+    //> Refer brilliant.org finding last digit of big powers article.
+    // * basically when have to observe the pattern of powers, and compute the last digit acccordingly.
     cin >> n;
-    cout << n << "\n";
+    if (n == 0)
+    {
+        cout << 1 << endl;
+    }
+    else if (n % 4 == 0)
+    {
+        cout << 6 << endl;
+    }
+    else if (n % 4 == 1)
+    {
+        cout << 8 << endl;
+    }
+    else if (n % 4 == 2)
+    {
+        cout << 4 << endl;
+    }
+    else if (n % 4 == 3)
+    {
+        cout << 2 << "\n";
+    }
 }
-
-
-
-
-
-
-

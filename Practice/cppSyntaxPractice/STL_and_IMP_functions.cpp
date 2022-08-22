@@ -497,7 +497,7 @@ int main()
         cout << x << " "; // 2 12 45 71 26 80 53 33
     }
 
-    //> LOWER BOUND & UPPER BOUND
+    //> LOWER BOUND & UPPER BOUND     #include <algorithm>
 
     // vector<int> ar{10, 10, 20, 20, 23, 23, 30, 55};
     vector<int> ar{10, 20, 30, 30, 30, 40, 50};
