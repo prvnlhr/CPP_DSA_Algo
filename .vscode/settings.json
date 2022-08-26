@@ -3,6 +3,7 @@
         "ostream": "cpp",
         "iostream": "cpp",
         "cmath": "cpp",
-        "queue": "cpp"
+        "queue": "cpp",
+        "iterator": "cpp"
     }
 }
