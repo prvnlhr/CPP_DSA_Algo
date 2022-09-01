@@ -1,0 +1,9 @@
+{
+	"newLineSnpt": {
+		"prefix": "/",
+		"body": [
+		  "<< endl;"
+		],
+		"description": ""
+	  }
+}

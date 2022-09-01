@@ -4,6 +4,7 @@
         "iostream": "cpp",
         "cmath": "cpp",
         "queue": "cpp",
-        "iterator": "cpp"
+        "iterator": "cpp",
+        "iosfwd": "cpp"
     }
 }
