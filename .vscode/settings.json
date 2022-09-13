@@ -5,6 +5,9 @@
         "cmath": "cpp",
         "queue": "cpp",
         "iterator": "cpp",
-        "iosfwd": "cpp"
+        "iosfwd": "cpp",
+        "numeric": "cpp",
+        "*.tcc": "cpp",
+        "stacktrace": "cpp"
     }
 }

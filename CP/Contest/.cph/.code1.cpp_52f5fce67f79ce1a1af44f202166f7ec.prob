@@ -1,0 +1,1 @@
+{"name":"Local: code1","url":"d:\\Data Structure\\CPP_DSA_Algo\\CP\\Contest\\code1.cpp","tests":[{"id":1662179681094,"input":"6\n1\n2\n3\n4\n5\n100000000","output":"1\n4\n7\n10\n11\n266666666"}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"d:\\Data Structure\\CPP_DSA_Algo\\CP\\Contest\\code1.cpp","group":"local","local":true}

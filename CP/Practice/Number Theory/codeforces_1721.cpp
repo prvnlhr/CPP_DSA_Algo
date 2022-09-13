@@ -28,6 +28,7 @@ using namespace std;
 #define FOREACH(x, b) for (auto x : b)
 
 #define COUT(x) cout << x << endl;
+#define N << endl;
 
 typedef vector<int> vi;
 typedef vector<int> vl;
@@ -42,40 +43,35 @@ int main()
     ios::sync_with_stdio(0);
     cin.tie(0);
 
-    ll t;
-    cin >> t;
-    while (t--)
+    int n;
+    cin >> n;
+    vector<int> a(n);
+    vector<int> b(n);
+
+    for (int i = 0; i < n; i++)
+    {
+        cin >> a[i];
+    }
+
+    for (int i = 0; i < n; i++)
+    {
+        cin >> b[i];
+    }
+
+    sort(a.begin(), a.end());
+    sort(b.begin(), b.end());
+    vector<int> c(n);
+
+    for (int i = 0; i < n; i++)
     {
 
-        int n;
-        cin >> n;
-        vi arr(n);
-        FOR(i, 0, n)
-        {
-            cin >> arr[i];
-        }
-
-        if (n % 2 == 1)
-        {
-
-            set<int> s;
-
-            FOR(i, 0, n)
-            {
-                s.insert(arr[i]);
-            }
-            if (s.size() == n)
-            {
-                cout << "NO" << endl;
-            }
-            else
-            {
-                cout << "YES" << endl;
-            }
-        }
-        else
-        {
-            cout << "YES" << endl;
-        }
+        c[i] = a[i] ^ b[i];
     }
+
+    int x;
+    for (int i = 0; i < n; i++)
+    {
+        x = x & c[i];
+    }
+    cout << x << endl;
 }

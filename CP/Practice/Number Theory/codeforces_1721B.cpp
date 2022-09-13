@@ -42,15 +42,33 @@ int main()
 {
     ios::sync_with_stdio(0);
     cin.tie(0);
-
     int t;
     cin >> t;
     while (t--)
     {
 
-        int X, Y, Z;
-        cin >> X >> Y >> Z;
+        int n, m, sx, sy, d;
+        cin >> n >> m >> sx >> sy >> d;
 
-        cout << X * 4 + Y * 2 << endl;
+        int minDis = abs(1 - n) + abs(1 - m);
+
+        int distLeftWallandLaser, distRightWallandLaser, distTopWallandLaser, distBottomWallandLaser;
+
+        distLeftWallandLaser = sy - 1;
+        distRightWallandLaser = m - sy;
+        distTopWallandLaser = sx - 1;
+        distBottomWallandLaser = n - sx;
+
+        //> if taking leftwall and bottom path -> we need to check distLeft and distBottom
+        if ((distLeftWallandLaser <= d || distBottomWallandLaser <= d) && (distRightWallandLaser <= d || distTopWallandLaser <= d))
+        {
+            cout << -1 << endl;
+        }
+        //> if taking rightWall and top path -> we need to check distLeft and distBottom
+
+        else
+        {
+            cout << minDis << endl;
+        }
     }
 }
