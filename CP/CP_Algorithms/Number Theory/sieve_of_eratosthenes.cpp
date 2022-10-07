@@ -10,7 +10,7 @@ vector<bool> sieve(n + 1, true);
 This func creats a sieve of n size, n can be the max constraint of the input size
 * * Time Complexity: O(n*log(log(n))) , to create sieve.
 * ! sieve is used when we have to query t test cases.
-* > sieve reduces the time complexity by pre computing the Primes and stroing in sieve array.
+* > sieve reduces the time complexity by pre computing the Primes and storing in sieve array.
 * ? Once the primes are pre computed, then for every query of 't' test-case find prime just takes O(1).
  */
 

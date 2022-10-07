@@ -1,0 +1,9 @@
+{
+	"debugSnpt": {
+		"prefix": "dd",
+		"body": [
+			"debug();"
+		],
+		"description": ""
+	}
+}

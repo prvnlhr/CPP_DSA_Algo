@@ -1,0 +1,9 @@
+{
+	"cout2": {
+		"prefix": "c2",
+		"body": [
+			"cout2();"
+		],
+		"description": ""
+	}
+}
