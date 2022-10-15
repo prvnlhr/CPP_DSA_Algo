@@ -326,7 +326,7 @@ int main()
     cout << pr.first;
     cout << pr.second;
 
-    //> printing map
+    //> printing map______________________
 
     for (auto ele : mpp)
     {
@@ -337,6 +337,14 @@ int main()
     for (auto it = mpp.begin(); it != mpp.end(); it++)
     {
         cout << it->first << " " << it->second;
+    }
+
+    //> C++17 printing
+    map<int, vector<int>> mpp{{1, {12, 15, 26}}, {13, {14, 15, 18, 19}}};
+
+    for (auto [key, value] : mpp)
+    {
+        cout << key << " " << value << endl;
     }
 
     //> UNORDER MAP________________________________________________________________________________

@@ -116,7 +116,23 @@ ll expo(ll a, ll b, ll mod)
 void solve()
 {
 
-    
+    vector<int> nums{3, 5, 2, 3};
+    sort(nums.begin(), nums.end());
+    int n = nums.size();
+    int i = 0;
+    int j = n - 1;
+
+    int sum = INT_MIN;
+
+    while (i < j)
+    {
+
+        int currSum = nums[i] + nums[j];
+        sum = max(sum, currSum);
+        i++;
+        j--;
+    }
+    cout << sum << endl;
 }
 
 //>-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------

@@ -1,11 +1,3 @@
-
-/*
->------------------------------------------------------------------------------------------------------------------------------------------------------------
->                               █▀ ▀█▀ █▀▀ █░░ █░░ █░█ █▀█
->                               ▄█ ░█░ ██▄ █▄▄ █▄▄ █▀█ █▀▄
->------------------------------------------------------------------------------------------------------------------------------------------------------------
-*/
-
 #include <bits/stdc++.h>
 using namespace std;
 using namespace chrono;
@@ -111,15 +103,87 @@ ll expo(ll a, ll b, ll mod)
     }
     return res;
 }
-//>----------------------------ＳＯＬＶＥ-----------------------------------------------------------------------------------------------------------------------------------------------
+//___________________________________________________________________________________________________________________________________________________________________________________
+void findSeq(vector<int> &arr, int start, int reqSegSum, vector<int> &v)
+{
+    int n = arr.size();
+    int currLen = 0;
+    int currSum = 0;
+
+    for (int j = start; j < n; j++)
+    {
+
+        currSum += arr[j];
+        currLen++;
+
+        if (currSum == reqSegSum)
+        {
+            v.push_back(currLen);
+            currSum = 0;
+            currLen = 0;
+        }
+        else if (currSum > reqSegSum)
+        {
+            v.push_back(n);
+        }
+    }
+}
 
 void solve()
 {
 
-    
-}
+    int t;
+    cin >> t;
+    while (t--)
+    {
 
-//>-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+        int n;
+        cin >> n;
+        vector<int> arr(n);
+
+        int SUM = 0;
+
+        FOR(i, 0, n)
+        {
+            int ele;
+            cin >> ele;
+            arr[i] = ele;
+            SUM += ele;
+        }
+
+        int reqSegSum = 0;
+        int len = INT_MAX;
+        int currLen = INT_MIN;
+
+        int thickness = 0;
+
+        int min_thickness = INT_MAX;
+        int max_thickness = INT_MIN;
+        int currThickness = 0;
+        debug(SUM);
+        FOR(i, 0, n)
+        {
+
+            reqSegSum += arr[i];
+            currThickness++;
+
+            if (SUM % reqSegSum == 0)
+            {
+
+                vector<int> v;
+                v.push_back(currThickness);
+                findSeq(arr, i + 1, reqSegSum, v);
+                debug(v);
+                auto itr = max_element(v.begin(), v.end());
+                debug(*itr, min_thickness);
+                min_thickness = min(min_thickness, *itr);
+                v.clear();
+            }
+        }
+        cout << min_thickness << endl;
+    }
+}
+//___________________________________________________________________________________________________________________________________________________________________________________
 int main()
 {
     ios::sync_with_stdio(0);
@@ -138,3 +202,4 @@ int main()
     cerr << "Time: " << duration.count() / 1000 << endl;
 #endif
 }
+

@@ -62,7 +62,7 @@ int main()
             //> Every row will has max  10^5 cols, so if x/i is greater then n,then no sol;
             if (x % i == 0 && x / i <= n)
             {
-                cout << i << endl;
+                // cout << i << endl;
 
                 cnt++;
             }

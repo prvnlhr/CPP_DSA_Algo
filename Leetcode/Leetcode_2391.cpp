@@ -1,11 +1,4 @@
 
-/*
->------------------------------------------------------------------------------------------------------------------------------------------------------------
->                               █▀ ▀█▀ █▀▀ █░░ █░░ █░█ █▀█
->                               ▄█ ░█░ ██▄ █▄▄ █▄▄ █▀█ █▀▄
->------------------------------------------------------------------------------------------------------------------------------------------------------------
-*/
-
 #include <bits/stdc++.h>
 using namespace std;
 using namespace chrono;
@@ -111,15 +104,117 @@ ll expo(ll a, ll b, ll mod)
     }
     return res;
 }
-//>----------------------------ＳＯＬＶＥ-----------------------------------------------------------------------------------------------------------------------------------------------
-
+//___________________________________________________________________________________________________________________________________________________________________________________
 void solve()
 {
 
-    
-}
+    // vector<string> garbage{"G", "P", "GP", "GG"};
+    vector<string> garbage{"MMM", "PGM", "GP"};
+    // vector<int> travel{2, 4, 3};
+    vector<int> travel{3, 10};
+   
+   
+    int ans = 0;
 
-//>-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    int n = garbage.size();
+
+    vector<char> truck{'P', 'G', 'M'};
+
+    vector<int> times(n);
+    times[0] = 0;
+    for (int i = 1; i < n; i++)
+    {
+        times[i] = travel[i - 1];
+    }
+
+    for (auto ch : truck)
+    {
+
+        if (ch == 'P')
+        {
+            int x = 0;
+            int currTime = 0;
+
+            for (int i = 0; i < n; i++)
+            {
+
+                string s = garbage[i];
+                int c = count(s.begin(), s.end(), 'P');
+                if (c != 0)
+                {
+                    int y = times[i] + c + currTime;
+                    // debug(times[i], c, currTime, s);
+                    debug(y);
+                    x += y;
+                    currTime = 0;
+                }
+                else
+                {
+                    currTime += times[i];
+                }
+            }
+            ans += x;
+            debug(x);
+        }
+        else if (ch == 'G')
+        {
+            int x = 0;
+            int currTime = 0;
+
+            for (int i = 0; i < n; i++)
+            {
+
+                string s = garbage[i];
+                int c = count(s.begin(), s.end(), 'G');
+                if (c != 0)
+                {
+                    int y = times[i] + c + currTime;
+                    // debug(times[i], c, currTime, s);
+                    debug(y);
+                    x += y;
+                    currTime = 0;
+                }
+                else
+                {
+                    currTime += times[i];
+                }
+            }
+            ans += x;
+
+            debug(x);
+        }
+        else if (ch == 'M')
+        {
+            int x = 0;
+            int currTime = 0;
+
+            for (int i = 0; i < n; i++)
+            {
+
+                string s = garbage[i];
+                int c = count(s.begin(), s.end(), 'M');
+                if (c != 0)
+                {
+                    int y = times[i] + c + currTime;
+                    // debug(times[i], c, currTime, s);
+                    debug(y);
+                    x += y;
+                    currTime = 0;
+                }
+                else
+                {
+                    currTime += times[i];
+                }
+            }
+            ans += x;
+
+            debug(x);
+        }
+    }
+
+    cout << ans << endl;
+}
+//___________________________________________________________________________________________________________________________________________________________________________________
 int main()
 {
     ios::sync_with_stdio(0);

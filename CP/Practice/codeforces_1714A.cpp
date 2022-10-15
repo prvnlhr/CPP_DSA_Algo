@@ -1,11 +1,3 @@
-
-/*
->------------------------------------------------------------------------------------------------------------------------------------------------------------
->                               █▀ ▀█▀ █▀▀ █░░ █░░ █░█ █▀█
->                               ▄█ ░█░ ██▄ █▄▄ █▄▄ █▀█ █▀▄
->------------------------------------------------------------------------------------------------------------------------------------------------------------
-*/
-
 #include <bits/stdc++.h>
 using namespace std;
 using namespace chrono;
@@ -111,15 +103,136 @@ ll expo(ll a, ll b, ll mod)
     }
     return res;
 }
-//>----------------------------ＳＯＬＶＥ-----------------------------------------------------------------------------------------------------------------------------------------------
-
+//___________________________________________________________________________________________________________________________________________________________________________________
 void solve()
 {
+    int t;
+    cin >> t;
+    while (t--)
+    {
 
-    
+        int n, H, M;
+        cin >> n >> H >> M;
+
+        vector<pair<int, int>> arr;
+
+        FOR(i, 0, n)
+        {
+            int h, m;
+            cin >> h >> m;
+            pair<int, int> p{h, m};
+            arr.push_back(p);
+        }
+        debug(arr);
+        SORTASC(arr);
+        debug(arr);
+
+        int minH = arr[0].first;
+        int minM = arr[0].second;
+
+        int maxH = arr[n - 1].first;
+        int maxM = arr[n - 1].second;
+
+        int h, m;
+        h = 0;
+        m = 0;
+
+        int vSleepTIime = H * 100 + M;
+
+        debug(vSleepTIime);
+
+        for (int i = 0; i < n; i++)
+        {
+
+            int currH = arr[i].first;
+            int currM = arr[i].second;
+
+            int currTime = currH * 100 + currM;
+
+            if (currTime <= vSleepTIime)
+            {
+
+                if (currTime == vSleepTIime)
+                {
+                    h = arr[i].first;
+                    m = arr[i].second;
+                }
+                else if (i + 1 < n)
+                {
+
+                    h = arr[i + 1].first;
+                    m = arr[i + 1].second;
+                }
+                else if (i + 1 == n)
+                {
+                    h = 24;
+                    m = 60;
+                }
+            }
+        }
+
+        debug(h, m);
+        if (h == 0 && m == 0)
+        {
+
+            int ansH = arr[0].first - H;
+            int ansM = arr[0].second - M;
+
+            debug(ansH, ansM);
+            if (ansM < 0)
+            {
+                ansM = ansM + 60;
+                ansH--;
+            }
+            if (ansH < 0)
+            {
+                ansH = ansH + 24;
+            }
+            debug(ansH, ansM);
+
+            cout << ansH << " " << ansM << endl;
+        }
+        else if (h == 24 && m == 60)
+        {
+            int ansH = h - H;
+            int ansM = m - M;
+
+            debug(ansH, ansM);
+
+            debug(ansH, ansM);
+            ansH = arr[0].first - H;
+            ansM = arr[0].second - M;
+            if (ansM < 0)
+            {
+                ansM = ansM + 60;
+                ansH--;
+            }
+            if (ansH < 0)
+            {
+                ansH = ansH + 24;
+            }
+            cout << ansH << " " << ansM << endl;
+        }
+        else
+        {
+            int ansH = h - H;
+            int ansM = m - M;
+
+            debug(ansH, ansM);
+            if (ansM < 0)
+            {
+                ansM = ansM + 60;
+                ansH--;
+            }
+            if (ansH < 0)
+            {
+                ansH = ansH + 24;
+            }
+            cout << ansH << " " << ansM << endl;
+        }
+    }
 }
-
-//>-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+//___________________________________________________________________________________________________________________________________________________________________________________
 int main()
 {
     ios::sync_with_stdio(0);
@@ -138,3 +251,14 @@ int main()
     cerr << "Time: " << duration.count() / 1000 << endl;
 #endif
 }
+
+/*
+1
+6 14 56
+12 30
+14 45
+7 35
+6 35
+6 15
+6 25
+*/

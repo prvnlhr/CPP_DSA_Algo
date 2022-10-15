@@ -115,8 +115,47 @@ ll expo(ll a, ll b, ll mod)
 
 void solve()
 {
+    int x;
+    cin >> x;
 
-    
+    string s = to_string(x);
+
+    int n = s.length();
+
+    if (s.length() % 2 == 1)
+    {
+        int half = n / 2;
+        string t = s.substr(0, half);
+        string l = s.substr(half + 1, half);
+
+        reverse(l.begin(), l.end());
+
+        if (l == t)
+        {
+            cout << true << endl;
+        }
+        else
+        {
+            cout << false << endl;
+        }
+
+        debug(t, l);
+    }
+    else
+    {
+        int half = n / 2;
+        string t = s.substr(0, half);
+        string l = s.substr(half, half);
+        reverse(l.begin(), l.end());
+        if (l == t)
+        {
+            cout << true << endl;
+        }
+        else
+        {
+            cout << false << endl;
+        }
+    }
 }
 
 //>-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------

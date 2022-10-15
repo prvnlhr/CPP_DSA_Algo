@@ -59,7 +59,8 @@ ostream &operator<<(ostream &os, const T &c)
 
 //>---DEBUG_TEMPLATE_END-----------------------------------------------------------------------------------------------------------------------------------------------------------
 
-#define FOR(i, start, end) for (int i = start; i < end; i++)
+// #define FOR(i, start, end) for (int i = start; i < end; i++)
+#define FOR(i, begin, end) for (__typeof(end) i = (begin) - ((begin) > (end)); i != (end) - ((begin) > (end)); i += 1 - 2 * ((begin) > (end)))
 #define RFOR(i, start, end) for (int i = end; i >= start; i--)
 #define FOREACH(x, b) for (auto x : b)
 
@@ -116,7 +117,27 @@ ll expo(ll a, ll b, ll mod)
 void solve()
 {
 
-    
+    int lo = 1;
+    int hi = 1e6;
+    while (lo < hi)
+    {
+        int mid = (lo + hi + 1) / 2;
+        cout << mid << endl;
+        cout << flush;
+        string s;
+        cin >> s;
+        if (s == ">=")
+        {
+            lo = mid;
+        }
+        else
+        {
+            hi = mid - 1;
+        }
+    }
+
+    cout << "! " << lo << endl;
+    cout << flush;
 }
 
 //>-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
