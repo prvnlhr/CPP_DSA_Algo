@@ -112,25 +112,54 @@ ll expo(ll a, ll b, ll mod)
     }
     return res;
 }
-//__factorial______________________________________________
-vector<ll> fact;
-void factOfN(ll n)
-{
-    ll prod = 1;
-    fact.resize(n + 1);
-    for (int f = 1; f <= n; f++)
-    {
-
-        fact[f] = prod * f;
-        prod = prod * f;
-    }
-}
-//--------------------------------------------------------------------------------------------------------------------------------
-
 //>----------------------------ＳＯＬＶＥ-----------------------------------------------------------------------------------------------------------------------------------------------
 
 void solve()
 {
+    int tc;
+    cin >> tc;
+    while (tc--)
+    {
+
+        int n;
+        char c;
+        cin >> n >> c;
+
+        string s;
+        cin >> s;
+
+        s = s + s;
+
+        vector<int> gInd;
+
+        int l = s.length();
+        debug(s);
+        debug(l);
+        FOR(i, 0, l)
+        {
+            if (s[i] == 'g')
+            {
+                gInd.push_back(i);
+            }
+        }
+        debug(gInd);
+
+        int ans = 0;
+
+        FOR(i, 0, n)
+        {
+            if (s[i] == c)
+            {
+                // int ptr = lower_bound(gInd.begin(), gInd.end(), i) - gInd.begin();
+                auto ptr = lower_bound(gInd.begin(), gInd.end(), i);
+                int indx = *ptr;
+                debug(i, indx);
+                // ans = max(ans, gInd[ptr] - i);
+                ans = max(ans, indx - i);
+            }
+        }
+        cout << ans << endl;
+    }
 }
 
 //>-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -152,4 +181,3 @@ int main()
     cerr << "Time: " << duration.count() / 1000 << endl;
 #endif
 }
-

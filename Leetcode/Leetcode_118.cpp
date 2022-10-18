@@ -131,6 +131,80 @@ void factOfN(ll n)
 
 void solve()
 {
+
+    int n = 5;
+
+    vector<vector<int>> ans;
+
+    if (n == 1)
+    {
+        ans.push_back({1});
+        // return ans;
+    }
+    else if (n == 2)
+    {
+        ans.push_back({1});
+        ans.push_back({1, 1});
+        // return ans;
+    }
+    else if (n >= 2)
+    {
+        debug(n);
+        ans.push_back({1});
+        ans.push_back({1, 1});
+        debug(ans);
+
+        for (int i = 2; i < n; i++)
+        {
+            vector<int> curr(i + 1);
+            debug(curr.size());
+            int sz = ans.size() - 1;
+            if (curr.size() % 2 == 1)
+            {
+                int s = 0;
+                int e = curr.size() - 1;
+
+                curr[s] = 1;
+                curr[e] = 1;
+                s++;
+                e--;
+                while (s <= e)
+                {
+                    debug(curr.size(), s, e);
+                    debug(ans[sz][s] + ans[sz][s - 1]);
+                    curr[s] = ans[sz][s] + ans[sz][s - 1];
+                    curr[e] = curr[s];
+                    s++;
+                    e--;
+                }
+            }
+            else
+            {
+                int s = 0;
+                int e = curr.size() - 1;
+
+                curr[s] = 1;
+                curr[e] = 1;
+                s++;
+                e--;
+                while (s < e)
+                {
+                    debug(curr.size(), s, e);
+
+                    debug(ans[sz][s] + ans[sz][s - 1]);
+
+                    curr[s] = ans[sz][s] + ans[sz][s - 1];
+                    curr[e] = curr[s];
+                    s++;
+                    e--;
+                }
+            }
+
+            ans.push_back(curr);
+            debug(curr);
+        }
+        debug(ans);
+    }
 }
 
 //>-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -152,4 +226,3 @@ int main()
     cerr << "Time: " << duration.count() / 1000 << endl;
 #endif
 }
-

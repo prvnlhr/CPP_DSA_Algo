@@ -112,25 +112,65 @@ ll expo(ll a, ll b, ll mod)
     }
     return res;
 }
-//__factorial______________________________________________
-vector<ll> fact;
-void factOfN(ll n)
-{
-    ll prod = 1;
-    fact.resize(n + 1);
-    for (int f = 1; f <= n; f++)
-    {
-
-        fact[f] = prod * f;
-        prod = prod * f;
-    }
-}
-//--------------------------------------------------------------------------------------------------------------------------------
-
 //>----------------------------ＳＯＬＶＥ-----------------------------------------------------------------------------------------------------------------------------------------------
 
 void solve()
 {
+
+    int t;
+    cin >> t;
+    while (t--)
+    {
+
+        int n;
+        cin >> n;
+        vector<int> arr(n);
+
+        FOR(i, 0, n)
+        {
+            int ele;
+            cin >> ele;
+            arr[i] = ele;
+        }
+
+        vector<pair<int, int>> diffV;
+
+        FOR(i, 1, n)
+        {
+            if (arr[i - 1] > arr[i])
+            {
+
+                int diff = arr[i - 1] - arr[i];
+                int indx = i;
+                diffV.emplace_back(diff, i);
+            }
+        }
+
+        //>SORT DESCENDING, on basis of diff of inversions
+        sort(begin(diffV), end(diffV), [](pair<int, int> p1, pair<int, int> p2)
+             { return p1.first > p2.first; });
+        int nthOp = n - 1;
+        vector<int> opSeq(n);
+        FOR(i, 0, diffV.size())
+        {
+            int indxTo_perf = diffV[i].second + 1;
+            opSeq[nthOp] = indxTo_perf;
+            nthOp--;
+        }
+        debug(opSeq);
+        FOR(i, 0, n)
+        {
+            if (opSeq[i] == 0)
+            {
+                opSeq[i] = 1;
+            }
+        }
+        FOREACH(ele, opSeq)
+        {
+            cout << ele << " ";
+        }
+        cout << endl;
+    }
 }
 
 //>-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -153,3 +193,7 @@ int main()
 #endif
 }
 
+/*
+9
+1 3 2 4 5 7 9 8 6
+*/

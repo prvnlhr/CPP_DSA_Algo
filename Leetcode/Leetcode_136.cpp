@@ -131,6 +131,21 @@ void factOfN(ll n)
 
 void solve()
 {
+
+    vector<int> nums{4, 1, 2, 1, 2};
+
+    int ans = 0;
+
+    int n = nums.size();
+    debug(ans);
+    for (int i = 0; i < n; i++)
+    {
+        debug(ans, nums[i]);
+
+        ans = ans ^ nums[i];
+        debug(ans);
+    }
+    debug(ans);
 }
 
 //>-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -152,4 +167,3 @@ int main()
     cerr << "Time: " << duration.count() / 1000 << endl;
 #endif
 }
-

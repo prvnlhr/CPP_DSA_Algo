@@ -79,6 +79,10 @@ ostream &operator<<(ostream &os, const T &c)
 #define lb(arr, ele) lower_bound(arr.begin(), arr.end(), ele);
 #define ub(arr, ele) upper_bound(arr.begin(), arr.end(), ele);
 
+#define rep(i, a, b) for (int i = a; i < b; i++)
+#define rev(i, a, b) for (int i = a; i >= b; i--)
+#define arr(a, n) rep(i, 0, n) cin >> a[i]
+
 typedef vector<int> vi;
 typedef vector<ll> vl;
 typedef set<int> stint;
@@ -112,25 +116,82 @@ ll expo(ll a, ll b, ll mod)
     }
     return res;
 }
-//__factorial______________________________________________
-vector<ll> fact;
-void factOfN(ll n)
-{
-    ll prod = 1;
-    fact.resize(n + 1);
-    for (int f = 1; f <= n; f++)
-    {
-
-        fact[f] = prod * f;
-        prod = prod * f;
-    }
-}
-//--------------------------------------------------------------------------------------------------------------------------------
-
 //>----------------------------ＳＯＬＶＥ-----------------------------------------------------------------------------------------------------------------------------------------------
 
 void solve()
 {
+
+    int tc;
+    cin >> tc;
+    while (tc--)
+    {
+
+        int n;
+        cin >> n;
+
+        vector<int> a(n);
+        FOR(i, 0, n)
+        {
+            int ele;
+            cin >> ele;
+            a[i] = ele;
+        }
+        int cnt = 0;
+
+        FOR(i, 0, n)
+        {
+            while (a[i] % 2 == 0)
+            {
+                cnt++;
+                a[i] = a[i] / 2;
+            }
+        }
+
+        int ans = 0;
+        vector<int> v;
+
+        FOR(i, 1, n + 1)
+        {
+            int x = i, temp = 0;
+            while (x % 2 == 0)
+            {
+
+                x /= 2;
+                temp++;
+            }
+            v.push_back(temp);
+        }
+
+        SORTDSC(v);
+        debug(v, cnt);
+        if (cnt >= n)
+        {
+            cout << 0 << endl;
+        }
+        else
+        {
+
+            FOR(i, 0, v.size())
+            {
+                if (cnt + v[i] >= n)
+                {
+                    cnt = n;
+                    ans++;
+                    break;
+                }
+                cnt += v[i];
+                ans++;
+            }
+            if (cnt < n)
+            {
+                cout << -1 << endl;
+            }
+            else
+            {
+                cout << ans << endl;
+            }
+        }
+    }
 }
 
 //>-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -152,4 +213,3 @@ int main()
     cerr << "Time: " << duration.count() / 1000 << endl;
 #endif
 }
-

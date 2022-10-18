@@ -112,25 +112,45 @@ ll expo(ll a, ll b, ll mod)
     }
     return res;
 }
-//__factorial______________________________________________
-vector<ll> fact;
-void factOfN(ll n)
-{
-    ll prod = 1;
-    fact.resize(n + 1);
-    for (int f = 1; f <= n; f++)
-    {
-
-        fact[f] = prod * f;
-        prod = prod * f;
-    }
-}
-//--------------------------------------------------------------------------------------------------------------------------------
-
 //>----------------------------ＳＯＬＶＥ-----------------------------------------------------------------------------------------------------------------------------------------------
 
 void solve()
 {
+    // vector<int> groupSizes{3, 3, 3, 3, 3, 1, 3};
+    vector<int> groupSizes{2, 1, 3, 3, 3, 2};
+
+    map<int, vector<int>> mpp;
+
+    int n = groupSizes.size();
+
+    for (int i = 0; i < n; i++)
+    {
+
+        mpp[groupSizes[i]].push_back(i);
+    }
+
+    vector<vector<int>> ans;
+    for (auto [key, values] : mpp)
+    {
+
+        int sz = values.size();
+        int numGrp = sz / key;
+
+        for (int i = 1; i <= numGrp; i++)
+        {
+            vector<int> gp;
+
+            int cnt = 1;
+            while (cnt <= key)
+            {
+                gp.push_back(values.back());
+                values.pop_back();
+                cnt++;
+            }
+            ans.push_back(gp);
+        }
+    }
+    debug(ans);
 }
 
 //>-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -152,4 +172,3 @@ int main()
     cerr << "Time: " << duration.count() / 1000 << endl;
 #endif
 }
-

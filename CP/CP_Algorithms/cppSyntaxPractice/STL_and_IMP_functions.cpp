@@ -540,6 +540,17 @@ int main()
     > element value are sorted in inceasing order.
      */
     //* sort(table.begin(), table.end(), comapre);
+
+    //> SORTING ONE LINE
+    vector<int> v = {3, 1, 2, 1, 8};
+    sort(begin(v), end(v), [](int a, int b)
+         { return a > b; });
+    for (auto i : v)
+    {
+
+        cout << i << ' ';
+    }
+    //>> Output:8 3 2 1 1
     //>--------------------------------------------------------------------------------------------------------
     //> LOWER BOUND & UPPER BOUND     #include <algorithm>
 

@@ -131,6 +131,57 @@ void factOfN(ll n)
 
 void solve()
 {
+    int n;
+    cin >> n;
+    string s;
+
+    cin >> s;
+
+    int x = 0;
+    int y = 0;
+
+    vector<pair<int, int>> st(n);
+    debug(x, y);
+    int cnt = 0;
+
+    for (int i = 0; i < n; i++)
+    {
+        if (s[i] == 'U')
+        {
+
+            y++;
+        }
+        else if (s[i] == 'R')
+        {
+            x++;
+        }
+        st[i] = {x, y};
+    }
+    FOR(i, 0, n)
+    {
+        if (st[i].first == st[i].second)
+        {
+
+            if (i + 1 < n && i - 1 >= 0)
+            {
+
+                int px1 = st[i - 1].first;
+                int py1 = st[i - 1].second;
+                int px2 = st[i + 1].first;
+                int py2 = st[i + 1].second;
+                debug(px1, px2, py1, py2);
+                int diffx = abs(px1 - px2);
+                int diffy = abs(py1 - py2);
+                if (diffx == 2 || diffy == 2)
+                {
+                    cnt++;
+                }
+            }
+        }
+    }
+
+    debug(st, cnt);
+    cout << cnt << endl;
 }
 
 //>-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -152,4 +203,3 @@ int main()
     cerr << "Time: " << duration.count() / 1000 << endl;
 #endif
 }
-

@@ -131,6 +131,42 @@ void factOfN(ll n)
 
 void solve()
 {
+    int n, k;
+    cin >> n >> k;
+    string s;
+    cin >> s;
+    debug(s);
+
+    if (n == 1 && k != 0)
+    {
+        cout << '0' << endl;
+    }
+    else if (n == 1 && k == 0)
+    {
+        cout << s << endl;
+    }
+    else
+    {
+        debug(s);
+        for (int i = 0; i < n; i++)
+        {
+
+            debug(i, s[i], k);
+            if (i != 0 && s[i] != '0' && k != 0)
+            {
+
+                s[i] = '0';
+                k--;
+            }
+            else if (i == 0 && s[i] != '1' && k != 0)
+            {
+                s[i] = '1';
+                k--;
+            }
+        }
+        debug(s);
+        cout << s << endl;
+    }
 }
 
 //>-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -152,4 +188,3 @@ int main()
     cerr << "Time: " << duration.count() / 1000 << endl;
 #endif
 }
-

@@ -131,6 +131,36 @@ void factOfN(ll n)
 
 void solve()
 {
+
+    int n;
+    cin >> n;
+    vector<int> arr(n);
+
+    FOR(i, 0, n)
+    {
+        int ele;
+        cin >> ele;
+        arr[i] = ele;
+    }
+    int s = 0;
+    int e = n - 1;
+    while (s < e)
+    {
+
+        if (s % 2 == 0)
+        {
+
+            swap(arr[s], arr[e]);
+        }
+        s++;
+        e--;
+    }
+    for (auto ele : arr)
+    {
+        cout << ele << " ";
+    }
+    cout << endl;
+    debug(arr);
 }
 
 //>-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -152,4 +182,3 @@ int main()
     cerr << "Time: " << duration.count() / 1000 << endl;
 #endif
 }
-

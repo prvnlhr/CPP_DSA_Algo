@@ -131,6 +131,43 @@ void factOfN(ll n)
 
 void solve()
 {
+    int tc;
+    cin >> tc;
+
+    factOfN(10);
+
+    while (tc--)
+    {
+
+        int n;
+        cin >> n;
+        vector<int> arr(n);
+
+        FOR(i, 0, n)
+        {
+            int ele;
+            cin >> ele;
+            arr[i] = ele;
+        }
+
+        int rm = 10 - n;
+        if (rm == 2)
+        {
+            cout << 6 << endl;
+        }
+        else
+        {
+
+            debug(rm);
+            int x1 = fact[rm];
+            int x2 = fact[rm - 2];
+            int x3 = fact[2];
+            
+            debug(x1, x2, x3);
+            int ans = x1 / (x2 * x3);
+            cout << ans * 6 << endl;
+        }
+    }
 }
 
 //>-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -152,4 +189,3 @@ int main()
     cerr << "Time: " << duration.count() / 1000 << endl;
 #endif
 }
-
