@@ -1,0 +1,10 @@
+Line 355: h = 4; 
+Line 339: h = 4; 
+Line 339: h = 3; 
+Line 339: h = 2; 
+Line 339: h = 1; 
+Line 339: h = 2; 
+Line 339: h = 3; 
+Line 339: h = 2; 
+Line 339: h = 1; 
+Time: 0
