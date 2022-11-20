@@ -1,109 +1,60 @@
-#include <bits/stdc++.h>
+#include <iostream>
+#include <iomanip>
+#include <cstdio>
+#include <cstring>
+#include <cmath>
 using namespace std;
-
-#define FOR(i, start, end) for (int i = start; i < end; i++)
-#define RFOR(i, start, end) for (int i = end; i >= start; i--)
-#define FOREACH(x, b) for (auto x : b)
-
-#define print1(x) cout << x << endl;
-#define print2(x, y) cout << x << " " << y << endl;
-#define print3(x, y, z) cout << x << " " << y << " " << z << endl;
-
-typedef vector<int> vi;
-typedef vector<int> vl;
-typedef set<int> stint;
-typedef map<int, int> mpint;
-typedef pair<int, int> pi;
-
-typedef long long ll;
-
+int a[7];
 int main()
 {
-    ios::sync_with_stdio(0);
-    cin.tie(0);
-
-    int n;
-    cin >> n;
-
-    vector<int> input(n);
-    for (int i = 0; i < n; i++)
+    int n, t;
+    while (~scanf("%d", &n))
     {
-        cin >> input[i];
-    }
-
-    sort(input.begin(), input.end());
-
-    int groups = n / 3;
-
-    vector<vector<int>> ans;
-
-    for (int i = 0; i < groups; i++)
-    {
-
-        vector<int> arr;
-
-        for (int j = 0; j < n; j++)
+        memset(a, 0, sizeof a);
+        for (int i = 0; i < n; i++)
         {
+            scanf("%d", &t);
+            if (t == 1)
+                ++a[1];
+            else if (t == 2)
+                ++a[2];
+            else if (t == 3)
+                ++a[3];
+            else if (t == 4)
+                ++a[4];
+            else if (t == 6)
+                ++a[6];
+        }
 
-            if (arr.size() == 0)
-            {
-                if (input[j] != -1)
-                {
+        
+        if (a[1] != n / 3)
+        {
+            cout << "-1\n";
+            continue;
+        }
+        else if (a[2] + a[3] != n / 3 || a[4] + a[6] != n / 3)
+        {
+            cout << "-1\n";
+            continue;
+        }
+        else if (a[4] > a[2] || a[3] > a[6])
+        {
+            cout << "-1\n";
+            continue;
+        }
 
-                    arr.push_back(input[j]);
-                    input[j] = -1;
-                }
-            }
-
-            else if (arr.size() == 1)
-            {
-                if (input[j] != -1 && input[j] > arr[0] && input[j] % arr[0] == 0)
-                {
-                    arr.push_back(input[j]);
-                    input[j] = -1;
-                }
-            }
-            else if (arr.size() == 2)
-            {
-                if (input[j] != -1 && input[j] > arr[1] && input[j] % arr[1] == 0)
-                {
-                    arr.push_back(input[j]);
-                    input[j] = -1;
-                }
-            }
-
-            if (arr.size() == 3)
-            {
-                ans.push_back(arr);
-                break;
-            }
+        for (int i = 0; i < a[4]; i++)
+        {
+            printf("1 2 4\n");
+        }
+        for (int i = 0; i < a[2] - a[4]; i++)
+        {
+            printf("1 2 6\n");
+        }
+        for (int i = 0; i < a[3]; i++)
+        {
+            printf("1 3 6\n");
         }
     }
-
-    if (ans.size() != (n / 3))
-    {
-        cout << -1 << endl;
-    }
-    else
-    {
-
-        for (auto x : ans)
-        {
-            for (auto y : x)
-            {
-                cout << y << " ";
-            }
-            cout << endl;
-        }
-    }
+    return 0;
 }
-
-/*
-
-9
-1 3 2 6 3 1 4 2 2
-
-9
-1 3 6 1 2 4 1 3 6
-
-*/

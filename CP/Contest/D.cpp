@@ -152,4 +152,3 @@ int main()
     cerr << "Time: " << duration.count() / 1000 << endl;
 #endif
 }
-

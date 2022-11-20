@@ -1,3 +1,4 @@
+
 /*
 >------------------------------------------------------------------------------------------------------------------------------------------------------------
 >                               █▀ ▀█▀ █▀▀ █░░ █░░ █░█ █▀█
@@ -111,105 +112,25 @@ ll expo(ll a, ll b, ll mod)
     }
     return res;
 }
+//__factorial______________________________________________
+vector<ll> fact;
+void factOfN(ll n)
+{
+    ll prod = 1;
+    fact.resize(n + 1);
+    for (int f = 1; f <= n; f++)
+    {
+
+        fact[f] = prod * f;
+        prod = prod * f;
+    }
+}
+//--------------------------------------------------------------------------------------------------------------------------------
+
 //>----------------------------ＳＯＬＶＥ-----------------------------------------------------------------------------------------------------------------------------------------------
 
 void solve()
 {
-
-    int tc;
-    cin >> tc;
-    while (tc--)
-    {
-
-        int n;
-        cin >> n;
-
-        string s;
-        cin >> s;
-        vector<int> arr(n);
-
-        ll sum = 0;
-
-        FOR(i, 0, n)
-        {
-            int ele;
-            cin >> ele;
-            arr[i] = ele;
-        }
-        FOR(i, 0, n)
-        {
-            if (s[i] == '1')
-            {
-                sum += arr[i];
-            }
-        }
-        // 0  1  1 0  1  1
-        // 20 10 9 30 20 19
-
-        vector<vector<int>> v;
-        int i = 0;
-        while (i < n)
-        {
-            if (s[i] == '1')
-            {
-                debug(i);
-                int seqSum = 0;
-                int j = i;
-                while (j < n)
-                {
-
-                    debug(j);
-                    debug(arr[j]);
-                    seqSum += arr[j];
-                    j++;
-                    if (s[j] == '0')
-                    {
-                        break;
-                    }
-                }
-                debug(i, seqSum, j);
-                v.push_back({i, seqSum, j});
-                debug(i, j);
-                i = j;
-            }
-            i++;
-        }
-        debug(v);
-
-        ll ss = 0;
-
-        for (auto p : v)
-        {
-
-            int start = p[0] - 1;
-            ll seqSum = p[1];
-            int end = p[2] - 1;
-
-            debug(start, seqSum, end);
-
-            ll bt = seqSum;
-
-            for (int i = start; i < end; i++)
-            {
-                if (p[0] == 0)
-                {
-
-                    break;
-                }
-                else
-                {
-
-                    ll x = seqSum + arr[start] - arr[i + 1];
-                    debug(seqSum, arr[start], arr[i + 1], x);
-                    bt = max(bt, x);
-                }
-            }
-            ss += bt;
-            debug(ss, bt);
-        }
-        debug(ss);
-        cout << ss << endl;
-    }
 }
 
 //>-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------

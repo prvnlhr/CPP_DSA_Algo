@@ -38,7 +38,10 @@ public:
 int main()
 {
 
-    Solution *obj = new Solution();
+    // Solution *obj = new Solution();
+
+    Solution obj1;
+
     vector<vector<int>> point{{1, 3}, {3, 3}, {5, 3}, {2, 2}};
     vector<vector<int>> circles{{2, 3, 1}, {4, 3, 1}, {1, 1, 2}};
 
@@ -46,6 +49,8 @@ int main()
     // vector<vector<int>> circles{{1, 2, 2}, {2, 2, 2}, {4, 3, 2}, {4, 3, 3}};
 
     auto res = obj->countPoints(point, circles);
+
+    auto rs = obj1.countPoints(point, circles);
     for (auto x : res)
     {
         cout << x << " ";

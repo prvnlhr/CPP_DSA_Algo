@@ -23,18 +23,15 @@ public:
 
 void printTreeLevelWise(BinaryTreeNode<int> *root)
 {
-
     if (root == NULL)
     {
         return;
     }
-
     queue<BinaryTreeNode<int> *> q;
     q.push(root);
 
     while (!q.empty())
     {
-
         auto curr = q.front();
         q.pop();
 
@@ -103,7 +100,8 @@ BinaryTreeNode<int> *buildTree(vector<int> &inputList)
 }
 int main()
 {
-    vector<int> inputList{1, 2, 3, 4, 5, 6, 7, -1, -1, -1, -1, -1, -1, -1, -1};
+    // vector<int> inputList{1, 2, 3, 4, 5, 6, 7, -1, -1, -1, -1, -1, -1, -1, -1};
+    vector<int> inputList{1, 2, 3, 4, 5, 6, 7, -1, -1, 8, 9, -1, -1, -1, -1, 12, -1, 11, 14, -1, 18, -1, -1, 15, 20, -1, -1, 17, 16, -1, -1, -1, -1, -1, -1};
 
     BinaryTreeNode<int> *root = buildTree(inputList);
     printTreeLevelWise(root);

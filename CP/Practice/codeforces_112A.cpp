@@ -44,16 +44,16 @@ int main()
 
     //> 2.Method -> comparing using == and != operator
 
-    if (s1 == s2)
-    {
-        cout << 0 << endl;
-    }
-    else if (s1 > s2)
-    {
-        cout << 1 << endl;
-    }
-    else if (s1 < s2)
-    {
-        cout << -1 << endl;
-    }
+    // if (s1 == s2)
+    // {
+    //     cout << 0 << endl;
+    // }
+    // else if (s1 > s2)
+    // {
+    //     cout << 1 << endl;
+    // }
+    // else if (s1 < s2)
+    // {
+    //     cout << -1 << endl;
+    // }
 }

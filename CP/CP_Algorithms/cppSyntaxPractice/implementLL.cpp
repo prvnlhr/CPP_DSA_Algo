@@ -11,15 +11,15 @@ public:
     Node(int data)
     {
         this->data = data;
-        this->next = NULL;
+        this->next = nullptr;
     }
 };
 
 Node *buildLL(vector<int> inputList)
 {
 
-    Node *head = NULL;
-    Node *tail = NULL;
+    Node *head = nullptr;
+    Node *tail = nullptr;
 
     for (auto currData : inputList)
     {
@@ -31,7 +31,7 @@ Node *buildLL(vector<int> inputList)
 
         Node *newNode = new Node(currData);
 
-        if (head == NULL)
+        if (head == nullptr)
         {
             head = newNode;
             tail = newNode;
