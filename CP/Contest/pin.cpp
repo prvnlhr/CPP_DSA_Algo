@@ -112,7 +112,7 @@ ll expo(ll a, ll b, ll mod)
     }
     return res;
 }
-//>
+
 //__factorial______________________________________________
 vector<ll> fact;
 void factOfN(ll n)
@@ -132,6 +132,11 @@ void factOfN(ll n)
 
 void solve()
 {
+    int a;
+    cin >> a;
+
+    cout << "TESTING INPUT : " << a << " OUPUT : " << a << endl;
+    debug(a, "Error checking OK");
 }
 
 //>-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
