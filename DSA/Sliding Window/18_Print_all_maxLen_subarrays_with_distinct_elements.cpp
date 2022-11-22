@@ -129,8 +129,55 @@ void factOfN(ll n)
 
 //>----------------------------ＳＯＬＶＥ-----------------------------------------------------------------------------------------------------------------------------------------------
 
+void printArray(vector<int> &nums, int l, int r)
+{
+    for (int i = l; i <= r; i++)
+    {
+        cout << nums[i] << " ";
+    }
+    cout << endl;
+}
+int sumoflength(vector<int> nums, int n)
+{
+
+    /*
+        5  2  3  5  4  3
+    */
+
+    int winStart = 0;
+    int winEnd = 0;
+
+    int res = 0;
+
+    unordered_set<int> st;
+
+    while (winStart < n )
+    {
+
+        while (winEnd < n && st.find(nums[winEnd]) == st.end())
+        {
+            st.insert(nums[winEnd]);
+            winEnd++;
+        }
+
+        res += ((winEnd - winStart) * (winEnd - winStart + 1)) / 2;
+        st.erase(nums[winStart]);
+
+        winStart++;
+    }
+    return res;
+}
 void solve()
 {
+    int n = 3;
+    vector<int> nums;
+    int ele;
+    while (cin >> ele)
+    {
+        nums.push_back(ele);
+    }
+    debug(nums);
+    cout << sumoflength(nums, n) << endl;
 }
 
 //>-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------

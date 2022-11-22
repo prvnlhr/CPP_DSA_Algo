@@ -129,8 +129,54 @@ void factOfN(ll n)
 
 //>----------------------------ＳＯＬＶＥ-----------------------------------------------------------------------------------------------------------------------------------------------
 
+vector<int> countDistinct(int A[], int n, int k)
+{
+
+    int winStart = 0;
+    int winEnd = 0;
+    unordered_map<int, int> mpp;
+
+    vector<int> ans;
+
+    while (winStart < n && winEnd < n)
+    {
+
+        mpp[A[winEnd]]++;
+        if (winEnd - winStart + 1 == k)
+        {
+            ans.push_back(mpp.size());
+
+            mpp[A[winStart]]--;
+            if (mpp[A[winStart]] == 0)
+            {
+                mpp.erase(A[winStart]);
+            }
+            winStart++;
+        }
+        winEnd++;
+    }
+    return ans;
+}
 void solve()
 {
+
+    // int arr[] = {1, 2, 3, 7, 5};
+    // int n = 5;
+    // long long s = 12;
+
+    // int arr[] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+    // int n = 10;
+    // long long s = 15;
+
+    // int arr[] = {1, 2, 1, 3, 4, 2, 3};
+    // int n = 7;
+    // int k = 4;
+    int arr[] = {4, 1, 1};
+    int n = 3;
+    int k = 2;
+
+    auto ans = countDistinct(arr, n, k);
+    debug(ans);
 }
 
 //>-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------

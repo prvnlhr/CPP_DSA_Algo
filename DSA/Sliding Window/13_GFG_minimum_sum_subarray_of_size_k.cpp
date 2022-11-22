@@ -129,8 +129,51 @@ void factOfN(ll n)
 
 //>----------------------------ＳＯＬＶＥ-----------------------------------------------------------------------------------------------------------------------------------------------
 
+long maximumSumSubarray(int K, vector<int> &Arr, int N)
+{
+    /*
+    3
+    10 4 2 5 6 3 8 11
+    */
+
+    long maxSUM = LONG_MIN;
+    int maxSumSubArrLen = -1;
+
+    int winStart = 0;
+    int winEnd = 0;
+
+    long currSum = 0;
+    while (winStart < N && winEnd < N)
+    {
+        currSum += Arr[winEnd];
+        if (winEnd - winStart + 1 == K)
+        {
+            maxSUM = max(maxSUM, currSum);
+
+            //> if we want to calulate len of subarray also,
+            maxSumSubArrLen = max(maxSumSubArrLen, winEnd - winStart + 1);
+
+            currSum -= Arr[winStart];
+            winStart++;
+        }
+        winEnd++;
+    }
+    debug(maxSumSubArrLen);
+    return maxSUM;
+}
 void solve()
 {
+    int k;
+    cin >> k;
+    int ele;
+    vector<int> arr;
+    while (cin >> ele)
+    {
+        arr.push_back(ele);
+    }
+    debug(arr, k);
+    int n = arr.size();
+    cout << maximumSumSubarray(k, arr, n) << endl;
 }
 
 //>-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------

@@ -129,8 +129,122 @@ void factOfN(ll n)
 
 //>----------------------------ＳＯＬＶＥ-----------------------------------------------------------------------------------------------------------------------------------------------
 
+/*
+> TC: O(N)
+> SC: O(N)
+This problem with involve knowledge from hashmap, two pointers, and sliding window.
+
+It is hard to compute directly the subarray with exactly k different integers,
+but it will be easier to count the number of subarrays with at most k different integers.
+
+We will introduce a new subarray to help us:
+
+Nice subarray is an array where the number of different integers in that array is at most k
+After we get the number of nice subarrays, we can get the number of good arrays
+using the difference of nice subarrays for k and k-1.
+e.g. # of subarrays with exactly 3 different integers = # of subarrays with
+at most 3 different integers - # of subarrays with at most 2 different integers.
+
+Here is the idea:
+We need two pointers as the left and right part of our sliding window.
+If the right pointer is pointing to a value that exists in the hashmap, this means
+that we can expand the width of our sliding window.
+Then we need to check if the hashmap is containing too many elements (exceed k).
+If so, we need to shrink our sliding window by deleting the first element inside it, which is nums[left].
+Add the number of nice subarrays we get in the above steps.
+Let's start with a step-by-step example:
+
+nums = [1, 3, 1, 4]
+k = 2
+output (good subarrays) = 4
+Step 1:
+
+left = 0, right = 0
+hashmap = {1 : 1}
+Nice subarrays = 1
+[1]
+Step 2:
+
+left = 0, right = 1
+hashmap = {1 : 1, 3 : 1}
+Nice subarrays = 2 + 1 = 3
+[1], [3], [1,3]
+Step 3:
+
+left = 0, right = 2
+hashmap = {1 : 2, 3 : 1}
+Nice subarrays = 3 + 3 = 6
+[1], [3], [1,3], [1], [1,3,1], [3,1]
+Step 4:
+
+left = 0, right = 3
+hashmap = {1: 2, 3 : 1, 4 : 1}
+-> Note that The length of hashmap exceeds k! So we need to delete the first element in our sliding window
+Step 5:
+
+left = 1, right = 3
+hashmap = {1 : 1, 3 : 1, 4 : 1}
+The length of hashmap still exceed k, so we will shrink our sliding window one more times
+Step 6:
+
+left = 2, right = 3
+hashmap = {1 : 1, 4: 1}
+Nice subarrays = 2 + 6 = 8
+[1], [3], [1,3], [1], [1,3,1], [3,1], [1,4], [4]
+We can see that for k = 2, the number of nice subarrays will be 8. If k = 1, we can easily
+see that the number of it will be 4. So the number of good subarrays (output) will be 8 - 4 = 4.
+
+*/
+int atMostKDistinct(vector<int> nums, int k)
+{
+    int n = nums.size();
+
+    int winStart = 0;
+    int winEnd = 0;
+
+    int res = 0;
+
+    unordered_map<int, int> mpp;
+    while (winStart < n && winEnd < n)
+    {
+        mpp[nums[winEnd]]++;
+
+        while (mpp.size() > k)
+        {
+            mpp[nums[winStart]]--;
+            if (mpp[nums[winStart]] == 0)
+            {
+                mpp.erase(nums[winStart]);
+            }
+            winStart++;
+        }
+
+        res += winEnd - winStart + 1;
+        winEnd++;
+    }
+    return res;
+}
+
+int subarraysWithKDistinct(vector<int> nums, int k)
+{
+    return atMostKDistinct(nums, k) - atMostKDistinct(nums, k - 1);
+}
+
 void solve()
 {
+
+    int k;
+    cin >> k;
+
+    int ele;
+
+    vector<int> nums;
+    while (cin >> k)
+    {
+        nums.push_back(ele);
+    }
+    debug(nums, k);
+    cout << subarraysWithKDistinct(nums, k) << endl;
 }
 
 //>-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------

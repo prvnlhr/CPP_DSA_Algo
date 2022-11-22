@@ -129,8 +129,58 @@ void factOfN(ll n)
 
 //>----------------------------ＳＯＬＶＥ-----------------------------------------------------------------------------------------------------------------------------------------------
 
+/*
+> Another variation of this problem is at most k distinct characters, which is Leetcode premium problem
+Given a string you need to print the size of the longest possible substring
+that has exactly K unique characters. If there is no possible
+substring then print -1.
+
+S = abcbdbdbbdcdabd
+
+For k = 2, o/p is ‘bdbdbbd’
+For k = 3, o/p is ‘bcbdbdbbdcd’
+For k = 5, o/p is ‘abcbdbdbbdcdabd’
+
+*/
+int longestKSubstr(string s, int k)
+{
+    int winStart = 0;
+    int winEnd = 0;
+    int res = -1;
+
+    int n = s.size();
+
+    unordered_map<char, int> mpp;
+
+    while (winStart < n && winEnd < n)
+    {
+        mpp[s[winEnd]]++;
+        debug(mpp);
+        if (mpp.size() == k)
+        {
+            res = max(res, winEnd - winStart + 1);
+        }
+        while (mpp.size() > k)
+        {
+            mpp[s[winStart]]--;
+            if (mpp[s[winStart]] == 0)
+            {
+                mpp.erase(s[winStart]);
+            }
+            winStart++;
+        }
+        winEnd++;
+    }
+    return res;
+}
 void solve()
 {
+    string s;
+    cin >> s;
+    int k;
+    cin >> k;
+    debug(s, k);
+    cout << longestKSubstr(s, k) << endl;
 }
 
 //>-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------

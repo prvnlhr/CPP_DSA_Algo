@@ -129,8 +129,67 @@ void factOfN(ll n)
 
 //>----------------------------ＳＯＬＶＥ-----------------------------------------------------------------------------------------------------------------------------------------------
 
+vector<int> subarraySum(int arr[], int n, long long s)
+{
+    int winStart = 0;
+    int winEnd = 0;
+    long long currSum = 0;
+
+    vector<int> indxs;
+
+    while (winStart < n && winEnd < n)
+    {
+
+        currSum += arr[winEnd];
+        debug(currSum);
+        if (currSum == s)
+        {
+            indxs.push_back(winStart + 1);
+            indxs.push_back(winEnd + 1);
+            break;
+        }
+        if (currSum > s)
+        {
+            while (currSum > s)
+            {
+                currSum -= arr[winStart];
+                winStart++;
+            }
+            if (currSum == s)
+            {
+                indxs.push_back(winStart + 1);
+                indxs.push_back(winEnd + 1);
+                break;
+            }
+        }
+        winEnd++;
+    }
+    if (indxs.size() == 0)
+    {
+        indxs.push_back(-1);
+    }
+    return indxs;
+}
 void solve()
 {
+    int target;
+    cin >> target;
+    int ele;
+
+    // int arr[] = {1, 2, 3, 7, 5};
+    // int n = 5;
+    // long long s = 12;
+
+    // int arr[] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+    // int n = 10;
+    // long long s = 15;
+
+    int arr[] = {1, 2, 3, 4};
+    int n = 4;
+    long long s = 0;
+
+    auto ans = subarraySum(arr, n, s);
+    cout << ans[0] << " " << ans[1] << endl;
 }
 
 //>-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------

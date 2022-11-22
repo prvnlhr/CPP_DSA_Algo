@@ -129,8 +129,72 @@ void factOfN(ll n)
 
 //>----------------------------ＳＯＬＶＥ-----------------------------------------------------------------------------------------------------------------------------------------------
 
+bool checkInclusion(string s1, string s2)
+{
+    int winStart = 0;
+    int winEnd = 0;
+    int n = s2.size();
+    int k = s1.size();
+    unordered_map<char, int> mpp;
+
+    //> s1 elements in map
+    for (auto ele : s1)
+    {
+        mpp[ele]++;
+    }
+
+    //> mpp size
+    int mppsz = mpp.size();
+
+    while (winEnd < n)
+    {
+
+        //> currCh
+        char currCh = s2[winEnd];
+
+        if (mpp.find(currCh) != mpp.end())
+        {
+            mpp[currCh]--;
+            if (mpp[currCh] == 0)
+            {
+                mppsz--;
+                mpp.erase(currCh);
+            }
+        }
+
+        //> if window size equals s1, then there may be permutation
+        if (winEnd - winStart + 1 == k)
+        {
+
+            //> if mpp size == 0
+            if (mppsz == 0)
+            {
+                return true;
+            }
+
+            char startCh = s2[winStart];
+
+            if (mpp.find(startCh) != mpp.end())
+            {
+                mpp[startCh]++;
+                if (mpp[startCh] == 1)
+                {
+                    mppsz++;
+                }
+            }
+            winStart++;
+        }
+
+        winEnd++;
+    }
+    return false;
+}
 void solve()
 {
+
+    string s1, s2;
+    cin >> s1 >> s2;
+    cout << checkInclusion(s1, s2) << endl;
 }
 
 //>-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------

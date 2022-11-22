@@ -129,8 +129,46 @@ void factOfN(ll n)
 
 //>----------------------------ＳＯＬＶＥ-----------------------------------------------------------------------------------------------------------------------------------------------
 
+int minSubArrayLen(int target, vector<int> &nums)
+{
+    int winStart = 0;
+    int winEnd = 0;
+    int n = nums.size();
+    int currSum = 0;
+    int minLen = INT_MAX;
+    while (winStart < n && winEnd < n)
+    {
+        currSum += nums[winEnd];
+
+        while (currSum >= target)
+        {
+            minLen = min(minLen, winEnd - winStart + 1);
+            currSum -= nums[winStart];
+            winStart++;
+        }
+        winEnd++;
+    }
+    if (minLen == INT_MAX)
+    {
+        return 0;
+    }
+    else
+    {
+        return minLen;
+    }
+}
 void solve()
 {
+    int target;
+    cin >> target;
+    int ele;
+    vector<int> arr;
+    while (cin >> ele)
+    {
+        arr.push_back(ele);
+    }
+    debug(arr, target);
+    cout << minSubArrayLen(target, arr) << endl;
 }
 
 //>-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------

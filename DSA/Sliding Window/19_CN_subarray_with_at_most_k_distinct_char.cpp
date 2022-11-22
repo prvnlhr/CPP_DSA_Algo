@@ -129,8 +129,51 @@ void factOfN(ll n)
 
 //>----------------------------ＳＯＬＶＥ-----------------------------------------------------------------------------------------------------------------------------------------------
 
+int atMostKDistinct(vector<int> nums, int k)
+{
+    int n = nums.size();
+
+    int winStart = 0;
+    int winEnd = 0;
+
+    int res = 0;
+
+    unordered_map<int, int> mpp;
+    while (winStart < n && winEnd < n)
+    {
+        mpp[nums[winEnd]]++;
+
+        while (mpp.size() > k)
+        {
+            mpp[nums[winStart]]--;
+            if (mpp[nums[winStart]] == 0)
+            {
+                mpp.erase(nums[winStart]);
+            }
+            winStart++;
+        }
+
+        res += winEnd - winStart + 1;
+        winEnd++;
+    }
+    return res;
+}
+
 void solve()
 {
+
+    int k;
+    cin >> k;
+
+    int ele;
+
+    vector<int> nums;
+    while (cin >> k)
+    {
+        nums.push_back(ele);
+    }
+    debug(nums, k);
+    cout << atMostKDistinct(nums, k) << endl;
 }
 
 //>-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------

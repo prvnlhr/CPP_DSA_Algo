@@ -129,8 +129,78 @@ void factOfN(ll n)
 
 //>----------------------------ＳＯＬＶＥ-----------------------------------------------------------------------------------------------------------------------------------------------
 
+int subarraySum(vector<int> &nums, int k)
+{
+
+    //> Since the array can contains negative elements, sliding window technique will not
+    //> work, It only works for non-negative elements
+    int subCnt = 0;
+    int winStart = 0;
+    int winEnd = 0;
+
+    long long currSum = 0;
+    int n = nums.size();
+    while (winStart < n && winEnd < n)
+    {
+        currSum += nums[winEnd];
+        debug(currSum);
+        if (currSum == k)
+        {
+            subCnt++;
+        }
+        while (currSum > k)
+        {
+            currSum -= nums[winStart];
+            debug(currSum);
+
+            winStart++;
+            if (currSum == k)
+            {
+                subCnt++;
+            }
+        }
+        winEnd++;
+    }
+    return subCnt;
+}
+
+int subarraySum1(vector<int> &nums, int k)
+{
+    unordered_map<int, int> mpp;
+    int ans = 0, sum = 0;
+
+    for (int i = 0; i < nums.size(); i++)
+    {
+        sum += nums[i];
+        debug(sum);
+        if (sum == k)
+        {
+            ans++;
+        }
+        if (mpp.find(sum - k) != mpp.end())
+        {
+            ans += mpp[sum - k];
+        }
+
+        debug(mpp, sum - k);
+
+        mpp[sum]++;
+    }
+    return ans;
+}
+
 void solve()
 {
+    int k;
+    cin >> k;
+    int ele;
+    vector<int> arr;
+    while (cin >> ele)
+    {
+        arr.push_back(ele);
+    }
+    debug(arr, k);
+    cout << subarraySum1(arr, k) << endl;
 }
 
 //>-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
