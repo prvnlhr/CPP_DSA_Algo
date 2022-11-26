@@ -58,7 +58,8 @@ ostream &operator<<(ostream &os, const T &c)
 #endif
 
 //>---DEBUG_TEMPLATE_END-----------------------------------------------------------------------------------------------------------------------------------------------------------
-//# define FOR(i, start, end) for (int i = start; i < end; i++)
+
+// #define FOR(i, start, end) for (int i = start; i < end; i++)
 #define FOR(i, begin, end) for (__typeof(end) i = (begin) - ((begin) > (end)); i != (end) - ((begin) > (end)); i += 1 - 2 * ((begin) > (end)))
 #define RFOR(i, start, end) for (int i = end; i >= start; i--)
 #define FOREACH(x, b) for (auto x : b)
@@ -111,7 +112,6 @@ ll expo(ll a, ll b, ll mod)
     }
     return res;
 }
-
 //__factorial______________________________________________
 vector<ll> fact;
 void factOfN(ll n)
@@ -125,32 +125,88 @@ void factOfN(ll n)
         prod = prod * f;
     }
 }
+//--------------------------------------------------------------------------------------------------------------------------------
 
-//> --------------------------------------------------------------------------------------------------------------------------------
-//> ----------------------------ＳＯＬＶＥ-----------------------------------------------------------------------------------------------------------------------------------------------
+//>----------------------------ＳＯＬＶＥ-----------------------------------------------------------------------------------------------------------------------------------------------
+
+/*
+
+> This is same a implement queue using two stacks
+> There are two approaches to solve the problem
+-> 1. Making push operation costly
+-> 2. Making pop operation costly
+- REFER : https://www.geeksforgeeks.org/queue-using-stacks/
+
+* LEETCODE -232 : https://leetcode.com/problems/implement-queue-using-stacks/
+* GFG - https://www.geeksforgeeks.org/queue-using-stacks/
+*/
+
+// # THIS IS SECOND APPROACH
+
+class MyQueue
+{
+public:
+    stack<int> st1;
+    stack<int> st2;
+
+    //> Only for first time we need front
+    int front = -1;
+
+    MyQueue()
+    {
+    }
+
+    void push(int x)
+    {
+        if (st1.empty())
+        {
+            front = x;
+        }
+        st1.push(x);
+    }
+
+    int pop()
+    {
+        if (st1.size() == 0 && st2.size() == 0)
+        {
+            return -1;
+        }
+
+        if (st2.empty())
+        {
+            while (!st1.empty())
+            {
+                int tmp = st1.top();
+                st1.pop();
+                st2.push(tmp);
+            }
+        }
+
+        int temp = st2.top();
+        st2.pop();
+        return temp;
+    }
+
+    int peek()
+    {
+        if (!st2.empty())
+        {
+            return st2.top();
+        }
+        return front;
+    }
+
+    bool empty()
+    {
+        return (st1.size() == 0 && st2.size() == 0);
+    }
+};
 
 void solve()
 {
-    int a;
-    cin >> a;
-    cout << "TESTING INPUT : " << a << " OUPUT : " << a << endl;
-    debug(a, "Error checking OK");
-    /*
-    ! Warning
-    -> Problem 21 Find the subarray max sum of length k
-    > What is the best way
-    # Solve the problems
-    * What is the best way to approach a problem
-    ** What is the best way to approach a problem
-    - In oops We always compares it with real world problem
-    _ In oops We always compares it with real world problem
-    : TC O(N)
-    TODO: OK
-    */
 }
 
-//> -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
+//>-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 int main()
 {
     ios::sync_with_stdio(0);

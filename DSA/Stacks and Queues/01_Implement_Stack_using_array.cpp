@@ -58,7 +58,8 @@ ostream &operator<<(ostream &os, const T &c)
 #endif
 
 //>---DEBUG_TEMPLATE_END-----------------------------------------------------------------------------------------------------------------------------------------------------------
-//# define FOR(i, start, end) for (int i = start; i < end; i++)
+
+// #define FOR(i, start, end) for (int i = start; i < end; i++)
 #define FOR(i, begin, end) for (__typeof(end) i = (begin) - ((begin) > (end)); i != (end) - ((begin) > (end)); i += 1 - 2 * ((begin) > (end)))
 #define RFOR(i, start, end) for (int i = end; i >= start; i--)
 #define FOREACH(x, b) for (auto x : b)
@@ -111,7 +112,6 @@ ll expo(ll a, ll b, ll mod)
     }
     return res;
 }
-
 //__factorial______________________________________________
 vector<ll> fact;
 void factOfN(ll n)
@@ -125,32 +125,74 @@ void factOfN(ll n)
         prod = prod * f;
     }
 }
+//--------------------------------------------------------------------------------------------------------------------------------
 
-//> --------------------------------------------------------------------------------------------------------------------------------
-//> ----------------------------ＳＯＬＶＥ-----------------------------------------------------------------------------------------------------------------------------------------------
+//>----------------------------ＳＯＬＶＥ-----------------------------------------------------------------------------------------------------------------------------------------------
+
+class Stack
+{
+public:
+    vector<int> st;
+    int sz = 0;
+
+    void push(int ele)
+    {
+        st.push_back(ele);
+        sz++;
+    }
+
+    void pop()
+    {
+        st.pop_back();
+        sz--;
+    }
+
+    int top()
+    {
+        if (sz >= 1)
+        {
+            return st[sz - 1];
+        }
+        else
+        {
+            return -1;
+        }
+    }
+
+    int length()
+    {
+        return sz;
+    }
+
+    bool isEmpty()
+    {
+        return (sz == 0);
+    }
+};
 
 void solve()
 {
-    int a;
-    cin >> a;
-    cout << "TESTING INPUT : " << a << " OUPUT : " << a << endl;
-    debug(a, "Error checking OK");
-    /*
-    ! Warning
-    -> Problem 21 Find the subarray max sum of length k
-    > What is the best way
-    # Solve the problems
-    * What is the best way to approach a problem
-    ** What is the best way to approach a problem
-    - In oops We always compares it with real world problem
-    _ In oops We always compares it with real world problem
-    : TC O(N)
-    TODO: OK
-    */
+    Stack obj;
+
+    obj.push(1);
+    obj.push(2);
+    obj.push(3);
+    obj.push(4);
+
+    cout << "length " << obj.length() << endl;
+
+    cout << "top " << obj.top() << endl;
+
+    obj.pop();
+
+    cout << "top " << obj.top() << endl;
+
+    cout << "length " << obj.length() << endl;
+
+    cout << "isEmpty " << obj.isEmpty() << endl;
 }
 
-//> -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
+//>-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 int main()
 {
     ios::sync_with_stdio(0);

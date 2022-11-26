@@ -58,7 +58,8 @@ ostream &operator<<(ostream &os, const T &c)
 #endif
 
 //>---DEBUG_TEMPLATE_END-----------------------------------------------------------------------------------------------------------------------------------------------------------
-//# define FOR(i, start, end) for (int i = start; i < end; i++)
+
+// #define FOR(i, start, end) for (int i = start; i < end; i++)
 #define FOR(i, begin, end) for (__typeof(end) i = (begin) - ((begin) > (end)); i != (end) - ((begin) > (end)); i += 1 - 2 * ((begin) > (end)))
 #define RFOR(i, start, end) for (int i = end; i >= start; i--)
 #define FOREACH(x, b) for (auto x : b)
@@ -111,7 +112,6 @@ ll expo(ll a, ll b, ll mod)
     }
     return res;
 }
-
 //__factorial______________________________________________
 vector<ll> fact;
 void factOfN(ll n)
@@ -125,32 +125,118 @@ void factOfN(ll n)
         prod = prod * f;
     }
 }
+//--------------------------------------------------------------------------------------------------------------------------------
 
-//> --------------------------------------------------------------------------------------------------------------------------------
-//> ----------------------------ＳＯＬＶＥ-----------------------------------------------------------------------------------------------------------------------------------------------
+//>----------------------------ＳＯＬＶＥ-----------------------------------------------------------------------------------------------------------------------------------------------
+
+/*
+
+   st->  1 3 5
+   dq -> 2 4 6 7
+   1 2 3 4 5 6 7
+
+
+-> https://www.prepbytes.com/blog/stacks/design-a-stack-with-operations-on-middle-element/
+
+: TC O(1) -> to get middle element
+: SC (N) ->  for both stack and deque combine
+
+*/
+
+class Stack
+{
+
+public:
+    stack<int> st;
+    deque<int> dq;
+
+    int sizeOfStack = 0;
+
+    void push(int ele)
+    {
+
+        if (dq.size() == st.size())
+        {
+            dq.push_back(ele);
+        }
+        else if (dq.size() > st.size())
+        {
+            int temp = dq.front();
+            dq.pop_front();
+            st.push(temp);
+            dq.push_back(ele);
+        }
+    }
+
+    void pop()
+    {
+        if (dq.size() >= 1)
+        {
+            dq.pop_back();
+        }
+        if (dq.size() > st.size())
+        {
+            int temp = st.top();
+            st.pop();
+            dq.push_front(temp);
+        }
+    }
+
+    int getMiddleElement()
+    {
+        if (dq.size() >= 1)
+        {
+            return dq.front();
+        }
+        else
+        {
+            return -1;
+        }
+    }
+    void deleteMiddleElement()
+    {
+
+        if (dq.size() == 0)
+        {
+            return;
+        }
+        dq.pop_front();
+        if (st.size() > dq.size())
+        {
+            int temp = st.top();
+            st.pop();
+            dq.push_front(temp);
+        }
+    }
+};
 
 void solve()
 {
-    int a;
-    cin >> a;
-    cout << "TESTING INPUT : " << a << " OUPUT : " << a << endl;
-    debug(a, "Error checking OK");
-    /*
-    ! Warning
-    -> Problem 21 Find the subarray max sum of length k
-    > What is the best way
-    # Solve the problems
-    * What is the best way to approach a problem
-    ** What is the best way to approach a problem
-    - In oops We always compares it with real world problem
-    _ In oops We always compares it with real world problem
-    : TC O(N)
-    TODO: OK
-    */
+    Stack s;
+    s.deleteMiddleElement();
+
+    cout << "Middle Element: " << s.getMiddleElement() << endl;
+
+    s.push(8);
+    s.push(1);
+    s.push(5);
+    // printing the middle element
+    cout << "Middle Element: " << s.getMiddleElement() << endl;
+    s.push(7);
+    s.push(2);
+    // printing the middle element
+    cout << "Middle Element: " << s.getMiddleElement() << endl;
+    // delete middle element
+    s.deleteMiddleElement();
+    cout << "Middle Element: " << s.getMiddleElement() << endl;
+    // delete middle element
+    s.deleteMiddleElement();
+    cout << "Middle Element: " << s.getMiddleElement() << endl;
+    // pop element on the top of the stack
+    s.pop();
 }
 
-//> -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
+//>-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 int main()
 {
     ios::sync_with_stdio(0);

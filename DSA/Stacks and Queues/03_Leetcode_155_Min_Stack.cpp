@@ -58,7 +58,8 @@ ostream &operator<<(ostream &os, const T &c)
 #endif
 
 //>---DEBUG_TEMPLATE_END-----------------------------------------------------------------------------------------------------------------------------------------------------------
-//# define FOR(i, start, end) for (int i = start; i < end; i++)
+
+// #define FOR(i, start, end) for (int i = start; i < end; i++)
 #define FOR(i, begin, end) for (__typeof(end) i = (begin) - ((begin) > (end)); i != (end) - ((begin) > (end)); i += 1 - 2 * ((begin) > (end)))
 #define RFOR(i, start, end) for (int i = end; i >= start; i--)
 #define FOREACH(x, b) for (auto x : b)
@@ -111,7 +112,6 @@ ll expo(ll a, ll b, ll mod)
     }
     return res;
 }
-
 //__factorial______________________________________________
 vector<ll> fact;
 void factOfN(ll n)
@@ -125,32 +125,89 @@ void factOfN(ll n)
         prod = prod * f;
     }
 }
+//--------------------------------------------------------------------------------------------------------------------------------
 
-//> --------------------------------------------------------------------------------------------------------------------------------
-//> ----------------------------ＳＯＬＶＥ-----------------------------------------------------------------------------------------------------------------------------------------------
+//>----------------------------ＳＯＬＶＥ-----------------------------------------------------------------------------------------------------------------------------------------------
+class MinStack
+{
+public:
+    vector<pair<int, int>> st;
+    int minVal = INT_MAX;
+    MinStack()
+    {
+    }
+
+    void push(int val)
+    {
+        pair<int, int> p{val, min(val, minVal)};
+        minVal = min(val, minVal);
+        st.push_back(p);
+    }
+
+    void pop()
+    {
+        st.pop_back();
+        if (st.size() == 0)
+        {
+            minVal = INT_MAX;
+        }
+        if (st.size() != 0)
+        {
+            minVal = st.back().second;
+        }
+    }
+
+    int top()
+    {
+        return st.back().first;
+    }
+
+    int getMin()
+    {
+        return st.back().second;
+    }
+};
 
 void solve()
 {
-    int a;
-    cin >> a;
-    cout << "TESTING INPUT : " << a << " OUPUT : " << a << endl;
-    debug(a, "Error checking OK");
-    /*
-    ! Warning
-    -> Problem 21 Find the subarray max sum of length k
-    > What is the best way
-    # Solve the problems
-    * What is the best way to approach a problem
-    ** What is the best way to approach a problem
-    - In oops We always compares it with real world problem
-    _ In oops We always compares it with real world problem
-    : TC O(N)
-    TODO: OK
-    */
+    MinStack obj;
+    obj.push(-10); // -10 14
+    debug(obj.st);
+    obj.push(14);
+    debug(obj.st);
+
+    cout << obj.getMin() << endl; // -10
+
+    obj.push(-20); // -10 14 -20
+    debug(obj.st);
+
+    cout << obj.getMin() << endl; // -20
+    cout << obj.top() << endl;    // -20
+    cout << obj.getMin() << endl; // -20
+    obj.pop();                    // -> -20   // -10 14
+    debug(obj.st);
+
+    obj.push(10); // -10 14 10
+    debug(obj.st);
+
+    obj.push(-7); // -10 14 10 -7
+    debug(obj.st);
+
+    cout << obj.getMin() << endl; // -10
+    obj.push(-7);                 // -10 14 10 -7 -7
+    debug(obj.st);
+
+    obj.pop(); // -10 14 10 -7
+    debug(obj.st);
+
+    cout << obj.top() << endl; // -7
+
+    cout << obj.getMin() << endl; // -10
+    obj.pop();                    // -10 14 10
+    debug(obj.st);
 }
 
-//> -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
+//>-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 int main()
 {
     ios::sync_with_stdio(0);
