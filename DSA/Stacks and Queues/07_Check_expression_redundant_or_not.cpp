@@ -164,6 +164,38 @@ bool checkRedundacny(string s)
     return false;
 }
 
+//> ON(N),O(1)
+//> GFG SOL
+bool checkRedundacny1(string s)
+{
+
+    int operatorCount = 0;
+    int bracketsCount = 0;
+
+    int n = s.size();
+    for (int i = 0; i < n; i++)
+    {
+
+        if (i + 2 < n && s[i] == s[i + 2])
+        {
+            return true;
+        }
+        if (s[i] == '+' || s[i] == '-' || s[i] == '*' || s[i] == '/')
+        {
+            operatorCount++;
+        }
+        if (s[i] == '(')
+        {
+            bracketsCount++;
+        }
+    }
+    if (bracketsCount > operatorCount)
+    {
+        return true;
+    }
+    return false;
+}
+
 void solve()
 {
     string s;
