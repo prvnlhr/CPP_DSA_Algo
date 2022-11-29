@@ -58,7 +58,8 @@ ostream &operator<<(ostream &os, const T &c)
 #endif
 
 //>---DEBUG_TEMPLATE_END-----------------------------------------------------------------------------------------------------------------------------------------------------------
-//# define FOR(i, start, end) for (int i = start; i < end; i++)
+
+// #define FOR(i, start, end) for (int i = start; i < end; i++)
 #define FOR(i, begin, end) for (__typeof(end) i = (begin) - ((begin) > (end)); i != (end) - ((begin) > (end)); i += 1 - 2 * ((begin) > (end)))
 #define RFOR(i, start, end) for (int i = end; i >= start; i--)
 #define FOREACH(x, b) for (auto x : b)
@@ -111,7 +112,6 @@ ll expo(ll a, ll b, ll mod)
     }
     return res;
 }
-
 //__factorial______________________________________________
 vector<ll> fact;
 void factOfN(ll n)
@@ -125,32 +125,216 @@ void factOfN(ll n)
         prod = prod * f;
     }
 }
+//--------------------------------------------------------------------------------------------------------------------------------
 
-//> --------------------------------------------------------------------------------------------------------------------------------
-//> ----------------------------ＳＯＬＶＥ-----------------------------------------------------------------------------------------------------------------------------------------------
+//>----------------------------ＳＯＬＶＥ-----------------------------------------------------------------------------------------------------------------------------------------------
+
+bool knows(int i, int j, vector<vector<int>> &mat)
+{
+    return mat[i][j];
+}
+
+/*
+
+>- Naive solution : O(N^2) O(N)
+>- Using Graph in degree and outdegree
+
+:Follow the steps below to solve the problem:
+-Create two arrays indegree and outdegree, to store the indegree and outdegree
+-Run a nested loop, the outer loop from 0 to n and inner loop from 0 to n.
+-For every pair i, j check if i knows j then increase the outdegree of i and indegree of j.
+-For every pair i, j check if j knows i then increase the outdegree of j and indegree of i.
+-Run a loop from 0 to n and find the id where the indegree is n-1 and outdegree is 0.
+
+*/
+
+int celebrity(vector<vector<int>> &M, int n)
+{
+    vector<int> inDegree(n);
+    vector<int> outDegree(n);
+
+    for (int i = 0; i < n; i++)
+    {
+        for (int j = 0; j < n; j++)
+        {
+            if (knows(i, j, M))
+            {
+                outDegree[i] += 1;
+                inDegree[j] += 1;
+            }
+        }
+    }
+
+    int celebrity = -1;
+    for (int i = 0; i < n; i++)
+    {
+        if (inDegree[i] == n - 1 && outDegree[i] == 0)
+        {
+            celebrity = i;
+            break;
+        }
+    }
+    return celebrity;
+}
+
+/*
+>- TC: O(N) SC: O(N)
+: using stack elimination technique
+*/
+int celebrity1(vector<vector<int>> &M, int n)
+{
+    stack<int> st;
+    for (int i = 0; i < n; i++)
+    {
+        st.push(i);
+    }
+
+    //-> st.size() > 1 : because we want finally one element in stack top
+    //-> which can be our potentional celebrity
+
+    while (st.size() > 1)
+    {
+        int A = st.top();
+        st.pop();
+
+        int B = st.top();
+        st.pop();
+
+        if (knows(A, B, M))
+        {
+            //> B could be potentional celebrity
+            st.push(B);
+        }
+        else
+        {
+            //> else A would be potentional celebrity
+            st.push(A);
+        }
+    }
+    int celebrity = st.top();
+    st.pop();
+
+    //> finally verifying if st.top() is really a celebrity or not
+    for (int i = 0; i < n; i++)
+    {
+        if (celebrity != i && (knows(celebrity, i, M) || !knows(i, celebrity, M)))
+        {
+            return -1;
+        }
+    }
+    return celebrity;
+}
+
+/*
+> TC: O(N), SC: O(1)
+: Using two pointer approach
+*/
+int celebrity2(vector<vector<int>> &M, int n)
+{
+
+    int A = 0;
+    int B = n - 1;
+
+    while (A < B)
+    {
+        if (knows(A, B, M))
+        {
+            A++;
+        }
+        else
+        {
+            B--;
+        }
+    }
+
+    int celebrity = A;
+
+    //> finally verifying if st.top() is really a celebrity or not
+    for (int i = 0; i < n; i++)
+    {
+        if (celebrity != i && (knows(celebrity, i, M) || !knows(i, celebrity, M)))
+        {
+            return -1;
+        }
+    }
+    return celebrity;
+}
+
+//> ---------------------------------------------------------------------------------
+
+struct qObj
+{
+    int x, y, time;
+};
+
+vector<pair<int, int>> dir{{-1, 0}, {1, 0}, {0, 1}, {0, -1}};
+
+bool isValid(int i, int j, int rows, int cols)
+{
+    return i >= 0 && i < rows && j >= 0 && j < cols;
+}
+
+int orangesRotting(vector<vector<int>> &grid)
+{
+    queue<qObj> q;
+
+    int freshOrangesCnt = 0;
+    int rows = grid.size();
+    int cols = grid[0].size();
+
+    for (int i = 0; i < rows; i++)
+    {
+        for (int j = 0; j < cols; j++)
+        {
+            if (grid[i][j] == 2)
+            {
+                q.push({i, j, 0});
+            }
+            if (grid[i][j] == 1)
+            {
+                freshOrangesCnt++;
+            }
+        }
+    }
+
+    int MIN_TIME = 0;
+
+    while (!q.empty())
+    {
+        auto [x, y, time] = q.front();
+        MIN_TIME = time;
+        q.pop();
+
+        for (int i = 0; i < dir.size(); i++)
+        {
+            auto [adj_x, adj_y] = dir[i];
+            
+            adj_x += x;
+            adj_y += y;
+
+            if (isValid(adj_x, adj_y, rows, cols) && grid[adj_x][adj_y] == 1)
+            {
+                freshOrangesCnt = freshOrangesCnt - 1;
+                grid[adj_x][adj_y] = 2;
+                q.push({adj_x, adj_y, time + 1});
+            }
+        }
+    }
+
+    if (freshOrangesCnt > 0)
+    {
+        return -1;
+    }
+    return MIN_TIME;
+}
 
 void solve()
 {
-    int a;
-    cin >> a;
-    cout << "TESTING INPUT : " << a << " OUPUT : " << a << endl;
-    debug(a, "Error checking OK");
-    /*edescmskmsksmk
-    ! Warning
-    -> Problem 21 Find the subarray max sum of length k
-    > What is the best way
-    # Solve the problems
-    * What is the best way to approach a problem
-    ** What is the best way to approach a problem
-    - In oops We always compares it with real world problem
-    _ In oops We always compares it with real world problem
-    : TC O(N)
-    TODO: OK
-    */
+    vector<vector<int>> grid{{2, 1, 1}, {1, 1, 0}, {0, 1, 1}};
+    cout << orangesRotting(grid) << endl;
 }
 
-//> -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
+//>-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 int main()
 {
     ios::sync_with_stdio(0);

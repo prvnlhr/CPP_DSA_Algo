@@ -58,7 +58,8 @@ ostream &operator<<(ostream &os, const T &c)
 #endif
 
 //>---DEBUG_TEMPLATE_END-----------------------------------------------------------------------------------------------------------------------------------------------------------
-//# define FOR(i, start, end) for (int i = start; i < end; i++)
+
+// #define FOR(i, start, end) for (int i = start; i < end; i++)
 #define FOR(i, begin, end) for (__typeof(end) i = (begin) - ((begin) > (end)); i != (end) - ((begin) > (end)); i += 1 - 2 * ((begin) > (end)))
 #define RFOR(i, start, end) for (int i = end; i >= start; i--)
 #define FOREACH(x, b) for (auto x : b)
@@ -111,7 +112,6 @@ ll expo(ll a, ll b, ll mod)
     }
     return res;
 }
-
 //__factorial______________________________________________
 vector<ll> fact;
 void factOfN(ll n)
@@ -125,32 +125,80 @@ void factOfN(ll n)
         prod = prod * f;
     }
 }
+//--------------------------------------------------------------------------------------------------------------------------------
 
-//> --------------------------------------------------------------------------------------------------------------------------------
-//> ----------------------------ＳＯＬＶＥ-----------------------------------------------------------------------------------------------------------------------------------------------
+//>----------------------------ＳＯＬＶＥ-----------------------------------------------------------------------------------------------------------------------------------------------
+bool validStackPermutation(vector<int> &first, vector<int> &other)
+{
+    stack<int> st;
 
+    int ptr1 = 0;
+    int ptr2 = 0;
+    int n = first.size();
+    while (ptr1 < n)
+    {
+        st.push(first[ptr1]);
+
+        while (!st.empty() && st.top() == other[ptr2])
+        {
+            st.pop();
+            ptr2++;
+        }
+        ptr1++;
+    }
+
+    if (st.size() > 0)
+    {
+        return true;
+    }
+    return false;
+}
 void solve()
 {
-    int a;
-    cin >> a;
-    cout << "TESTING INPUT : " << a << " OUPUT : " << a << endl;
-    debug(a, "Error checking OK");
-    /*edescmskmsksmk
-    ! Warning
-    -> Problem 21 Find the subarray max sum of length k
-    > What is the best way
-    # Solve the problems
-    * What is the best way to approach a problem
-    ** What is the best way to approach a problem
-    - In oops We always compares it with real world problem
-    _ In oops We always compares it with real world problem
-    : TC O(N)
-    TODO: OK
+
+    /*
+   > CN formatt input
+
+    2
+    3
+    2 4 6
+    4 6 2
+    3
+    2 4 6
+    6 2 4
+
     */
+
+    int tc;
+    cin >> tc;
+    while (tc--)
+    {
+
+        int n;
+        cin >> n;
+        int n;
+        cin >> n;
+        vector<int> arr1(n);
+
+        FOR(i, 0, n)
+        {
+            int ele;
+            cin >> ele;
+            arr1[i] = ele;
+        }
+        vector<int> arr2(n);
+
+        FOR(i, 0, n)
+        {
+            int ele;
+            cin >> ele;
+            arr2[i] = ele;
+        }
+        cout << validStackPermutation(arr1, arr2) << endl;
+    }
 }
 
-//> -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
+//>-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 int main()
 {
     ios::sync_with_stdio(0);

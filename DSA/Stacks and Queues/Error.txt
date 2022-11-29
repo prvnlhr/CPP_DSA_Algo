@@ -1,1 +1,2 @@
+Line 193: gasSum = 9; costSum = 10; 
 Time: 0

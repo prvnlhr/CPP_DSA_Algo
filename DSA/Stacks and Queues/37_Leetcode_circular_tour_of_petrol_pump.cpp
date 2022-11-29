@@ -58,7 +58,8 @@ ostream &operator<<(ostream &os, const T &c)
 #endif
 
 //>---DEBUG_TEMPLATE_END-----------------------------------------------------------------------------------------------------------------------------------------------------------
-//# define FOR(i, start, end) for (int i = start; i < end; i++)
+
+// #define FOR(i, start, end) for (int i = start; i < end; i++)
 #define FOR(i, begin, end) for (__typeof(end) i = (begin) - ((begin) > (end)); i != (end) - ((begin) > (end)); i += 1 - 2 * ((begin) > (end)))
 #define RFOR(i, start, end) for (int i = end; i >= start; i--)
 #define FOREACH(x, b) for (auto x : b)
@@ -111,7 +112,6 @@ ll expo(ll a, ll b, ll mod)
     }
     return res;
 }
-
 //__factorial______________________________________________
 vector<ll> fact;
 void factOfN(ll n)
@@ -125,32 +125,120 @@ void factOfN(ll n)
         prod = prod * f;
     }
 }
+//--------------------------------------------------------------------------------------------------------------------------------
 
-//> --------------------------------------------------------------------------------------------------------------------------------
-//> ----------------------------ＳＯＬＶＥ-----------------------------------------------------------------------------------------------------------------------------------------------
+//>----------------------------ＳＯＬＶＥ-----------------------------------------------------------------------------------------------------------------------------------------------
+
+//> WORST CASE :O(q.size() * n) ==> n * n
+int circularTour(vector<int> gas, vector<int> cost)
+{
+
+    //> storing all possible start points in  queue that can be
+    //> taken as start point of circular tour.
+    queue<int> q;
+
+    int n = gas.size();
+    for (int i = 0; i < n; i++)
+    {
+        int remGas = gas[i] - cost[i];
+        if (remGas >= 0)
+        {
+            q.push(i);
+        }
+    }
+
+    //> for every start point from queue, check if cicular tour posible or not
+
+    while (!q.empty())
+    {
+
+        int currStartPoint = q.front();
+        q.pop();
+
+        int total_fuel = 0;
+        int cnt = 0;
+        bool flag = false;
+
+        while (1)
+        {
+            if (cnt == n)
+            {
+                flag = true;
+                break;
+            }
+
+            total_fuel += gas[currStartPoint] - cost[currStartPoint];
+
+            if (total_fuel < 0)
+            {
+                break;
+            }
+            currStartPoint = (currStartPoint + 1) % n;
+            cnt++;
+        }
+
+        if (flag)
+        {
+            return currStartPoint;
+        }
+    }
+    return -1;
+}
+
+//> BEST O(N) ,O(1)
+int circularTour1(vector<int> gas, vector<int> cost)
+{
+    int gasSum = accumulate(gas.begin(), gas.end(), 0);
+    int costSum = accumulate(cost.begin(), cost.end(), 0);
+    debug(gasSum, costSum);
+
+    if ((gasSum - costSum) < 0)
+    {
+        return -1;
+    }
+
+    int total_fuel = 0;
+    int startIndx = 0;
+
+    for (int i = 0; i < gas.size(); i++)
+    {
+        total_fuel += gas[i] - cost[i];
+
+        if (total_fuel < 0)
+        {
+            startIndx = i + 1;
+            total_fuel = 0;
+        }
+    }
+
+    return startIndx;
+}
 
 void solve()
 {
-    int a;
-    cin >> a;
-    cout << "TESTING INPUT : " << a << " OUPUT : " << a << endl;
-    debug(a, "Error checking OK");
-    /*edescmskmsksmk
-    ! Warning
-    -> Problem 21 Find the subarray max sum of length k
-    > What is the best way
-    # Solve the problems
-    * What is the best way to approach a problem
-    ** What is the best way to approach a problem
-    - In oops We always compares it with real world problem
-    _ In oops We always compares it with real world problem
-    : TC O(N)
-    TODO: OK
-    */
+    int n;
+    cin >> n;
+
+    vector<int> gas(n);
+
+    FOR(i, 0, n)
+    {
+        int ele;
+        cin >> ele;
+        gas[i] = ele;
+    }
+    vector<int> cost(n);
+
+    FOR(i, 0, n)
+    {
+        int ele;
+        cin >> ele;
+        cost[i] = ele;
+    }
+    cout << circularTour1(gas, cost) << endl;
 }
 
-//> -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
+//>-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 int main()
 {
     ios::sync_with_stdio(0);
