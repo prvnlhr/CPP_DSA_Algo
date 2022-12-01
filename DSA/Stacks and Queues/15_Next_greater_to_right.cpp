@@ -142,34 +142,34 @@ vector<int> NGR(vector<int> arr)
 
         4   5   2   25
         5  25   25  -1
-        
 
 
+
+    -> this problem is extension of next greater element to right
+    -> with a modification that the arr is treated as circular in this case.
 
 
     */
 
     int n = arr.size();
-    vector<int> res(n);
+    vector<int> res(n, -1);
     vector<int> st;
 
-    for (int i = n - 1; i >= 0; i--)
+    for (int i = 2 * n - 1; i >= 0; i--)
     {
-        while (!st.empty() && st.back() <= arr[i])
+        int curr = arr[i % n];
+        while (!st.empty() && st.back() <= curr)
         {
             st.pop_back();
         }
-        debug(i, arr[i], st);
+
         if (!st.empty())
         {
-            res[i] = st.back();
+            res[i % n] = st.back();
         }
-        else
-        {
-            res[i] = -1;
-        }
-        st.push_back(arr[i]);
+        st.push_back(curr);
     }
+
     return res;
 }
 

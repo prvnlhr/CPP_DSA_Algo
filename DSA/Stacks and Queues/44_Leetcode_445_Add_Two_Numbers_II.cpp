@@ -58,7 +58,8 @@ ostream &operator<<(ostream &os, const T &c)
 #endif
 
 //>---DEBUG_TEMPLATE_END-----------------------------------------------------------------------------------------------------------------------------------------------------------
-//# define FOR(i, start, end) for (int i = start; i < end; i++)
+
+// #define FOR(i, start, end) for (int i = start; i < end; i++)
 #define FOR(i, begin, end) for (__typeof(end) i = (begin) - ((begin) > (end)); i != (end) - ((begin) > (end)); i += 1 - 2 * ((begin) > (end)))
 #define RFOR(i, start, end) for (int i = end; i >= start; i--)
 #define FOREACH(x, b) for (auto x : b)
@@ -111,7 +112,6 @@ ll expo(ll a, ll b, ll mod)
     }
     return res;
 }
-
 //__factorial______________________________________________
 vector<ll> fact;
 void factOfN(ll n)
@@ -125,32 +125,125 @@ void factOfN(ll n)
         prod = prod * f;
     }
 }
+//--------------------------------------------------------------------------------------------------------------------------------
 
-//> --------------------------------------------------------------------------------------------------------------------------------
-//> ----------------------------ＳＯＬＶＥ-----------------------------------------------------------------------------------------------------------------------------------------------
-
-void solve()
+//>----------------------------ＳＯＬＶＥ-----------------------------------------------------------------------------------------------------------------------------------------------
+class ListNode
 {
-    int a;
-    cin >> a;
-    cout << "TESTING INPUT : " << a << " OUPUT : " << a << endl;
-    debug(a, "Error checking OK");
-    /*
-    ! Warning
-    -> Problem 21 Find the subarray max sum of length k
-    > What is the best way
-    # Solve the problems
-    * What is the best way to approach a problem
-    ** What is the best way to approach a problem
-    - In oops We always compares it with real world problem
-    _ In oops We always compares it with real world problem
-    : TC O(N)
-    TODO: OK
-    */
+
+public:
+    int data;
+    ListNode *next;
+
+    ListNode(int data)
+    {
+        this->data = data;
+        this->next = nullptr;
+    }
+};
+
+ListNode *buildLL(vector<int> &input)
+{
+    ListNode *head = nullptr;
+    ListNode *tail = nullptr;
+
+    for (int i = 0; i < input.size(); i++)
+    {
+        int ele = input[i];
+        if (ele == -1)
+        {
+            break;
+        }
+
+        ListNode *newNode = new ListNode(ele);
+
+        if (head == nullptr)
+        {
+
+            head = newNode;
+            tail = newNode;
+        }
+        else
+        {
+            tail->next = newNode;
+            tail = newNode;
+        }
+    }
+    return head;
+}
+void printLL(ListNode *head)
+{
+    ListNode *curr = head;
+    while (curr)
+    {
+        cout << curr->data << " ";
+        curr = curr->next;
+    }
+    cout << endl;
 }
 
-//> -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ListNode *lastToFirst(ListNode *head)
+{
+    ListNode *curr = head;
+    ListNode *prev = head;
+    while (curr->next)
+    {
+        prev = curr;
+        curr = curr->next;
+    }
+    prev->next = nullptr;
+    curr->next = head;
+    debug(curr->data, prev->data);
+    head = curr;
+    return head;
+}
 
+class Solution
+{
+public:
+    ListNode *addTwoNumbers(ListNode *l1, ListNode *l2)
+    {
+        vector<int> nums1, nums2;
+        while (l1)
+        {
+            nums1.push_back(l1->data);
+            l1 = l1->next;
+        }
+        while (l2)
+        {
+            nums2.push_back(l2->data);
+            l2 = l2->next;
+        }
+
+        int m = nums1.size(), n = nums2.size();
+        int sum = 0, carry = 0;
+
+        ListNode *head = nullptr, *p = nullptr;
+
+        for (int i = m - 1, j = n - 1; i >= 0 || j >= 0 || carry > 0; i--, j--)
+        {
+            sum = carry;
+            if (i >= 0)
+                sum += nums1[i];
+
+            if (j >= 0)
+                sum += nums2[j];
+
+            carry = sum / 10;
+
+            p = new ListNode(sum % 10);
+            p->next = head;
+            head = p;
+        }
+
+        return head;
+    }
+};
+void solve()
+{
+}
+
+//>-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 int main()
 {
     ios::sync_with_stdio(0);

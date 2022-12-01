@@ -58,7 +58,8 @@ ostream &operator<<(ostream &os, const T &c)
 #endif
 
 //>---DEBUG_TEMPLATE_END-----------------------------------------------------------------------------------------------------------------------------------------------------------
-//# define FOR(i, start, end) for (int i = start; i < end; i++)
+
+// #define FOR(i, start, end) for (int i = start; i < end; i++)
 #define FOR(i, begin, end) for (__typeof(end) i = (begin) - ((begin) > (end)); i != (end) - ((begin) > (end)); i += 1 - 2 * ((begin) > (end)))
 #define RFOR(i, start, end) for (int i = end; i >= start; i--)
 #define FOREACH(x, b) for (auto x : b)
@@ -111,7 +112,6 @@ ll expo(ll a, ll b, ll mod)
     }
     return res;
 }
-
 //__factorial______________________________________________
 vector<ll> fact;
 void factOfN(ll n)
@@ -125,32 +125,43 @@ void factOfN(ll n)
         prod = prod * f;
     }
 }
+//--------------------------------------------------------------------------------------------------------------------------------
 
-//> --------------------------------------------------------------------------------------------------------------------------------
-//> ----------------------------ＳＯＬＶＥ-----------------------------------------------------------------------------------------------------------------------------------------------
+//>----------------------------ＳＯＬＶＥ-----------------------------------------------------------------------------------------------------------------------------------------------
+vector<string> result;
 
-void solve()
+void helper(int open, int close, int n, string current)
 {
-    int a;
-    cin >> a;
-    cout << "TESTING INPUT : " << a << " OUPUT : " << a << endl;
-    debug(a, "Error checking OK");
-    /*
-    ! Warning
-    -> Problem 21 Find the subarray max sum of length k
-    > What is the best way
-    # Solve the problems
-    * What is the best way to approach a problem
-    ** What is the best way to approach a problem
-    - In oops We always compares it with real world problem
-    _ In oops We always compares it with real world problem
-    : TC O(N)
-    TODO: OK
-    */
+    if (current.length() == n * 2)
+    {
+        result.push_back(current);
+        return;
+    }
+    if (open < n)
+    {
+        helper(open + 1, close, n, current + "(");
+    }
+    if (close < open)
+    {
+        helper(open, close + 1, n, current + ")");
+    }
 }
 
-//> -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+vector<string> generateParenthesis(int n)
+{
+    helper(0, 0, n, "");
+    return result;
+}
+void solve()
+{
 
+    int n;
+    cin >> n;
+    auto ans = generateParenthesis(n);
+    debug(ans);
+}
+
+//>-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 int main()
 {
     ios::sync_with_stdio(0);

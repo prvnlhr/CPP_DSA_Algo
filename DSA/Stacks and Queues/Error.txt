@@ -1,2 +1,6 @@
-Line 193: gasSum = 9; costSum = 10; 
-Time: 0
+Line 138: st = []; 
+Line 138: st = [0]; 
+Line 156: newScore = 1; prevScore = 0; st = []; 
+Line 138: st = []; 
+Line 138: st = [0]; 
+Line 156: newScore = 1; prevScore = 0; st = []; 

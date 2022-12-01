@@ -58,7 +58,8 @@ ostream &operator<<(ostream &os, const T &c)
 #endif
 
 //>---DEBUG_TEMPLATE_END-----------------------------------------------------------------------------------------------------------------------------------------------------------
-//# define FOR(i, start, end) for (int i = start; i < end; i++)
+
+// #define FOR(i, start, end) for (int i = start; i < end; i++)
 #define FOR(i, begin, end) for (__typeof(end) i = (begin) - ((begin) > (end)); i != (end) - ((begin) > (end)); i += 1 - 2 * ((begin) > (end)))
 #define RFOR(i, start, end) for (int i = end; i >= start; i--)
 #define FOREACH(x, b) for (auto x : b)
@@ -111,7 +112,6 @@ ll expo(ll a, ll b, ll mod)
     }
     return res;
 }
-
 //__factorial______________________________________________
 vector<ll> fact;
 void factOfN(ll n)
@@ -125,32 +125,93 @@ void factOfN(ll n)
         prod = prod * f;
     }
 }
+//--------------------------------------------------------------------------------------------------------------------------------
 
-//> --------------------------------------------------------------------------------------------------------------------------------
-//> ----------------------------ＳＯＬＶＥ-----------------------------------------------------------------------------------------------------------------------------------------------
+//>----------------------------ＳＯＬＶＥ-----------------------------------------------------------------------------------------------------------------------------------------------
+int calculate(string s)
+{
+    int ans = 0;
+    vector<char> oprators;
+    vector<int> operands;
+
+    int n = s.size();
+    int i = 0;
+    while (i < s.size())
+    {
+        if (s[i] == '+' || s[i] == '-')
+        {
+            oprators.push_back(s[i]);
+            i++;
+        }
+        else if (s[i] == '*' || s[i] == '/')
+        {
+            char op = s[i];
+            i++;
+
+            int val1 = operands.back();
+            operands.pop_back();
+
+            int val2 = s[i] - '0';
+
+            debug(val1, val2);
+            if (op == '*')
+            {
+                operands.push_back(val1 * val2);
+            }
+            else
+            {
+                operands.push_back(val1 / val2);
+            }
+            i++;
+        }
+
+        else if (isdigit(s[i]))
+        {
+            operands.push_back(s[i] - '0');
+            i++;
+        }
+    }
+
+    debug(operands);
+    debug(oprators);
+    while (!oprators.empty())
+    {
+        debug(oprators.size());
+        if (oprators.back() == '+')
+        {
+            int val1 = operands.back();
+            operands.pop_back();
+            int val2 = operands.back();
+            operands.pop_back();
+
+            operands.push_back(val1 + val2);
+        }
+        else if (oprators.back() == '-')
+        {
+            int val1 = operands.back();
+            operands.pop_back();
+            int val2 = operands.back();
+            operands.pop_back();
+
+            operands.push_back(val1 - val2);
+        }
+        oprators.pop_back();
+        debug(operands.back(), oprators);
+    }
+
+    debug(operands.back());
+    return operands.back();
+}
 
 void solve()
 {
-    int a;
-    cin >> a;
-    cout << "TESTING INPUT : " << a << " OUPUT : " << a << endl;
-    debug(a, "Error checking OK");
-    /*
-    ! Warning
-    -> Problem 21 Find the subarray max sum of length k
-    > What is the best way
-    # Solve the problems
-    * What is the best way to approach a problem
-    ** What is the best way to approach a problem
-    - In oops We always compares it with real world problem
-    _ In oops We always compares it with real world problem
-    : TC O(N)
-    TODO: OK
-    */
+
+    string s;
+    cin >> s;
+    cout << calculate(s) << endl;
 }
 
-//> -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
+//>-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 int main()
 {
     ios::sync_with_stdio(0);

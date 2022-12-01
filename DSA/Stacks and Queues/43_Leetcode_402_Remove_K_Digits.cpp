@@ -58,7 +58,8 @@ ostream &operator<<(ostream &os, const T &c)
 #endif
 
 //>---DEBUG_TEMPLATE_END-----------------------------------------------------------------------------------------------------------------------------------------------------------
-//# define FOR(i, start, end) for (int i = start; i < end; i++)
+
+// #define FOR(i, start, end) for (int i = start; i < end; i++)
 #define FOR(i, begin, end) for (__typeof(end) i = (begin) - ((begin) > (end)); i != (end) - ((begin) > (end)); i += 1 - 2 * ((begin) > (end)))
 #define RFOR(i, start, end) for (int i = end; i >= start; i--)
 #define FOREACH(x, b) for (auto x : b)
@@ -111,7 +112,6 @@ ll expo(ll a, ll b, ll mod)
     }
     return res;
 }
-
 //__factorial______________________________________________
 vector<ll> fact;
 void factOfN(ll n)
@@ -125,32 +125,66 @@ void factOfN(ll n)
         prod = prod * f;
     }
 }
+//--------------------------------------------------------------------------------------------------------------------------------
 
-//> --------------------------------------------------------------------------------------------------------------------------------
-//> ----------------------------ＳＯＬＶＥ-----------------------------------------------------------------------------------------------------------------------------------------------
+//>----------------------------ＳＯＬＶＥ-----------------------------------------------------------------------------------------------------------------------------------------------
+string removeKdigits(string num, int k)
+{
 
+    if (num.size() == 1 && k == 1)
+    {
+        return "0";
+    }
+    vector<char> st;
+    for (int i = 0; i < num.size(); i++)
+    {
+        while (!st.empty() && st.back() - '0' > num[i] - '0' && k > 0)
+        {
+            st.pop_back();
+            k--;
+        }
+
+        st.push_back(num[i]);
+        if (st.size() == 1 && num[i] == '0')
+        {
+            st.pop_back();
+        }
+    }
+    string res = "";
+    debug(k, st);
+
+    while (!st.empty() && k--)
+    {
+        st.pop_back();
+    }
+
+    for (int i = 0; i < st.size(); i++)
+    {
+        res += st[i];
+    }
+
+    if (res[0] == '0' && st.size() > 1)
+    {
+        res = res.substr(1, res.size() - 1);
+    }
+
+    if (res.size() == 0)
+    {
+        return "0";
+    }
+
+    return res;
+}
 void solve()
 {
-    int a;
-    cin >> a;
-    cout << "TESTING INPUT : " << a << " OUPUT : " << a << endl;
-    debug(a, "Error checking OK");
-    /*
-    ! Warning
-    -> Problem 21 Find the subarray max sum of length k
-    > What is the best way
-    # Solve the problems
-    * What is the best way to approach a problem
-    ** What is the best way to approach a problem
-    - In oops We always compares it with real world problem
-    _ In oops We always compares it with real world problem
-    : TC O(N)
-    TODO: OK
-    */
+    string num;
+    cin >> num;
+    int k;
+    cin >> k;
+    cout << removeKdigits(num, k) << endl;
 }
 
-//> -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
+//>-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 int main()
 {
     ios::sync_with_stdio(0);

@@ -58,7 +58,8 @@ ostream &operator<<(ostream &os, const T &c)
 #endif
 
 //>---DEBUG_TEMPLATE_END-----------------------------------------------------------------------------------------------------------------------------------------------------------
-//# define FOR(i, start, end) for (int i = start; i < end; i++)
+
+// #define FOR(i, start, end) for (int i = start; i < end; i++)
 #define FOR(i, begin, end) for (__typeof(end) i = (begin) - ((begin) > (end)); i != (end) - ((begin) > (end)); i += 1 - 2 * ((begin) > (end)))
 #define RFOR(i, start, end) for (int i = end; i >= start; i--)
 #define FOREACH(x, b) for (auto x : b)
@@ -111,7 +112,6 @@ ll expo(ll a, ll b, ll mod)
     }
     return res;
 }
-
 //__factorial______________________________________________
 vector<ll> fact;
 void factOfN(ll n)
@@ -125,32 +125,57 @@ void factOfN(ll n)
         prod = prod * f;
     }
 }
+//--------------------------------------------------------------------------------------------------------------------------------
 
-//> --------------------------------------------------------------------------------------------------------------------------------
-//> ----------------------------ＳＯＬＶＥ-----------------------------------------------------------------------------------------------------------------------------------------------
+//>----------------------------ＳＯＬＶＥ-----------------------------------------------------------------------------------------------------------------------------------------------
+string removeDuplicateLetters(string s)
+{
+    int n = s.size();
+    unordered_map<char, int> freq;
+    unordered_map<char, bool> visited;
+    stack<int> st;
 
+    for (auto ch : s)
+    {
+        freq[ch]++;
+    }
+
+    for (int i = 0; i < n; i++)
+    {
+        char currCh = s[i];
+        freq[currCh]--;
+        if (visited[currCh])
+        {
+            continue;
+        }
+
+        while (!st.empty() && s[i] < s[st.top()] && freq[s[st.top()]] > 0)
+        {
+            visited[s[st.top()]] = false;
+            st.pop();
+        }
+
+        st.push(i);
+        visited[currCh] = true;
+    }
+
+    string res = "";
+    while (!st.empty())
+    {
+        res = s[st.top()] + res;
+        st.pop();
+    }
+    return res;
+}
 void solve()
 {
-    int a;
-    cin >> a;
-    cout << "TESTING INPUT : " << a << " OUPUT : " << a << endl;
-    debug(a, "Error checking OK");
-    /*
-    ! Warning
-    -> Problem 21 Find the subarray max sum of length k
-    > What is the best way
-    # Solve the problems
-    * What is the best way to approach a problem
-    ** What is the best way to approach a problem
-    - In oops We always compares it with real world problem
-    _ In oops We always compares it with real world problem
-    : TC O(N)
-    TODO: OK
-    */
+
+    string s;
+    cin >> s;
+    cout << removeDuplicateLetters(s) << endl;
 }
 
-//> -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
+//>-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 int main()
 {
     ios::sync_with_stdio(0);
