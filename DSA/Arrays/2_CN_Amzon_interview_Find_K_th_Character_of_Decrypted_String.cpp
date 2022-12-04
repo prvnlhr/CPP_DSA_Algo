@@ -128,22 +128,59 @@ void factOfN(ll n)
 //--------------------------------------------------------------------------------------------------------------------------------
 
 //>----------------------------ＳＯＬＶＥ-----------------------------------------------------------------------------------------------------------------------------------------------
-int maxSubArray(vector<int> &nums)
+
+//> Self Solved 100% CN
+//> O(N)
+//>
+char kThCharaterOfDecryptedString(string s, long long k)
 {
+    string currString = "";
+    long long currDigit = 0;
+    long long numCharTillNow = 0;
+    long long currStringCharCnt = 0;
 
-    int n = nums.size();
+    char ANS;
 
-    int maxSum = nums[0];
-    int maxEndingHere = nums[0];
-    for (int i = 0; i < n; i++)
+    long long n = s.size();
+
+    long long currIndx = 0;
+
+    while (currIndx < n)
     {
-        maxEndingHere = max(maxEndingHere, maxEndingHere + nums[i]);
-        maxSum = max(maxSum, maxEndingHere);
+
+        while (currIndx < n && isalpha(s[currIndx]))
+        {
+            currString += s[currIndx];
+            currIndx++;
+        }
+
+        while (currIndx < n && isdigit(s[currIndx]))
+        {
+            currDigit = currDigit * 10 + s[currIndx] - '0';
+            currIndx++;
+        }
+        numCharTillNow += currString.size() * currDigit;
+
+        if (numCharTillNow >= k)
+        {
+            long long strStartIndex = numCharTillNow - (currString.size() * currDigit);
+            long long reqCharIndex = (((k - 1) - strStartIndex)) % currString.size();
+            return currString[reqCharIndex];
+        }
+        currString = "";
+        currDigit = 0;
     }
-    return maxSum;
+    return s[k - 1];
 }
+
 void solve()
 {
+
+    string s;
+    cin >> s;
+    long long k;
+    cin >> k;
+    cout << kThCharaterOfDecryptedString(s, k) << endl;
 }
 
 //>-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------

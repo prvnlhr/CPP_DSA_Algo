@@ -128,22 +128,32 @@ void factOfN(ll n)
 //--------------------------------------------------------------------------------------------------------------------------------
 
 //>----------------------------ＳＯＬＶＥ-----------------------------------------------------------------------------------------------------------------------------------------------
-int maxSubArray(vector<int> &nums)
+int maxProduct(vector<int> &nums)
 {
-
     int n = nums.size();
+    int minProdEndingHere = nums[0];
+    int maxProdEndingHere = nums[0];
+    int maxProd = nums[0];
 
-    int maxSum = nums[0];
-    int maxEndingHere = nums[0];
-    for (int i = 0; i < n; i++)
+    for (int i = 1; i < n; i++)
     {
-        maxEndingHere = max(maxEndingHere, maxEndingHere + nums[i]);
-        maxSum = max(maxSum, maxEndingHere);
+        int currMIN = minProdEndingHere * nums[i];
+        int currMAX = maxProdEndingHere * nums[i];
+        minProdEndingHere = min({nums[i], currMAX, currMIN});
+        maxProdEndingHere = max({nums[i], currMAX, currMIN});
+        maxProd = max(maxProdEndingHere, maxProd);
     }
-    return maxSum;
+    return maxProd;
 }
 void solve()
 {
+    int ele;
+    vector<int> arr;
+    while (cin >> ele)
+    {
+        arr.push_back(ele);
+    }
+    cout << maxProduct(arr) << endl;
 }
 
 //>-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------

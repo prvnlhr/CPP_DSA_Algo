@@ -128,22 +128,115 @@ void factOfN(ll n)
 //--------------------------------------------------------------------------------------------------------------------------------
 
 //>----------------------------ＳＯＬＶＥ-----------------------------------------------------------------------------------------------------------------------------------------------
-int maxSubArray(vector<int> &nums)
+/*
+1 3 4 2 2
+
+
+>SOL1: APPROACH, SELF SOLVED 100%
+: TC: O(N)
+: SC :O(N)
+
+
+*/
+
+int findDuplicate1(vector<int> &nums)
 {
-
     int n = nums.size();
-
-    int maxSum = nums[0];
-    int maxEndingHere = nums[0];
+    vector<int> vis(n, -1);
+    int ans = 0;
     for (int i = 0; i < n; i++)
     {
-        maxEndingHere = max(maxEndingHere, maxEndingHere + nums[i]);
-        maxSum = max(maxSum, maxEndingHere);
+
+        if (vis[nums[i] - 1] == nums[i])
+        {
+            ans = nums[i];
+            break;
+        }
+        else
+        {
+            vis[nums[i] - 1] = nums[i];
+        }
     }
-    return maxSum;
+    return ans;
 }
+
+/*
+>SOL2: O(N);
+> manuplating array itself
+- There are n + 1n+1 positive numbers in the array (numsnums) (all in the range [1, n][1,n]).
+- Since the array only contains positive integers, we can track each number (numnum)
+- that has been seen before by flipping the sign of the number located at
+- index |num|∣num∣, where ||∣∣ denotes absolute value.
+-
+- For example, if the input array is [1, 3, 3, 2][1,3,3,2], then for 11,
+- flip the number at index 11, making the array [1,-3,3,2][1,−3,3,2]. Next,
+- for -3−3 flip the number at index 33, making the array [1,-3,3,-2][1,−3,3,−2].
+- Finally, when we reach the second 33, we'll notice that nums[3]nums[3] is
+- already negative, indicating that 33 has been seen before and hence is the
+- duplicate number.
+*/
+int findDuplicate2(vector<int> &nums)
+{
+    int n = nums.size();
+    int ans = -1;
+
+    for (int i = 0; i < n; i++)
+    {
+        int curr = abs(nums[i]);
+        if (nums[curr] < 0)
+        {
+            ans = curr;
+            break;
+        }
+        nums[i] *= -1;
+    }
+    return ans;
+}
+
+/*
+
+>SOL3: USING SET, O(N),O(N)
+
+>SOL4: USING MAP, O(N),O(N)
+
+
+>SOL5: Floyd's Tortoise and Hare
+>Optimised ->> Hare and tortoise technnique
+:TC O(N)
+*/
+
+int findDuplicateOP(vector<int> &nums)
+{
+    int n = nums.size();
+    int ans = 0;
+    int hare = nums[0];
+    int tortoise = nums[0];
+
+    while (hare != tortoise)
+    {
+        hare = nums[nums[hare]];
+        tortoise = nums[tortoise];
+    }
+
+    tortoise = nums[0];
+    while (hare != tortoise)
+    {
+        tortoise = nums[tortoise];
+        hare = nums[hare];
+    }
+    return hare;
+}
+
 void solve()
 {
+    int ele;
+    vector<int> arr;
+    while (cin >> ele)
+    {
+        arr.push_back(ele);
+    }
+    debug(arr);
+    cout << findDuplicateOP(arr) << endl;
 }
 
 //>-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
