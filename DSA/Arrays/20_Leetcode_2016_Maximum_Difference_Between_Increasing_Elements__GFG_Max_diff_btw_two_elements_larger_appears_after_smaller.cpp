@@ -129,84 +129,30 @@ void factOfN(ll n)
 
 //>----------------------------ＳＯＬＶＥ-----------------------------------------------------------------------------------------------------------------------------------------------
 
-int merge(vector<int> &nums, int left, int right, int mid)
-{
-
-
-    vector<int> mergeArr(right - left + 1);
-    int countInv = 0;
-    int i = left;
-    int j = mid + 1;
-    int k = left;
-
-    while (i <= mid && j <= right)
-    {
-        if (nums[i] <= nums[j])
-        {
-            mergeArr[k++] = nums[i++];
-        }
-        else if (nums[i] > nums[j])
-        {
-            mergeArr[k++] = nums[j++];
-            countInv = countInv + (mid - i);
-        }
-    }
-
-    while (i <= mid)
-    {
-        mergeArr[k++] = nums[i++];
-    }
-
-    while (j <= right)
-    {
-        mergeArr[k++] = nums[j++];
-    }
-
-    int pos = left;
-    
-    for (int i = left; i < right; i++)
-    {
-        nums[i] = mergeArr[i];
-    }
-
-    return countInv;
-}
-
-int mergeSort(vector<int> &nums, int left, int right)
-{
-
-    int invCount = 0;
-    int mid = 0;
-
-    if (left < right)
-    {
-        mid = left + (right - left) / 2;
-        invCount += mergeSort(nums, left, mid);
-        invCount += mergeSort(nums, mid + 1, right);
-        invCount += merge(nums, left, right, mid);
-    }
-    return invCount;
-}
-
-int countInversion(vector<int> &nums)
+int maximumDifference(vector<int> &nums)
 {
     int n = nums.size();
-    int left = 0;
-    int right = n - 1;
-    vector<int> temp(n);
-    return mergeSort(nums, left, right);
+    int maxUntil = nums[n - 1];
+    int maxDiff = INT_MIN;
+    for (int i = n - 1; i >= 0; i--)
+    {
+        int currNum = nums[i];
+        maxUntil = max(maxUntil, currNum);
+        maxDiff = max(maxDiff, maxUntil - currNum);
+    }
+    return (maxDiff != 0 ? maxDiff : -1);
 }
 
 void solve()
 {
-    int ele;
     vector<int> nums;
+    int ele;
     while (cin >> ele)
     {
         nums.push_back(ele);
     }
-    cout << countInversion(nums) << endl;
     debug(nums);
+    cout << maximumDifference(nums) << endl;
 }
 
 //>-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------

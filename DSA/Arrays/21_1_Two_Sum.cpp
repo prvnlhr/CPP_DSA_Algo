@@ -129,84 +129,55 @@ void factOfN(ll n)
 
 //>----------------------------ＳＯＬＶＥ-----------------------------------------------------------------------------------------------------------------------------------------------
 
-int merge(vector<int> &nums, int left, int right, int mid)
+//> This problem contains only unique elements in input array
+vector<int> twoSum(vector<int> &nums, int target)
 {
 
+    /*
+         k = 0
+         nums = -3 4 3 90
+         ans = [0, 2];
 
-    vector<int> mergeArr(right - left + 1);
-    int countInv = 0;
-    int i = left;
-    int j = mid + 1;
-    int k = left;
+         nums = [2, 7, 11, 5]; k = 9;
+         ans = [0, 1];
 
-    while (i <= mid && j <= right)
+
+
+
+
+    */
+
+    unordered_map<int, int> mpp;
+    vector<int> indxs;
+
+    for (int i = 0; i < nums.size(); i++)
     {
-        if (nums[i] <= nums[j])
+        int currEle = nums[i];
+        int numToFind = target - currEle;
+
+        if (mpp.find(numToFind) != mpp.end())
         {
-            mergeArr[k++] = nums[i++];
+            indxs.push_back(mpp[numToFind]);
+            indxs.push_back(i);
+            return indxs;
         }
-        else if (nums[i] > nums[j])
-        {
-            mergeArr[k++] = nums[j++];
-            countInv = countInv + (mid - i);
-        }
+        mpp[currEle] = i;
     }
-
-    while (i <= mid)
-    {
-        mergeArr[k++] = nums[i++];
-    }
-
-    while (j <= right)
-    {
-        mergeArr[k++] = nums[j++];
-    }
-
-    int pos = left;
-    
-    for (int i = left; i < right; i++)
-    {
-        nums[i] = mergeArr[i];
-    }
-
-    return countInv;
+    return indxs;
 }
-
-int mergeSort(vector<int> &nums, int left, int right)
-{
-
-    int invCount = 0;
-    int mid = 0;
-
-    if (left < right)
-    {
-        mid = left + (right - left) / 2;
-        invCount += mergeSort(nums, left, mid);
-        invCount += mergeSort(nums, mid + 1, right);
-        invCount += merge(nums, left, right, mid);
-    }
-    return invCount;
-}
-
-int countInversion(vector<int> &nums)
-{
-    int n = nums.size();
-    int left = 0;
-    int right = n - 1;
-    vector<int> temp(n);
-    return mergeSort(nums, left, right);
-}
-
 void solve()
 {
-    int ele;
+    int ele, k;
+    cin >> k;
     vector<int> nums;
     while (cin >> ele)
     {
         nums.push_back(ele);
     }
-    cout << countInversion(nums) << endl;
-    debug(nums);
+    debug(nums, k);
+
+    auto ans = twoSum(nums, k);
+    debug(ans);
 }
 
 //>-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------

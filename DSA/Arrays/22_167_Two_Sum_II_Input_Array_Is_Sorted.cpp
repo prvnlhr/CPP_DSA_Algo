@@ -129,84 +129,49 @@ void factOfN(ll n)
 
 //>----------------------------ＳＯＬＶＥ-----------------------------------------------------------------------------------------------------------------------------------------------
 
-int merge(vector<int> &nums, int left, int right, int mid)
+vector<int> twoSum(vector<int> &numbers, int target)
 {
 
+    int n = numbers.size();
+    int i = 0;
+    int j = n - 1;
 
-    vector<int> mergeArr(right - left + 1);
-    int countInv = 0;
-    int i = left;
-    int j = mid + 1;
-    int k = left;
+    vector<int> res;
 
-    while (i <= mid && j <= right)
+    while (i < j)
     {
-        if (nums[i] <= nums[j])
+
+        int sum = numbers[i] + numbers[j];
+        if (sum == target)
         {
-            mergeArr[k++] = nums[i++];
+            res.push_back(i + 1);
+            res.push_back(j + 1);
+            break;
         }
-        else if (nums[i] > nums[j])
+        else if (sum > target)
         {
-            mergeArr[k++] = nums[j++];
-            countInv = countInv + (mid - i);
+            j--;
+        }
+        else if (sum < target)
+        {
+            i++;
         }
     }
-
-    while (i <= mid)
-    {
-        mergeArr[k++] = nums[i++];
-    }
-
-    while (j <= right)
-    {
-        mergeArr[k++] = nums[j++];
-    }
-
-    int pos = left;
-    
-    for (int i = left; i < right; i++)
-    {
-        nums[i] = mergeArr[i];
-    }
-
-    return countInv;
+    return res;
 }
-
-int mergeSort(vector<int> &nums, int left, int right)
-{
-
-    int invCount = 0;
-    int mid = 0;
-
-    if (left < right)
-    {
-        mid = left + (right - left) / 2;
-        invCount += mergeSort(nums, left, mid);
-        invCount += mergeSort(nums, mid + 1, right);
-        invCount += merge(nums, left, right, mid);
-    }
-    return invCount;
-}
-
-int countInversion(vector<int> &nums)
-{
-    int n = nums.size();
-    int left = 0;
-    int right = n - 1;
-    vector<int> temp(n);
-    return mergeSort(nums, left, right);
-}
-
 void solve()
 {
-    int ele;
+    int ele, k;
+    cin >> k;
     vector<int> nums;
     while (cin >> ele)
     {
         nums.push_back(ele);
     }
-    cout << countInversion(nums) << endl;
-    debug(nums);
+    debug(nums, k);
+
+    auto ans = twoSum(nums, k);
+    debug(ans);
 }
 
 //>-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
