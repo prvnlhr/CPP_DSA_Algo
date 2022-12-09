@@ -129,41 +129,84 @@ void factOfN(ll n)
 
 //>----------------------------ＳＯＬＶＥ-----------------------------------------------------------------------------------------------------------------------------------------------
 /*
-- arr1 = [1,3,5,7]
-- arr2 = [0,2,6,8,9]
 
-- output:
-- 0 1 2 3
-- 5 6 7 8 9
+#
+# Given an array and a range [lowVal, highVal], partition the array
+# around the range such that array is divided in three parts.
+# 1) All elements smaller than lowVal come first.
+# 2) All elements in range lowVal to highVVal come next.
+# 3) All elements greater than highVVal appear in the end.
+# The individual elements of three sets can appear in any order.
+#
+# Input: arr[] = {1, 14, 5, 20, 4, 2, 54, 20, 87, 98, 3, 1, 32}
+#         lowVal = 14, highVal = 20
+# Output: arr[] = {1, 5, 4, 2, 1, 3, 14, 20, 20, 98, 87, 32, 54}
+#
+# Input: arr[] = {1, 14, 5, 20, 4, 2, 54, 20, 87, 98, 3, 1, 32}
+#        lowVal = 20, highVal = 20
+# Output: arr[] = {1, 14, 5, 4, 2, 1, 3, 20, 20, 98, 87, 32, 54}
 
-- Input: ar1[] = {1, 5, 9, 10, 15, 20};
--        ar2[] = {2, 3, 8, 13};
-- Output: ar1[] = {1, 2, 3, 5, 8, 9}
--         ar2[] = {10, 13, 15, 20}
 
+#
+# Simple solution will be to sort array using merge sort O(NlogN)
+#
+# Efficient solution using two pointer
+# Time Complexity: O(n)
+# Auxiliary Space: O(1)
 */
 
-void merge(vector<int> &arr1, vector<int> &arr2)
+void threeWayPartition(vector<int> &arr, int high, int low)
 {
-    int n = arr1.size();
+    int n = arr.size();
 
-    for (int i = 0; i < n; i++)
+    int lowPos = 0;
+    int highPos = n - 1;
+
+    int i = 0;
+
+    while (i <= highPos)
     {
-
-        if (arr1[i] > arr2[0])
+        if (arr[i] < low)
         {
-            swap(arr1[i], arr2[0]);
-            sort(arr2.begin(), arr2.end());
+            if (i == lowPos)
+            {
+                lowPos++;
+                i++;
+            }
+            else
+            {
+                swap(arr[i], arr[lowPos]);
+                i++;
+                lowPos++;
+            }
+        }
+        else if (arr[i] > high)
+        {
+            swap(arr[i], arr[highPos]);
+            highPos--;
+        }
+        else
+        {
+            i++;
         }
     }
 }
+
 void solve()
 {
-    vector<int> arr1{1, 5, 9, 10, 15, 20};
-    vector<int> arr2{2, 3, 8, 13};
-    merge(arr1, arr2);
-    debug(arr1);
-    debug(arr2);
+
+    int low, high;
+    cin >> low >> high;
+    int ele;
+
+    vector<int> arr;
+    while (cin >> ele)
+    {
+        arr.push_back(ele);
+    }
+    debug(arr, low, high);
+    threeWayPartition(arr, high, low);
+    debug(arr);
 }
 
 //>-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------

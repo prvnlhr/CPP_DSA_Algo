@@ -129,41 +129,62 @@ void factOfN(ll n)
 
 //>----------------------------ＳＯＬＶＥ-----------------------------------------------------------------------------------------------------------------------------------------------
 /*
-- arr1 = [1,3,5,7]
-- arr2 = [0,2,6,8,9]
-
-- output:
-- 0 1 2 3
-- 5 6 7 8 9
-
-- Input: ar1[] = {1, 5, 9, 10, 15, 20};
--        ar2[] = {2, 3, 8, 13};
-- Output: ar1[] = {1, 2, 3, 5, 8, 9}
--         ar2[] = {10, 13, 15, 20}
+- Input : arr[] = {7, 3, 2, 4, 9, 12, 56} , m = 3
+- Output: Minimum Difference is 2
+- Explanation:
+- We have seven packets of chocolates and
+- we need to pick three packets for 3 students
+- If we pick 2, 3 and 4, we get the minimum
+- difference between maximum and minimum packet sizes.
+-
+- Input : arr[] = {3, 4, 1, 9, 56, 7, 9, 12} , m = 5
+- Output: Minimum Difference is 6
+- Explanation:
+- The set goes like 3,4,7,9,9 and the output
+- is 9-3 = 6
+-
+- Input : arr[] = {12, 4, 7, 9, 2, 23, 25, 41,
+- 30, 40, 28, 42, 30, 44, 48,
+- 43, 50} , m = 7
+- Output: Minimum Difference is 10
+- Explanation:
+- We need to pick 7 packets. We pick 40, 41,
+- 42, 44, 48, 43 and 50 to minimize difference
+- between maximum and minimum.
 
 */
 
-void merge(vector<int> &arr1, vector<int> &arr2)
+long long findMinDiff(vector<long long> arr, long long n, long long m)
 {
-    int n = arr1.size();
 
-    for (int i = 0; i < n; i++)
+    sort(arr.begin(), arr.end());
+
+    long long minDiff = LONG_LONG_MAX;
+    debug(arr);
+
+    for (int i = 0; i <= n - m; i++)
     {
-
-        if (arr1[i] > arr2[0])
-        {
-            swap(arr1[i], arr2[0]);
-            sort(arr2.begin(), arr2.end());
-        }
+        minDiff = min(arr[i + m - 1] - arr[i], minDiff);
     }
+
+    return minDiff;
 }
+
 void solve()
 {
-    vector<int> arr1{1, 5, 9, 10, 15, 20};
-    vector<int> arr2{2, 3, 8, 13};
-    merge(arr1, arr2);
-    debug(arr1);
-    debug(arr2);
+    ll n, m;
+    cin >> n >> m;
+
+    vector<ll> arr(n);
+
+    FOR(i, 0, n)
+    {
+        ll ele;
+        cin >> ele;
+        arr[i] = ele;
+    }
+    debug(arr, n, m);
+    cout << findMinDiff(arr, n, m) << endl;
 }
 
 //>-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------

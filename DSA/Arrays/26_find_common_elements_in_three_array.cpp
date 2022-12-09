@@ -128,42 +128,48 @@ void factOfN(ll n)
 //--------------------------------------------------------------------------------------------------------------------------------
 
 //>----------------------------ＳＯＬＶＥ-----------------------------------------------------------------------------------------------------------------------------------------------
-/*
-- arr1 = [1,3,5,7]
-- arr2 = [0,2,6,8,9]
 
-- output:
-- 0 1 2 3
-- 5 6 7 8 9
-
-- Input: ar1[] = {1, 5, 9, 10, 15, 20};
--        ar2[] = {2, 3, 8, 13};
-- Output: ar1[] = {1, 2, 3, 5, 8, 9}
--         ar2[] = {10, 13, 15, 20}
-
-*/
-
-void merge(vector<int> &arr1, vector<int> &arr2)
+vector<int> findCommon(vector<int> arr1, vector<int> arr2, vector<int> arr3)
 {
-    int n = arr1.size();
+    int i = 0;
+    int j = 0;
+    int k = 0;
 
-    for (int i = 0; i < n; i++)
+    vector<int> res;
+
+    while (i < arr1.size() && j < arr2.size() && k < arr3.size())
     {
 
-        if (arr1[i] > arr2[0])
+        if (arr1[i] == arr2[j] && arr2[j] == arr3[k])
         {
-            swap(arr1[i], arr2[0]);
-            sort(arr2.begin(), arr2.end());
+            res.push_back(arr1[i]);
+            i++;
+            j++;
+            k++;
+        }
+        else if (arr1[i] < arr2[j])
+        {
+            i++;
+        }
+        else if (arr2[j] < arr3[k])
+        {
+            j++;
+        }
+        else
+        {
+            k++;
         }
     }
+    return res;
 }
+
 void solve()
 {
-    vector<int> arr1{1, 5, 9, 10, 15, 20};
-    vector<int> arr2{2, 3, 8, 13};
-    merge(arr1, arr2);
-    debug(arr1);
-    debug(arr2);
+    vector<int> arr1{1, 5, 10, 20, 40, 80};
+    vector<int> arr2{6, 7, 20, 80, 100};
+    vector<int> arr3{3, 4, 15, 20, 30, 70, 80, 120};
+    auto ans = findCommon(arr1, arr2, arr3);
+    debug(ans);
 }
 
 //>-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------

@@ -129,41 +129,78 @@ void factOfN(ll n)
 
 //>----------------------------ＳＯＬＶＥ-----------------------------------------------------------------------------------------------------------------------------------------------
 /*
-- arr1 = [1,3,5,7]
-- arr2 = [0,2,6,8,9]
 
-- output:
-- 0 1 2 3
-- 5 6 7 8 9
+- You have been given an array/list ‘arr’ of length ‘N’, which
+- contains single digit elements at every index. Your task is
+- to return the sum of all elements of the array. But the final
+- sum should also be a single digit.
 
-- Input: ar1[] = {1, 5, 9, 10, 15, 20};
--        ar2[] = {2, 3, 8, 13};
-- Output: ar1[] = {1, 2, 3, 5, 8, 9}
--         ar2[] = {10, 13, 15, 20}
+-> For the given array [5, 8, 4, 9]
+-
+- The sum of the elements of the array will be
+-> 5 + 8 + 4 + 9 = 26.
+- Since 26 is not a single-digit number, we will again take the sum of the digits of 26.
+-> 2 + 6 = 8.
+-> Now 8 is a single-digit number. So we will stop here and return 8.
+-
+- We will iterate from left to right and will calculate the sum of
+- the elements and if the sum becomes a double-digit number we will
+- make it a single-digit number according to the steps given in the
+- problem statement.
+
+> Approach
+- 1. Create a variable ‘SUM’ of type integer and initialize it with zero.
+- 2. Start iterating the array from left to right and add the current element to the sum.
+- 3. If ‘SUM’ is greater than 9, create another variable ‘digitsSum’, and store the sum
+-    of digits of the variable ‘SUM’ in it.
+- 4. Then update ‘SUM’ as ‘digitsSum’.
+- 5. Finally, output the ‘SUM’.
 
 */
 
-void merge(vector<int> &arr1, vector<int> &arr2)
+int specialSum(vector<int> arr)
 {
-    int n = arr1.size();
 
+    /*
+    5 8 4 9
+
+    SUM = 0
+
+     i = 0 -->  SUM = 0 , SUM+=arr[i]  -> 5
+
+     i = 2 ->  SUM = 5, SUM+=arr[i] -> 5 + 8 == 13
+     if SUM>=10 ->  1 + 3 = 4, SUM = 4
+     
+
+
+    */
+    int SUM = 0;
+
+    int n = arr.size();
     for (int i = 0; i < n; i++)
     {
+        SUM += arr[i];
 
-        if (arr1[i] > arr2[0])
+        if (SUM >= 10)
         {
-            swap(arr1[i], arr2[0]);
-            sort(arr2.begin(), arr2.end());
+            int frst = SUM % 10;
+            SUM = SUM / 10;
+            int scnd = SUM % 10;
+            SUM = frst + scnd;
         }
     }
+    return SUM;
 }
 void solve()
 {
-    vector<int> arr1{1, 5, 9, 10, 15, 20};
-    vector<int> arr2{2, 3, 8, 13};
-    merge(arr1, arr2);
-    debug(arr1);
-    debug(arr2);
+    int ele;
+    vector<int> arr;
+    while (cin >> ele)
+    {
+        arr.push_back(ele);
+    }
+    debug(arr);
+    cout << specialSum(arr) << endl;
 }
 
 //>-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
