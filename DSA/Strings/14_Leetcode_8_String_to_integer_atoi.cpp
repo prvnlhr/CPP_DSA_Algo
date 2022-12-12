@@ -89,68 +89,104 @@ typedef map<int, int> mpint;
 typedef pair<int, int> pi;
 typedef priority_queue<int> pqmax;
 typedef priority_queue<int, vector<int>, greater<int>> pqmin;
-//_____________________________
-ll gcd(ll a, ll b)
-{
-    if (b > a)
-    {
-        return gcd(b, a);
-    }
-    if (b == 0)
-    {
-        return a;
-    }
-    return gcd(b, a % b);
-}
-//_____________________________
-ll expo(ll a, ll b, ll mod)
-{
-    ll res = 1;
-    while (b > 0)
-    {
-        if (b & 1)
-            res = (res * a) % mod;
-        a = (a * a) % mod;
-        b = b >> 1;
-    }
-    return res;
-}
-//__factorial______________________________________________
-vector<ll> fact;
-void factOfN(ll n)
-{
-    ll prod = 1;
-    fact.resize(n + 1);
-    for (int f = 1; f <= n; f++)
-    {
-
-        fact[f] = prod * f;
-        prod = prod * f;
-    }
-}
 //--------------------------------------------------------------------------------------------------------------------------------
 
 //>----------------------------ＳＯＬＶＥ-----------------------------------------------------------------------------------------------------------------------------------------------
 
+/*
+# self solved 100%
+> Intution: observation
+- consider different test case  (____ space)
+
+- 1. 42___words   or +42____words or -42___words  => 42 or -42
+- 2. words____42 or words___+42 or words____-42   => 0
+- 3. -______42  or +______42                      => 0
+- 4. _______+42  or ______-42 or ______42__words or ___42_____  => 42 or -42
+
+-> from above test cases, one thing is for sure that we dont have to consider anything
+-> after a number or specifically on the right side of a number
+-> Hence, we are only concerned with the character before a number
+
+
+* If, string starts with aplhabet, nothing to consider, return 0, no answer
+* If, string starts with + or - and next character is not digit, return 0, no answer
+  - Ex: +words__42 or  +___42
+
+* If, above conditions are not hit, then we would either have a couple of spaces,
+* or sign + or - , followed by number
+
+
+
+*/
+int myAtoi(string s)
+{
+    long long num = 0;
+
+    int i = 0;
+    int n = s.size();
+
+    //> condition : 2,  string starts with + or - , and next char is not digit => 0
+    if ((i == 0 && i + 1 < n) && (s[i] == '+' || s[i] == '-') && !isdigit(s[i + 1]))
+    {
+        return 0;
+    }
+    //> condition : 2,  string starts with alphabet => 0
+    else if (i == 0 && i + 1 < n && isalpha(s[i]))
+    {
+        return 0;
+    }
+
+
+    //> if above conditions are not hit, we can have space, just skip  them.
+    while (s[i] == ' ')
+    {
+        i++;
+    }
+
+    //> next char can be sign + or -
+    int sign = 1;
+    if (s[i] == '-')
+    {
+        sign = -1;
+        i++;
+    }
+    if (s[i] == '+')
+    {
+        sign = 1;
+        i++;
+    }
+
+    //> finally taking all digits and forming num.
+    //> if number is out of range if INT, clamp it to INT range
+    while (i < n && isdigit(s[i]))
+    {
+        num = num * 10 + s[i] - '0';
+
+        if (num * sign >= 2147483648)
+        {
+            num = 2147483647;
+            return num;
+        }
+        else if (num * sign < -2147483648)
+        {
+            num = -2147483648;
+            return num;
+        }
+
+        i++;
+    }
+    //> finally give sign to num formed.
+    num = num * sign;
+    return num;
+}
 void solve()
 {
 
-    int a;
-    cin >> a;
-    cout << "TESTING INPUT : " << a << " OUPUT : " << a << endl;
-    debug(a, "Error checking OK");
-    /*
-    ! Warning
-    -> Problem 21 Find the subarray max sum of length k
-    > What is the best way
-    # Solve the problems
-    * What is the best way to approach a problem
-    ** What is the best way to approach a problem
-    - In oops We always compares it with real world problem
-    _ In oops We always compares it with real world problem
-    : TC O(N)
-    TODO: OK
-    */
+    string s;
+    // cin >> s;
+    getline(cin, s);
+    debug(s);
+    cout << myAtoi(s) << endl;
 }
 
 //>-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -160,9 +196,9 @@ int main()
     cin.tie(0);
 
 #ifndef ONLINE_JUDGE
-    freopen("Error.txt", "w", stderr);
-    freopen("output.txt", "w", stdout);
-    freopen("input.txt", "r", stdin);
+    freopen("../Error.txt", "w", stderr);
+    freopen("../output.txt", "w", stdout);
+    freopen("../input.txt", "r", stdin);
 #endif
     auto start1 = high_resolution_clock::now();
     solve();

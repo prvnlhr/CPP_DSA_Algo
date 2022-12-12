@@ -89,68 +89,84 @@ typedef map<int, int> mpint;
 typedef pair<int, int> pi;
 typedef priority_queue<int> pqmax;
 typedef priority_queue<int, vector<int>, greater<int>> pqmin;
-//_____________________________
-ll gcd(ll a, ll b)
-{
-    if (b > a)
-    {
-        return gcd(b, a);
-    }
-    if (b == 0)
-    {
-        return a;
-    }
-    return gcd(b, a % b);
-}
-//_____________________________
-ll expo(ll a, ll b, ll mod)
-{
-    ll res = 1;
-    while (b > 0)
-    {
-        if (b & 1)
-            res = (res * a) % mod;
-        a = (a * a) % mod;
-        b = b >> 1;
-    }
-    return res;
-}
-//__factorial______________________________________________
-vector<ll> fact;
-void factOfN(ll n)
-{
-    ll prod = 1;
-    fact.resize(n + 1);
-    for (int f = 1; f <= n; f++)
-    {
-
-        fact[f] = prod * f;
-        prod = prod * f;
-    }
-}
 //--------------------------------------------------------------------------------------------------------------------------------
 
 //>----------------------------ＳＯＬＶＥ-----------------------------------------------------------------------------------------------------------------------------------------------
+int romanToInt(string s)
+{
+    map<string, int> mpp{
+        {"I", 1},
+        {"V", 5},
+        {"X", 10},
+        {"L", 50},
+        {"C", 100},
+        {"D", 500},
+        {"M", 1000},
+        {"IV", 4},
+        {"IX", 9},
+        {"XL", 40},
+        {"XC", 90},
+        {"CD", 400},
+        {"CM", 900},
+    };
 
+    int res = 0;
+    for (int i = 0; i < s.size();)
+    {
+        if (i + 1 < s.size() && mpp.find(s.substr(i, 2)) != mpp.end())
+        {
+            string num = s.substr(i, 2);
+            res += mpp[num];
+            debug(num, mpp[num]);
+            i += 2;
+        }
+        else
+        {
+            string num;
+            num += s[i];
+            debug(num, mpp[num]);
+            res += mpp[num];
+            i++;
+        }
+    }
+    return res;
+}
+int romanToIntBetter(string s)
+{
+    unordered_map<char, int> mpp = {{'I', 1},
+                                    {'V', 5},
+                                    {'X', 10},
+                                    {'L', 50},
+                                    {'C', 100},
+                                    {'D', 500},
+                                    {'M', 1000}};
+
+    int sum = mpp[s.back()];
+    for (int i = s.length() - 2; i >= 0; --i)
+    {
+        if (mpp[s[i]] < mpp[s[i + 1]])
+        {
+            sum -= mpp[s[i]];
+        }
+        else
+        {
+            sum += mpp[s[i]];
+        }
+    }
+
+    return sum;
+}
 void solve()
 {
-
-    int a;
-    cin >> a;
-    cout << "TESTING INPUT : " << a << " OUPUT : " << a << endl;
-    debug(a, "Error checking OK");
-    /*
-    ! Warning
-    -> Problem 21 Find the subarray max sum of length k
-    > What is the best way
-    # Solve the problems
-    * What is the best way to approach a problem
-    ** What is the best way to approach a problem
-    - In oops We always compares it with real world problem
-    _ In oops We always compares it with real world problem
-    : TC O(N)
-    TODO: OK
-    */
+    int tc;
+    cin >> tc;
+    while (tc--)
+    {
+        string s;
+        cin >> s;
+        debug(s);
+        cout << romanToInt(s) << endl;
+    }
 }
 
 //>-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -160,9 +176,9 @@ int main()
     cin.tie(0);
 
 #ifndef ONLINE_JUDGE
-    freopen("Error.txt", "w", stderr);
-    freopen("output.txt", "w", stdout);
-    freopen("input.txt", "r", stdin);
+    freopen("../Error.txt", "w", stderr);
+    freopen("../output.txt", "w", stdout);
+    freopen("../input.txt", "r", stdin);
 #endif
     auto start1 = high_resolution_clock::now();
     solve();

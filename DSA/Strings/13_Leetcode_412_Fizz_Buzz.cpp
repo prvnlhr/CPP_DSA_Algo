@@ -89,68 +89,71 @@ typedef map<int, int> mpint;
 typedef pair<int, int> pi;
 typedef priority_queue<int> pqmax;
 typedef priority_queue<int, vector<int>, greater<int>> pqmin;
-//_____________________________
-ll gcd(ll a, ll b)
-{
-    if (b > a)
-    {
-        return gcd(b, a);
-    }
-    if (b == 0)
-    {
-        return a;
-    }
-    return gcd(b, a % b);
-}
-//_____________________________
-ll expo(ll a, ll b, ll mod)
-{
-    ll res = 1;
-    while (b > 0)
-    {
-        if (b & 1)
-            res = (res * a) % mod;
-        a = (a * a) % mod;
-        b = b >> 1;
-    }
-    return res;
-}
-//__factorial______________________________________________
-vector<ll> fact;
-void factOfN(ll n)
-{
-    ll prod = 1;
-    fact.resize(n + 1);
-    for (int f = 1; f <= n; f++)
-    {
-
-        fact[f] = prod * f;
-        prod = prod * f;
-    }
-}
 //--------------------------------------------------------------------------------------------------------------------------------
 
 //>----------------------------ＳＯＬＶＥ-----------------------------------------------------------------------------------------------------------------------------------------------
 
+vector<string> fizzBuzz(int n)
+{
+    vector<string> res(n);
+    for (int i = 1; i <= n; i++)
+    {
+        if (i % 3 == 0 && i % 5 == 0)
+        {
+            res[i - 1] = "FizzBuzz";
+        }
+        else if (i % 3 == 0)
+        {
+            res[i - 1] = "Fizz";
+        }
+        else if (i % 5 == 0)
+        {
+            res[i - 1] = "Buzz";
+        }
+        else
+        {
+            res[i - 1] = to_string(i);
+        }
+    }
+    return res;
+}
+class Solution
+{
+public:
+    vector<string> fizzBuzz(int n)
+    {
+        vector<string> res(n);
+        for (int i = 1; i <= n; i++)
+        {
+            res[i - 1] = to_string(i);
+        }
+        for (int i = 2; i < n; i += 3)
+        {
+            res[i] = "Fizz";
+        }
+        for (int i = 4; i < n; i += 5)
+        {
+            res[i] = "Buzz";
+        }
+        for (int i = 14; i < n; i += 15)
+        {
+            res[i] = "FizzBuzz";
+        }
+        return res;
+    }
+};
 void solve()
 {
+    int tc;
+    cin >> tc;
+    while (tc--)
+    {
 
-    int a;
-    cin >> a;
-    cout << "TESTING INPUT : " << a << " OUPUT : " << a << endl;
-    debug(a, "Error checking OK");
-    /*
-    ! Warning
-    -> Problem 21 Find the subarray max sum of length k
-    > What is the best way
-    # Solve the problems
-    * What is the best way to approach a problem
-    ** What is the best way to approach a problem
-    - In oops We always compares it with real world problem
-    _ In oops We always compares it with real world problem
-    : TC O(N)
-    TODO: OK
-    */
+        int n;
+        cin >> n;
+        auto ans = fizzBuzz(n);
+        debug(ans);
+    }
 }
 
 //>-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -160,9 +163,9 @@ int main()
     cin.tie(0);
 
 #ifndef ONLINE_JUDGE
-    freopen("Error.txt", "w", stderr);
-    freopen("output.txt", "w", stdout);
-    freopen("input.txt", "r", stdin);
+    freopen("../Error.txt", "w", stderr);
+    freopen("../output.txt", "w", stdout);
+    freopen("../input.txt", "r", stdin);
 #endif
     auto start1 = high_resolution_clock::now();
     solve();

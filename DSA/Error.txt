@@ -1,3 +1,2 @@
-Line 209: s1 = baa; s2 = aa; 
-Line 212: ans = [1]; 
+Line 167: s = 27; 
 Time: 0

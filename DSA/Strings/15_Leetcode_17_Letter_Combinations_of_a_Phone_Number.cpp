@@ -89,68 +89,61 @@ typedef map<int, int> mpint;
 typedef pair<int, int> pi;
 typedef priority_queue<int> pqmax;
 typedef priority_queue<int, vector<int>, greater<int>> pqmin;
-//_____________________________
-ll gcd(ll a, ll b)
-{
-    if (b > a)
-    {
-        return gcd(b, a);
-    }
-    if (b == 0)
-    {
-        return a;
-    }
-    return gcd(b, a % b);
-}
-//_____________________________
-ll expo(ll a, ll b, ll mod)
-{
-    ll res = 1;
-    while (b > 0)
-    {
-        if (b & 1)
-            res = (res * a) % mod;
-        a = (a * a) % mod;
-        b = b >> 1;
-    }
-    return res;
-}
-//__factorial______________________________________________
-vector<ll> fact;
-void factOfN(ll n)
-{
-    ll prod = 1;
-    fact.resize(n + 1);
-    for (int f = 1; f <= n; f++)
-    {
-
-        fact[f] = prod * f;
-        prod = prod * f;
-    }
-}
 //--------------------------------------------------------------------------------------------------------------------------------
 
 //>----------------------------ＳＯＬＶＥ-----------------------------------------------------------------------------------------------------------------------------------------------
 
-void solve()
+vector<string> letterCombinations(string digits)
 {
 
-    int a;
-    cin >> a;
-    cout << "TESTING INPUT : " << a << " OUPUT : " << a << endl;
-    debug(a, "Error checking OK");
-    /*
-    ! Warning
-    -> Problem 21 Find the subarray max sum of length k
-    > What is the best way
-    # Solve the problems
-    * What is the best way to approach a problem
-    ** What is the best way to approach a problem
-    - In oops We always compares it with real world problem
-    _ In oops We always compares it with real world problem
-    : TC O(N)
-    TODO: OK
-    */
+    vector<string> res;
+    if (digits.size() == 0)
+    {
+        return res;
+    }
+
+    unordered_map<char, string> mpp{
+        {'1', ""},
+        {'2', "abc"},
+        {'3', "def"},
+        {'4', "ghi"},
+        {'5', "jkl"},
+        {'6', "mno"},
+        {'7', "pqrs"},
+        {'8', "tuv"},
+        {'9', "wxyz"},
+    };
+
+    for (auto num : digits)
+    {
+        string strCurrNum = mpp[num];
+        vector<string> temp;
+        for (auto ch : strCurrNum)
+        {
+            if (res.empty())
+            {
+                temp.push_back({ch});
+            }
+            else
+            {
+                for (string s : res)
+                {
+                    temp.push_back({s + ch});
+                }
+            }
+        }
+        res = temp;
+    }
+    return res;
+}
+void solve()
+{
+    string s;
+    cin >> s;
+    debug(s);
+
+    auto ans = letterCombinations(s);
+    debug(ans);
 }
 
 //>-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -160,9 +153,9 @@ int main()
     cin.tie(0);
 
 #ifndef ONLINE_JUDGE
-    freopen("Error.txt", "w", stderr);
-    freopen("output.txt", "w", stdout);
-    freopen("input.txt", "r", stdin);
+    freopen("../Error.txt", "w", stderr);
+    freopen("../output.txt", "w", stdout);
+    freopen("../input.txt", "r", stdin);
 #endif
     auto start1 = high_resolution_clock::now();
     solve();

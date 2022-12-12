@@ -89,68 +89,51 @@ typedef map<int, int> mpint;
 typedef pair<int, int> pi;
 typedef priority_queue<int> pqmax;
 typedef priority_queue<int, vector<int>, greater<int>> pqmin;
-//_____________________________
-ll gcd(ll a, ll b)
-{
-    if (b > a)
-    {
-        return gcd(b, a);
-    }
-    if (b == 0)
-    {
-        return a;
-    }
-    return gcd(b, a % b);
-}
-//_____________________________
-ll expo(ll a, ll b, ll mod)
-{
-    ll res = 1;
-    while (b > 0)
-    {
-        if (b & 1)
-            res = (res * a) % mod;
-        a = (a * a) % mod;
-        b = b >> 1;
-    }
-    return res;
-}
-//__factorial______________________________________________
-vector<ll> fact;
-void factOfN(ll n)
-{
-    ll prod = 1;
-    fact.resize(n + 1);
-    for (int f = 1; f <= n; f++)
-    {
-
-        fact[f] = prod * f;
-        prod = prod * f;
-    }
-}
 //--------------------------------------------------------------------------------------------------------------------------------
 
 //>----------------------------ＳＯＬＶＥ-----------------------------------------------------------------------------------------------------------------------------------------------
 
+/*
+Example 1:
+Input: strs = ["eat","tea","tan","ate","nat","bat"]
+Output: [["bat"],["nat","tan"],["ate","eat","tea"]]
+
+Example 2:
+Input: strs = [""]
+Output: [[""]]
+
+Example 3:
+Input: strs = ["a"]
+Output: [["a"]]
+
+*/
+vector<vector<string>> groupAnagrams(vector<string> &strs)
+{
+
+    map<string, vector<string>> mpp;
+
+    for (auto &s : strs)
+    {
+        string sortedStr = s;
+        sort(sortedStr.begin(), sortedStr.end());
+        mpp[sortedStr].push_back(s);
+    }
+
+    vector<vector<string>> anagrams;
+    for (auto &grp : mpp)
+    {
+        anagrams.push_back(grp.second);
+    }
+
+    return anagrams;
+}
 void solve()
 {
 
-    int a;
-    cin >> a;
-    cout << "TESTING INPUT : " << a << " OUPUT : " << a << endl;
-    debug(a, "Error checking OK");
-    /*
-    ! Warning
-    -> Problem 21 Find the subarray max sum of length k
-    > What is the best way
-    # Solve the problems
-    * What is the best way to approach a problem
-    ** What is the best way to approach a problem
-    - In oops We always compares it with real world problem
-    _ In oops We always compares it with real world problem
-    : TC O(N)
-    TODO: OK
-    */
+    vector<string> strs{"eat", "tea", "tan", "ate", "nat", "bat"};
+
+    auto ans = groupAnagrams(strs);
+    debug(ans);
 }
 
 //>-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -160,9 +143,9 @@ int main()
     cin.tie(0);
 
 #ifndef ONLINE_JUDGE
-    freopen("Error.txt", "w", stderr);
-    freopen("output.txt", "w", stdout);
-    freopen("input.txt", "r", stdin);
+    freopen("../Error.txt", "w", stderr);
+    freopen("../output.txt", "w", stdout);
+    freopen("../input.txt", "r", stdin);
 #endif
     auto start1 = high_resolution_clock::now();
     solve();
