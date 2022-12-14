@@ -93,99 +93,75 @@ typedef priority_queue<int, vector<int>, greater<int>> pqmin;
 
 //>----------------------------ＳＯＬＶＥ-----------------------------------------------------------------------------------------------------------------------------------------------
 
-set<string> st;
-bool wordBreakRecursive(string word, int partitionPos)
+bool compare(char a, char b)
 {
+    return a < b;
+}
+bool compare1(char a, char b)
+{
+    return a > b;
+}
 
-    //> reached end of word after all possible partition, means we were able to find all segments
-    if (partitionPos == word.size())
+long long smallestNumber(long long num)
+{
+    string number = to_string(num);
+
+    if (num < 0)
     {
-        return true;
+        sort(number.begin() + 1, number.end(), compare1);
+        long long ans = 0;
+        for (long long i = 1; i < number.size(); i++)
+        {
+            ans = ans * 10 + number[i] - '0';
+        }
+        return ans * -1;
+    }
+    else
+    {
+
+        sort(number.begin(), number.end(), compare);
     }
 
-    /*
-    > else, create new partitions, from partitionPos
-    > now we are not recuring for all partition created,
-    > we only recurse for valid partition which which is present in set,or map
-    */
-
-    for (int i = partitionPos; i < word.size(); i++)
+    long long cnZero = 0;
+    for (auto ch : number)
     {
-        string part = word.substr(partitionPos, i - partitionPos + 1);
-        if ((st.find(part) != st.end()) && wordBreakRecursive(word, i + 1))
+        if (ch == '0')
         {
-            return true;
+            cnZero++;
         }
     }
-    return false;
+
+    string res = "";
+    if (cnZero == number.size())
+    {
+        return 0;
+    }
+
+    res += number[cnZero++];
+
+    long long subStrIndx = cnZero;
+
+    // debug(number.substr(subStrIndx));
+    cnZero--;
+    while (cnZero--)
+    {
+        res += '0';
+    }
+    res += number.substr(subStrIndx);
+    long long ans2 = 0;
+    for (int i = 0; i < res.size(); i++)
+    {
+        ans2 = ans2 * 10 + res[i] - '0';
+    }
+    return ans2;
 }
-
-
-bool wordBreakHelper(string word, unordered_map<string, bool> mpp)
-{
-
-    if (word == "")
-    {
-        return true;
-    }
-    if (word.size() == 0)
-    {
-        return true;
-    }
-
-    for (int i = 1; i <= word.size(); i++)
-    {
-        string prefix = word.substr(0, i);
-        debug(prefix, word.substr(i, word.size() - i));
-        if (mpp.find(prefix) != mpp.end() && wordBreakHelper(word.substr(i, word.size() - i), mpp))
-        {
-            return true;
-        }
-    }
-    return false;
-}
-
-bool wordBreakDP(string word, unordered_map<string, bool> mpp)
-{
-    if (word.size() == 0)
-    {
-        return true;
-    }
-    string temp = "";
-    for (int i = 0; i < word.size(); i++)
-    {
-        temp += word[i];
-
-        if (mpp.find(temp) != mpp.end() && wordBreakDP(word.substr(i + 1), mpp))
-        {
-            return true;
-        }
-    }
-    return false;
-}
-bool wordBreak(string word, vector<string> &wordDict)
-{
-    unordered_map<string, bool> mpp;
-    for (auto wrd : wordDict)
-    {
-        mpp[wrd] = true;
-    }
-    return wordBreakHelper(word, mpp);
-}
-
 void solve()
 {
-    string word;
-    cin >> word;
-    string ele;
-    vector<string> wordDict;
 
-    while (cin >> ele)
-    {
-        wordDict.push_back(ele);
-    }
-    debug(wordDict, word);
-    cout << wordBreak(word, wordDict);
+    ll num;
+    cin >> num;
+    debug(num);
+    cout << smallestNumber(num) << endl;
 }
 
 //>-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------

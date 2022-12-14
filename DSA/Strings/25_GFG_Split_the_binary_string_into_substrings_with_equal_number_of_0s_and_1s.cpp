@@ -92,100 +92,57 @@ typedef priority_queue<int, vector<int>, greater<int>> pqmin;
 //--------------------------------------------------------------------------------------------------------------------------------
 
 //>----------------------------ＳＯＬＶＥ-----------------------------------------------------------------------------------------------------------------------------------------------
+/*
+ - Given a binary string str of length N, the task is to find the
+ - maximum count of consecutive substrings str can be divided into
+ - such that all the substrings are balanced i.e. they have equal
+ - number of 0s and 1s. If it is not possible to split str satisfying
+ - the conditions then print -1.
 
-set<string> st;
-bool wordBreakRecursive(string word, int partitionPos)
+ - Input: str = “0100110101”
+ - Output: 4
+ - The required substrings are “01”, “0011”, “01” and “01”.
+
+ - Input: str = “0111100010”
+ - Output: 3
+
+ - Input: str = “0000000000”
+ - Output: -1
+*/
+int split(string s)
 {
 
-    //> reached end of word after all possible partition, means we were able to find all segments
-    if (partitionPos == word.size())
-    {
-        return true;
-    }
+    int cntZero = 0;
+    int cntOne = 0;
+    int res = 0;
 
-    /*
-    > else, create new partitions, from partitionPos
-    > now we are not recuring for all partition created,
-    > we only recurse for valid partition which which is present in set,or map
-    */
-
-    for (int i = partitionPos; i < word.size(); i++)
+    for (int i = 0; i < s.size(); i++)
     {
-        string part = word.substr(partitionPos, i - partitionPos + 1);
-        if ((st.find(part) != st.end()) && wordBreakRecursive(word, i + 1))
+        if (s[i] == '0')
         {
-            return true;
+            cntZero++;
+        }
+        else
+        {
+            cntOne++;
+        }
+        if (cntOne == cntZero)
+        {
+            res++;
         }
     }
-    return false;
-}
-
-
-bool wordBreakHelper(string word, unordered_map<string, bool> mpp)
-{
-
-    if (word == "")
+    if (cntOne != cntZero)
     {
-        return true;
+        return -1;
     }
-    if (word.size() == 0)
-    {
-        return true;
-    }
-
-    for (int i = 1; i <= word.size(); i++)
-    {
-        string prefix = word.substr(0, i);
-        debug(prefix, word.substr(i, word.size() - i));
-        if (mpp.find(prefix) != mpp.end() && wordBreakHelper(word.substr(i, word.size() - i), mpp))
-        {
-            return true;
-        }
-    }
-    return false;
-}
-
-bool wordBreakDP(string word, unordered_map<string, bool> mpp)
-{
-    if (word.size() == 0)
-    {
-        return true;
-    }
-    string temp = "";
-    for (int i = 0; i < word.size(); i++)
-    {
-        temp += word[i];
-
-        if (mpp.find(temp) != mpp.end() && wordBreakDP(word.substr(i + 1), mpp))
-        {
-            return true;
-        }
-    }
-    return false;
-}
-bool wordBreak(string word, vector<string> &wordDict)
-{
-    unordered_map<string, bool> mpp;
-    for (auto wrd : wordDict)
-    {
-        mpp[wrd] = true;
-    }
-    return wordBreakHelper(word, mpp);
+    return res;
 }
 
 void solve()
 {
-    string word;
-    cin >> word;
-    string ele;
-    vector<string> wordDict;
-
-    while (cin >> ele)
-    {
-        wordDict.push_back(ele);
-    }
-    debug(wordDict, word);
-    cout << wordBreak(word, wordDict);
+    string s;
+    cin >> s;
+    cout << split(s) << endl;
 }
 
 //>-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
