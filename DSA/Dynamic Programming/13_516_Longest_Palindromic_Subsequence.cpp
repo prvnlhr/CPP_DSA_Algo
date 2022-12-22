@@ -92,92 +92,42 @@ typedef priority_queue<int, vector<int>, greater<int>> pqmin;
 //--------------------------------------------------------------------------------------------------------------------------------
 
 //>----------------------------ＳＯＬＶＥ-----------------------------------------------------------------------------------------------------------------------------------------------
-/*
-
-* Examples
-- Shortest super-sequences
-- Shortest super-sequences for input Sequences,
--> “AGGTAB” and “GXTXAYB” is "AGXGTXAYB" of length 9,
-- as AGXGTXAYB contains both AGGTAB and GXTXAYB .
-
-
-- INTUITION__
-- In worst case , super-sequence of "AGGTAB" and "GXTXAYB" would be
-- "AGGTAB" + "GXTXAYB" -> "AGGTABGXTXAYB"
-- now , when we look carefully this super-sequence has GTAB twice
-- so if we remove GTAB from "AGGTABGXTXAYB" we get -> "AGXGTXAYB" which is required SS
-- therefore "AGGTABGXTXAYB" - "GTAB" -> "AGXGTXAYB"
-- from ABOVE line we see that ( m + n ) - LCS == required SS
-- SO now the problem boils down to finding LCS,then m + n - LCS == SS
-- Now to print Shortest common supersequence, we can use Dp table.
-*/
-
-string shortestCommonSupersequence(string s, string t)
+int longestPalindromeSubseq(string s)
 {
 
-    int n1 = s.size();
-    int n2 = t.size();
+    string t = s;
+    reverse(t.begin(), t.end());
+    debug(s, t);
 
-    vector<vector<int>> dp(n1 + 1, vector<int>(n2 + 1, 0));
+    int n1 = s.size();
+    vector<vector<int>> dp(n1 + 1, vector<int>(n1 + 1, 0));
+    debug(dp);
 
     for (int i = 1; i < n1 + 1; i++)
     {
-        for (int j = 1; j < n2 + 1; j++)
+        for (int j = 1; j < n1 + 1; j++)
         {
+
             if (s[i - 1] == t[j - 1])
             {
                 dp[i][j] = 1 + dp[i - 1][j - 1];
             }
             else
             {
+
                 dp[i][j] = max(dp[i - 1][j], dp[i][j - 1]);
             }
         }
     }
-
-    int i = n1;
-    int j = n2;
-
-    string ss = "";
-
-    while (i > 0 && j > 0)
-    {
-        if (s[i - 1] == t[j - 1])
-        {
-            ss = s[i - 1] + ss;
-            i--;
-            j--;
-        }
-        else if (dp[i - 1][j] > dp[i][j - 1])
-        {
-            ss = s[i - 1] + ss;
-            i--;
-        }
-        else
-        {
-            ss = t[j - 1] + ss;
-            j--;
-        }
-    }
-
-    while (i > 0)
-    {
-        ss = s[i - 1] + ss;
-        i--;
-    }
-    while (j > 0)
-    {
-        ss = t[j - 1] + ss;
-        j--;
-    }
-    return ss;
+    debug(dp);
+    return dp[n1][n1];
 }
-
 void solve()
 {
-    string s, t;
-    cin >> s >> t;
-    cout << shortestCommonSupersequence(s, t) << endl;
+
+    string s;
+    cin >> s;
+    cout << longestPalindromeSubseq(s) << endl;
 }
 
 //>-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------

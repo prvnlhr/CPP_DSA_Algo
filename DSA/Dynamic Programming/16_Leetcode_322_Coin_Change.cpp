@@ -91,93 +91,60 @@ typedef priority_queue<int> pqmax;
 typedef priority_queue<int, vector<int>, greater<int>> pqmin;
 //--------------------------------------------------------------------------------------------------------------------------------
 
-//>----------------------------ＳＯＬＶＥ-----------------------------------------------------------------------------------------------------------------------------------------------
+//> ----------------------------ＳＯＬＶＥ-----------------------------------------------------------------------------------------------------------------------------------------------
 /*
+- You are given an integer array coins representing coins of different
+- denominations and an integer amount representing a total amount of money.
+- Return the fewest number of coins that you need to make up that amount.
+- If that amount of money cannot be made up by any combination
+- of the coins, return -1.
 
-* Examples
-- Shortest super-sequences
-- Shortest super-sequences for input Sequences,
--> “AGGTAB” and “GXTXAYB” is "AGXGTXAYB" of length 9,
-- as AGXGTXAYB contains both AGGTAB and GXTXAYB .
+- You may assume that you have an infinite number of each
+- kind of coin.
 
+- Examples:
+-> Input: coins[] = {25, 10, 5}, amount = 30
+-> Output: Minimum 2 coins required
+- 10+10+10 = 30 , 3 coins
+- 25+5 = 30 , 2 coins
+- 5+5+5+5+5+5 = 30 , 6 coins
+- We can use one coin of 25 cents and one of 5 cents , we will get minimum no. of coins
+-
+-> Input: coins[] = {9, 6, 5, 1}, amount = 11
+-> Output: Minimum 2 coins required
+- We can use one coin of 6 cents and 1 coin of 5 cents
 
-- INTUITION__
-- In worst case , super-sequence of "AGGTAB" and "GXTXAYB" would be
-- "AGGTAB" + "GXTXAYB" -> "AGGTABGXTXAYB"
-- now , when we look carefully this super-sequence has GTAB twice
-- so if we remove GTAB from "AGGTABGXTXAYB" we get -> "AGXGTXAYB" which is required SS
-- therefore "AGGTABGXTXAYB" - "GTAB" -> "AGXGTXAYB"
-- from ABOVE line we see that ( m + n ) - LCS == required SS
-- SO now the problem boils down to finding LCS,then m + n - LCS == SS
-- Now to print Shortest common supersequence, we can use Dp table.
+- Example 1:
+-> Input: coins = [1,2,5], amount = 11
+-> Output: 3
+- Explanation: 11 = 5 + 5 + 1
+
+- Example 2:
+-> Input: coins = [2], amount = 3
+-> Output: -1
+
+- Example 3:
+-> Input: coins = [1], amount = 0
+-> Output: 0
 */
 
-string shortestCommonSupersequence(string s, string t)
+int coinChange(vector<int> &coins, int amount)
 {
-
-    int n1 = s.size();
-    int n2 = t.size();
-
-    vector<vector<int>> dp(n1 + 1, vector<int>(n2 + 1, 0));
-
-    for (int i = 1; i < n1 + 1; i++)
-    {
-        for (int j = 1; j < n2 + 1; j++)
-        {
-            if (s[i - 1] == t[j - 1])
-            {
-                dp[i][j] = 1 + dp[i - 1][j - 1];
-            }
-            else
-            {
-                dp[i][j] = max(dp[i - 1][j], dp[i][j - 1]);
-            }
-        }
-    }
-
-    int i = n1;
-    int j = n2;
-
-    string ss = "";
-
-    while (i > 0 && j > 0)
-    {
-        if (s[i - 1] == t[j - 1])
-        {
-            ss = s[i - 1] + ss;
-            i--;
-            j--;
-        }
-        else if (dp[i - 1][j] > dp[i][j - 1])
-        {
-            ss = s[i - 1] + ss;
-            i--;
-        }
-        else
-        {
-            ss = t[j - 1] + ss;
-            j--;
-        }
-    }
-
-    while (i > 0)
-    {
-        ss = s[i - 1] + ss;
-        i--;
-    }
-    while (j > 0)
-    {
-        ss = t[j - 1] + ss;
-        j--;
-    }
-    return ss;
 }
 
 void solve()
 {
-    string s, t;
-    cin >> s >> t;
-    cout << shortestCommonSupersequence(s, t) << endl;
+
+    int amount;
+    cin >> amount;
+    vector<int> coins;
+    int cn;
+    while (cin >> cn)
+    {
+        coins.push_back(cn);
+    }
+    debug(coins);
+    cout << coinChange(coins, amount) << endl;
 }
 
 //>-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------

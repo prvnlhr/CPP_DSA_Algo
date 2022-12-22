@@ -92,92 +92,113 @@ typedef priority_queue<int, vector<int>, greater<int>> pqmin;
 //--------------------------------------------------------------------------------------------------------------------------------
 
 //>----------------------------ＳＯＬＶＥ-----------------------------------------------------------------------------------------------------------------------------------------------
+
 /*
-
-* Examples
-- Shortest super-sequences
-- Shortest super-sequences for input Sequences,
--> “AGGTAB” and “GXTXAYB” is "AGXGTXAYB" of length 9,
-- as AGXGTXAYB contains both AGGTAB and GXTXAYB .
-
-
-- INTUITION__
-- In worst case , super-sequence of "AGGTAB" and "GXTXAYB" would be
-- "AGGTAB" + "GXTXAYB" -> "AGGTABGXTXAYB"
-- now , when we look carefully this super-sequence has GTAB twice
-- so if we remove GTAB from "AGGTABGXTXAYB" we get -> "AGXGTXAYB" which is required SS
-- therefore "AGGTABGXTXAYB" - "GTAB" -> "AGXGTXAYB"
-- from ABOVE line we see that ( m + n ) - LCS == required SS
-- SO now the problem boils down to finding LCS,then m + n - LCS == SS
-- Now to print Shortest common supersequence, we can use Dp table.
+>Recursive
+:O(2^N)
 */
 
-string shortestCommonSupersequence(string s, string t)
+int minDisRec(string s, string t, int n1, int n2)
 {
+    if (n1 == 0)
+    {
+        return n2;
+    }
+    if (n2 == 0)
+    {
+        return n1;
+    }
+    if (s[n1 - 1] == t[n2 - 1])
+    {
+        minDisRec(s, t, n1 - 1, n2 - 1);
+    }
+    int a = minDisRec(s, t, n1, n2 - 1);     // # Insert
+    int b = minDisRec(s, t, n1 - 1, n2);     // # Delete
+    int c = minDisRec(s, t, n1 - 1, n2 - 1); // # Replace
+    return 1 + min({a, b, c});
+}
 
+/*
+> Recursive Memoization
+> O(n*n)
+*/
+int minDisRecMemo(string s, string t, int n1, int n2, vector<vector<int>> &dp)
+{
+    if (n1 == 0)
+    {
+        return n2;
+    }
+    if (n2 == 0)
+    {
+        return n1;
+    }
+    if (dp[n1][n2] != -1)
+    {
+        return dp[n1][n2];
+    }
+    if (s[n1 - 1] == t[n2 - 1])
+    {
+        return dp[n1][n2] = 0 + minDisRecMemo(s, t, n1 - 1, n2 - 1, dp);
+    }
+    int a = minDisRecMemo(s, t, n1, n2 - 1, dp);     // # Insert
+    int b = minDisRecMemo(s, t, n1 - 1, n2, dp);     // # Delete
+    int c = minDisRecMemo(s, t, n1 - 1, n2 - 1, dp); // # Replace
+    int ans = 1 + min({a, b, c});
+    dp[n1][n2] = ans;
+    return ans;
+}
+
+/*
+> Iterative Dp
+:O(n*n)
+*/
+int minDistanceIterDp(string s, string t)
+{
     int n1 = s.size();
     int n2 = t.size();
 
-    vector<vector<int>> dp(n1 + 1, vector<int>(n2 + 1, 0));
+    vector<vector<int>> dp(n1 + 1, vector<int>(n2 + 1, -1));
 
+    for (int i = 0; i < n1 + 1; i++)
+    {
+        dp[i][0] = i;
+    }
+    for (int j = 0; j < n2 + 1; j++)
+    {
+        dp[0][j] = j;
+    }
     for (int i = 1; i < n1 + 1; i++)
     {
         for (int j = 1; j < n2 + 1; j++)
         {
             if (s[i - 1] == t[j - 1])
             {
-                dp[i][j] = 1 + dp[i - 1][j - 1];
+                dp[i][j] = dp[i - 1][j - 1];
             }
             else
             {
-                dp[i][j] = max(dp[i - 1][j], dp[i][j - 1]);
+                dp[i][j] = 1 + min({dp[i - 1][j - 1], dp[i][j - 1], dp[i - 1][j]});
             }
         }
     }
-
-    int i = n1;
-    int j = n2;
-
-    string ss = "";
-
-    while (i > 0 && j > 0)
-    {
-        if (s[i - 1] == t[j - 1])
-        {
-            ss = s[i - 1] + ss;
-            i--;
-            j--;
-        }
-        else if (dp[i - 1][j] > dp[i][j - 1])
-        {
-            ss = s[i - 1] + ss;
-            i--;
-        }
-        else
-        {
-            ss = t[j - 1] + ss;
-            j--;
-        }
-    }
-
-    while (i > 0)
-    {
-        ss = s[i - 1] + ss;
-        i--;
-    }
-    while (j > 0)
-    {
-        ss = t[j - 1] + ss;
-        j--;
-    }
-    return ss;
+    return dp[n1][n2];
 }
 
+int minDistance(string word1, string word2)
+{
+    int n1 = word1.size();
+    int n2 = word2.size();
+
+    vector<vector<int>> dp(n1 + 1, vector<int>(n2 + 1, -1));
+    // return minDisRecMemo(word1, word2, n1, n2, dp);
+    return minDistanceIterDp(word1, word2);
+}
 void solve()
 {
     string s, t;
     cin >> s >> t;
-    cout << shortestCommonSupersequence(s, t) << endl;
+    debug(s, t);
+    cout << minDistance(s, t) << endl;
 }
 
 //>-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
