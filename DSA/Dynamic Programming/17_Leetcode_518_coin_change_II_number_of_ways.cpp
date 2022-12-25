@@ -93,43 +93,77 @@ typedef priority_queue<int, vector<int>, greater<int>> pqmin;
 
 //> ----------------------------ＳＯＬＶＥ-----------------------------------------------------------------------------------------------------------------------------------------------
 /*
-- You are given an integer array coins representing coins of different
-- denominations and an integer amount representing a total amount of money.
-- Return the fewest number of coins that you need to make up that amount.
-- If that amount of money cannot be made up by any combination
-- of the coins, return -1.
-
-- You may assume that you have an infinite number of each
-- kind of coin.
-
-- Examples:
--> Input: coins[] = {25, 10, 5}, amount = 30
--> Output: Minimum 2 coins required
-- 10+10+10 = 30 , 3 coins
-- 25+5 = 30 , 2 coins
-- 5+5+5+5+5+5 = 30 , 6 coins
-- We can use one coin of 25 cents and one of 5 cents , we will get minimum no. of coins
+* No ways to make coin change problem
+- Given a value V , we want to make change of V cents, and we have
+- infinite supply of each coins,
+- Find the number of ways to make coins change
+-> example 1 : for V = 4 and S = {1,2,3},
+- there are four solutions: {1,1,1,1},{1,1,2},{2,2},{1,3}.
+-> So output should be 4.
 -
--> Input: coins[] = {9, 6, 5, 1}, amount = 11
--> Output: Minimum 2 coins required
-- We can use one coin of 6 cents and 1 coin of 5 cents
+-> example 2: for V = 10 and S = {2, 5, 3, 6},
+- there are five solutions: {2,2,2,2,2}, {2,2,3,3}, {2,2,6}, {2,3,5} and {5,5}.
+-> So the output should be 5.
+-
+-> example 2: for V = 5 and S = {1, 2, 5},
+- there are five solutions: {2,2,1}, {2,1,1,1}, {1,1,1,1,1}.
+-> So the output should be 4.
+- 5 = 5
+- 5 = 2 + 2 + 1
+- 5 = 2 + 1 + 1 + 1
+- 5 = 1 + 1 + 1 + 1 + 1
 
-- Example 1:
--> Input: coins = [1,2,5], amount = 11
--> Output: 3
-- Explanation: 11 = 5 + 5 + 1
-
-- Example 2:
--> Input: coins = [2], amount = 3
--> Output: -1
-
-- Example 3:
--> Input: coins = [1], amount = 0
--> Output: 0
 */
 
-int coinChange(vector<int> &coins, int amount)
+int changeRec(int amount, vector<int> &coins, int n)
 {
+    if (amount == 0)
+    {
+        return 1;
+    }
+    if (amount < 0 || n < 0)
+    {
+        return 0;
+    }
+    if (n <= 0 && amount >= 1)
+    {
+        return 0;
+    }
+    int take = changeRec(amount - coins[n - 1], coins, n);
+    int not_take = changeRec(amount, coins, n - 1);
+    return take + not_take;
+}
+int changeMemo(int amount, vector<int> &coins, int n, vector<vector<int>> &dp)
+{
+
+    if (amount == 0)
+    {
+        return 1;
+    }
+    if (amount < 0 || n < 0)
+    {
+        return 0;
+    }
+    if (n <= 0 && amount >= 1)
+    {
+        return 0;
+    }
+    if (dp[n][amount] != -1)
+    {
+        return dp[n][amount];
+    }
+    int take = changeMemo(amount - coins[n - 1], coins, n, dp);
+    int not_take = changeMemo(amount, coins, n - 1, dp);
+    return dp[n][amount] = take + not_take;
+}
+
+int change(int amount, vector<int> &coins)
+{
+    int n = coins.size();
+    // int ans = changeRec(amount, coins, n);
+    vector<vector<int>> dp(n + 1, vector<int>(amount + 1, -1));
+    int ans = changeMemo(amount, coins, n, dp);
+    return ans;
 }
 
 void solve()
@@ -144,7 +178,7 @@ void solve()
         coins.push_back(cn);
     }
     debug(coins);
-    cout << coinChange(coins, amount) << endl;
+    cout << change(amount, coins) << endl;
 }
 
 //>-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
