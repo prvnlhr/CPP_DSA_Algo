@@ -92,68 +92,73 @@ typedef priority_queue<int, vector<int>, greater<int>> pqmin;
 //--------------------------------------------------------------------------------------------------------------------------------
 
 //>----------------------------ＳＯＬＶＥ-----------------------------------------------------------------------------------------------------------------------------------------------
-bool isCylic(vector<vector<int>> &adjList, bool visited[], bool reccursionPath[], int check[], int node)
+
+bool dfs(vector<int> adjList[], bool visited[], bool recursionPath[], int node)
 {
+    debug(node);
 
     visited[node] = true;
-    reccursionPath[node] = true;
-
-    check[node] = 0;
+    recursionPath[node] = true;
 
     for (auto adjNode : adjList[node])
     {
         if (!visited[adjNode])
         {
-            if (isCylic(adjList, visited, reccursionPath, check, adjNode))
+            if (dfs(adjList, visited, recursionPath, adjNode))
             {
-                check[node] = 0;
-                return true;
-            }
-            else if (reccursionPath[adjNode])
-            {
-                check[node] = 0;
                 return true;
             }
         }
+        else if (recursionPath[adjNode])
+        {
+            return true;
+        }
     }
-
-    reccursionPath[node] = false;
-    check[node] = 1;
+    recursionPath[node] = false;
     return false;
 }
 
-vector<int> eventualSafeNodes(vector<vector<int>> &graph)
+bool canFinish(int numCourses, vector<vector<int>> &prerequisites)
 {
-    int V = graph.size();
+    debug(numCourses, prerequisites);
+    vector<int> adjList[numCourses];
 
-    bool visited[V] = {false};
-    bool recursionPath[V] = {false};
-    int check[V] = {0};
+    for (auto edge : prerequisites)
+    {
+        int u = edge[0];
+        int v = edge[1];
+        adjList[u].push_back(v);
+    }
 
-    for (int i = 0; i < V; i++)
+    for (auto ele : adjList)
+    {
+        debug(ele);
+    }
+
+    bool visited[numCourses];
+    memset(visited, false, sizeof visited);
+
+    bool recursionPath[numCourses];
+    memset(recursionPath, false, sizeof recursionPath);
+
+    for (int i = 0; i < numCourses; i++)
     {
         if (!visited[i])
         {
-            isCylic(graph, visited, recursionPath, check, i);
+            if (dfs(adjList, visited, recursionPath, i))
+            {
+                return false;
+            }
         }
     }
 
-    vector<int> res;
-    for (int i = 0; i < V; i++)
-    {
-        if (check[i] == 1)
-        {
-            res.push_back(i);
-        }
-    }
-    return res;
+    return true;
 }
 void solve()
 {
-
-    vector<vector<int>> graph{{1, 2}, {2, 3}, {5}, {0}, {5}, {}, {}};
-    auto ans = eventualSafeNodes(graph);
-    debug(ans);
+    int numCourses = 2;
+    vector<vector<int>> prerequisites{{1, 0}, {0, 1}};
+    cout << canFinish(numCourses, prerequisites) << endl;
 }
 
 //>-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------

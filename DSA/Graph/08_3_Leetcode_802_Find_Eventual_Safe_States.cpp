@@ -92,33 +92,30 @@ typedef priority_queue<int, vector<int>, greater<int>> pqmin;
 //--------------------------------------------------------------------------------------------------------------------------------
 
 //>----------------------------ＳＯＬＶＥ-----------------------------------------------------------------------------------------------------------------------------------------------
-bool isCylic(vector<vector<int>> &adjList, bool visited[], bool reccursionPath[], int check[], int node)
+bool dfs(vector<vector<int>> &adjList, bool visited[], bool recursionPath[], vector<int> &check, int node)
 {
-
     visited[node] = true;
-    reccursionPath[node] = true;
-
-    check[node] = 0;
+    recursionPath[node] = true;
 
     for (auto adjNode : adjList[node])
     {
         if (!visited[adjNode])
         {
-            if (isCylic(adjList, visited, reccursionPath, check, adjNode))
-            {
-                check[node] = 0;
-                return true;
-            }
-            else if (reccursionPath[adjNode])
+            if (dfs(adjList, visited, recursionPath, check, adjNode))
             {
                 check[node] = 0;
                 return true;
             }
         }
+        else if (recursionPath[adjNode])
+        {
+            check[node] = 0;
+            return true;
+        }
     }
-
-    reccursionPath[node] = false;
     check[node] = 1;
+    recursionPath[node] = false;
+
     return false;
 }
 
@@ -126,19 +123,20 @@ vector<int> eventualSafeNodes(vector<vector<int>> &graph)
 {
     int V = graph.size();
 
-    bool visited[V] = {false};
-    bool recursionPath[V] = {false};
-    int check[V] = {0};
+    bool visited[V];
+    memset(visited, false, sizeof visited);
 
+    bool recursionPath[V];
+    memset(recursionPath, false, sizeof recursionPath);
+    vector<int> check(V + 1, 0);
+    vector<int> res;
     for (int i = 0; i < V; i++)
     {
         if (!visited[i])
         {
-            isCylic(graph, visited, recursionPath, check, i);
+            dfs(graph, visited, recursionPath, check, i);
         }
     }
-
-    vector<int> res;
     for (int i = 0; i < V; i++)
     {
         if (check[i] == 1)
