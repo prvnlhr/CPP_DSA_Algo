@@ -92,77 +92,77 @@ typedef priority_queue<int, vector<int>, greater<int>> pqmin;
 //--------------------------------------------------------------------------------------------------------------------------------
 
 //>----------------------------ＳＯＬＶＥ-----------------------------------------------------------------------------------------------------------------------------------------------
-//>Striver solution
-void topoSort(vector<int> adjList[], int visited[], stack<int> &st, int node)
+/*
+ ** Shortest Path in Weighted undirected graph
+> You are given a weighted undirected graph having n+1 vertices numbered
+> from 0 to n and m edges describing there are edges between a to b with
+> some weight, find the shortest path between the vertex 1 and the vertex n
+> and if path does not exist then return a list consisting of only -1.
+
+*/
+vector<int> shortestPath(int n, int m, vector<vector<int>> &edges)
 {
-
-    visited[node] = 1;
-    debug(node);
-
-    for (auto adjNode : adjList[node])
+    //>  1 based index -> n+1
+    vector<pair<int, int>> adjList[n + 1];
+    for (int i = 0; i < m; i++)
     {
-        if (!visited[adjNode])
-        {
-            topoSort(adjList, visited, st, adjNode);
-        }
+        int u = edges[i][0];
+        int v = edges[i][1];
+        int wt = edges[i][2];
+        adjList[u].push_back({v, wt});
+        adjList[v].push_back({u, wt});
     }
-    st.push(node);
-}
 
-string findOrder(string dict[], int N, int K)
-{
-    vector<int> adjList[K];
+    vector<int> distArray(n + 1, 1e9);
 
-    for (int i = 0; i < N - 1; i++)
+    priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> pqmin;
+
+    int parent[n + 1];
+    for (int i = 0; i < n + 1; i++)
     {
-        string s = dict[i];
-        string t = dict[i + 1];
-        int len = min(s.size(), t.size());
+        parent[i] = i;
+    }
+    distArray[1] = 0;
+    pqmin.push({0, 1});
 
-        for (int j = 0; j < len; j++)
+    while (!pqmin.empty())
+    {
+        int parentWt = pqmin.top().first;
+        int parentNode = pqmin.top().second;
+        pqmin.pop();
+
+        for (auto pairNode : adjList[parentNode])
         {
-            if (s[j] != t[j])
+            int adjWt = pairNode.second;
+            int adjNode = pairNode.first;
+
+            if (parentWt + adjWt < distArray[adjNode])
             {
-                adjList[s[j] - 'a'].push_back(t[j] - 'a');
-                break;
+                distArray[adjNode] = parentWt + adjWt;
+                pqmin.push({distArray[adjNode], adjNode});
+                parent[adjNode] = parentNode;
             }
         }
     }
-
-    int visited[K];
-    memset(visited, 0, sizeof visited);
-
-    vector<int> topoSortOrder;
-    stack<int> st;
-
-    for (int i = 0; i < K; i++)
+    vector<int> res;
+    if (distArray[n] == 1e9)
     {
-        if (visited[i] == 0)
-        {
-            topoSort(adjList, visited, st, i);
-        }
+        return {-1};
     }
 
-    while (!st.empty())
+    int node = n;
+    while (parent[node] != node)
     {
-        topoSortOrder.push_back(st.top());
-        st.pop();
+        res.push_back(node);
+        node = parent[node];
     }
-
-    string res = "";
-    for (int i = 0; i < topoSortOrder.size(); i++)
-    {
-        res += topoSortOrder[i] + 'a';
-    }
+    res.push_back(1);
+    reverse(res.begin(), res.end());
     return res;
 }
+
 void solve()
 {
-    int N = 5;
-    int K = 4;
-    string dict[] = {"baa", "abcd", "abca", "cab", "cad"};
-    auto ans = findOrder(dict, N, K);
-    debug(ans);
 }
 
 //>-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------

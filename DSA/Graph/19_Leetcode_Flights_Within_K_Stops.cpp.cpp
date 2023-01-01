@@ -92,77 +92,66 @@ typedef priority_queue<int, vector<int>, greater<int>> pqmin;
 //--------------------------------------------------------------------------------------------------------------------------------
 
 //>----------------------------ＳＯＬＶＥ-----------------------------------------------------------------------------------------------------------------------------------------------
-//>Striver solution
-void topoSort(vector<int> adjList[], int visited[], stack<int> &st, int node)
+int findCheapestPrice(int n, vector<vector<int>> &flights, int src, int dst, int k)
 {
 
-    visited[node] = 1;
-    debug(node);
+    vector<pair<int, int>> adjList[n];
 
-    for (auto adjNode : adjList[node])
+    for (auto it : flights)
     {
-        if (!visited[adjNode])
-        {
-            topoSort(adjList, visited, st, adjNode);
-        }
+        int u = it[0];
+        int v = it[1];
+        int wt = it[2];
+        adjList[u].push_back({v, wt});
     }
-    st.push(node);
-}
 
-string findOrder(string dict[], int N, int K)
-{
-    vector<int> adjList[K];
+    vector<int> distArray(n, 1e9);
+    distArray[src] = 0;
 
-    for (int i = 0; i < N - 1; i++)
+    queue<pair<int, pair<int, int>>> q;
+    q.push({0, {src, 0}});
+
+    while (!q.empty())
     {
-        string s = dict[i];
-        string t = dict[i + 1];
-        int len = min(s.size(), t.size());
+        auto it = q.front();
+        q.pop();
 
-        for (int j = 0; j < len; j++)
+        int stops = it.first;
+        int node = it.second.first;
+        int cost = it.second.second;
+
+        if (stops > k)
         {
-            if (s[j] != t[j])
+            continue;
+        }
+
+        for (auto iter : adjList[node])
+        {
+            int adjNode = iter.first;
+            int adjCost = iter.second;
+
+            if (adjCost + cost < distArray[adjNode] && stops <= k)
             {
-                adjList[s[j] - 'a'].push_back(t[j] - 'a');
-                break;
+                distArray[adjNode] = adjCost + cost;
+                q.push({stops + 1, {adjNode, adjCost + cost}});
             }
         }
     }
 
-    int visited[K];
-    memset(visited, 0, sizeof visited);
-
-    vector<int> topoSortOrder;
-    stack<int> st;
-
-    for (int i = 0; i < K; i++)
+    if (distArray[dst] == 1e9)
     {
-        if (visited[i] == 0)
-        {
-            topoSort(adjList, visited, st, i);
-        }
+        return -1;
     }
-
-    while (!st.empty())
-    {
-        topoSortOrder.push_back(st.top());
-        st.pop();
-    }
-
-    string res = "";
-    for (int i = 0; i < topoSortOrder.size(); i++)
-    {
-        res += topoSortOrder[i] + 'a';
-    }
-    return res;
+    return distArray[dst];
 }
 void solve()
 {
-    int N = 5;
-    int K = 4;
-    string dict[] = {"baa", "abcd", "abca", "cab", "cad"};
-    auto ans = findOrder(dict, N, K);
-    debug(ans);
+    int n = 4;
+    vector<vector<int>> flights{{0, 1, 100}, {1, 2, 100}, {2, 0, 100}, {1, 3, 600}, {2, 3, 200}};
+    int src = 0;
+    int dst = 3;
+    int k = 1;
+    cout << findCheapestPrice(n, flights, src, dst, k) << endl;
 }
 
 //>-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------

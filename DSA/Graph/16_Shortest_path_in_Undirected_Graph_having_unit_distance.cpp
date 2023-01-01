@@ -92,76 +92,64 @@ typedef priority_queue<int, vector<int>, greater<int>> pqmin;
 //--------------------------------------------------------------------------------------------------------------------------------
 
 //>----------------------------ＳＯＬＶＥ-----------------------------------------------------------------------------------------------------------------------------------------------
-//>Striver solution
-void topoSort(vector<int> adjList[], int visited[], stack<int> &st, int node)
+vector<int> shortestPath(vector<vector<int>> &edges, int N, int M, int src)
 {
 
-    visited[node] = 1;
-    debug(node);
+    int distArray[N];
 
-    for (auto adjNode : adjList[node])
+    for (int i = 0; i < N; i++)
     {
-        if (!visited[adjNode])
-        {
-            topoSort(adjList, visited, st, adjNode);
-        }
+        distArray[i] = 1e9;
     }
-    st.push(node);
-}
 
-string findOrder(string dict[], int N, int K)
-{
-    vector<int> adjList[K];
+    vector<int> adjList[N];
 
-    for (int i = 0; i < N - 1; i++)
+    for (int i = 0; i < M; i++)
     {
-        string s = dict[i];
-        string t = dict[i + 1];
-        int len = min(s.size(), t.size());
+        int u = edges[i][0];
+        int v = edges[i][1];
+        adjList[u].push_back(v);
+        adjList[v].push_back(u);
+    }
 
-        for (int j = 0; j < len; j++)
+    distArray[src] = 0;
+    queue<int> q;
+
+    q.push(src);
+
+    while (!q.empty())
+    {
+        int parentNode = q.front();
+        q.pop();
+
+        for (auto adjNode : adjList[parentNode])
         {
-            if (s[j] != t[j])
+            if (distArray[parentNode] + 1 < distArray[adjNode])
             {
-                adjList[s[j] - 'a'].push_back(t[j] - 'a');
-                break;
+                distArray[adjNode] = distArray[parentNode] + 1;
+                q.push(adjNode);
             }
         }
     }
 
-    int visited[K];
-    memset(visited, 0, sizeof visited);
+    vector<int> res(N, -1);
 
-    vector<int> topoSortOrder;
-    stack<int> st;
-
-    for (int i = 0; i < K; i++)
+    for (int i = 0; i < N; i++)
     {
-        if (visited[i] == 0)
+        if (distArray[i] != 1e9)
         {
-            topoSort(adjList, visited, st, i);
+            res[i] = distArray[i];
         }
-    }
-
-    while (!st.empty())
-    {
-        topoSortOrder.push_back(st.top());
-        st.pop();
-    }
-
-    string res = "";
-    for (int i = 0; i < topoSortOrder.size(); i++)
-    {
-        res += topoSortOrder[i] + 'a';
     }
     return res;
 }
 void solve()
 {
-    int N = 5;
-    int K = 4;
-    string dict[] = {"baa", "abcd", "abca", "cab", "cad"};
-    auto ans = findOrder(dict, N, K);
+    int n = 9;
+    int m = 10;
+    vector<vector<int>> edges{{0, 1}, {0, 3}, {3, 4}, {4, 5}, {5, 6}, {1, 2}, {2, 6}, {6, 7}, {7, 8}, {6, 8}};
+    int src = 0;
+    auto ans = shortestPath(edges, n, m, src);
     debug(ans);
 }
 

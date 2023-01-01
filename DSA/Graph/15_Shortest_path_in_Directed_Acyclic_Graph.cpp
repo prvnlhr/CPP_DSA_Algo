@@ -92,76 +92,94 @@ typedef priority_queue<int, vector<int>, greater<int>> pqmin;
 //--------------------------------------------------------------------------------------------------------------------------------
 
 //>----------------------------ＳＯＬＶＥ-----------------------------------------------------------------------------------------------------------------------------------------------
-//>Striver solution
-void topoSort(vector<int> adjList[], int visited[], stack<int> &st, int node)
+void topoSort(int node, vector<pair<int, int>> adj[],
+              int vis[], stack<int> &st)
 {
-
-    visited[node] = 1;
-    debug(node);
-
-    for (auto adjNode : adjList[node])
+    // This is the function to implement Topological sort.
+    vis[node] = 1;
+    for (auto it : adj[node])
     {
-        if (!visited[adjNode])
+        int v = it.first;
+        if (!vis[v])
         {
-            topoSort(adjList, visited, st, adjNode);
+            topoSort(v, adj, vis, st);
         }
     }
     st.push(node);
 }
-
-string findOrder(string dict[], int N, int K)
+vector<int> shortestPath(int N, int M, vector<vector<int>> &edges)
 {
-    vector<int> adjList[K];
 
-    for (int i = 0; i < N - 1; i++)
+    // We create a graph first in the form of an adjacency list.
+    vector<pair<int, int>> adj[N];
+    for (int i = 0; i < M; i++)
     {
-        string s = dict[i];
-        string t = dict[i + 1];
-        int len = min(s.size(), t.size());
-
-        for (int j = 0; j < len; j++)
+        int u = edges[i][0];
+        int v = edges[i][1];
+        int wt = edges[i][2];
+        adj[u].push_back({v, wt});
+    }
+    // A visited array is created with initially
+    // all the nodes marked as unvisited (0).
+    int vis[N] = {
+        0};
+    // Now, we perform topo sort using DFS technique
+    // and store the result in the stack st.
+    stack<int> st;
+    for (int i = 0; i < N; i++)
+    {
+        if (!vis[i])
         {
-            if (s[j] != t[j])
+            topoSort(i, adj, vis, st);
+        }
+    }
+    // Further, we declare a vector ‘dist’ in which we update the value of the nodes’
+    // distance from the source vertex after relaxation of a particular node.
+
+    vector<int> dist(N);
+    for (int i = 0; i < N; i++)
+    {
+        dist[i] = 1e9;
+    }
+
+    dist[0] = 0;
+    while (!st.empty())
+    {
+        int node = st.top();
+        st.pop();
+
+        for (auto it : adj[node])
+        {
+            int v = it.first;
+            int wt = it.second;
+
+            if (dist[node] + wt < dist[v])
             {
-                adjList[s[j] - 'a'].push_back(t[j] - 'a');
-                break;
+                dist[v] = wt + dist[node];
             }
         }
     }
 
-    int visited[K];
-    memset(visited, 0, sizeof visited);
-
-    vector<int> topoSortOrder;
-    stack<int> st;
-
-    for (int i = 0; i < K; i++)
+    for (int i = 0; i < N; i++)
     {
-        if (visited[i] == 0)
-        {
-            topoSort(adjList, visited, st, i);
-        }
+        if (dist[i] == 1e9)
+            dist[i] = -1;
     }
-
-    while (!st.empty())
-    {
-        topoSortOrder.push_back(st.top());
-        st.pop();
-    }
-
-    string res = "";
-    for (int i = 0; i < topoSortOrder.size(); i++)
-    {
-        res += topoSortOrder[i] + 'a';
-    }
-    return res;
+    return dist;
 }
 void solve()
 {
+
     int N = 5;
-    int K = 4;
-    string dict[] = {"baa", "abcd", "abca", "cab", "cad"};
-    auto ans = findOrder(dict, N, K);
+    int M = 5;
+
+    vector<vector<int>> edges{{0, 1, 2},
+                              {2, 1, 2},
+                              {2, 4, 2},
+                              {1, 4, 8},
+                              {1, 3, 6}};
+
+    auto ans = shortestPath(N, M, edges);
     debug(ans);
 }
 

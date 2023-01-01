@@ -92,77 +92,52 @@ typedef priority_queue<int, vector<int>, greater<int>> pqmin;
 //--------------------------------------------------------------------------------------------------------------------------------
 
 //>----------------------------ＳＯＬＶＥ-----------------------------------------------------------------------------------------------------------------------------------------------
-//>Striver solution
-void topoSort(vector<int> adjList[], int visited[], stack<int> &st, int node)
+//> Dosnt works for negative weight cycle, will cause infinite loop
+//> bcoz adding negative will make samller negaitve and keepsmm decreasing
+
+//> Instead of PQ, Queue also works but, using queue will consider every possible
+//> path increasing the time complextiy,  whereas pq, at every instance consider the
+//> minal weight path, thus reducing the time complexity
+
+
+//> We can also use set instead of pq, bcoz in pq we cant remove a node which we updated in distArray
+//> but in set we can remove the node which is not required 
+//> In some cases, depends on the type of h graph  set performs slightly better, but the remove node ,
+//> from set costs logN time, so we can say there is not much difference in pq and set, but using set would
+//> would reducing travering unwanted nodes, due to removal , and hence can improve futhere time complexities
+
+vector<int> dijkstra(int V, vector<vector<int>> adj[], int S)
 {
 
-    visited[node] = 1;
-    debug(node);
+    vector<int> distArray(V, 1e9);
 
-    for (auto adjNode : adjList[node])
+    priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> pqmin;
+
+    distArray[S] = 0;
+    pqmin.push({0, S});
+
+    while (!pqmin.empty())
     {
-        if (!visited[adjNode])
+        int parentWt = pqmin.top().first;
+        int parentNode = pqmin.top().second;
+        pqmin.pop();
+
+        for (auto pairNode : adj[parentNode])
         {
-            topoSort(adjList, visited, st, adjNode);
-        }
-    }
-    st.push(node);
-}
+            int adjWt = pairNode[1];
+            int adjNode = pairNode[0];
 
-string findOrder(string dict[], int N, int K)
-{
-    vector<int> adjList[K];
-
-    for (int i = 0; i < N - 1; i++)
-    {
-        string s = dict[i];
-        string t = dict[i + 1];
-        int len = min(s.size(), t.size());
-
-        for (int j = 0; j < len; j++)
-        {
-            if (s[j] != t[j])
+            if (parentWt + adjWt < distArray[adjNode])
             {
-                adjList[s[j] - 'a'].push_back(t[j] - 'a');
-                break;
+                distArray[adjNode] = parentWt + adjWt;
+                pqmin.push({distArray[adjNode], adjNode});
             }
         }
     }
-
-    int visited[K];
-    memset(visited, 0, sizeof visited);
-
-    vector<int> topoSortOrder;
-    stack<int> st;
-
-    for (int i = 0; i < K; i++)
-    {
-        if (visited[i] == 0)
-        {
-            topoSort(adjList, visited, st, i);
-        }
-    }
-
-    while (!st.empty())
-    {
-        topoSortOrder.push_back(st.top());
-        st.pop();
-    }
-
-    string res = "";
-    for (int i = 0; i < topoSortOrder.size(); i++)
-    {
-        res += topoSortOrder[i] + 'a';
-    }
-    return res;
+    return distArray;
 }
 void solve()
 {
-    int N = 5;
-    int K = 4;
-    string dict[] = {"baa", "abcd", "abca", "cab", "cad"};
-    auto ans = findOrder(dict, N, K);
-    debug(ans);
 }
 
 //>-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
