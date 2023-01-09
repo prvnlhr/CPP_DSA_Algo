@@ -151,7 +151,6 @@ void printTree(TreeNode<int> *root)
     {
         return;
     }
-
     queue<TreeNode<int> *> q;
     q.push(root);
 
@@ -182,7 +181,7 @@ void printTree(TreeNode<int> *root)
 //> SAMPLE INPUT:  vector<int> inputList{1, 2, 3, 4, 5, 6, 7, -1, -1, -1, -1, -1, -1, -1, -1};
 
 /*
- 1 2 3 -1 4 5 6 8 -1 -1 -1 -1 -1 -1
+
 Ex_1: 1 2 3 4 5 6 7 -1 -1 -1 -1 -1 -1 -1 -1
 
                1
@@ -195,22 +194,19 @@ Ex_1: 1 2 3 4 5 6 7 -1 -1 -1 -1 -1 -1 -1 -1
 Ex_2: 1 2 3 4 5 6 7 -1 -1 8 9 -1 -1 -1 -1 12 -1 11 14 -1 18 -1 -1 15 20 -1 -1 17 16 -1 -1 -1 -1 -1 -1
 vector<int> inputList{1 ,2 3, 4, 5, 6, 7, -1, -1, 8, 9, -1, -1, -1, -1, 12 ,-1, 11, 14, -1, 18, -1, -1, 15, 20 ,-1 ,-1, 17, 16, -1, -1, -1, -1, -1 ,-1};
 
-                1
-            /      \
-           2        3
-         /   \     /   \
-        4     5   6     7
-            /   \
-           8     9
-          /     /   \
-         12     11    14
-          \          / \
-           18       15   20
-                    / \
-                   17    16
-
-
-
+               1
+            /     \
+           2       3
+          /  \    / \
+         4    5  6   7
+            /  \
+           8    9
+          /    /  \
+         12   11   14
+          \       /  \
+           18    15   20
+                /  \
+               17  16
 
 
 
@@ -219,10 +215,11 @@ vector<int> inputList{1 ,2 3, 4, 5, 6, 7, -1, -1, 8, 9, -1, -1, -1, -1, 12 ,-1, 
 
 TreeNode<int> *buildTree(vector<int> inputList)
 {
-    int currIndex = 0;
 
+    int currIndex = 0;
     int n = inputList.size();
-    if (n <= 0 || inputList[0] == -1)
+
+    if (n == 0 || inputList[0] == -1)
     {
         return nullptr;
     }
@@ -241,7 +238,6 @@ TreeNode<int> *buildTree(vector<int> inputList)
 
         int leftChild = inputList[currIndex];
         currIndex++;
-
         if (leftChild != -1)
         {
             TreeNode<int> *leftNode = new TreeNode(leftChild);
@@ -258,81 +254,169 @@ TreeNode<int> *buildTree(vector<int> inputList)
             q.push(rightNode);
         }
     }
+
     return root;
 }
 
 /*
-Ex_1: 20 8 22 4 12 -1 25 -1 -1 10 14 -1 -1 -1 -1 -1 -1
+BST:
+           4
+         /   \
+        2     6
+      /  \   /  \
+     1    3 5    7
 
-                                20
-                               /  \
-                              8   22
-                             / \  / \
-                            4  12   25
-                               / \
-                             10  14
+4 2 6 1 3 5 7 -1 -1 -1 -1 -1 -1 -1 -1
 
-OP: 20 8 4 10 14 25 22
 
-Ex_2: 1 2 3 4 5 6 7 -1 -1 8 9 -1 -1 -1 -1 -1 -1 -1 -1
+
+
+      17
+     /  \
+    4    18
+  /   \
+ 2     9
+
+17 4 18 2 9 -1 -1 -1 -1 -1 -1
+
+Output: 4 9 17 18 = 4 +  9 + 17 + 18 = 48
+
+
+
+
+
+
+
+
+Ex: 6 2 8 0 4 7 8 -1 -1 3 5 -1 -1 -1 -1 -1 -1 -1 -1
+                         6
+                      /    \
+                     2      8
+                    / \    / \
+                   1   4  7   8
+                      / \
+                     3   5
+
+
+OP:
         1
-      /   \
-     2     3
-    / \   / \
-   4   5 6   7
-      / \
-     8   9
-
-
-              1
-            /   \
-           2     3
-          / \   / \
-         4   5 6   7
+         \
+          2
+           \
+            3
+             \
+              4
+               \
+                5
+                 \
+                  6
+                   \
+                    7
+                     \
+                      8
 
 
 */
 
-vector<int> bottomView(TreeNode<int> *root)
+//> O(N), O(N)
+bool findPath(TreeNode<int> *root, int node, vector<int> &res)
 {
-    vector<int> res;
     if (!root)
     {
-        return res;
+        return false;
     }
-    map<int, int> mpp;
-    queue<pair<TreeNode<int> *, int>> q;
-    q.push({root, 0});
 
-    int min_lvl = INT_MAX;
-    int max_lvl = INT_MIN;
-    while (!q.empty())
+    res.push_back(root->val);
+
+    if (root->val == node)
     {
-        auto [node, level] = q.front();
-
-        q.pop();
-
-        min_lvl = min(level, min_lvl);
-        max_lvl = max(level, max_lvl);
-
-        //:: The only changed condition from topView sol:
-        mpp[level] = node->val;
-
-        if (node->left)
-        {
-            q.push({node->left, level - 1});
-        }
-        if (node->right)
-        {
-            q.push({node->right, level + 1});
-        }
+        return true;
     }
 
-    for (int i = min_lvl; i <= max_lvl; i++)
+    if (findPath(root->left, node, res) || findPath(root->right, node, res))
     {
-        res.push_back(mpp[i]);
+        return true;
     }
-    return res;
+
+    res.pop_back();
+    return false;
+}
+
+int kthAncestor(TreeNode<int> *root, int node, int k)
+{
+    if (root->val == node)
+    {
+        if (k == 0)
+        {
+            return root->val;
+        }
+        else
+        {
+            return -1;
+        }
+    }
+    vector<int> res;
+    findPath(root, node, res);
+    int kthAns = -1;
+    if (k >= res.size())
+    {
+        return -1;
+    }
+    kthAns = res[res.size() - k - 1];
+    return kthAns;
+}
+
+//> Refer Love babbar YT video lecture 65
+TreeNode<int> *kthAncestorHelper(TreeNode<int> *root, int node, int &k)
+{
+    if (!root)
+    {
+        return NULL;
+    }
+    if (root->val == node)
+    {
+        return root;
+    }
+
+    TreeNode<int> *leftAns = kthAncestorHelper(root->left, node, k);
+    TreeNode<int> *rightAns = kthAncestorHelper(root->right, node, k);
+
+    if (leftAns == NULL && rightAns != NULL)
+    {
+        k--;
+        if (k <= 0)
+        {
+            k = INT_MAX;
+            return root;
+        }
+        return rightAns;
+    }
+
+    if (leftAns != NULL && rightAns == NULL)
+    {
+        k--;
+        if (k <= 0)
+        {
+
+            //>LOCKING k, so that is wont became 0 again, next time,
+            //> because we got  our ans
+            k = INT_MAX;
+            return root;
+        }
+        return leftAns;
+    }
+    return NULL;
+}
+
+int kthAncestorOP(TreeNode<int> *root, int node, int k)
+{
+    auto ans = kthAncestorHelper(root, node, k);
+
+    if (ans == NULL || ans->val == node)
+    {
+        return -1;
+    }
+    return ans->val;
 }
 
 void solve()
@@ -343,9 +427,10 @@ void solve()
     {
         input.push_back(ele);
     }
-    auto root = buildTree(input);
-    // printTree(root);
-    vector<int> ans = bottomView(root);
+    TreeNode<int> *root = buildTree(input);
+    int node = 5;
+    int k = 3;
+    auto ans = kthAncestor(root, node, k);
     debug(ans);
 }
 

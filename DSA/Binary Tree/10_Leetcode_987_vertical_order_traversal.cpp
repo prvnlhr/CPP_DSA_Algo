@@ -316,12 +316,14 @@ vector<vector<int>> verticalTraversal(TreeNode<int> *root)
     {
         auto obj = q.front();
         q.pop();
+
         TreeNode<int> *node = obj.first;
 
         int level = obj.second.first;
         int vertical = obj.second.second;
 
         mpp[level][vertical].insert(node->val);
+       
         if (node->left)
         {
             q.push({node->left, {level - 1, vertical + 1}});

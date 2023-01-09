@@ -1,5 +1,11 @@
-
-    // else if (!root->left && !root->right)
+if (root->val == node)
     // {
-    //     ans.push_back(root->val);
+    //     if (k == 0)
+    //     {
+    //         return root->val;
+    //     }
+    //     else
+    //     {
+    //         return -1;
+    //     }
     // }

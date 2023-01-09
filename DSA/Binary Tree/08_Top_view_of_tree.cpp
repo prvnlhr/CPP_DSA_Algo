@@ -314,11 +314,11 @@ vector<int> topView(TreeNode<int> *root)
 
         min_lvl = min(level, min_lvl);
         max_lvl = max(level, max_lvl);
+        
         if (mpp.find(level) == mpp.end())
         {
             mpp[level] = node->val;
         }
-        debug(node->val, level);
         if (node->left)
         {
             q.push({node->left, level - 1});
@@ -333,7 +333,6 @@ vector<int> topView(TreeNode<int> *root)
     {
         res.push_back(mpp[i]);
     }
-    debug(res);
     return res;
 }
 
