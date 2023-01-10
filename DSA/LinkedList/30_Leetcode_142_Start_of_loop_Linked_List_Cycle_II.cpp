@@ -26,26 +26,30 @@ ostream &operator<<(ostream &os, const pair<T1, T2> &p)
     return os << '{' << p.first << ", " << p.second << '}';
 }
 
-template <class T, class = decay_t<decltype(*begin(declval<T>()))>,
+template <class T, class = decltype(begin(declval<T>())),
           class = enable_if_t<!is_same<T, string>::value>>
 ostream &operator<<(ostream &os, const T &c)
 {
     os << '[';
-    for (auto it = c.begin(); it != c.end(); ++it)
-        os << &", "[2 * (it == c.begin())] << *it;
+    for (auto it = begin(c); it != end(c); ++it)
+        os << (it == begin(c) ? "" : ", ") << *it;
     return os << ']';
 }
-//__support up to 5 args
-#define _NTH_ARG(_1, _2, _3, _4, _5, _6, N, ...) N
-#define _FE_0(_CALL, ...)
+
+#define _NTH_ARG(_1, _2, _3, _4, _5, _6, _7, _8, _9, _10, N, ...) N
 #define _FE_1(_CALL, x) _CALL(x)
 #define _FE_2(_CALL, x, ...) _CALL(x) _FE_1(_CALL, __VA_ARGS__)
 #define _FE_3(_CALL, x, ...) _CALL(x) _FE_2(_CALL, __VA_ARGS__)
 #define _FE_4(_CALL, x, ...) _CALL(x) _FE_3(_CALL, __VA_ARGS__)
 #define _FE_5(_CALL, x, ...) _CALL(x) _FE_4(_CALL, __VA_ARGS__)
-#define FOR_EACH_MACRO(MACRO, ...)                                           \
-    _NTH_ARG(dummy, ##__VA_ARGS__, _FE_5, _FE_4, _FE_3, _FE_2, _FE_1, _FE_0) \
-    (MACRO, ##__VA_ARGS__)
+#define _FE_6(_CALL, x, ...) _CALL(x) _FE_5(_CALL, __VA_ARGS__)
+#define _FE_7(_CALL, x, ...) _CALL(x) _FE_6(_CALL, __VA_ARGS__)
+#define _FE_8(_CALL, x, ...) _CALL(x) _FE_7(_CALL, __VA_ARGS__)
+#define _FE_9(_CALL, x, ...) _CALL(x) _FE_8(_CALL, __VA_ARGS__)
+#define _FE_10(_CALL, x, ...) _CALL(x) _FE_9(_CALL, __VA_ARGS__)
+#define FOR_EACH_MACRO(MACRO, ...)                                                               \
+    _NTH_ARG(__VA_ARGS__, _FE_10, _FE_9, _FE_8, _FE_7, _FE_6, _FE_5, _FE_4, _FE_3, _FE_2, _FE_1) \
+    (MACRO, __VA_ARGS__)
 
 //__Change output format here
 #define out(x) #x " = " << x << "; "
@@ -56,7 +60,6 @@ ostream &operator<<(ostream &os, const T &c)
 #else
 #define debug(...)
 #endif
-
 //>---DEBUG_TEMPLATE_END-----------------------------------------------------------------------------------------------------------------------------------------------------------
 
 // #define FOR(i, start, end) for (int i = start; i < end; i++)
@@ -86,48 +89,10 @@ typedef map<int, int> mpint;
 typedef pair<int, int> pi;
 typedef priority_queue<int> pqmax;
 typedef priority_queue<int, vector<int>, greater<int>> pqmin;
-//_____________________________
-ll gcd(ll a, ll b)
-{
-    if (b > a)
-    {
-        return gcd(b, a);
-    }
-    if (b == 0)
-    {
-        return a;
-    }
-    return gcd(b, a % b);
-}
-//_____________________________
-ll expo(ll a, ll b, ll mod)
-{
-    ll res = 1;
-    while (b > 0)
-    {
-        if (b & 1)
-            res = (res * a) % mod;
-        a = (a * a) % mod;
-        b = b >> 1;
-    }
-    return res;
-}
-//__factorial______________________________________________
-vector<ll> fact;
-void factOfN(ll n)
-{
-    ll prod = 1;
-    fact.resize(n + 1);
-    for (int f = 1; f <= n; f++)
-    {
-
-        fact[f] = prod * f;
-        prod = prod * f;
-    }
-}
 //--------------------------------------------------------------------------------------------------------------------------------
 
 //>----------------------------ＳＯＬＶＥ-----------------------------------------------------------------------------------------------------------------------------------------------
+
 class ListNode
 {
 public:
@@ -170,105 +135,55 @@ ListNode *buildLL(vector<int> &input)
     }
     return head;
 }
-void printLL(ListNode *head)
+
+ListNode *detectCycle(ListNode *head)
 {
-    ListNode *curr = head;
-    while (curr)
+    if (!head || !head->next)
     {
-        cout << curr->data << " ";
-        curr = curr->next;
+        return nullptr;
     }
-    cout << endl;
-}
+    ListNode *slow = head;
+    ListNode *fast = head;
+    bool isCylce = false;
 
-ListNode *reverseLL(ListNode *head)
-{
-
-    ListNode *curr = head;
-    ListNode *prev = nullptr;
-    int cnt = 0;
-    while (curr)
+    while (fast && fast->next)
     {
-        ListNode *nextt = curr->next;
-        curr->next = prev;
-        prev = curr;
-        curr = nextt;
-    }
-
-    return prev;
-}
-
-//_ SELF SOLVED AFTER WHOLE DAY OF BRAINSTROMING
-//> TIME COMPLEXITY: 2N --> N
-ListNode *reverseKGroup(ListNode *head, int k)
-{
-    ListNode *ptr = head;            // main ptr for interating LL
-    ListNode *start = head;          // start head of every group
-    ListNode *end = new ListNode(0); // for reversing connections
-    ListNode *finalHead = nullptr;   // final output list head
-
-    //> STEPS:
-    // 1. Store start node = head and iterate the LL till cnt != k, taking k nodes of groups
-    // 2. when cnt == k, ptr will be the kth node, and ptr.next will be next group's head
-    // 3. reverse k nodes starting from start
-    // 4. after reversing we have reversed k nodes directions, but we still need to change their connections
-    // i.e its left and right-most nodes direction
-    // 5. we get left-most node which is start, and right-most node will be store in end
-    // 6. change connections by start.next = nextGrphHead,  and end.next = newHead, i.e head of reversed group
-    // 7. finally update all ptr's and cnt = 1;
-
-    int cnt = 1;
-    while (ptr)
-    {
-        if (cnt == k)
+        slow = slow->next;
+        fast = fast->next->next;
+        if (slow == fast)
         {
-            ListNode *nextGrphHead = ptr->next;
-
-            ptr->next = nullptr;
-
-            //> Reversing k nodes or group staring from grphHead
-            ListNode *newHead = reverseLL(start);
-
-            if (finalHead == nullptr)
-            {
-                finalHead = newHead;
-            }
-
-            //> changing reversed group's  left and right connections
-            start->next = nextGrphHead;
-            end->next = newHead;
-
-            //> updating values for next iteration
-            end = start;
-            start = nextGrphHead;
-            ptr = nextGrphHead; //* IMP: also move ptr,because connections has reversed
-            cnt = 1;
-        }
-        else
-        {
-            cnt++;
-            ptr = ptr->next;
+            isCylce = true;
+            break;
         }
     }
-    return finalHead;
-}
+    if (!isCylce)
+    {
+        return nullptr;
+    }
 
+    slow = head;
+
+    while (slow != fast)
+    {
+        slow = slow->next;
+        fast = fast->next;
+    }
+    return slow;
+}
 void solve()
 {
-    vector<int> inputList{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, -1};
-    // vector<int> inputList{1, 2, 3, 4, 5, 6, 7, 8, 9, -1};
-    // vector<int> inputList{1, 2, 3, 4, 5, 6, 7, -1};
-    // vector<int> inputList{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, -1};
-    // vector<int> inputList{1, 2, -1};
-
-    int k = 3;
-
-    auto head = buildLL(inputList);
-    // printLL(head);
-    ListNode *newHead = reverseKGroup(head, k);
-    cout << endl;
-
-    printLL(newHead);
+    ListNode *one = new ListNode(3);
+    ListNode *two = new ListNode(2);
+    ListNode *three = new ListNode(0);
+    ListNode *four = new ListNode(4);
+    one->next = two;
+    two->next = three;
+    three->next = four;
+    four->next = two;
+    ListNode *head;
+    head = one;
+    ListNode *ans = detectCycle(head);
+    debug(ans->data);
 }
 
 //>-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------

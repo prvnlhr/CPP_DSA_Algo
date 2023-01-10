@@ -137,7 +137,6 @@ void factOfN(ll n)
 
 -> '''Minimize the maximum difference between the heights'''
 
-
  Examples:
 
  -Input  : arr[] = {1, 15, 10}, k = 6
@@ -220,6 +219,7 @@ void factOfN(ll n)
 : Space Complexity: O(N)
 
 */
+
 int getMinDiff(vector<int> arr, int n, int k)
 {
     sort(arr.begin(), arr.end());
@@ -244,6 +244,7 @@ int getMinDiff(vector<int> arr, int n, int k)
     }
     return ans;
 }
+
 void solve()
 {
 

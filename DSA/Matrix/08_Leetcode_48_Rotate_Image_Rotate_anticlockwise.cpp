@@ -26,26 +26,30 @@ ostream &operator<<(ostream &os, const pair<T1, T2> &p)
     return os << '{' << p.first << ", " << p.second << '}';
 }
 
-template <class T, class = decay_t<decltype(*begin(declval<T>()))>,
+template <class T, class = decltype(begin(declval<T>())),
           class = enable_if_t<!is_same<T, string>::value>>
 ostream &operator<<(ostream &os, const T &c)
 {
     os << '[';
-    for (auto it = c.begin(); it != c.end(); ++it)
-        os << &", "[2 * (it == c.begin())] << *it;
+    for (auto it = begin(c); it != end(c); ++it)
+        os << (it == begin(c) ? "" : ", ") << *it;
     return os << ']';
 }
-//__support up to 5 args
-#define _NTH_ARG(_1, _2, _3, _4, _5, _6, N, ...) N
-#define _FE_0(_CALL, ...)
+
+#define _NTH_ARG(_1, _2, _3, _4, _5, _6, _7, _8, _9, _10, N, ...) N
 #define _FE_1(_CALL, x) _CALL(x)
 #define _FE_2(_CALL, x, ...) _CALL(x) _FE_1(_CALL, __VA_ARGS__)
 #define _FE_3(_CALL, x, ...) _CALL(x) _FE_2(_CALL, __VA_ARGS__)
 #define _FE_4(_CALL, x, ...) _CALL(x) _FE_3(_CALL, __VA_ARGS__)
 #define _FE_5(_CALL, x, ...) _CALL(x) _FE_4(_CALL, __VA_ARGS__)
-#define FOR_EACH_MACRO(MACRO, ...)                                           \
-    _NTH_ARG(dummy, ##__VA_ARGS__, _FE_5, _FE_4, _FE_3, _FE_2, _FE_1, _FE_0) \
-    (MACRO, ##__VA_ARGS__)
+#define _FE_6(_CALL, x, ...) _CALL(x) _FE_5(_CALL, __VA_ARGS__)
+#define _FE_7(_CALL, x, ...) _CALL(x) _FE_6(_CALL, __VA_ARGS__)
+#define _FE_8(_CALL, x, ...) _CALL(x) _FE_7(_CALL, __VA_ARGS__)
+#define _FE_9(_CALL, x, ...) _CALL(x) _FE_8(_CALL, __VA_ARGS__)
+#define _FE_10(_CALL, x, ...) _CALL(x) _FE_9(_CALL, __VA_ARGS__)
+#define FOR_EACH_MACRO(MACRO, ...)                                                               \
+    _NTH_ARG(__VA_ARGS__, _FE_10, _FE_9, _FE_8, _FE_7, _FE_6, _FE_5, _FE_4, _FE_3, _FE_2, _FE_1) \
+    (MACRO, __VA_ARGS__)
 
 //__Change output format here
 #define out(x) #x " = " << x << "; "
@@ -56,7 +60,6 @@ ostream &operator<<(ostream &os, const T &c)
 #else
 #define debug(...)
 #endif
-
 //>---DEBUG_TEMPLATE_END-----------------------------------------------------------------------------------------------------------------------------------------------------------
 
 // #define FOR(i, start, end) for (int i = start; i < end; i++)
@@ -86,127 +89,55 @@ typedef map<int, int> mpint;
 typedef pair<int, int> pi;
 typedef priority_queue<int> pqmax;
 typedef priority_queue<int, vector<int>, greater<int>> pqmin;
-//_____________________________
-ll gcd(ll a, ll b)
-{
-    if (b > a)
-    {
-        return gcd(b, a);
-    }
-    if (b == 0)
-    {
-        return a;
-    }
-    return gcd(b, a % b);
-}
-//_____________________________
-ll expo(ll a, ll b, ll mod)
-{
-    ll res = 1;
-    while (b > 0)
-    {
-        if (b & 1)
-            res = (res * a) % mod;
-        a = (a * a) % mod;
-        b = b >> 1;
-    }
-    return res;
-}
-//__factorial______________________________________________
-vector<ll> fact;
-void factOfN(ll n)
-{
-    ll prod = 1;
-    fact.resize(n + 1);
-    for (int f = 1; f <= n; f++)
-    {
-
-        fact[f] = prod * f;
-        prod = prod * f;
-    }
-}
 //--------------------------------------------------------------------------------------------------------------------------------
 
 //>----------------------------ＳＯＬＶＥ-----------------------------------------------------------------------------------------------------------------------------------------------
-
-int merge(vector<int> &nums, int left, int right, int mid)
+void transpose(vector<vector<int>> &mat)
 {
-    vector<int> mergeArr(right - left + 1);
-    //> or can maintain a temp array of size equal to nums
+    int rows = mat.size();
+    int cols = mat[0].size();
 
-    int countInv = 0;
-    int i = left;
-    int j = mid + 1;
-    int k = left;
-
-    while (i <= mid && j <= right)
+    for (int i = 0; i < rows; i++)
     {
-        if (nums[i] <= nums[j])
+        for (int j = i; j < cols; j++)
         {
-            mergeArr[k++] = nums[i++];
-        }
-        else if (nums[i] > nums[j])
-        {
-            mergeArr[k++] = nums[j++];
-            countInv = countInv + (mid - i);
+            swap(mat[i][j], mat[j][i]);
         }
     }
-
-    while (i <= mid)
-    {
-        mergeArr[k++] = nums[i++];
-    }
-
-    while (j <= right)
-    {
-        mergeArr[k++] = nums[j++];
-    }
-
-    int pos = left;
-    
-    for (int i = left; i < right; i++)
-    {
-        nums[i] = mergeArr[i];
-    }
-
-    return countInv;
 }
 
-int mergeSort(vector<int> &nums, int left, int right)
+void swapCols(vector<vector<int>> &mat)
+{
+    int rows = mat.size();
+    int cols = mat[0].size();
+    for (int i = 0; i < cols; i++)
+    {
+        int s = 0;
+        int e = cols - 1;
+        while (s < e)
+        {
+            swap(mat[i][s], mat[i][e]);
+            s++;
+            e--;
+        }
+    }
+}
+void rotate(vector<vector<int>> &mat)
 {
 
-    int invCount = 0;
-    int mid = 0;
+    transpose(mat);
+    swapCols(mat);
 
-    if (left < right)
-    {
-        mid = left + (right - left) / 2;
-        invCount += mergeSort(nums, left, mid);
-        invCount += mergeSort(nums, mid + 1, right);
-        invCount += merge(nums, left, right, mid);
-    }
-    return invCount;
+    // debug(mat);
 }
-
-int countInversion(vector<int> &nums)
-{
-    int n = nums.size();
-    int left = 0;
-    int right = n - 1;
-    vector<int> temp(n);
-    return mergeSort(nums, left, right);
-}
-
 void solve()
 {
-    int ele;
-    vector<int> nums;
-    while (cin >> ele)
-    {
-        nums.push_back(ele);
-    }
-    cout << countInversion(nums) << endl;
-    debug(nums);
+    vector<vector<int>> mat{
+        {1, 2, 3},
+        {4, 5, 6},
+        {7, 8, 9}};
+
+    rotate(mat);
 }
 
 //>-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------

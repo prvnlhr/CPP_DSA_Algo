@@ -189,7 +189,6 @@ ListNode *reverseLL(ListNode *head)
     ListNode *curr = head;
     while (curr)
     {
-
         ListNode *nextt = curr->next;
         curr->next = prev;
         prev = curr;
@@ -207,9 +206,9 @@ public:
         return l1->val > l2->val;
     }
 };
+
 ListNode *mergeKLists(vector<ListNode *> lists)
 {
-
     int n = lists.size();
     // if size of lists is zero then return zero.
     if (n == 0)
