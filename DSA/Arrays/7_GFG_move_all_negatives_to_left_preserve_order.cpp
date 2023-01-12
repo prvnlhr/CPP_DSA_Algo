@@ -179,25 +179,29 @@ https://www.geeksforgeeks.org/rearrange-positive-and-negative-numbers/
 void moveAllNegativesToLeftOP(vector<int> &arr)
 {
 
+    //>   -12 11 -13 -5 6 -7 5 -3 -6
+
     int n = arr.size();
 
-    int i = 0;
-    int j = 0;
+    int winStart = 0;
+    int winEnd = 0;
 
-    while (j < n)
+    while (winEnd < n)
     {
-        if (arr[j] >= 0)
+        //> if pos+, winEnd ++;
+        if (arr[winEnd] >= 0)
         {
-            j++;
+            winEnd++;
         }
         else
         {
-            for (int k = j; k > i; k--)
+            //> else neg-, we have windows [winStart --- winEnd]
+            for (int k = winEnd; k > winStart; k--)
             {
                 swap(arr[k], arr[k - 1]);
             }
-            i++;
-            j++;
+            winStart++;
+            winEnd++;
         }
     }
 }

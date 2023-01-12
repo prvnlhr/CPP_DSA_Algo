@@ -133,7 +133,7 @@ int minSubArray(vector<int> &nums)
 
     int n = nums.size();
     int minSum = INT_MAX;
-    int minEndingHere = INT_MAX;
+    int minEndingHere = 0;
 
     for (int i = 0; i < n; i++)
     {

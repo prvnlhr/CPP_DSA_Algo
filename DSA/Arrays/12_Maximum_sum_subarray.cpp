@@ -133,12 +133,17 @@ int maxSubArray(vector<int> &nums)
 
     int n = nums.size();
 
-    int maxSum = nums[0];
-    int maxEndingHere = nums[0];
+    int maxSum = INT_MIN;
+    int maxEndingHere = 0;
+
     for (int i = 0; i < n; i++)
     {
-        maxEndingHere = max(maxEndingHere, maxEndingHere + nums[i]);
+        maxEndingHere = maxEndingHere + nums[i];
         maxSum = max(maxSum, maxEndingHere);
+        if (maxEndingHere < 0)
+        {
+            maxEndingHere = 0;
+        }
     }
     return maxSum;
 }

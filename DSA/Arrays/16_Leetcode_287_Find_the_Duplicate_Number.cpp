@@ -163,7 +163,7 @@ int findDuplicate1(vector<int> &nums)
 /*
 >SOL2: O(N);
 > manuplating array itself
-- There are n + 1n+1 positive numbers in the array (numsnums) (all in the range [1, n][1,n]).
+- There are n + 1 positive numbers in the array (nums) (all in the range [1, n][1,n]).
 - Since the array only contains positive integers, we can track each number (numnum)
 - that has been seen before by flipping the sign of the number located at
 - index |num|∣num∣, where ||∣∣ denotes absolute value.

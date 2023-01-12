@@ -129,7 +129,7 @@ void factOfN(ll n)
 
 //>----------------------------ＳＯＬＶＥ-----------------------------------------------------------------------------------------------------------------------------------------------
 
-//>works for only sorted array and distinct elements
+//> Works for only sorted array and distinct elements
 vector<int> intersection(vector<int> &nums1, vector<int> &nums2)
 {
     vector<int> intersectionArr;
@@ -157,7 +157,7 @@ vector<int> intersection(vector<int> &nums1, vector<int> &nums2)
     return intersectionArr;
 }
 
-//>works  sorted/unsorted array and distinct/duplicates also
+//>Works sorted/unsorted array and distinct/duplicates also
 //> O(NlogN)
 //-> LEETCODE : 349. Intersection of Two Arrays
 

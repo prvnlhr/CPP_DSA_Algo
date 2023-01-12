@@ -115,7 +115,9 @@ int areaOfHist(vector<int> histo)
     }
     return maxA;
 }
-
+/*
+> Largest rectangle containing only 1's and return its area.
+*/
 int maximalRectangle(vector<vector<char>> &mat)
 {
     int rows = mat.size();

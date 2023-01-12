@@ -140,6 +140,7 @@ int maximumDifference(vector<int> &nums)
         maxUntil = max(maxUntil, currNum);
         maxDiff = max(maxDiff, maxUntil - currNum);
     }
+    
     return (maxDiff != 0 ? maxDiff : -1);
 }
 

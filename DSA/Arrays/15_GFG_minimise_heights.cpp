@@ -216,7 +216,7 @@ void factOfN(ll n)
 
 
 : Time Complexity: O(NlogN)
-: Space Complexity: O(N)
+: Space Complexity: O(1)
 
 */
 
@@ -228,10 +228,8 @@ int getMinDiff(vector<int> arr, int n, int k)
 
     for (int i = 0; i < n; i++)
     {
-
         if (arr[i] >= k)
         {
-
             int MIN = min(arr[0] + k, arr[i] - k);
             int MAX = max(arr[n - 1] - k, arr[i - 1] + k);
             int diff = MAX - MIN;

@@ -129,7 +129,7 @@ void factOfN(ll n)
 
 //>----------------------------ＳＯＬＶＥ-----------------------------------------------------------------------------------------------------------------------------------------------
 
-//> TC : O((n-k)logk) -> n-k for looping  n-k elements , log k for pushing k eleemnt in pqmin
+//> TC : O((n-k)logk) -> n-k for looping  n-k elements , log k for pushing k element in pqmin
 
 int findKthLargest(vector<int> &nums, int k)
 {
