@@ -140,6 +140,7 @@ int maxSubArray(vector<int> &nums)
     {
         maxEndingHere = maxEndingHere + nums[i];
         maxSum = max(maxSum, maxEndingHere);
+
         if (maxEndingHere < 0)
         {
             maxEndingHere = 0;

@@ -133,12 +133,13 @@ int secondLar(vector<int> arr)
 {
     int n = arr.size();
 
-    int lar = INT_MIN;
-    int secLar;
+    int largest = INT_MIN;
+    int secLargest = INT_MIN;
     for (int i = 0; i < n; i++)
     {
         
     }
+    return secLargest;
 }
 
 void solve()
@@ -146,7 +147,6 @@ void solve()
 
     vector<int> arr{12, 35, 1, 10, 34, 1};
     cout << secondLar(arr) << endl;
-    ;
 }
 
 //>-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
