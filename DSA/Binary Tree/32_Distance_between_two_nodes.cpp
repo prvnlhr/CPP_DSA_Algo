@@ -151,6 +151,7 @@ void printTree(TreeNode<int> *root)
     {
         return;
     }
+
     queue<TreeNode<int> *> q;
     q.push(root);
 
@@ -211,15 +212,17 @@ vector<int> inputList{1 ,2 3, 4, 5, 6, 7, -1, -1, 8, 9, -1, -1, -1, -1, 12 ,-1, 
 
 
 
+
+3 9 20 -1 -1 15 7 -1 -1 -1 -1
+
 */
 
 TreeNode<int> *buildTree(vector<int> inputList)
 {
-
     int currIndex = 0;
-    int n = inputList.size();
 
-    if (n == 0 || inputList[0] == -1)
+    int n = inputList.size();
+    if (n <= 0 || inputList[0] == -1)
     {
         return nullptr;
     }
@@ -238,6 +241,7 @@ TreeNode<int> *buildTree(vector<int> inputList)
 
         int leftChild = inputList[currIndex];
         currIndex++;
+
         if (leftChild != -1)
         {
             TreeNode<int> *leftNode = new TreeNode(leftChild);
@@ -254,52 +258,121 @@ TreeNode<int> *buildTree(vector<int> inputList)
             q.push(rightNode);
         }
     }
-
     return root;
 }
 
-vector<vector<int>> levelOrder(TreeNode<int> *root)
+/*
+Ex_1: 20 8 22 4 12 -1 25 -1 -1 10 14 -1 -1 -1 -1 -1 -1
+
+                                20
+                              /    \
+                             8     22
+                            / \    / \
+                           4  12 -1  25
+                              / \
+                             10  14
+
+OP: 20 8 4 10 14 25 22
+
+Ex_2: 1 2 3 4 5 6 7 -1 -1 8 9 -1 -1 -1 -1 -1 -1 -1 -1
+
+        1
+      /   \
+     2     3
+    / \   / \
+   4   5 6   7
+      / \
+     8   9
+
+
+              1
+            /   \
+           2     3
+          / \   / \
+         4   6 5   7
+
+         1 2 3 4 6 5 7 -1 -1 -1 -1 -1 -1 -1 -1
+
+
+
+
+         3 1 4 0 2 2 -1 -1 -1 -1 -1 -1 -1
+
+
+
+
+                1
+             /    \
+            2      3
+           / \    /  \
+          4   5  6    7
+            /  \
+           8    9
+          /    /  \
+         10   11   12
+          \        / \
+           13     14  15
+                 /  \
+                16   17
+
+1 2 3 4 5 6 7 -1 -1 8 9 -1 -1 -1 -1 10 -1 11 12 -1 13 -1 -1 14 15 -1 -1 16 17 -1 -1 -1 -1 -1 -1
+
+*/
+TreeNode<int> *findLCA(TreeNode<int> *root, int p, int q)
 {
 
-    vector<vector<int>> res;
-    if (root == nullptr)
+    if (!root)
     {
-        return res;
+        return nullptr;
     }
 
-    queue<TreeNode<int> *> q;
-    q.push(root);
-    vector<int> vec{root->val};
-    res.push_back(vec);
-
-    while (!q.empty())
+    if (root->val == p || root->val == q)
     {
-        int n = q.size();
-        vector<int> level;
-        for (int i = 0; i < n; i++)
-        {
-            auto currNode = q.front();
-            q.pop();
-
-            if (currNode->left)
-            {
-                q.push(currNode->left);
-                level.push_back(currNode->left->val);
-            }
-            if (currNode->right)
-            {
-                q.push(currNode->right);
-                level.push_back(currNode->right->val);
-            }
-        }
-        if (level.size() != 0)
-        {
-
-            res.push_back(level);
-        }
-        level.clear();
+        return root;
     }
-    return res;
+
+    TreeNode<int> *leftLCA = findLCA(root->left, p, q);
+    TreeNode<int> *rightLCA = findLCA(root->right, p, q);
+
+    if (leftLCA && rightLCA)
+    {
+        return root;
+    }
+    if (!leftLCA && !rightLCA)
+    {
+        return nullptr;
+    }
+    TreeNode<int> *r = leftLCA ? leftLCA : rightLCA;
+    return r;
+}
+
+int findDist(TreeNode<int> *root, int node, int dist)
+{
+    if (!root)
+    {
+        return -1;
+    }
+    if (root->val == node)
+    {
+        return dist;
+    }
+    int l = findDist(root->left, node, dist + 1);
+
+    return (l != -1) ? l : findDist(root->right, node, dist + 1);
+}
+
+int distance(TreeNode<int> *root, int p, int q)
+{
+    if (!root)
+    {
+        return 0;
+    }
+    TreeNode<int> *LCA = findLCA(root, p, q);
+    debug(LCA->val);
+    int dist1 = findDist(LCA, p, 0);
+    int dist2 = findDist(LCA, q, 0);
+    debug(dist1, dist2);
+    return dist1 + dist2;
 }
 
 void solve()
@@ -311,10 +384,11 @@ void solve()
         input.push_back(ele);
     }
     auto root = buildTree(input);
-    // printTree(root);
-    auto op = levelOrder(root);
-    // debug(op.size());
-    debug(op);
+
+    int p = 2;
+    int q = 3;
+
+    cout << distance(root, p, q) << endl;
 }
 
 //>-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------

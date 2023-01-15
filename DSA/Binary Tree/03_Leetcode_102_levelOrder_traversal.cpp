@@ -151,7 +151,6 @@ void printTree(TreeNode<int> *root)
     {
         return;
     }
-
     queue<TreeNode<int> *> q;
     q.push(root);
 
@@ -212,17 +211,15 @@ vector<int> inputList{1 ,2 3, 4, 5, 6, 7, -1, -1, 8, 9, -1, -1, -1, -1, 12 ,-1, 
 
 
 
-
-3 9 20 -1 -1 15 7 -1 -1 -1 -1
-
 */
 
 TreeNode<int> *buildTree(vector<int> inputList)
 {
-    int currIndex = 0;
 
+    int currIndex = 0;
     int n = inputList.size();
-    if (n <= 0 || inputList[0] == -1)
+
+    if (n == 0 || inputList[0] == -1)
     {
         return nullptr;
     }
@@ -241,7 +238,6 @@ TreeNode<int> *buildTree(vector<int> inputList)
 
         int leftChild = inputList[currIndex];
         currIndex++;
-
         if (leftChild != -1)
         {
             TreeNode<int> *leftNode = new TreeNode(leftChild);
@@ -258,92 +254,51 @@ TreeNode<int> *buildTree(vector<int> inputList)
             q.push(rightNode);
         }
     }
+
     return root;
 }
 
-/*
-Ex_1: 20 8 22 4 12 -1 25 -1 -1 10 14 -1 -1 -1 -1 -1 -1
-
-                                20
-                              /    \
-                             8     22
-                            / \    / \
-                           4  12 -1  25
-                              / \
-                             10  14
-
-OP: 20 8 4 10 14 25 22
-
-Ex_2: 1 2 3 4 5 6 7 -1 -1 8 9 -1 -1 -1 -1 -1 -1 -1 -1
-
-        1
-      /   \
-     2     3
-    / \   / \
-   4   5 6   7
-      / \
-     8   9
-
-
-              1
-            /   \
-           2     3
-          / \   / \
-         4   6 5   7
-
-         1 2 3 4 6 5 7 -1 -1 -1 -1 -1 -1 -1 -1
-
-
-
-
-         3 1 4 0 2 2 -1 -1 -1 -1 -1 -1 -1
-
-
-
-
-                1
-             /    \
-            2      3
-           / \    /  \
-          4   5  6    7
-            /  \
-           8    9
-          /    /  \
-         10   11   12
-          \        / \
-           13     14  15
-                 /  \
-                16   17
-
-1 2 3 4 5 6 7 -1 -1 8 9 -1 -1 -1 -1 10 -1 11 12 -1 13 -1 -1 14 15 -1 -1 16 17 -1 -1 -1 -1 -1 -1
-
-*/
-
-void k_paths(TreeNode<int> *root, int k, unordered_map<long, long> &mpp, long sum, int &res)
+vector<vector<int>> levelOrder(TreeNode<int> *root)
 {
-    if (root)
+
+    vector<vector<int>> res;
+    if (root == nullptr)
     {
-        if (sum + root->val == k)
-            res++;
-
-        res += mpp[sum + root->val - k];
-
-        mpp[sum + root->val]++;
-        k_paths(root->left, k, mpp, sum + root->val, res);
-        k_paths(root->right, k, mpp, sum + root->val, res);
-
-        mpp[sum + root->val]--;
+        return res;
     }
-}
 
-int pathSum(TreeNode<int> *root, int k)
-{
-    int res = 0;
+    queue<TreeNode<int> *> q;
+    q.push(root);
+    vector<int> vec{root->val};
+    res.push_back(vec);
 
-    unordered_map<long, long> p;
+    while (!q.empty())
+    {
+        int n = q.size();
+        vector<int> level;
+        
+        for (int i = 0; i < n; i++)
+        {
+            auto currNode = q.front();
+            q.pop();
 
-    k_paths(root, k, p, 0, res);
-
+            if (currNode->left)
+            {
+                q.push(currNode->left);
+                level.push_back(currNode->left->val);
+            }
+            if (currNode->right)
+            {
+                q.push(currNode->right);
+                level.push_back(currNode->right->val);
+            }
+        }
+        if (level.size() != 0)
+        {
+            res.push_back(level);
+        }
+        level.clear();
+    }
     return res;
 }
 
@@ -356,9 +311,10 @@ void solve()
         input.push_back(ele);
     }
     auto root = buildTree(input);
-    int targetSum = 8;
-    auto cnt = pathSum(root, targetSum);
-    debug(cnt);
+    // printTree(root);
+    auto op = levelOrder(root);
+    // debug(op.size());
+    debug(op);
 }
 
 //>-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------

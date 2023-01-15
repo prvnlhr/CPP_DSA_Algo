@@ -333,9 +333,11 @@ void traverseDown(TreeNode<int> *root, int dis, vector<int> &res)
         res.push_back(root->val);
         return;
     }
+
     traverseDown(root->left, dis, res);
     traverseDown(root->right, dis, res);
 }
+
 void nodeAtKDisHepler(TreeNode<int> *root, int k, TreeNode<int> *target, vector<int> &nodes)
 {
     if (!root)
@@ -346,7 +348,7 @@ void nodeAtKDisHepler(TreeNode<int> *root, int k, TreeNode<int> *target, vector<
     if (root->val == target->val)
     {
         traverseDown(root, 0, nodes);
-        return 
+        return;
     }
 
     nodeAtKDisHepler(root->left, k - 1, target, nodes);

@@ -313,7 +313,6 @@ void levelHelper(TreeNode<int> *root, vector<int> &res)
 {
     queue<TreeNode<int> *> q;
 
-
     q.push(root);
 
     while (!q.empty())

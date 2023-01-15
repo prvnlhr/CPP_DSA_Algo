@@ -318,7 +318,6 @@ vector<vector<int>> verticalTraversal(TreeNode<int> *root)
         q.pop();
 
         TreeNode<int> *node = obj.first;
-
         int level = obj.second.first;
         int vertical = obj.second.second;
 

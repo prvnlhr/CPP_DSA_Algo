@@ -274,6 +274,7 @@ void printLeaftNode(TreeNode<int> *root)
     }
     printLeaftNode(root->right);
 }
+
 void printRightBoundary(TreeNode<int> *root)
 {
     if (!root)

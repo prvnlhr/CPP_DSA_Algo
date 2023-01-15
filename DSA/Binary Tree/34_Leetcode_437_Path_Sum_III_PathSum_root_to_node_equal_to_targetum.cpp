@@ -318,60 +318,45 @@ Ex_2: 1 2 3 4 5 6 7 -1 -1 8 9 -1 -1 -1 -1 -1 -1 -1 -1
 1 2 3 4 5 6 7 -1 -1 8 9 -1 -1 -1 -1 10 -1 11 12 -1 13 -1 -1 14 15 -1 -1 16 17 -1 -1 -1 -1 -1 -1
 
 */
-TreeNode<int> *findLCA(TreeNode<int> *root, int p, int q)
+
+/*
+- Given the root of a binary tree and an integer targetSum,
+- return the number of paths where the sum of the values along the path equals targetSum.
+
+- The path does not need to start or end at the root or a leaf,
+- but it must go downwards (i.e., traveling only from parent nodes to child nodes).
+
+*/
+
+void k_paths(TreeNode<int> *root, int k, unordered_map<long, long> &mpp, long sum, int &res)
 {
 
-    if (!root)
+    if (root)
     {
-        return nullptr;
-    }
+        if (sum + root->val == k)
+        {
+            res++;
+        }
 
-    if (root->val == p || root->val == q)
-    {
-        return root;
-    }
+        res += mpp[sum + root->val - k];
 
-    TreeNode<int> *leftLCA = findLCA(root->left, p, q);
-    TreeNode<int> *rightLCA = findLCA(root->right, p, q);
+        mpp[sum + root->val]++;
+        k_paths(root->left, k, mpp, sum + root->val, res);
+        k_paths(root->right, k, mpp, sum + root->val, res);
 
-    if (leftLCA && rightLCA)
-    {
-        return root;
+        mpp[sum + root->val]--;
     }
-    if (!leftLCA && !rightLCA)
-    {
-        return nullptr;
-    }
-    TreeNode<int> *r = leftLCA ? leftLCA : rightLCA;
-    return r;
-}
-int findDist(TreeNode<int> *root, int node, int dist)
-{
-    if (!root)
-    {
-        return -1;
-    }
-    if (root->val == node)
-    {
-        return dist;
-    }
-    int l = findDist(root->left, node, dist + 1);
-
-    return (l != -1) ? l : findDist(root->right, node, dist + 1);
 }
 
-int distance(TreeNode<int> *root, int p, int q)
+int pathSum(TreeNode<int> *root, int k)
 {
-    if (!root)
-    {
-        return 0;
-    }
-    TreeNode<int> *LCA = findLCA(root, p, q);
-    debug(LCA->val);
-    int dist1 = findDist(LCA, p, 0);
-    int dist2 = findDist(LCA, q, 0);
-    debug(dist1, dist2);
-    return dist1 + dist2;
+    int res = 0;
+
+    unordered_map<long, long> p;
+
+    k_paths(root, k, p, 0, res);
+
+    return res;
 }
 
 void solve()
@@ -383,11 +368,9 @@ void solve()
         input.push_back(ele);
     }
     auto root = buildTree(input);
-
-    int p = 2;
-    int q = 3;
-
-    cout << distance(root, p, q) << endl;
+    int targetSum = 8;
+    auto cnt = pathSum(root, targetSum);
+    debug(cnt);
 }
 
 //>-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
