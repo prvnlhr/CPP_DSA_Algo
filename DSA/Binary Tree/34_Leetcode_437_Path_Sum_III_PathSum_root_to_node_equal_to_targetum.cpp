@@ -339,11 +339,11 @@ void k_paths(TreeNode<int> *root, int k, unordered_map<long, long> &mpp, long su
         }
 
         res += mpp[sum + root->val - k];
-
         mpp[sum + root->val]++;
         k_paths(root->left, k, mpp, sum + root->val, res);
         k_paths(root->right, k, mpp, sum + root->val, res);
 
+        //> Backtrack
         mpp[sum + root->val]--;
     }
 }

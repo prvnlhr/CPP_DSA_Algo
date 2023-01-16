@@ -164,6 +164,7 @@ int subarraySum(vector<int> &nums, int k)
     return subCnt;
 }
 
+//> Tech Dose YT channel
 int subarraySum1(vector<int> &nums, int k)
 {
     unordered_map<int, int> mpp;
@@ -171,21 +172,21 @@ int subarraySum1(vector<int> &nums, int k)
 
     for (int i = 0; i < nums.size(); i++)
     {
+
         sum += nums[i];
-        debug(sum);
         if (sum == k)
         {
             ans++;
         }
+
         if (mpp.find(sum - k) != mpp.end())
         {
             ans += mpp[sum - k];
         }
 
-        debug(mpp, sum - k);
-
         mpp[sum]++;
     }
+
     return ans;
 }
 
