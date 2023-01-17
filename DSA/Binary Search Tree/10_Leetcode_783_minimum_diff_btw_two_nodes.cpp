@@ -318,6 +318,11 @@ OP:
 
 */
 
+/*
+- Given the root of a Binary Search Tree (BST), return the minimum
+- difference between the values of any two different nodes in the tree.
+*/
+
 int res = INT_MAX;
 TreeNode<int> *pre = nullptr;
 vector<int> nd;
@@ -329,6 +334,7 @@ void inorderTra(TreeNode<int> *root)
     }
 
     inorderTra(root->left);
+   
     if (pre == nullptr)
     {
         pre = root;

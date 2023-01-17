@@ -326,41 +326,178 @@ OP:
 
 */
 
-void inorder(TreeNode<int> *root, vector<int> &res)
+/*
+
+* SOLUTION 1:
+>             1. Get inorder of both the BST's in vector's
+>             2. Merge the both vector's into sorted array
+>             3. Convert the sorted array to BST
+ : TC: O(m+n)
+ : SC :O(m+n)
+
+* SOLUTION 2: can be optimised for space complexity O(h1 + h2)
+>            1. convert the BST to DLL
+>            2. Megre the DLL's
+>            3. convert DLL to BST
+ : TC: O(m+n)
+ : SC :O(h1+h2)
+
+*/
+TreeNode<int> *prevNode = NULL;
+
+void BSTtoDLLHelper(TreeNode<int> *root, TreeNode<int> *&headNode)
 {
     if (!root)
     {
         return;
     }
-    inorder(root->left, res);
-    res.push_back(root->val);
-    inorder(root->right, res);
+    BSTtoDLLHelper(root->left, headNode);
+
+    if (prevNode == NULL)
+    {
+        headNode = root;
+    }
+    else
+    {
+        root->left = prevNode;
+        prevNode->right = root;
+    }
+    prevNode = root;
+    BSTtoDLLHelper(root->right, headNode);
 }
 
-TreeNode<int> *mergeBST(TreeNode<int> *root1, TreeNode<int> *root2)
+void BSTtoDLL(TreeNode<int> *root, TreeNode<int> *&head)
+{
+    prevNode = NULL;
+    BSTtoDLLHelper(root, head);
+}
+
+TreeNode<int> *mergeDLL(TreeNode<int> *head1, TreeNode<int> *head2)
 {
 
-    vector<int> res1;
-    vector<int> res2;
-    inorder(root1, res1);
-    inorder(root2, res2);
-    debug(res1);
-    debug(res2);
+    TreeNode<int> *head = NULL;
+    TreeNode<int> *tail = NULL;
+    while (head1 && head2)
+    {
+        debug(head1->val, head2->val);
 
-    return nullptr;
+        if (head1->val < head2->val)
+        {
+
+            if (!head)
+                head = head1;
+            else
+            {
+
+                tail->right = head1;
+                head1->left = tail;
+            }
+
+            tail = head1;
+            head1 = head1->right;
+        }
+
+        else
+        {
+
+            if (!head)
+                head = head2;
+            else
+            {
+                tail->right = head2;
+                head2->left = tail;
+            }
+
+            tail = head2;
+            head2 = head2->right;
+        }
+    }
+
+    while (head1)
+    {
+        tail->right = head1;
+        head1->left = tail;
+        tail = head1;
+        head1 = head1->right;
+    }
+
+    while (head2)
+    {
+        tail->right = head2;
+        head2->left = tail;
+        tail = head2;
+        head2 = head2->right;
+    }
+    return head;
 }
+
+int countNode(TreeNode<int> *head)
+{
+    int cnt = 0;
+    TreeNode<int> *temp = head;
+    while (temp)
+    {
+        cnt++;
+        temp = temp->right;
+    }
+    return cnt;
+}
+TreeNode<int> *DLLtoBST(TreeNode<int> *&head, int n)
+{
+    if (n <= 0 || !head)
+        return NULL;
+
+    // Create left part from the list recursively
+    TreeNode<int> *left = DLLtoBST(head, n / 2);
+
+    TreeNode<int> *root = head;
+    root->left = left;
+    head = head->right;
+
+    // Create left part from the list recursively
+    root->right = DLLtoBST(head, n - (n / 2) - 1);
+
+    // Return the root of BST
+    return root;
+}
+
+void printInorder(TreeNode<int> *root)
+{
+
+    if (!root)
+    {
+        return;
+    }
+    printInorder(root->left);
+    cout << root->val << " ";
+    printInorder(root->right);
+}
+TreeNode<int> *mergeBTS(TreeNode<int> *root1, TreeNode<int> *root2)
+{
+
+    TreeNode<int> *head1 = NULL;
+    BSTtoDLL(root1, head1);
+    head1->left = NULL;
+
+    TreeNode<int> *head2 = NULL;
+    BSTtoDLL(root2, head2);
+    head2->left = NULL;
+
+    TreeNode<int> *head = mergeDLL(head1, head2);
+
+    int n = countNode(head);
+    TreeNode<int> *root = DLLtoBST(head, n);
+    return root;
+}
+
 void solve()
 {
     vector<int> input1{6, 2, 8, 0, 4, 7, 9, -1, -1, 3, 5, -1, -1, -1, -1, -1, -1, -1, -1};
     vector<int> input2{4, 2, 6, 1, 3, 5, 7, -1, -1, -1, -1, -1, -1, -1, -1};
-
-    debug(input1);
-    debug(input2);
     TreeNode<int> *root1 = buildTree(input1);
     TreeNode<int> *root2 = buildTree(input2);
-    printTree(root1);
-    printTree(root2);
-    mergeBST(root1, root2);
+    auto root = mergeBTS(root1, root2);
+    printInorder(root);
 }
 
 //>-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------

@@ -318,6 +318,11 @@ OP:
 
 */
 
+/*
+- Given the root of a binary search tree, rearrange the tree in in-order so that the
+- leftmost node in the tree is now the root of the tree, and every node has no
+- left child and only one right child.
+*/
 void inorderTra(TreeNode<int> *root, vector<int> &vec)
 {
     if (!root)
@@ -332,16 +337,18 @@ void inorderTra(TreeNode<int> *root, vector<int> &vec)
 
 TreeNode<int> *increasingBST(TreeNode<int> *root)
 {
-
+    //> 1. first get the inorder of BST in vector
     vector<int> inorder;
     inorderTra(root, inorder);
     if (inorder.size() == 0)
     {
         return nullptr;
     }
+
     int indx = 0;
     debug(inorder);
 
+        //> 2. Build the  required increasing order BST
     TreeNode<int> *newRoot = new TreeNode(inorder[indx]);
     indx++;
 

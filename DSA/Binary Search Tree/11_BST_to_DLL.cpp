@@ -26,26 +26,30 @@ ostream &operator<<(ostream &os, const pair<T1, T2> &p)
     return os << '{' << p.first << ", " << p.second << '}';
 }
 
-template <class T, class = decay_t<decltype(*begin(declval<T>()))>,
+template <class T, class = decltype(begin(declval<T>())),
           class = enable_if_t<!is_same<T, string>::value>>
 ostream &operator<<(ostream &os, const T &c)
 {
     os << '[';
-    for (auto it = c.begin(); it != c.end(); ++it)
-        os << &", "[2 * (it == c.begin())] << *it;
+    for (auto it = begin(c); it != end(c); ++it)
+        os << (it == begin(c) ? "" : ", ") << *it;
     return os << ']';
 }
-//__support up to 5 args
-#define _NTH_ARG(_1, _2, _3, _4, _5, _6, N, ...) N
-#define _FE_0(_CALL, ...)
+
+#define _NTH_ARG(_1, _2, _3, _4, _5, _6, _7, _8, _9, _10, N, ...) N
 #define _FE_1(_CALL, x) _CALL(x)
 #define _FE_2(_CALL, x, ...) _CALL(x) _FE_1(_CALL, __VA_ARGS__)
 #define _FE_3(_CALL, x, ...) _CALL(x) _FE_2(_CALL, __VA_ARGS__)
 #define _FE_4(_CALL, x, ...) _CALL(x) _FE_3(_CALL, __VA_ARGS__)
 #define _FE_5(_CALL, x, ...) _CALL(x) _FE_4(_CALL, __VA_ARGS__)
-#define FOR_EACH_MACRO(MACRO, ...)                                           \
-    _NTH_ARG(dummy, ##__VA_ARGS__, _FE_5, _FE_4, _FE_3, _FE_2, _FE_1, _FE_0) \
-    (MACRO, ##__VA_ARGS__)
+#define _FE_6(_CALL, x, ...) _CALL(x) _FE_5(_CALL, __VA_ARGS__)
+#define _FE_7(_CALL, x, ...) _CALL(x) _FE_6(_CALL, __VA_ARGS__)
+#define _FE_8(_CALL, x, ...) _CALL(x) _FE_7(_CALL, __VA_ARGS__)
+#define _FE_9(_CALL, x, ...) _CALL(x) _FE_8(_CALL, __VA_ARGS__)
+#define _FE_10(_CALL, x, ...) _CALL(x) _FE_9(_CALL, __VA_ARGS__)
+#define FOR_EACH_MACRO(MACRO, ...)                                                               \
+    _NTH_ARG(__VA_ARGS__, _FE_10, _FE_9, _FE_8, _FE_7, _FE_6, _FE_5, _FE_4, _FE_3, _FE_2, _FE_1) \
+    (MACRO, __VA_ARGS__)
 
 //__Change output format here
 #define out(x) #x " = " << x << "; "
@@ -56,7 +60,6 @@ ostream &operator<<(ostream &os, const T &c)
 #else
 #define debug(...)
 #endif
-
 //>---DEBUG_TEMPLATE_END-----------------------------------------------------------------------------------------------------------------------------------------------------------
 
 // #define FOR(i, start, end) for (int i = start; i < end; i++)
@@ -86,72 +89,32 @@ typedef map<int, int> mpint;
 typedef pair<int, int> pi;
 typedef priority_queue<int> pqmax;
 typedef priority_queue<int, vector<int>, greater<int>> pqmin;
-//_____________________________
-ll gcd(ll a, ll b)
-{
-    if (b > a)
-    {
-        return gcd(b, a);
-    }
-    if (b == 0)
-    {
-        return a;
-    }
-    return gcd(b, a % b);
-}
-//_____________________________
-ll expo(ll a, ll b, ll mod)
-{
-    ll res = 1;
-    while (b > 0)
-    {
-        if (b & 1)
-            res = (res * a) % mod;
-        a = (a * a) % mod;
-        b = b >> 1;
-    }
-    return res;
-}
-//__factorial______________________________________________
-vector<ll> fact;
-void factOfN(ll n)
-{
-    ll prod = 1;
-    fact.resize(n + 1);
-    for (int f = 1; f <= n; f++)
-    {
-
-        fact[f] = prod * f;
-        prod = prod * f;
-    }
-}
 //--------------------------------------------------------------------------------------------------------------------------------
 
 //>----------------------------ＳＯＬＶＥ-----------------------------------------------------------------------------------------------------------------------------------------------
 
-template <typename T>
 class TreeNode
 {
 
 public:
-    T val;
-    TreeNode<T> *left;
-    TreeNode<T> *right;
+    int val;
+    TreeNode *left;
+    TreeNode *right;
 
-    TreeNode(T val)
+    TreeNode(int val)
     {
         this->val = val;
         this->left = nullptr;
         this->right = nullptr;
     }
 };
-void printTree(TreeNode<int> *root)
+void printTree(TreeNode *root)
 {
     if (root == nullptr)
     {
         return;
     }
-    queue<TreeNode<int> *> q;
+    queue<TreeNode *> q;
     q.push(root);
 
     while (!q.empty())
@@ -178,42 +141,7 @@ void printTree(TreeNode<int> *root)
     }
 }
 
-//> SAMPLE INPUT:  vector<int> inputList{1, 2, 3, 4, 5, 6, 7, -1, -1, -1, -1, -1, -1, -1, -1};
-
-/*
-
-Ex_1: 1 2 3 4 5 6 7 -1 -1 -1 -1 -1 -1 -1 -1
-
-               1
-            /     \
-           2       3
-         /   \    /   \
-        4     5  6     7
-
-
-Ex_2: 1 2 3 4 5 6 7 -1 -1 8 9 -1 -1 -1 -1 12 -1 11 14 -1 18 -1 -1 15 20 -1 -1 17 16 -1 -1 -1 -1 -1 -1
-vector<int> inputList{1 ,2 3, 4, 5, 6, 7, -1, -1, 8, 9, -1, -1, -1, -1, 12 ,-1, 11, 14, -1, 18, -1, -1, 15, 20 ,-1 ,-1, 17, 16, -1, -1, -1, -1, -1 ,-1};
-
-                1
-            /      \
-           2        3
-         /   \     /   \
-        4     5   6     7
-            /   \
-           8     9
-          /     /   \
-         12     11    14
-          \          / \
-           18       15   20
-                    / \
-                   17    16
-
-
-
-
-*/
-
-TreeNode<int> *buildTree(vector<int> inputList)
+TreeNode *buildTree(vector<int> inputList)
 {
 
     int currIndex = 0;
@@ -224,10 +152,10 @@ TreeNode<int> *buildTree(vector<int> inputList)
         return nullptr;
     }
 
-    TreeNode<int> *root = new TreeNode(inputList[currIndex]);
+    TreeNode *root = new TreeNode(inputList[currIndex]);
     currIndex++;
 
-    queue<TreeNode<int> *> q;
+    queue<TreeNode *> q;
     q.push(root);
 
     while (!q.empty())
@@ -240,7 +168,7 @@ TreeNode<int> *buildTree(vector<int> inputList)
         currIndex++;
         if (leftChild != -1)
         {
-            TreeNode<int> *leftNode = new TreeNode(leftChild);
+            TreeNode *leftNode = new TreeNode(leftChild);
             currNode->left = leftNode;
             q.push(leftNode);
         }
@@ -249,7 +177,7 @@ TreeNode<int> *buildTree(vector<int> inputList)
         currIndex++;
         if (rightChild != -1)
         {
-            TreeNode<int> *rightNode = new TreeNode(rightChild);
+            TreeNode *rightNode = new TreeNode(rightChild);
             currNode->right = rightNode;
             q.push(rightNode);
         }
@@ -258,96 +186,86 @@ TreeNode<int> *buildTree(vector<int> inputList)
     return root;
 }
 
-/*
-BST:
-           4
-         /   \
-        2     6
-      /  \   /  \
-     1    3 5    7
-
-4 2 6 1 3 5 7 -1 -1 -1 -1 -1 -1 -1 -1
-
-
-
-
-      17
-     /  \
-    4    18
-  /   \
- 2     9
-
-17 4 18 2 9 -1 -1 -1 -1 -1 -1
-
-Output: 4 9 17 18 = 4 +  9 + 17 + 18 = 48
-
-
-
-
-Ex: 6 2 8 0 4 7 8 -1 -1 3 5 -1 -1 -1 -1 -1 -1 -1 -1
- 2 4 -> 2
- 2 6 -> 6
-                         6
-                      /    \
-                     2      8
-                    / \    / \
-                   0   4  7   8
-                      / \
-                     3   5
-
-
-
-
-*/
-
-/*
-
-               4
-      1  2  3     5  6  7
-
-
-
-*/
-
-TreeNode<int> *helper(int l, int r, vector<int> nums)
+class LLNode
 {
-    if (l > r)
+
+public:
+    int data;
+    LLNode *next;
+
+    LLNode(int data)
     {
-        return nullptr;
+        this->data = data;
+        this->next = nullptr;
     }
-    int mid = (l + r) / 2;
-    int midEle = nums[((l + r) / 2)];
+};
 
-    TreeNode<int> *node = new TreeNode(midEle);
+// ________________________________________________________________
 
-    node->left = helper(l, mid - 1, nums);
-    node->right = helper(mid + 1, r, nums);
-    return node;
+TreeNode *prevNode = NULL;
+TreeNode *headNode = NULL;
+
+/*
+  Consider the BST in sorted form
+ -> 1 2 3 4 5 6 7 8
+
+  we will have a prev pointer
+     prev root
+       |   |
+    1  2   3 4 5 6 7 8
+
+> so to create a a doubly LL
+>  1  2 3 4 5 6 7 8
+*  we can do root.left = prev
+*  and,  prevNode.right = root
+-> and finally update the prev to next node i.e root => prev = root
+
+*/
+
+TreeNode *BSTtoDLLHelper(TreeNode *root)
+{
+    if (!root)
+    {
+        return NULL;
+    }
+    BSTtoDLLHelper(root->left);
+
+    if (prevNode == NULL)
+    {
+        headNode = root;
+    }
+    else
+    {
+        root->left = prevNode;
+        prevNode->right = root;
+    }
+    prevNode = root;
+    BSTtoDLLHelper(root->right);
 }
 
-TreeNode<int> *sortedArrayToBST(vector<int> &nums)
+TreeNode *BSTtoDLL(TreeNode *root)
 {
-
-    if (nums.size() == 0)
+    if (!root)
     {
-        return nullptr;
+        return NULL;
     }
-    TreeNode<int> *root = helper(0, nums.size() - 1, nums);
-    return root;
+
+    prevNode = NULL;
+    headNode = NULL;
+
+    BSTtoDLLHelper(root);
 }
 
 void solve()
 {
-    int ele;
     vector<int> input;
+    int ele;
     while (cin >> ele)
     {
         input.push_back(ele);
     }
-
-    TreeNode<int> *root = sortedArrayToBST(input);
-
-    printTree(root);
+    TreeNode *root = buildTree(input);
+    auto head = BSTtoDLL(root);
 }
 
 //>-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------

@@ -1,1 +1,14 @@
+Line 382: head1->val = 0; head2->val = 1; 
+Line 382: head1->val = 2; head2->val = 1; 
+Line 382: head1->val = 2; head2->val = 2; 
+Line 382: head1->val = 2; head2->val = 3; 
+Line 382: head1->val = 3; head2->val = 3; 
+Line 382: head1->val = 3; head2->val = 4; 
+Line 382: head1->val = 4; head2->val = 4; 
+Line 382: head1->val = 4; head2->val = 5; 
+Line 382: head1->val = 5; head2->val = 5; 
+Line 382: head1->val = 5; head2->val = 6; 
+Line 382: head1->val = 6; head2->val = 6; 
+Line 382: head1->val = 6; head2->val = 7; 
+Line 382: head1->val = 7; head2->val = 7; 
 Time: 0

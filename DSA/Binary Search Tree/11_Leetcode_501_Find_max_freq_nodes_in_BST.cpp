@@ -264,64 +264,53 @@ BST:
          /   \
         2     6
       /  \   /  \
-     1    3 5    7
+     1    3 6    7
 
 4 2 6 1 3 5 7 -1 -1 -1 -1 -1 -1 -1 -1
 
+OP -> 6
 
 
 
-      17
-     /  \
-    4    18
-  /   \
- 2     9
-
-17 4 18 2 9 -1 -1 -1 -1 -1 -1
-
-Output: 4 9 17 18 = 4 +  9 + 17 + 18 = 48
-
-
-
-
-
-
-
-
-Ex: 6 2 8 0 4 7 8 -1 -1 3 5 -1 -1 -1 -1 -1 -1 -1 -1
+Ex: 6 5 7 4 5 7 7 -1 -1 -1 -1 -1 -1 -1 -1
                          6
                       /    \
-                     2      8
+                     5      7
                     / \    / \
-                   1   4  7   8
-                      / \
-                     3   5
+                   4   5  7   7
 
 
-OP:
-        1
-         \
-          2
-           \
-            3
-             \
-              4
-               \
-                5
-                 \
-                  6
-                   \
-                    7
-                     \
-                      8
+OP -> 7
+
+*/
+
+/*
+- Given a Binary Search Tree (BST) with duplicates, find the node (the most frequently occurred element)
+- in the given BST. If the BST contains two or more such nodes, print any of them.
 
 
+-> 10 5 12 5 5 12 16 -1 -1 -1 -1 -1 -1 -1 -1
+  :OP : 5
 */
 
 int pre = INT_MIN;
 int maxFreq = 0;
 int currFreq = 0;
 vector<int> res;
+
+/*
+- visualise the tree in sorted array form
+    10 5 12 5 5 12 16 -1 -1 -1 -1 -1 -1 -1 -1
+->  5 5 5 6 10 12 12 16
+
+> now maintain two pointer, root and pre,
+> if root->val == pre -> the currFreq++
+> if not equal means, we have got a new element so, currFreq = 1,
+> but store the previously store frequency(if any) to maxFreq and also put the element to  res
+> now , if we got another element with more freq, the clear the res vector and put that element
+* if we try to visualise the tree in form of sorted array the it became easy
+*/
+
 void inorder(TreeNode<int> *root)
 {
     if (!root)
@@ -330,7 +319,9 @@ void inorder(TreeNode<int> *root)
     }
 
     inorder(root->left);
+    debug(root->val);
 
+    //> id prev element is smae as root , increase currFreq++
     if (pre == root->val)
     {
         currFreq++;
@@ -358,6 +349,7 @@ void inorder(TreeNode<int> *root)
 vector<int> findMode(TreeNode<int> *root)
 {
     inorder(root);
+    debug(res);
     return res;
 }
 void solve()
@@ -369,6 +361,7 @@ void solve()
         input.push_back(ele);
     }
     TreeNode<int> *root = buildTree(input);
+    auto ans = findMode(root);
 }
 
 //>-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------

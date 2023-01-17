@@ -329,6 +329,7 @@ void inorderTra(TreeNode<int> *root, vector<int> &vec)
     vec.push_back(root->val);
     inorderTra(root->right, vec);
 }
+
 bool findTarget(TreeNode<int> *root, int k)
 {
     vector<int> inorder;
@@ -356,6 +357,7 @@ bool findTarget(TreeNode<int> *root, int k)
     }
     return false;
 }
+
 void solve()
 {
     int ele;
