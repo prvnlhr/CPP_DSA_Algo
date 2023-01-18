@@ -343,8 +343,8 @@ OP:
  : SC :O(h1+h2)
 
 */
-TreeNode<int> *prevNode = NULL;
 
+TreeNode<int> *prevNode = NULL;
 void BSTtoDLLHelper(TreeNode<int> *root, TreeNode<int> *&headNode)
 {
     if (!root)
@@ -362,6 +362,7 @@ void BSTtoDLLHelper(TreeNode<int> *root, TreeNode<int> *&headNode)
         root->left = prevNode;
         prevNode->right = root;
     }
+
     prevNode = root;
     BSTtoDLLHelper(root->right, headNode);
 }
@@ -385,16 +386,21 @@ TreeNode<int> *mergeDLL(TreeNode<int> *head1, TreeNode<int> *head2)
         {
 
             if (!head)
+            {
                 head = head1;
+                tail = head1;
+                head1 = head1->right;
+            }
             else
             {
-
                 tail->right = head1;
                 head1->left = tail;
+                tail = head1;
+                head1 = head1->right;
             }
 
-            tail = head1;
-            head1 = head1->right;
+            // tail = head1;
+            // head1 = head1->right;
         }
 
         else
