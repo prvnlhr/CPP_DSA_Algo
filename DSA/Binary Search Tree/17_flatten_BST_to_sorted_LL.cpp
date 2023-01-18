@@ -363,8 +363,12 @@ void printLL(ListNode *head)
 }
 
 //> SOL 1 : O(N) extra space as we are storing inorder in new LL
+// > travelling bSt in inorder fashion and attaching the nodes in respective
+// > mannner
+
 ListNode *head = nullptr;
 ListNode *tail = nullptr;
+
 ListNode *flattenBST(TreeNode<int> *root)
 {
 
@@ -376,6 +380,7 @@ ListNode *flattenBST(TreeNode<int> *root)
     flattenBST(root->left);
 
     ListNode *node = new ListNode(root->val);
+
     if (head == nullptr)
     {
         head = node;
@@ -391,7 +396,8 @@ ListNode *flattenBST(TreeNode<int> *root)
 }
 
 //> SOL 2 : Improved space complexity to O(H), modifying existing BST to LL
-
+// ! NOTE: when are modifying the BST in place, we always gets O(H) space complexity
+// !       where H is max height of BST when flatten
 void inorder(TreeNode<int> *root, TreeNode<int> *&tail)
 {
 
@@ -401,6 +407,7 @@ void inorder(TreeNode<int> *root, TreeNode<int> *&tail)
     }
 
     inorder(root->left, tail);
+
     debug(root->val);
 
     root->left = nullptr;

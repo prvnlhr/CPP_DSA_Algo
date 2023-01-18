@@ -364,7 +364,6 @@ void printLL(ListNode *head)
 
 TreeNode<int> *sortedListToBST(ListNode *head)
 {
-
     if (!head)
     {
         return nullptr;
@@ -375,11 +374,11 @@ TreeNode<int> *sortedListToBST(ListNode *head)
         return new TreeNode(val);
     }
 
+    //> 1.  find mid, same as in sorted array
+
     ListNode *prev = nullptr;
     ListNode *slow = head;
     ListNode *fast = head;
-
-    //> 1.  find mid, same as in sorted array
 
     while (fast && fast->next)
     {
@@ -387,12 +386,12 @@ TreeNode<int> *sortedListToBST(ListNode *head)
         slow = slow->next;
         fast = fast->next->next;
     }
-    //> divide first half and second half
+
+        //> divide first half and second half
     prev->next = nullptr;
 
-    int val = slow->data;
-    TreeNode<int> *root = new TreeNode(val);
-
+    int midData = slow->data;
+    TreeNode<int> *root = new TreeNode(midData);
 
     //> leverage recursion to get left subtree and right subtree
     root->left = sortedListToBST(head);

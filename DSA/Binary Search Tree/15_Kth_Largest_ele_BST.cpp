@@ -327,11 +327,12 @@ int inorder(TreeNode<int> *root, int k)
         return -1;
     }
     int rightAns = inorder(root->right, k);
-    debug(kCnt);
+
     if (rightAns != -1)
     {
         return rightAns;
     }
+
     kCnt = kCnt - 1;
     if (kCnt == 0)
     {

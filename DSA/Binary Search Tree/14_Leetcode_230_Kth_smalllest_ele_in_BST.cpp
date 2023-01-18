@@ -321,18 +321,20 @@ OP:
 int kCnt = 0;
 int inorder(TreeNode<int> *root, int k)
 {
-
     if (!root)
     {
         return -1;
     }
+
     int leftAns = inorder(root->left, k);
-    debug(kCnt);
+
     if (leftAns != -1)
     {
         return leftAns;
     }
+
     kCnt = kCnt - 1;
+
     if (kCnt == 0)
     {
         return root->val;

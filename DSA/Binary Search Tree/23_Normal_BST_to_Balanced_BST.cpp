@@ -26,26 +26,30 @@ ostream &operator<<(ostream &os, const pair<T1, T2> &p)
     return os << '{' << p.first << ", " << p.second << '}';
 }
 
-template <class T, class = decay_t<decltype(*begin(declval<T>()))>,
+template <class T, class = decltype(begin(declval<T>())),
           class = enable_if_t<!is_same<T, string>::value>>
 ostream &operator<<(ostream &os, const T &c)
 {
     os << '[';
-    for (auto it = c.begin(); it != c.end(); ++it)
-        os << &", "[2 * (it == c.begin())] << *it;
+    for (auto it = begin(c); it != end(c); ++it)
+        os << (it == begin(c) ? "" : ", ") << *it;
     return os << ']';
 }
-//__support up to 5 args
-#define _NTH_ARG(_1, _2, _3, _4, _5, _6, N, ...) N
-#define _FE_0(_CALL, ...)
+
+#define _NTH_ARG(_1, _2, _3, _4, _5, _6, _7, _8, _9, _10, N, ...) N
 #define _FE_1(_CALL, x) _CALL(x)
 #define _FE_2(_CALL, x, ...) _CALL(x) _FE_1(_CALL, __VA_ARGS__)
 #define _FE_3(_CALL, x, ...) _CALL(x) _FE_2(_CALL, __VA_ARGS__)
 #define _FE_4(_CALL, x, ...) _CALL(x) _FE_3(_CALL, __VA_ARGS__)
 #define _FE_5(_CALL, x, ...) _CALL(x) _FE_4(_CALL, __VA_ARGS__)
-#define FOR_EACH_MACRO(MACRO, ...)                                           \
-    _NTH_ARG(dummy, ##__VA_ARGS__, _FE_5, _FE_4, _FE_3, _FE_2, _FE_1, _FE_0) \
-    (MACRO, ##__VA_ARGS__)
+#define _FE_6(_CALL, x, ...) _CALL(x) _FE_5(_CALL, __VA_ARGS__)
+#define _FE_7(_CALL, x, ...) _CALL(x) _FE_6(_CALL, __VA_ARGS__)
+#define _FE_8(_CALL, x, ...) _CALL(x) _FE_7(_CALL, __VA_ARGS__)
+#define _FE_9(_CALL, x, ...) _CALL(x) _FE_8(_CALL, __VA_ARGS__)
+#define _FE_10(_CALL, x, ...) _CALL(x) _FE_9(_CALL, __VA_ARGS__)
+#define FOR_EACH_MACRO(MACRO, ...)                                                               \
+    _NTH_ARG(__VA_ARGS__, _FE_10, _FE_9, _FE_8, _FE_7, _FE_6, _FE_5, _FE_4, _FE_3, _FE_2, _FE_1) \
+    (MACRO, __VA_ARGS__)
 
 //__Change output format here
 #define out(x) #x " = " << x << "; "
@@ -56,7 +60,6 @@ ostream &operator<<(ostream &os, const T &c)
 #else
 #define debug(...)
 #endif
-
 //>---DEBUG_TEMPLATE_END-----------------------------------------------------------------------------------------------------------------------------------------------------------
 
 // #define FOR(i, start, end) for (int i = start; i < end; i++)
@@ -86,49 +89,9 @@ typedef map<int, int> mpint;
 typedef pair<int, int> pi;
 typedef priority_queue<int> pqmax;
 typedef priority_queue<int, vector<int>, greater<int>> pqmin;
-//_____________________________
-ll gcd(ll a, ll b)
-{
-    if (b > a)
-    {
-        return gcd(b, a);
-    }
-    if (b == 0)
-    {
-        return a;
-    }
-    return gcd(b, a % b);
-}
-//_____________________________
-ll expo(ll a, ll b, ll mod)
-{
-    ll res = 1;
-    while (b > 0)
-    {
-        if (b & 1)
-            res = (res * a) % mod;
-        a = (a * a) % mod;
-        b = b >> 1;
-    }
-    return res;
-}
-//__factorial______________________________________________
-vector<ll> fact;
-void factOfN(ll n)
-{
-    ll prod = 1;
-    fact.resize(n + 1);
-    for (int f = 1; f <= n; f++)
-    {
-
-        fact[f] = prod * f;
-        prod = prod * f;
-    }
-}
 //--------------------------------------------------------------------------------------------------------------------------------
 
 //>----------------------------ＳＯＬＶＥ-----------------------------------------------------------------------------------------------------------------------------------------------
-
 template <typename T>
 class TreeNode
 {
@@ -258,37 +221,63 @@ TreeNode<int> *buildTree(vector<int> inputList)
     return root;
 }
 
-/*
-BST:
-            4
-         /    \
-        2      6
-      /  \    /  \
-     1    3  5    7
-
-*/
-
-void preOrder(TreeNode<int> *root)
+void printInorder(TreeNode<int> *root)
 {
     if (!root)
     {
         return;
     }
+    printInorder(root->left);
     cout << root->val << " ";
-    preOrder(root->left);
-    preOrder(root->right);
+    printInorder(root->right);
+}
+
+void inorder(TreeNode<int> *root, vector<int> &in)
+{
+
+    if (!root)
+    {
+        return;
+    }
+
+    inorder(root->left, in);
+    in.push_back(root->val);
+    inorder(root->right, in);
+}
+
+TreeNode<int> *BSTtoBalBstHelper(vector<int> inorder, int lo, int hi)
+{
+    if (lo > hi)
+    {
+        return NULL;
+    }
+    int mid = (lo + hi) / 2;
+    debug(mid);
+
+    TreeNode<int> *root = new TreeNode<int>(inorder[mid]);
+    debug(root->val);
+
+    root->left = BSTtoBalBstHelper(inorder, lo, mid - 1);
+    root->right = BSTtoBalBstHelper(inorder, mid + 1, hi);
+    return root;
+}
+TreeNode<int> *BSTtoBalancedBSt(TreeNode<int> *root)
+{
+    vector<int> in;
+    inorder(root, in);
+    debug(in);
+    int lo = 0;
+    int hi = in.size() - 1;
+    TreeNode<int> *newRoot = BSTtoBalBstHelper(in, lo, hi);
+    return newRoot;
 }
 
 void solve()
 {
-    int ele;
-    vector<int> input;
-    while (cin >> ele)
-    {
-        input.push_back(ele);
-    }
-    TreeNode<int> *root = buildTree(input);
-    preOrder(root);
+    vector<int> arr{4, 3, -1, 2, -1, 1, -1, -1, -1};
+    TreeNode<int> *root = buildTree(arr);
+    TreeNode<int> *newRoot = BSTtoBalancedBSt(root);
+    printTree(newRoot);
 }
 
 //>-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------

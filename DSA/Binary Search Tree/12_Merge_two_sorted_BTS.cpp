@@ -453,17 +453,22 @@ TreeNode<int> *DLLtoBST(TreeNode<int> *&head, int n)
     if (n <= 0 || !head)
         return NULL;
 
-    // Create left part from the list recursively
-    TreeNode<int> *left = DLLtoBST(head, n / 2);
+    /*
+                  root
+>                   |
+>           1 2 3 4 5 6 7 8 9
+            |   |     |     |
+             n/2       n- n/2 -1 elements
+            elements
+    */
 
+    TreeNode<int> *left = DLLtoBST(head, n / 2);
     TreeNode<int> *root = head;
     root->left = left;
     head = head->right;
 
-    // Create left part from the list recursively
     root->right = DLLtoBST(head, n - (n / 2) - 1);
 
-    // Return the root of BST
     return root;
 }
 

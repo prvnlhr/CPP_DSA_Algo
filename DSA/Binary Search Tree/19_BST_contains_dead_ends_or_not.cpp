@@ -320,6 +320,7 @@ void putNode(TreeNode<int> *root, map<int, int> &mpp)
     putNode(root->right, mpp);
 }
 
+//> O(N)  O(N)
 bool check(TreeNode<int> *root, map<int, int> &mpp)
 {
 
@@ -328,20 +329,20 @@ bool check(TreeNode<int> *root, map<int, int> &mpp)
         return false;
     }
 
-    if (!root->left && !root->right)
+    if (!root->left && !root->right) //> leaf node
     {
         int a = root->val - 1;
         int b = root->val + 1;
 
         if (mpp.find(a) != mpp.end() && mpp.find(b) != mpp.end())
         {
-
             return true;
         }
     }
 
     return check(root->left, mpp) || check(root->right, mpp);
 }
+
 bool isDeadEnd(TreeNode<int> *root)
 {
 
@@ -356,6 +357,25 @@ bool isDeadEnd(TreeNode<int> *root)
     return check(root, mpp);
 }
 
+//> SIMPLE O(N) recursive
+
+//> initially MIM = INT_MIN and MAX = INT_MAX
+bool containsDeadEnds(TreeNode<int> *root, int MIN, int MAX)
+{
+    if (!root)
+    {
+        return false;
+    }
+
+    if (MIN == MAX)
+    {
+        return true;
+    }
+
+    bool leftANS = containsDeadEnds(root->left, MIN, root->val - 1);
+    bool rightANS = containsDeadEnds(root->left, root->val + 1, MAX);
+    return leftANS || rightANS;
+}
 void solve()
 {
     int ele;
