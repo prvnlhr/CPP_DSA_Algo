@@ -317,13 +317,15 @@ int countNodes(TreeNode<int> *root)
     }
     return 1 + countNodes(root->left) + countNodes(root->right);
 }
+
 void printAllPairs(TreeNode<int> *root, int target)
 {
 
-    int cntNodes = countNodes(root);
+    int totalNodes = countNodes(root);
     int cnt = 0;
     TreeNode<int> *temp = root;
     vector<TreeNode<int> *> inorder;
+
     while (temp)
     {
         inorder.push_back(temp);
@@ -346,7 +348,7 @@ void printAllPairs(TreeNode<int> *root, int target)
     inorder.pop_back();
     revinorder.pop_back();
 
-    while (cnt < cntNodes - 1)
+    while (cnt < totalNodes - 1)
     {
 
         TreeNode<int> *top1 = inorder.back();
@@ -358,6 +360,7 @@ void printAllPairs(TreeNode<int> *root, int target)
 
             TreeNode<int> *temp = top1;
             inorder.pop_back();
+            cnt++;
             revinorder.pop_back();
 
             if (temp->right)
@@ -381,6 +384,7 @@ void printAllPairs(TreeNode<int> *root, int target)
                 }
             }
         }
+
         else if ((top1->val + top2->val) > target)
         {
             revinorder.pop_back();
@@ -455,6 +459,8 @@ public:
 };
 
 //> Pair sum using BST iterator
+// :T :O(N)
+// :S :O()
 void pairSum(TreeNode<int> *root, int target)
 {
     BSTIterator obj;
