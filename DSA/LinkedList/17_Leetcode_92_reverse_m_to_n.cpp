@@ -128,24 +128,24 @@ void factOfN(ll n)
 //--------------------------------------------------------------------------------------------------------------------------------
 
 //>----------------------------ＳＯＬＶＥ-----------------------------------------------------------------------------------------------------------------------------------------------
-class LLNode
+class ListNode
 {
 
 public:
     int data;
-    LLNode *next;
+    ListNode *next;
 
-    LLNode(int data)
+    ListNode(int data)
     {
         this->data = data;
         this->next = nullptr;
     }
 };
 
-LLNode *buildLL(vector<int> &input)
+ListNode *buildLL(vector<int> &input)
 {
-    LLNode *head = nullptr;
-    LLNode *tail = nullptr;
+    ListNode *head = nullptr;
+    ListNode *tail = nullptr;
 
     for (int i = 0; i < input.size(); i++)
     {
@@ -155,7 +155,7 @@ LLNode *buildLL(vector<int> &input)
             break;
         }
 
-        LLNode *newNode = new LLNode(ele);
+        ListNode *newNode = new ListNode(ele);
 
         if (head == nullptr)
         {
@@ -171,9 +171,9 @@ LLNode *buildLL(vector<int> &input)
     }
     return head;
 }
-void printLL(LLNode *head)
+void printLL(ListNode *head)
 {
-    LLNode *curr = head;
+    ListNode *curr = head;
     while (curr)
     {
         cout << curr->data << " ";
@@ -181,14 +181,14 @@ void printLL(LLNode *head)
     }
     cout << endl;
 }
-LLNode *reverseLL(LLNode *head, int n)
+ListNode *reverseLL(ListNode *head, int n)
 {
-    LLNode *curr = head;
-    LLNode *prev = nullptr;
+    ListNode *curr = head;
+    ListNode *prev = nullptr;
     int cnt = 0;
     while (curr && cnt < n)
     {
-        LLNode *nextt = curr->next;
+        ListNode *nextt = curr->next;
         curr->next = prev;
         prev = curr;
         curr = nextt;
@@ -197,59 +197,103 @@ LLNode *reverseLL(LLNode *head, int n)
     head = prev;
     return head;
 }
-LLNode *reverseBetween(LLNode *head, int left, int right)
+ListNode *reverseBetween(ListNode *head, int m, int n)
 {
 
-    LLNode *dummy = new LLNode(0);
+    if (m == n)
+    {
+        return head;
+    }
+    ListNode *curr = head;
 
-    dummy->next = head;
+    /*
 
-    LLNode *curr = dummy;
-    for (int i = 0; i < left - 1; i++)
+    >    maintaining four pointer
+
+    >      left    right
+    >        |       |
+    >    1 2 3 4 5 6 7 8 9 10
+    >      |           |
+    >     prevLeft    rightNext
+    >
+    >
+    */
+    ListNode *left = NULL;
+    ListNode *prevLeft = NULL;
+
+    ListNode *right = NULL;
+    ListNode *rightNext = NULL;
+
+    int cnt = 1;
+    while (curr && cnt < m)
+    {
+        prevLeft = curr;
+        curr = curr->next;
+        cnt++;
+    }
+    left = curr;
+
+    while (curr && cnt < n)
     {
         curr = curr->next;
+        cnt++;
     }
 
-    LLNode *leftNode = curr;
+    right = curr;
+    rightNext = curr->next;
 
-    curr = curr->next;
-
-    LLNode *prev = nullptr;
-    int nodesCnt = right - left + 1;
-
-    for (int i = 0; i < nodesCnt; i++)
+    //> break old connections
+    if (prevLeft)
     {
-        LLNode *nextt = curr->next;
+        prevLeft->next = NULL;
+    }
+    right->next = NULL;
+    //> reversing m to n  nodes
+    curr = left;
+    ListNode *prev = NULL;
+
+    while (curr)
+    {
+        ListNode *nextt = curr->next;
         curr->next = prev;
         prev = curr;
         curr = nextt;
     }
-    printLL(prev);
-    //  LN               RN
-    //  1-> 2 <- 3 <- 4<- 5-> 6-> 7
 
-    //  1 -> 4 ->3-> 2-> 5 -> 6 -> 7
+    //> making new connections
+    //> handling four edge cases 
+    if (!prevLeft && !rightNext)
+    {
+        head = right;
+    }
+    else if (!rightNext && prevLeft)
+    {
+        prevLeft->next = right;
+    }
+    else if (!prevLeft && rightNext)
+    {
+        head = right;
+        left->next = rightNext;
+    }
+    else
+    {
+        prevLeft->next = right;
+        left->next = rightNext;
+    }
 
-    LLNode *rightNode = curr;
-    LLNode *revLeft = leftNode->next;
-    LLNode *revRight = prev;
-
-    leftNode->next = revRight;
-    revLeft->next = rightNode;
-    head = dummy->next;
     return head;
 }
 
 void solve()
 {
-    vector<int> inputList{1, 2, 3, 4, 5, 6, 7, -1};
+    // vector<int> inputList{1, 2, 3, 4, 5, 6, 7, -1};
+    vector<int> inputList{1, 2, 3, 4, 5, -1};
     // vector<int> inputList{1, 2, -1};
 
     int left = 2;
     int right = 4;
-
     auto head = buildLL(inputList);
-    LLNode *newHead = reverseBetween(head, left, right);
+    ListNode *newHead = reverseBetween(head, left, right);
     printLL(newHead);
 }
 

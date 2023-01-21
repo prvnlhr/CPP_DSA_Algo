@@ -216,9 +216,9 @@ void solve()
 {
     // vector<int> input{1, 2, 2, 3, 3, 4, 4, -1};
     // vector<int> input{1, 2, 2, 3, 3, 5, 5, 6, -1};
-    // vector<int> input{1, 1, 2, 2, 3, 3, 5, 5, 6, -1};
+    vector<int> input{1, 1, 2, 2, 3, 3, 5, 5, 6, -1};
     // vector<int> input{-1, 0, 0, 0, 0, 3, 3, INT_MIN};
-    vector<int> input{0, 0, 0, 0, 0, 0, 0, INT_MIN};
+    // vector<int> input{0, 0, 0, 0, 0, 0, 0, INT_MIN};
 
     int t;
     cin >> t;

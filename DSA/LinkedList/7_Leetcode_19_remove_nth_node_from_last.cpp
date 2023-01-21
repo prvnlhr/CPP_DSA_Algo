@@ -195,7 +195,6 @@ LLNode *removeNth_node_from_last(int n, LLNode *head)
 
     while (cnt < n - 1)
     {
-
         main = main->next;
         cnt++;
     }

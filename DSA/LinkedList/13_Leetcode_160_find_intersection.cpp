@@ -221,6 +221,7 @@ LLNode *findInteresection(LLNode *headA, LLNode *headB)
             tempB = tempB->next;
         }
     }
+    // debug(tempA->data, tempB->data);
 
     while (tempA != tempB)
     {
@@ -231,6 +232,7 @@ LLNode *findInteresection(LLNode *headA, LLNode *headB)
             return nullptr;
         }
     }
+    debug(tempA->data);
     return tempA;
 }
 void solve()
