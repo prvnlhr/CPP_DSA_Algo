@@ -150,20 +150,19 @@ bool containsDups2(string s)
 
 //> IMP CONCEPT TO KNOW TO SOLVE USING THIS TECHNIQUE
 ** 1. How to set ith bit ??
-** 2. How to chech if ith bit is set or not
+** 2. How to check if ith bit is set or not
 
--> How to set ith bit
+
+-> 1.How to set ith bit
 - Ex. n = 10 -> binary representation is 1010
 - 1010 , set k = 2nd bit -> 1110
+** ( n | (1 << k))
 
-# ( n | (1 << k))
 
--> How to check if ith bit is set or not
-
+-> 2.How to check if ith bit is set or not
 - Ex n = 10 -> 1010
 - k = 2
-
-# ( n & (1 << k))
+** ( n & (1 << k))
 
 
 

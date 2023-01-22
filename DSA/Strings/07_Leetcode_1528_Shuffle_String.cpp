@@ -129,6 +129,7 @@ string restoreStringOP(string s, vector<int> &indices)
             swap(indices[i], indices[indices[i]]); //> swapping index in indices array
         }
     }
+    debug(indices);
     return s;
 }
 

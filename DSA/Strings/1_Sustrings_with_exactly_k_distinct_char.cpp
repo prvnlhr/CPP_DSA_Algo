@@ -136,11 +136,12 @@ substrings (not necessarily distinct) that has exactly k
 distinct characters.
 
 
-2
-cdc
-2
-aacfssa
-3
+Testcase -> 2
+
+1.cdc
+  k = 2
+2.aacfssa
+  k = 3
 
 For the first test case:
 Given STR = "cdc”, we can see that the substrings with only 2
@@ -168,7 +169,7 @@ int countSubStrings(string str, int k)
             s += str[j];
             st.insert(str[j]);
 
-            if (st.size() == k && s.size()>=k) 
+            if (st.size() == k && s.size() >= k)
             {
                 res++;
             }

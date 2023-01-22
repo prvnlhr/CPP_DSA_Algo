@@ -89,12 +89,41 @@ typedef priority_queue<int, vector<int>, greater<int>> pqmin;
 //--------------------------------------------------------------------------------------------------------------------------------
 
 //>----------------------------ＳＯＬＶＥ-----------------------------------------------------------------------------------------------------------------------------------------------
+
+//> __O(nlogn)
+bool canbreak(string &a, string &b)
+{
+    int n = a.size();
+    int cnt1 = 0, cnt2 = 0;
+    for (int i = 0; i < n; i++)
+    {
+        if (a[i] >= b[i])
+            cnt1++;
+    }
+    for (int i = 0; i < n; i++)
+    {
+        if (b[i] >= a[i])
+            cnt2++;
+    }
+    return cnt1 == n || cnt2 == n;
+}
+
+bool checkIfCanBreak(string s1, string s2)
+{
+    int n = s1.size();
+    sort(s1.begin(), s1.end());
+    sort(s2.begin(), s2.end());
+
+    if (canbreak(s1, s2))
+        return true;
+    return false;
+}
 class Solution
 {
 public:
     /*
        - n: length of s1 + length of s2
-       - Time Complexity: O(n)
+       > Time Complexity: O(n)
        - Space Complexity: O(1)
     */
     bool canBreak(const int v1[], const int v2[])
@@ -123,11 +152,27 @@ public:
         {
             letters2[c - 'a']++;
         }
+        for (auto x : letters1)
+        {
+            cout << x << " ";
+        }
+        cout << endl;
+        for (auto x : letters2)
+        {
+            cout << x << " ";
+        }
+        cout << endl;
+
         return canBreak(letters1, letters2) || canBreak(letters2, letters1);
     }
 };
+
 void solve()
 {
+    string s1 = "abc";
+    string s2 = "xya";
+    Solution obj;
+    cout << obj.checkIfCanBreak(s1, s2) << endl;
 }
 
 //>-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
