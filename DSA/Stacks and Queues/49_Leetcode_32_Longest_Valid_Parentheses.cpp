@@ -92,34 +92,148 @@ typedef priority_queue<int, vector<int>, greater<int>> pqmin;
 //--------------------------------------------------------------------------------------------------------------------------------
 
 //>----------------------------ＳＯＬＶＥ-----------------------------------------------------------------------------------------------------------------------------------------------
-//> https://leetcode.com/problems/count-binary-substrings/discuss/1172569/Short-and-Easy-w-Explanation-and-Comments-or-Keeping-Consecutive-0s-and-1s-Count-or-Beats-100
-// : O(N), O(1)
-//> Needs  to dry to see what really happens
-int countBinarySubstrings(string &s)
-{
-    int res = 0;
-    int prev = 0;
-    int curr = 1;
 
-    for (int i = 1; i < s.size(); i++)
+/*
+
+
+# Input : ((()
+# Output : 2
+# Explanation : ()
+#
+# Input: )()())
+# Output : 4
+# Explanation: ()()
+#
+# Input:  ()(()))))
+# Output: 6
+# Explanation:  ()(())
+#
+#
+# O(n) and O(n) stack sol:
+# Input: str = "(()()"
+#
+# Initialize result as 0 and stack with one item -1.
+#
+# For i = 0, str[0] = '(', we push 0 in stack
+#
+# For i = 1, str[1] = '(', we push 1 in stack
+#
+# For i = 2, str[2] = ')', currently stack has
+# [-1, 0, 1], we pop from the stack and the stack
+# now is [-1, 0] and length of current valid substring
+# becomes 2 (we get this 2 by subtracting stack top from
+# current index).
+#
+# Since the current length is more than the current result,
+# we update the result.
+#
+# For i = 3, str[3] = '(', we push again, stack is [-1, 0, 3].
+# For i = 4, str[4] = ')', we pop from the stack, stack
+# becomes [-1, 0] and length of current valid substring
+# becomes 4 (we get this 4 by subtracting stack top from
+# current index).
+# Since current length is more than current result,
+# we update result.
+
+*/
+
+// :TC O(N)
+// :SC O(N)
+//> Tricky, for only logic, coders camp video YT, not code(code seems to be wrong)
+int longestValidParentheses(string s)
+{
+    stack<int> st;
+    st.push(-1);
+    int res = 0;
+
+    for (int i = 0; i < s.size(); i++)
     {
-        if (s[i - 1] == s[i])
+        if (s[i] == '(')
         {
-            curr++;
+            st.push(i);
         }
         else
         {
-            res += min(prev, curr);
-            prev = curr;
-            curr = 1;
+            st.pop();
+            if (st.empty())
+            {
+                st.push(i);
+            }
+            else
+            {
+                int len = i - st.top();
+                res = max(res, len);
+            }
+        }
+    }
+    return res;
+}
+
+//> O(N),O(1)
+//> counting open and close brackets
+
+int longestValidParenthesesOP(string s)
+{
+
+    int res = 0;
+    int n = s.size();
+    int openCnt = 0;
+    int closeCnt = 0;
+    for (int i = 0; i < n; i++)
+    {
+        char curr = s[i];
+        if (curr == '(')
+        {
+            openCnt++;
+        }
+        else
+        {
+            closeCnt++;
+        }
+        if (openCnt == closeCnt)
+        {
+            //> why 2 * closeCnt ?? -> bcoz openCnt==closeCnt
+            //> so len of substring will be 2*openCnt or 2*closeCnt, can take any
+            res = max(res, 2 * closeCnt);
+        }
+        else if (closeCnt > openCnt)
+        {
+            openCnt = 0;
+            closeCnt = 0;
         }
     }
 
-    res += min(prev, curr);
+    for (int i = n - 1; i >= 0; i--)
+    {
+        char curr = s[i];
+        if (curr == '(')
+        {
+            openCnt++;
+        }
+        else
+        {
+            closeCnt++;
+        }
+        if (openCnt == closeCnt)
+        {
+            //> why 2 * closeCnt ?? -> bcoz openCnt==closeCnt
+            //> so len of substring will be 2*openCnt or 2*closeCnt, can take any
+            res = max(res, 2 * closeCnt);
+        }
+        else if (openCnt > closeCnt)
+        {
+            openCnt = 0;
+            closeCnt = 0;
+        }
+    }
     return res;
 }
+
 void solve()
 {
+
+    string s;
+    cin >> s;
 }
 
 //>-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------

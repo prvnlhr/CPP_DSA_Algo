@@ -128,8 +128,18 @@ void factOfN(ll n)
 //--------------------------------------------------------------------------------------------------------------------------------
 
 //>----------------------------ＳＯＬＶＥ-----------------------------------------------------------------------------------------------------------------------------------------------
-//>https://leetcode.com/problems/implement-stack-using-queues/description/
-//> USES ONLY ONE QUEUE: OPTIMISED
+/*
+>https://leetcode.com/problems/implement-stack-using-queues/description/
+> NOTE:If we are using necesserely two queues(q1,q2) then
+> remember that, we  always needs to maintain elements in reverse
+> order in q1 -> for that we can use first push new element in q2
+> then, pop all elements from q1 and push to q2, and then swap q1 and q2
+> O(N)-> pushing
+>O(1) -> pop
+*/
+
+// ** OPTIMISED
+//> USES ONLY ONE QUEUE:
 class MyStack
 {
 public:
@@ -138,6 +148,8 @@ public:
     void push(int x)
     {
         q.push(x);
+        //> maintaining all elements in reverse order
+        //> worst cases O(N)
         for (int i = 0; i < q.size() - 1; i++)
         {
             q.push(q.front());
@@ -145,6 +157,7 @@ public:
         }
     }
 
+    //> O(1)
     int pop()
     {
         int temp = q.front();

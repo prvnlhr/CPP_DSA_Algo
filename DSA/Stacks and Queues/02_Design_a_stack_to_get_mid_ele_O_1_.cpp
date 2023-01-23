@@ -154,11 +154,11 @@ public:
 
     void push(int ele)
     {
-
         if (dq.size() == st.size())
         {
             dq.push_back(ele);
         }
+        //> if dq.size() > st, then balance both
         else if (dq.size() > st.size())
         {
             int temp = dq.front();
@@ -174,7 +174,9 @@ public:
         {
             dq.pop_back();
         }
-        if (dq.size() > st.size())
+
+        //> after poping balancing st && dq
+        if (st.size() > dq.size())
         {
             int temp = st.top();
             st.pop();
@@ -201,6 +203,8 @@ public:
             return;
         }
         dq.pop_front();
+
+        //> after poping balancing st && dq
         if (st.size() > dq.size())
         {
             int temp = st.top();

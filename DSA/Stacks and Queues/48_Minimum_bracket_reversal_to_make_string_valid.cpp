@@ -92,34 +92,64 @@ typedef priority_queue<int, vector<int>, greater<int>> pqmin;
 //--------------------------------------------------------------------------------------------------------------------------------
 
 //>----------------------------ＳＯＬＶＥ-----------------------------------------------------------------------------------------------------------------------------------------------
-//> https://leetcode.com/problems/count-binary-substrings/discuss/1172569/Short-and-Easy-w-Explanation-and-Comments-or-Keeping-Consecutive-0s-and-1s-Count-or-Beats-100
-// : O(N), O(1)
-//> Needs  to dry to see what really happens
-int countBinarySubstrings(string &s)
-{
-    int res = 0;
-    int prev = 0;
-    int curr = 1;
 
-    for (int i = 1; i < s.size(); i++)
+//* https://www.codingninjas.com/codestudio/problems/minimum-cost-to-make-string-valid_1115770
+
+int findMinimumCost(string str)
+{
+
+    //> edge case
+    if (str.size() % 2 != 0)
     {
-        if (s[i - 1] == s[i])
+        return -1;
+    }
+
+    stack<char> st;
+
+    for (int i = 0; i < str.size(); i++)
+    {
+        char curr = str[i];
+
+        if (curr == '}')
         {
-            curr++;
+            if (!st.empty() && st.top() == '{')
+            {
+                st.pop();
+            }
+            else
+            {
+                st.push(curr);
+            }
         }
         else
         {
-            res += min(prev, curr);
-            prev = curr;
-            curr = 1;
+            st.push(curr);
         }
     }
 
-    res += min(prev, curr);
-    return res;
+    int count = 0;
+    while (st.size() >= 2)
+    {
+        char curr1 = st.top();
+        st.pop();
+        char curr2 = st.top();
+        st.pop();
+
+        if (curr1 == curr2)
+        {
+            count++;
+        }
+        else
+        {
+            count += 2;
+        }
+    }
+    return count;
 }
 void solve()
 {
+    string s;
+    cin >> s;
 }
 
 //>-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------

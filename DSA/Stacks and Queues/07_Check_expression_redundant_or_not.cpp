@@ -144,16 +144,17 @@ bool checkRedundacny(string s)
         {
             bool isRedundant = true;
 
+            //> if we enter this loop it means that we dont have immediate top element as opening bracket
+            //> means no redundant bracket, so isRedudant ==false
             while (st.top() != '(')
             {
                 char top = st.top();
-                if (top == '(' || top == '+' || top == '-' || top == '*' || top == '/')
+                if (top == '+' || top == '-' || top == '*' || top == '/')
                 {
                     isRedundant = false;
                 }
                 st.pop();
             }
-
             st.pop();
             if (isRedundant == true)
             {
@@ -175,7 +176,7 @@ bool checkRedundacny1(string s)
     int n = s.size();
     for (int i = 0; i < n; i++)
     {
-
+        //> Edge case -> (a) 
         if (i + 2 < n && s[i] == s[i + 2])
         {
             return true;
@@ -189,6 +190,7 @@ bool checkRedundacny1(string s)
             bracketsCount++;
         }
     }
+    
     if (bracketsCount > operatorCount)
     {
         return true;

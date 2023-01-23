@@ -108,8 +108,10 @@ long long smallestNumber(long long num)
 
     if (num < 0)
     {
+        //> sorting from 1st not 0th index, omitting the -ve sign
         sort(number.begin() + 1, number.end(), compare1);
         long long ans = 0;
+
         for (long long i = 1; i < number.size(); i++)
         {
             ans = ans * 10 + number[i] - '0';
