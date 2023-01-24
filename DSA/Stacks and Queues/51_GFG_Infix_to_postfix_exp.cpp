@@ -26,26 +26,30 @@ ostream &operator<<(ostream &os, const pair<T1, T2> &p)
     return os << '{' << p.first << ", " << p.second << '}';
 }
 
-template <class T, class = decay_t<decltype(*begin(declval<T>()))>,
+template <class T, class = decltype(begin(declval<T>())),
           class = enable_if_t<!is_same<T, string>::value>>
 ostream &operator<<(ostream &os, const T &c)
 {
     os << '[';
-    for (auto it = c.begin(); it != c.end(); ++it)
-        os << &", "[2 * (it == c.begin())] << *it;
+    for (auto it = begin(c); it != end(c); ++it)
+        os << (it == begin(c) ? "" : ", ") << *it;
     return os << ']';
 }
-//__support up to 5 args
-#define _NTH_ARG(_1, _2, _3, _4, _5, _6, N, ...) N
-#define _FE_0(_CALL, ...)
+
+#define _NTH_ARG(_1, _2, _3, _4, _5, _6, _7, _8, _9, _10, N, ...) N
 #define _FE_1(_CALL, x) _CALL(x)
 #define _FE_2(_CALL, x, ...) _CALL(x) _FE_1(_CALL, __VA_ARGS__)
 #define _FE_3(_CALL, x, ...) _CALL(x) _FE_2(_CALL, __VA_ARGS__)
 #define _FE_4(_CALL, x, ...) _CALL(x) _FE_3(_CALL, __VA_ARGS__)
 #define _FE_5(_CALL, x, ...) _CALL(x) _FE_4(_CALL, __VA_ARGS__)
-#define FOR_EACH_MACRO(MACRO, ...)                                           \
-    _NTH_ARG(dummy, ##__VA_ARGS__, _FE_5, _FE_4, _FE_3, _FE_2, _FE_1, _FE_0) \
-    (MACRO, ##__VA_ARGS__)
+#define _FE_6(_CALL, x, ...) _CALL(x) _FE_5(_CALL, __VA_ARGS__)
+#define _FE_7(_CALL, x, ...) _CALL(x) _FE_6(_CALL, __VA_ARGS__)
+#define _FE_8(_CALL, x, ...) _CALL(x) _FE_7(_CALL, __VA_ARGS__)
+#define _FE_9(_CALL, x, ...) _CALL(x) _FE_8(_CALL, __VA_ARGS__)
+#define _FE_10(_CALL, x, ...) _CALL(x) _FE_9(_CALL, __VA_ARGS__)
+#define FOR_EACH_MACRO(MACRO, ...)                                                               \
+    _NTH_ARG(__VA_ARGS__, _FE_10, _FE_9, _FE_8, _FE_7, _FE_6, _FE_5, _FE_4, _FE_3, _FE_2, _FE_1) \
+    (MACRO, __VA_ARGS__)
 
 //__Change output format here
 #define out(x) #x " = " << x << "; "
@@ -56,7 +60,6 @@ ostream &operator<<(ostream &os, const T &c)
 #else
 #define debug(...)
 #endif
-
 //>---DEBUG_TEMPLATE_END-----------------------------------------------------------------------------------------------------------------------------------------------------------
 
 // #define FOR(i, start, end) for (int i = start; i < end; i++)
@@ -86,161 +89,82 @@ typedef map<int, int> mpint;
 typedef pair<int, int> pi;
 typedef priority_queue<int> pqmax;
 typedef priority_queue<int, vector<int>, greater<int>> pqmin;
-//_____________________________
-ll gcd(ll a, ll b)
-{
-    if (b > a)
-    {
-        return gcd(b, a);
-    }
-    if (b == 0)
-    {
-        return a;
-    }
-    return gcd(b, a % b);
-}
-//_____________________________
-ll expo(ll a, ll b, ll mod)
-{
-    ll res = 1;
-    while (b > 0)
-    {
-        if (b & 1)
-            res = (res * a) % mod;
-        a = (a * a) % mod;
-        b = b >> 1;
-    }
-    return res;
-}
-//__factorial______________________________________________
-vector<ll> fact;
-void factOfN(ll n)
-{
-    ll prod = 1;
-    fact.resize(n + 1);
-    for (int f = 1; f <= n; f++)
-    {
-
-        fact[f] = prod * f;
-        prod = prod * f;
-    }
-}
 //--------------------------------------------------------------------------------------------------------------------------------
 
 //>----------------------------ＳＯＬＶＥ-----------------------------------------------------------------------------------------------------------------------------------------------
-class ListNode
+int precedence(char c)
 {
-
-public:
-    int data;
-    ListNode *next;
-
-    ListNode(int data)
+    if (c == '^')
     {
-        this->data = data;
-        this->next = nullptr;
+        return 3;
     }
-};
-
-ListNode *buildLL(vector<int> &input)
-{
-    ListNode *head = nullptr;
-    ListNode *tail = nullptr;
-
-    for (int i = 0; i < input.size(); i++)
+    else if (c == '/' || c == '*')
     {
-        int ele = input[i];
-        if (ele == -1)
+        return 2;
+    }
+    else if (c == '+' || c == '-')
+    {
+        return 1;
+    }
+    else
+    {
+        return -1;
+    }
+}
+
+string infixToPostfix(string s)
+{
+    stack<char> st;
+    string result;
+
+    for (int i = 0; i < s.length(); i++)
+    {
+        char curr = s[i];
+
+        if ((curr >= 'a' && curr <= 'z') || (curr >= 'A' && curr <= 'Z') || (curr >= '0' && curr <= '9'))
         {
-            break;
+            result += curr;
         }
 
-        ListNode *newNode = new ListNode(ele);
-
-        if (head == nullptr)
+        else if (curr == '(')
         {
-
-            head = newNode;
-            tail = newNode;
+            st.push('(');
         }
+
+        else if (curr == ')')
+        {
+            while (st.top() != '(')
+            {
+                result += st.top();
+                st.pop();
+            }
+            st.pop();
+        }
+
         else
         {
-            tail->next = newNode;
-            tail = newNode;
+            while (!st.empty() && precedence(s[i]) <= precedence(st.top()))
+            {
+                result += st.top();
+                st.pop();
+            }
+            st.push(curr);
         }
     }
-    return head;
-}
-void printLL(ListNode *head)
-{
-    ListNode *curr = head;
-    while (curr)
+
+    while (!st.empty())
     {
-        cout << curr->data << " ";
-        curr = curr->next;
+        result += st.top();
+        st.pop();
     }
-    cout << endl;
+
+    return result;
 }
-
-ListNode *lastToFirst(ListNode *head)
-{
-    ListNode *curr = head;
-    ListNode *prev = head;
-    while (curr->next)
-    {
-        prev = curr;
-        curr = curr->next;
-    }
-    prev->next = nullptr;
-    curr->next = head;
-    debug(curr->data, prev->data);
-    head = curr;
-    return head;
-}
-
-class Solution
-{
-public:
-    ListNode *addTwoNumbers(ListNode *l1, ListNode *l2)
-    {
-        vector<int> nums1, nums2;
-        while (l1)
-        {
-            nums1.push_back(l1->data);
-            l1 = l1->next;
-        }
-        while (l2)
-        {
-            nums2.push_back(l2->data);
-            l2 = l2->next;
-        }
-
-        int m = nums1.size(), n = nums2.size();
-        int sum = 0, carry = 0;
-
-        ListNode *head = nullptr, *p = nullptr;
-
-        for (int i = m - 1, j = n - 1; i >= 0 || j >= 0 || carry > 0; i--, j--)
-        {
-            sum = carry;
-            if (i >= 0)
-                sum += nums1[i];
-
-            if (j >= 0)
-                sum += nums2[j];
-
-            carry = sum / 10;
-
-            p = new ListNode(sum % 10);
-            p->next = head;
-            head = p;
-        }
-
-        return head;
-    }
-};
 void solve()
 {
+    string s;
+    cin >> s;
+    cout << infixToPostfix(s) << endl;
 }
 
 //>-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------

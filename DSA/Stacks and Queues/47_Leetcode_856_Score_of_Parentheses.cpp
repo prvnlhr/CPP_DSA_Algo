@@ -142,12 +142,27 @@ int scoreOfParentheses(string s)
         }
         else if (ele == ')')
         {
-            int a = st.back();
+
+            int lastScore = st.back();
             st.pop_back();
-            int b = st.back();
-            st.pop_back();
-            int score = max(2*st.back,1)
-            st.push_back(b + max(2 * a, 1));
+            int score = 0;
+            if (lastScore == 0)
+            {
+                score = 1;
+            }
+            else
+            {
+                score = 2 * lastScore;
+            }
+            if (!st.empty())
+            {
+
+                st.back() = st.back() + score;
+            }
+            else
+            {
+                st.push_back(score);
+            }
         }
     }
     return st.back();
