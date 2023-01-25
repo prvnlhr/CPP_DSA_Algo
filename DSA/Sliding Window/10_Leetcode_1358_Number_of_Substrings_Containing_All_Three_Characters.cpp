@@ -131,6 +131,37 @@ void factOfN(ll n)
 
 int numberOfSubstrings(string s)
 {
+
+    /*
+       0  1  2  3  4  5
+> Ex - a  b  c  a  b  c
+>            |
+            winEnd
+> till this winEnd(2), we have substring 'abc'
+> we want all three a,b,c to be present in our substring
+> now how many substring with all three a,b,c present at least one time
+> we can make uptil windEnd(2) ?
+
+>     a  b  c  a  b  c
+->    a  b  c  a  b  c
+->    a  b  c  a  b
+->    a  b  c  a
+->    a  b  c
+-> all above substring have at least one occurence of a,b,c
+> so till winEnd(2) we have four substrings
+> How do we get 4 ->  s.size() - winEnd = 6 - 2 = 4
+
+
+Line 180: res = 4; s.size() = 6; winEnd = 2; s.size() - winEnd = 4;
+Line 180: res = 7; s.size() = 6; winEnd = 3; s.size() - winEnd = 3;
+Line 180: res = 9; s.size() = 6; winEnd = 4; s.size() - winEnd = 2;
+Line 180: res = 10; s.size() = 6; winEnd = 5; s.size() - winEnd = 1;
+
+
+
+
+
+    */
     int winStart = 0;
     int winEnd = 0;
     int res = 0;
@@ -147,6 +178,7 @@ int numberOfSubstrings(string s)
             while (mpp.size() == 3)
             {
                 res += s.size() - winEnd;
+                debug(res, s.size(), winEnd, s.size() - winEnd);
                 mpp[s[winStart]]--;
                 if (mpp[s[winStart]] == 0)
                 {

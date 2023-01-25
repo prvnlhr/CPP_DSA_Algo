@@ -131,7 +131,6 @@ void factOfN(ll n)
 
 vector<int> countDistinct(int A[], int n, int k)
 {
-
     int winStart = 0;
     int winEnd = 0;
     unordered_map<int, int> mpp;
@@ -140,7 +139,6 @@ vector<int> countDistinct(int A[], int n, int k)
 
     while (winStart < n && winEnd < n)
     {
-
         mpp[A[winEnd]]++;
         if (winEnd - winStart + 1 == k)
         {

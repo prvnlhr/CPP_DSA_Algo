@@ -151,9 +151,8 @@ int sumoflength(vector<int> nums, int n)
 
     unordered_set<int> st;
 
-    while (winStart < n )
+    while (winStart < n)
     {
-
         while (winEnd < n && st.find(nums[winEnd]) == st.end())
         {
             st.insert(nums[winEnd]);

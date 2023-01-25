@@ -172,7 +172,6 @@ int subarraySum1(vector<int> &nums, int k)
 
     for (int i = 0; i < nums.size(); i++)
     {
-
         sum += nums[i];
         if (sum == k)
         {

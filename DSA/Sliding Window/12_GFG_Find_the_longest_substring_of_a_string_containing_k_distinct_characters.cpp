@@ -155,7 +155,6 @@ int longestKSubstr(string s, int k)
     while (winStart < n && winEnd < n)
     {
         mpp[s[winEnd]]++;
-        debug(mpp);
         if (mpp.size() == k)
         {
             res = max(res, winEnd - winStart + 1);

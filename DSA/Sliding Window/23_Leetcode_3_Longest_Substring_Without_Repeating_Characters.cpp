@@ -26,26 +26,30 @@ ostream &operator<<(ostream &os, const pair<T1, T2> &p)
     return os << '{' << p.first << ", " << p.second << '}';
 }
 
-template <class T, class = decay_t<decltype(*begin(declval<T>()))>,
+template <class T, class = decltype(begin(declval<T>())),
           class = enable_if_t<!is_same<T, string>::value>>
 ostream &operator<<(ostream &os, const T &c)
 {
     os << '[';
-    for (auto it = c.begin(); it != c.end(); ++it)
-        os << &", "[2 * (it == c.begin())] << *it;
+    for (auto it = begin(c); it != end(c); ++it)
+        os << (it == begin(c) ? "" : ", ") << *it;
     return os << ']';
 }
-//__support up to 5 args
-#define _NTH_ARG(_1, _2, _3, _4, _5, _6, N, ...) N
-#define _FE_0(_CALL, ...)
+
+#define _NTH_ARG(_1, _2, _3, _4, _5, _6, _7, _8, _9, _10, N, ...) N
 #define _FE_1(_CALL, x) _CALL(x)
 #define _FE_2(_CALL, x, ...) _CALL(x) _FE_1(_CALL, __VA_ARGS__)
 #define _FE_3(_CALL, x, ...) _CALL(x) _FE_2(_CALL, __VA_ARGS__)
 #define _FE_4(_CALL, x, ...) _CALL(x) _FE_3(_CALL, __VA_ARGS__)
 #define _FE_5(_CALL, x, ...) _CALL(x) _FE_4(_CALL, __VA_ARGS__)
-#define FOR_EACH_MACRO(MACRO, ...)                                           \
-    _NTH_ARG(dummy, ##__VA_ARGS__, _FE_5, _FE_4, _FE_3, _FE_2, _FE_1, _FE_0) \
-    (MACRO, ##__VA_ARGS__)
+#define _FE_6(_CALL, x, ...) _CALL(x) _FE_5(_CALL, __VA_ARGS__)
+#define _FE_7(_CALL, x, ...) _CALL(x) _FE_6(_CALL, __VA_ARGS__)
+#define _FE_8(_CALL, x, ...) _CALL(x) _FE_7(_CALL, __VA_ARGS__)
+#define _FE_9(_CALL, x, ...) _CALL(x) _FE_8(_CALL, __VA_ARGS__)
+#define _FE_10(_CALL, x, ...) _CALL(x) _FE_9(_CALL, __VA_ARGS__)
+#define FOR_EACH_MACRO(MACRO, ...)                                                               \
+    _NTH_ARG(__VA_ARGS__, _FE_10, _FE_9, _FE_8, _FE_7, _FE_6, _FE_5, _FE_4, _FE_3, _FE_2, _FE_1) \
+    (MACRO, __VA_ARGS__)
 
 //__Change output format here
 #define out(x) #x " = " << x << "; "
@@ -56,7 +60,6 @@ ostream &operator<<(ostream &os, const T &c)
 #else
 #define debug(...)
 #endif
-
 //>---DEBUG_TEMPLATE_END-----------------------------------------------------------------------------------------------------------------------------------------------------------
 
 // #define FOR(i, start, end) for (int i = start; i < end; i++)
@@ -86,109 +89,40 @@ typedef map<int, int> mpint;
 typedef pair<int, int> pi;
 typedef priority_queue<int> pqmax;
 typedef priority_queue<int, vector<int>, greater<int>> pqmin;
-//_____________________________
-ll gcd(ll a, ll b)
-{
-    if (b > a)
-    {
-        return gcd(b, a);
-    }
-    if (b == 0)
-    {
-        return a;
-    }
-    return gcd(b, a % b);
-}
-//_____________________________
-ll expo(ll a, ll b, ll mod)
-{
-    ll res = 1;
-    while (b > 0)
-    {
-        if (b & 1)
-            res = (res * a) % mod;
-        a = (a * a) % mod;
-        b = b >> 1;
-    }
-    return res;
-}
-//__factorial______________________________________________
-vector<ll> fact;
-void factOfN(ll n)
-{
-    ll prod = 1;
-    fact.resize(n + 1);
-    for (int f = 1; f <= n; f++)
-    {
-
-        fact[f] = prod * f;
-        prod = prod * f;
-    }
-}
 //--------------------------------------------------------------------------------------------------------------------------------
 
 //>----------------------------ＳＯＬＶＥ-----------------------------------------------------------------------------------------------------------------------------------------------
 
-vector<int> subarraySum(int arr[], int n, long long s)
+int lengthOfLongestSubstring(string s)
 {
+
+    int res = 0;
     int winStart = 0;
     int winEnd = 0;
-    long long currSum = 0;
+    map<char, int> mpp; //>  mpp-> {char : index}
+    int n = s.size();
 
-    vector<int> indxs;
-
-    while (winStart < n && winEnd < n)
+    while (winEnd < n)
     {
-        currSum += arr[winEnd];
-        debug(currSum);
-        if (currSum == s)
-        {
-            indxs.push_back(winStart + 1);
-            indxs.push_back(winEnd + 1);
-            break;
+        char curr = s[winEnd];
+
+        if (mpp.find(curr) != mpp.end() && mpp[curr] >= winStart) //>  here the condition mpp[curr] >= winStart states that the
+                                                                  //> repeated char is in our curr window, so will move our winStart
+        {                                                         //> to reapeated char index+1;
+            winStart = mpp[curr] + 1;
         }
-        if (currSum > s)
-        {
-            while (currSum > s)
-            {
-                currSum -= arr[winStart];
-                winStart++;
-            }
-            if (currSum == s)
-            {
-                indxs.push_back(winStart + 1);
-                indxs.push_back(winEnd + 1);
-                break;
-            }
-        }
+
+        mpp[curr] = winEnd;
+        res = max(res, winEnd - winStart + 1);
         winEnd++;
     }
-    if (indxs.size() == 0)
-    {
-        indxs.push_back(-1);
-    }
-    return indxs;
+    return res;
 }
 void solve()
 {
-    int target;
-    cin >> target;
-    int ele;
-
-    // int arr[] = {1, 2, 3, 7, 5};
-    // int n = 5;
-    // long long s = 12;
-
-    // int arr[] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
-    // int n = 10;
-    // long long s = 15;
-
-    int arr[] = {1, 2, 3, 4};
-    int n = 4;
-    long long s = 0;
-
-    auto ans = subarraySum(arr, n, s);
-    cout << ans[0] << " " << ans[1] << endl;
+    string s;
+    cin >> s;
+    cout << lengthOfLongestSubstring(s) << endl;
 }
 
 //>-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
