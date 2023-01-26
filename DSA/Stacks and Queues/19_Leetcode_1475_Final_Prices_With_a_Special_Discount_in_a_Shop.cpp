@@ -154,6 +154,7 @@ vector<int> finalPrices(vector<int> &prices)
     }
     return res;
 }
+
 void solve()
 {
 

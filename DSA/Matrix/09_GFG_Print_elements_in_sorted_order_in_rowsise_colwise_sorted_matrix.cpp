@@ -93,6 +93,10 @@ typedef priority_queue<int, vector<int>, greater<int>> pqmin;
 
 //>----------------------------ＳＯＬＶＥ-----------------------------------------------------------------------------------------------------------------------------------------------
 //> CODING NINJAS
+/*
+Time complexity: O(N^2*LogN).
+Auxiliary Space: O(N)
+*/
 vector<vector<int>> sortedMatrix(int N, vector<vector<int>> mat)
 {
     vector<int> res;
