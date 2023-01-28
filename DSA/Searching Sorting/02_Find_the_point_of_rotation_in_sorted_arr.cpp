@@ -93,6 +93,15 @@ typedef priority_queue<int, vector<int>, greater<int>> pqmin;
 
 //>----------------------------ＳＯＬＶＥ-----------------------------------------------------------------------------------------------------------------------------------------------
 
+/*
+
+In this problem when we observe carefully, we find certain pattern
+1. if the mid element is our ans then  mid-1 > mid
+2. if the mid element is our ans then also, it can be possobile that
+     mid > mid+1
+3. if pointer mid is some where else then we need to make binary search step
+
+*/
 int findPointOfRotation(vector<int> &nums)
 {
     int n = nums.size();

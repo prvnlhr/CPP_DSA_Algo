@@ -124,6 +124,7 @@ vector<int> productExceptSelf(vector<int> &nums)
     {
         res[i] = rightProd[i + 1] * leftProd[i - 1];
     }
+    
     return res;
 }
 void solve()

@@ -92,13 +92,30 @@ typedef priority_queue<int, vector<int>, greater<int>> pqmin;
 //--------------------------------------------------------------------------------------------------------------------------------
 
 //>----------------------------ＳＯＬＶＥ-----------------------------------------------------------------------------------------------------------------------------------------------
+
+int misssingNumber(vector<int> &nums)
+{
+    int n = nums.size() + 1;
+    int SUM = (0 + n) * (n + 1) / 2;
+
+    for (int i = 0; i < n; i++)
+    {
+        SUM -= nums[i];
+    }
+    return SUM;
+}
+
 int missingNumber(vector<int> &nums)
 {
     int xr = nums.size();
     for (int i = 0; i < nums.size(); i++)
     {
+        debug(xr, i);
         xr = xr ^ i;
+        debug("xr ^ i", xr);
         xr = xr ^ nums[i];
+        debug("xr ^ nums[i]", xr);
+        debug("-------------------");
     }
     return xr;
 }

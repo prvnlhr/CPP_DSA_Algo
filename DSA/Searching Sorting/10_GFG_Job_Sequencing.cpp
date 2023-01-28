@@ -99,6 +99,7 @@ struct Job
     int deadline;
     int profit;
 };
+
 bool comparator(Job a, Job b)
 {
     return a.profit > b.profit;
@@ -106,6 +107,8 @@ bool comparator(Job a, Job b)
 
 vector<int> maxProfit(Job arr[], int n)
 {
+
+    //> sorting according to decreasing order of profit
     sort(arr, arr + n, comparator);
 
     int maxDeadLine = arr[0].deadline;
