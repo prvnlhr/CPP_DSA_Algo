@@ -157,10 +157,13 @@ int coinChangeRec(vector<int> coins, int amount, int n)
 
 int coinChangeMemo(vector<int> &coins, int amount, int n, vector<vector<int>> &dp)
 {
+    //> base case: amount becomes -> 0
     if (amount == 0)
     {
         return 0;
     }
+
+    //** edge case :we were not able to make the denominations
     if (amount < 0 || n < 0)
     {
         return 1e9;
@@ -186,6 +189,7 @@ int coinChange(vector<int> &coins, int amount)
     // int ans = coinChangeRec(coins, amount, n - 1);
     vector<vector<int>> dp(n + 1, vector<int>(amount + 1, -1));
     int ans = coinChangeMemo(coins, amount, n - 1, dp);
+    //> if we were able to make deno,
     if (ans < 1e9)
     {
         return ans;

@@ -140,10 +140,14 @@ int changeMemo(int amount, vector<int> &coins, int n, vector<vector<int>> &dp)
     {
         return 1;
     }
+
+    //> edge case 1
     if (amount < 0 || n < 0)
     {
         return 0;
     }
+
+    //> edge case 2
     if (n <= 0 && amount >= 1)
     {
         return 0;

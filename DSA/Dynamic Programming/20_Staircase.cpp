@@ -93,148 +93,79 @@ typedef priority_queue<int, vector<int>, greater<int>> pqmin;
 
 //>----------------------------ＳＯＬＶＥ-----------------------------------------------------------------------------------------------------------------------------------------------
 
-/*
-- A thief robbing a store can carry a maximal weight of W into his knapsack.
-- There are N items, and i-th item weigh 'Wi' and the value being 'Vi.'
-- What would be the maximum value V, that the thief can steal?
-- Examples::
-- Input 1:
-- 4
-- V --> 5 4 8 6
-- W --> 1 2 4 5
-- maxW --> 5
-- output 1: 13
--
-- Input 2:
-- 5
-- 24 13 23 15 16
-- 12 7 11 8 9
-- 26
-- output 2: 51
-*/
-
-// ___________________________________________________________________________________
-/*
-: Time Complexity: O(2^N)
-: Auxiliary Space: O(N), Stack space required for recursion
-*/
-int knapSackRec(vector<int> weights, vector<int> values, int maxW, int i, int n)
+int staircaseRec(int n)
 {
-    if (maxW == 0 || i == n)
+    if (n == 0)
     {
         return 0;
     }
-
-    if (weights[i] <= maxW)
+    if (n == 1)
     {
-        return max(values[i] + knapSackRec(weights, values, maxW - weights[i], i + 1, n), knapSackRec(weights, values, maxW, i + 1, n));
+        return 1;
     }
-    else
+    if (n == 2)
     {
-        return knapSackRec(weights, values, maxW, i + 1, n);
+        return 2;
     }
-}
-// # without using ith pointer
-
-int knapSackRec1(vector<int> weights, vector<int> values, int maxW, int n)
-{
-    if (maxW == 0 || n <= 0)
+    if (n == 3)
     {
-        return 0;
+        return 4;
     }
-
-    if (weights[n - 1] <= maxW)
-    {
-        int ans1 = values[n - 1] + knapSackRec1(weights, values, maxW - weights[n - 1], n - 1);
-        int ans2 = knapSackRec1(weights, values, maxW, n - 1);
-        return max(ans1, ans2);
-    }
-    else
-    {
-        return knapSackRec1(weights, values, maxW, n - 1);
-    }
-}
-
-// ___________________________________________________________________________________
-
-//> MEMOIZATION
-
-int knapSackMemo(vector<int> weights, vector<int> values, int maxW, int n, vector<vector<int>> DP)
-{
-    if (maxW == 0 || n < 0)
-    {
-        return 0;
-    }
-
-    if (DP[n][maxW] != -1)
-    {
-        return DP[n][maxW];
-    }
-
-    if (weights[n] <= maxW)
-    {
-        return DP[n][maxW] = max(values[n] + knapSackMemo(weights, values, maxW - weights[n], n - 1, DP), knapSackMemo(weights, values, maxW, n - 1, DP));
-    }
-    int ans = knapSackMemo(weights, values, maxW, n - 1, DP);
-    DP[n][maxW] = ans;
+    int a = staircaseRec(n - 1);
+    int b = staircaseRec(n - 2);
+    int c = staircaseRec(n - 3);
+    int ans = a + b + c;
     return ans;
 }
-// ______________________________________________________________________________________
-//> Iterative Dp
 
-int knapSackIter(vector<int> weights, vector<int> values, int maxW)
+int staircaseMemo(int n, vector<int> &dp)
 {
-
-    /*
-    >   In iterative DP sol, following changes are made
-    ->  maxWeight -> w
-    ->  n -> i
-    ->  function call becomes -> dp[][]
-    */
-
-    int n = weights.size();
-    vector<vector<int>> Dp(n + 1, vector<int>(maxW + 1, 0));
-
-    for (int i = 1; i < n + 1; i++)
+    if (n == 0)
     {
-        for (int w = 1; w < maxW + 1; w++)
-        {
-            if (weights[i - 1] <= w)
-            {
-                int a = values[i - 1] + Dp[i - 1][w - weights[i - 1]];
-                int b = Dp[i - 1][w];
-                Dp[i][w] = max(a, b);
-            }
-            else
-            {
-                Dp[i][w] = Dp[i - 1][w];
-            }
-        }
+        return 0;
+    }
+    if (n == 1)
+    {
+        return 1;
+    }
+    if (n == 2)
+    {
+        return 2;
+    }
+    if (n == 3)
+    {
+        return 4;
     }
 
-    return Dp[n][maxW];
+    if (dp[n] != -1)
+    {
+        return dp[n];
+    }
+    else
+    {
+        int a = staircaseMemo(n - 1, dp);
+        int b = staircaseMemo(n - 2, dp);
+        int c = staircaseMemo(n - 3, dp);
+        int ans = a + b + c;
+        dp[n] = ans;
+        return dp[n];
+    }
 }
 
-// ___________________________________________________________________________________
-int knapsack(vector<int> weights, vector<int> values, int maxW)
+int staircase(int n)
 {
 
-    int n = weights.size();
-    // int ans1 = knapSackRec(weights, values, maxW, 0, n);
-    // int ans2 = knapSackRec1(weights, values, maxW, n);
-
-    vector<vector<int>> DP(n + 1, vector<int>(maxW + 1, -1));
-    // int ans3 = knapSackMemo(weights, values, maxW, n - 1, DP);
-    int ans4 = knapSackIter(weights, values, maxW);
-    return ans4;
+    vector<int> dp(n + 1, -1);
+    return staircaseMemo(n, dp);
+    // return staircaseRec(n);
 }
+
 void solve()
 {
 
-    vector<int> weights{1, 2, 4, 5};
-    vector<int> values{5, 4, 8, 6};
-    int maxW = 5;
-    cout << knapsack(weights, values, maxW);
+    int n;
+    cin >> n;
+    cout << staircase(n) << endl;
 }
 
 //>-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
