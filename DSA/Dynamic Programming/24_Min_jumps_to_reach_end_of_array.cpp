@@ -92,67 +92,88 @@ typedef priority_queue<int, vector<int>, greater<int>> pqmin;
 //--------------------------------------------------------------------------------------------------------------------------------
 
 //>----------------------------ＳＯＬＶＥ-----------------------------------------------------------------------------------------------------------------------------------------------
-
-/*
-> Naive Recursive : O(2^n)
-*/
-
-/*
-> Dynamic programming
-:TC : O(n*n)
-:SC : O(n)
-
-*/
-
-/*
-> INTUITION: Looks scary, but easy
-- for every element in nums, check all the smaller elements towards left
-- i.e, for every ith element, check all jth elements, where  j<=i
-- if jth element is smaller then ith element, then ith element will be part of LIS
-- so  LIS till ith index will be LIS calculated till ith element i.e LIS of all previous elements
-- we can use dp array to store our ans for all previously calculated elements
-- SO basically what we are doing is to store LIS for every index, and then for  a praticular index
-- we will calculate the ans from previous ans
-
-: DRY run to see, how ans is calculated
-
-*/
-
-int lengthOfLIS(vector<int> &nums)
+// O(2^N)
+int minJumpsRec(vector<int> arr, int n, int currPos)
 {
-    int n = nums.size();
+    if (currPos >= n - 1)
+    {
+        return 0;
+    }
 
-    vector<int> dp(n, 1);
+    int minJumps = INT_MAX;
+    int maxSteps = arr[currPos];
 
+    while (maxSteps > 0)
+    {
+        int currAns = 1 + minJumpsRec(arr, n, currPos + maxSteps);
+        minJumps = min(minJumps, currAns);
+        maxSteps = maxSteps - 1;
+    }
+    return minJumps;
+}
+
+// O(N*N)
+int minJumpsDp(vector<int> arr)
+{
+    if (arr[0] == 0)
+    {
+        return 0;
+    }
+    int n = arr.size();
+
+    vector<int> dp(n, INT_MAX);
+
+    dp[0] = 0;
     for (int i = 1; i < n; i++)
     {
         for (int j = 0; j <= i; j++)
         {
-            if (nums[j] < nums[i])
+            if (i <= j + arr[j])
             {
-                dp[i] = max(dp[i], 1 + dp[j]);
+                dp[i] = min(dp[i], dp[j] + 1);
             }
         }
     }
-    return *max_element(dp.begin(), dp.end()
-    );
+
+    return dp[n - 1];
 }
 
-/*
-> Binary search
-: O(nlog n)
+// O(N)
+int minJumpsGreedy(vector<int> arr)
+{
 
-*/
+    int n = arr.size();
+    int left = 0;
+    int right = 0;
+    int minJumps = 0;
+
+    while (right < n - 1)
+    {
+        int farthestReached = 0;
+        for (int i = left; i < right + 1; i++)
+        {
+            farthestReached = max(farthestReached, arr[i] + 1);
+        }
+        left = right + 1;
+        right = farthestReached;
+        minJumps += 1;
+    }
+    return minJumps;
+}
+
+int minJumps(vector<int> arr)
+{
+    int n = arr.size();
+    // return minJumpsRec(arr, n, 0);
+    // return minJumpsDp(arr);
+    return minJumpsGreedy(arr);
+}
+
 void solve()
 {
-    vector<int> nums;
-    int ele;
-    while (cin >> ele)
-    {
-        nums.push_back(ele);
-    }
-    debug(nums);
-    cout << lengthOfLIS(nums) << endl;
+    // vector<int> jump{1, 3, 5, 8, 9, 2, 6, 7, 6, 8, 9};
+    vector<int> jump{2, 3, 1, 1, 4};
+    cout << minJumps(jump) << endl;
 }
 
 //>-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------

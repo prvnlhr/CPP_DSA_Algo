@@ -93,66 +93,55 @@ typedef priority_queue<int, vector<int>, greater<int>> pqmin;
 
 //>----------------------------ＳＯＬＶＥ-----------------------------------------------------------------------------------------------------------------------------------------------
 
-/*
-> Naive Recursive : O(2^n)
-*/
-
-/*
-> Dynamic programming
-:TC : O(n*n)
-:SC : O(n)
-
-*/
-
-/*
-> INTUITION: Looks scary, but easy
-- for every element in nums, check all the smaller elements towards left
-- i.e, for every ith element, check all jth elements, where  j<=i
-- if jth element is smaller then ith element, then ith element will be part of LIS
-- so  LIS till ith index will be LIS calculated till ith element i.e LIS of all previous elements
-- we can use dp array to store our ans for all previously calculated elements
-- SO basically what we are doing is to store LIS for every index, and then for  a praticular index
-- we will calculate the ans from previous ans
-
-: DRY run to see, how ans is calculated
-
-*/
-
-int lengthOfLIS(vector<int> &nums)
+int minSquaresRec(int n)
 {
-    int n = nums.size();
-
-    vector<int> dp(n, 1);
-
-    for (int i = 1; i < n; i++)
+    if (n == 0)
     {
-        for (int j = 0; j <= i; j++)
-        {
-            if (nums[j] < nums[i])
-            {
-                dp[i] = max(dp[i], 1 + dp[j]);
-            }
-        }
+        return 0;
     }
-    return *max_element(dp.begin(), dp.end()
-    );
+    int root = sqrt(n);
+    int ans = INT_MAX;
+    for (int i = 1; i < root + 1; i++)
+    {
+        int currAns = 1 + minSquaresRec(n - (i * i));
+        ans = min(ans, currAns);
+    }
+    return ans;
 }
 
 /*
-> Binary search
-: O(nlog n)
-
+: Time Complexity: O(n*sqrtn)
+: Auxiliary Space: O(n)
 */
+int minSquaresDp(int n)
+{
+    vector<int> dp(n + 1, -1);
+    dp[0] = 0;
+
+    for (int i = 1; i < n + 1; i++)
+    {
+        int ans = INT_MAX;
+        int root = sqrt(i);
+        for (int j = 1; j < root + 1; j++)
+        {
+            int currAns = 1 + dp[i - (j * j)];
+            ans = min(ans, currAns);
+        }
+        dp[i] = ans;
+    }
+    return dp[n];
+}
+
+int minSquare(int n)
+{
+    // return minSquaresRec(n);
+    return minSquaresDp(n);
+}
 void solve()
 {
-    vector<int> nums;
-    int ele;
-    while (cin >> ele)
-    {
-        nums.push_back(ele);
-    }
-    debug(nums);
-    cout << lengthOfLIS(nums) << endl;
+    int n;
+    cin >> n;
+    cout << minSquare(n) << endl;
 }
 
 //>-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------

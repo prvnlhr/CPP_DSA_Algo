@@ -92,67 +92,97 @@ typedef priority_queue<int, vector<int>, greater<int>> pqmin;
 //--------------------------------------------------------------------------------------------------------------------------------
 
 //>----------------------------ＳＯＬＶＥ-----------------------------------------------------------------------------------------------------------------------------------------------
-
 /*
-> Naive Recursive : O(2^n)
+- Given a cost matrix cost[][] and a position (m, n) in cost[][], write a
+- function that returns cost of minimum cost path to reach (m,n) from
+- (0, 0). Each cell of the matrix represents a cost to traverse through
+- that cell. The total cost of a path to reach (m, n) is the sum of all the costs
+- on that path (including both source and destination). You can only traverse down,
+- right and diagonally lower cells from a given cell, i.e., from a given cell (i, j),
+- cells (i + 1, j), (i, j + 1), and (i + 1, j + 1) can be traversed.
+- You may assume that all costs are positive integers.
+
+-> Ex__
+- 1  2  3
+- 4  8  2
+- 1  5  3
+-
+- The path with minimum cost is (0, 0) –> (0, 1) –> (1, 2) –> (2, 2).
+- The cost of the path is 8 (1 + 2 + 2 + 3).
+
+-> 1) Optimal Substructure
+-  The path to reach (m, n) must be through one of the 3 cells: (m-1, n-1) or (m-1, n) or (m, n-1).
+-  So minimum cost to reach (m, n) can be written as “minimum of the 3 cells plus cost[m][n]”.
+-  minCost(m, n) = min (minCost(m-1, n-1), minCost(m-1, n), minCost(m, n-1)) + cost[m][n]
+-
+-> 2) Overlapping SubProblems
+-  Following is a simple recursive implementation of the MCP (Minimum Cost Path) problem.
+-  The implementation simply follows the recursive structure mentioned above.
 */
 
-/*
-> Dynamic programming
-:TC : O(n*n)
-:SC : O(n)
-
-*/
-
-/*
-> INTUITION: Looks scary, but easy
-- for every element in nums, check all the smaller elements towards left
-- i.e, for every ith element, check all jth elements, where  j<=i
-- if jth element is smaller then ith element, then ith element will be part of LIS
-- so  LIS till ith index will be LIS calculated till ith element i.e LIS of all previous elements
-- we can use dp array to store our ans for all previously calculated elements
-- SO basically what we are doing is to store LIS for every index, and then for  a praticular index
-- we will calculate the ans from previous ans
-
-: DRY run to see, how ans is calculated
-
-*/
-
-int lengthOfLIS(vector<int> &nums)
+int minCostPathRec(vector<vector<int>> mat, int row, int col, int i, int j)
 {
-    int n = nums.size();
-
-    vector<int> dp(n, 1);
-
-    for (int i = 1; i < n; i++)
+    if (i == row - 1 && j == col - 1)
     {
-        for (int j = 0; j <= i; j++)
-        {
-            if (nums[j] < nums[i])
-            {
-                dp[i] = max(dp[i], 1 + dp[j]);
-            }
-        }
+        return mat[i][j];
     }
-    return *max_element(dp.begin(), dp.end()
-    );
+    if (i >= row || j >= col)
+    {
+        return INT_MAX;
+    }
+
+    int a = minCostPathRec(mat, row, col, i + 1, j);
+    int b = minCostPathRec(mat, row, col, i + 1, j + 1);
+    int c = minCostPathRec(mat, row, col, i, j + 1);
+    return mat[i][j] + min({a, b, c});
 }
 
-/*
-> Binary search
-: O(nlog n)
+int minCostDP(vector<vector<int>> mat)
+{
+    int row = mat.size();
+    int col = mat[0].size();
 
-*/
+    vector<vector<int>> dp(row + 1, vector<int>(col + 1, 0));
+    dp[0][0] = mat[0][0];
+    
+    for (int i = 1; i < row; i++)
+    {
+        dp[i][0] = dp[i - 1][0] + mat[i][0];
+    }
+
+    for (int j = 1; j < col; j++)
+    {
+        dp[0][j] = dp[0][j - 1] + mat[0][j];
+    }
+
+    debug(dp);
+    for (int i = 1; i < row; i++)
+    {
+        for (int j = 1; j < col; j++)
+        {
+            dp[i][j] = mat[i][j] + min({dp[i][j - 1], dp[i - 1][j], dp[i - 1][j - 1]});
+        }
+    }
+    debug(dp);
+    return dp[row - 1][col - 1];
+}
+
+int minCostPath(vector<vector<int>> mat)
+{
+    int row = mat.size();
+    int col = mat[0].size();
+    // return minCostPathRec(mat, row, col, 0, 0);
+    return minCostDP(mat);
+}
 void solve()
 {
-    vector<int> nums;
-    int ele;
-    while (cin >> ele)
-    {
-        nums.push_back(ele);
-    }
-    debug(nums);
-    cout << lengthOfLIS(nums) << endl;
+    /*
+    # 1  2  3
+    # 4  8  2
+    # 1  5  3
+    */
+    vector<vector<int>> mat{{1, 2, 3}, {4, 8, 2}, {1, 5, 3}};
+    cout << minCostPath(mat) << endl;
 }
 
 //>-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------

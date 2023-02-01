@@ -92,67 +92,86 @@ typedef priority_queue<int, vector<int>, greater<int>> pqmin;
 //--------------------------------------------------------------------------------------------------------------------------------
 
 //>----------------------------ＳＯＬＶＥ-----------------------------------------------------------------------------------------------------------------------------------------------
-
 /*
-> Naive Recursive : O(2^n)
-*/
+- Minimum steps to minimize n as per given condition
+- Given a number n, count minimum steps to minimize it to 1
+- according to the following criteria :
+- If n is divisible by 2 then we may reduce n to n/2.
+- If n is divisible by 3 then you may reduce n to n/3.
+- Decrement n by 1
 
-/*
-> Dynamic programming
-:TC : O(n*n)
-:SC : O(n)
+-> Input : n = 10
+-> Output : 3
 
-*/
-
-/*
-> INTUITION: Looks scary, but easy
-- for every element in nums, check all the smaller elements towards left
-- i.e, for every ith element, check all jth elements, where  j<=i
-- if jth element is smaller then ith element, then ith element will be part of LIS
-- so  LIS till ith index will be LIS calculated till ith element i.e LIS of all previous elements
-- we can use dp array to store our ans for all previously calculated elements
-- SO basically what we are doing is to store LIS for every index, and then for  a praticular index
-- we will calculate the ans from previous ans
-
-: DRY run to see, how ans is calculated
+-> Input : 6
+-> Output : 2
 
 */
-
-int lengthOfLIS(vector<int> &nums)
+int minStepsRec(int n)
 {
-    int n = nums.size();
-
-    vector<int> dp(n, 1);
-
-    for (int i = 1; i < n; i++)
+    if (n == 0)
     {
-        for (int j = 0; j <= i; j++)
-        {
-            if (nums[j] < nums[i])
-            {
-                dp[i] = max(dp[i], 1 + dp[j]);
-            }
-        }
+        return 0;
     }
-    return *max_element(dp.begin(), dp.end()
-    );
+    if (n == 1)
+    {
+        return 0;
+    }
+    int ans1 = INT_MAX;
+    if (n % 2 == 0)
+    {
+        ans1 = minStepsRec(n / 2);
+    }
+
+    int ans2 = INT_MAX;
+    if (n % 3 == 0)
+    {
+        ans2 = minStepsRec(n / 3);
+    }
+    int ans3 = INT_MAX;
+    ans3 = minStepsRec(n - 1);
+
+    int ans = 1 + min({ans1, ans2, ans3});
+    return ans;
 }
 
-/*
-> Binary search
-: O(nlog n)
+int minStepsDP(int n)
+{
+    vector<int> dp(n + 1, 0);
+    dp[0] = 0;
+    dp[1] = 0;
 
-*/
+    for (int i = 2; i < n + 1; i++)
+    {
+        int ans1 = INT_MIN;
+        int ans2 = INT_MIN;
+        int ans3 = INT_MIN;
+
+        if (i % 2 == 0)
+        {
+            ans1 = dp[i / 2];
+        }
+        else if (i % 3 == 0)
+        {
+            ans2 = dp[i / 3];
+        }
+        ans3 = dp[i - 1];
+
+        dp[i] = 1 + min({ans1, ans2, ans3});
+    }
+    return dp[n];
+}
+
+int minSteps(int n)
+{
+    // return minStepsRec(;
+    return minStepsDP(n);
+}
 void solve()
 {
-    vector<int> nums;
-    int ele;
-    while (cin >> ele)
-    {
-        nums.push_back(ele);
-    }
-    debug(nums);
-    cout << lengthOfLIS(nums) << endl;
+    int n;
+    cin >> n;
+    cout << minStepsRec(n) << endl;
 }
 
 //>-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
