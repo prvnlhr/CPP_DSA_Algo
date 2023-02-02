@@ -11,7 +11,7 @@ using namespace std;
 using namespace chrono;
 
 //__________________________________________________________________________________________________________________________________________________________________________________________________
-
+//> CONSTANST
 #define MOD 1000000007
 #define MOD1 998244353
 #define PI 3.141592653589793238462
@@ -62,6 +62,8 @@ ostream &operator<<(ostream &os, const T &c)
 #endif
 //>---DEBUG_TEMPLATE_END-----------------------------------------------------------------------------------------------------------------------------------------------------------
 
+//> Macros
+
 // #define FOR(i, start, end) for (int i = start; i < end; i++)
 #define FOR(i, begin, end) for (__typeof(end) i = (begin) - ((begin) > (end)); i != (end) - ((begin) > (end)); i += 1 - 2 * ((begin) > (end)))
 #define RFOR(i, start, end) for (int i = end; i >= start; i--)
@@ -92,8 +94,7 @@ typedef priority_queue<int, vector<int>, greater<int>> pqmin;
 //--------------------------------------------------------------------------------------------------------------------------------
 
 //>----------------------------ＳＯＬＶＥ-----------------------------------------------------------------------------------------------------------------------------------------------
-void topoSort(int node, vector<pair<int, int>> adj[],
-              int vis[], stack<int> &st)
+void topoSort(int node, vector<pair<int, int>> adj[], int vis[], stack<int> &st)
 {
     // This is the function to implement Topological sort.
     vis[node] = 1;
@@ -107,9 +108,9 @@ void topoSort(int node, vector<pair<int, int>> adj[],
     }
     st.push(node);
 }
+
 vector<int> shortestPath(int N, int M, vector<vector<int>> &edges)
 {
-
     // We create a graph first in the form of an adjacency list.
     vector<pair<int, int>> adj[N];
     for (int i = 0; i < M; i++)
@@ -121,10 +122,11 @@ vector<int> shortestPath(int N, int M, vector<vector<int>> &edges)
     }
     // A visited array is created with initially
     // all the nodes marked as unvisited (0).
-    int vis[N] = {
-        0};
+    int vis[N] = {0};
+
     // Now, we perform topo sort using DFS technique
     // and store the result in the stack st.
+
     stack<int> st;
     for (int i = 0; i < N; i++)
     {
@@ -133,7 +135,8 @@ vector<int> shortestPath(int N, int M, vector<vector<int>> &edges)
             topoSort(i, adj, vis, st);
         }
     }
-    // Further, we declare a vector ‘dist’ in which we update the value of the nodes’
+
+    // Further, we declare a vector ‘dist’ in which we update the value of the node's
     // distance from the source vertex after relaxation of a particular node.
 
     vector<int> dist(N);
@@ -153,6 +156,7 @@ vector<int> shortestPath(int N, int M, vector<vector<int>> &edges)
             int v = it.first;
             int wt = it.second;
 
+            //> Relaxtion step
             if (dist[node] + wt < dist[v])
             {
                 dist[v] = wt + dist[node];
@@ -184,6 +188,7 @@ void solve()
 }
 
 //>-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+// - MAIN
 int main()
 {
     ios::sync_with_stdio(0);

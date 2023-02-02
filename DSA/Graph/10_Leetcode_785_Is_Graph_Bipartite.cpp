@@ -93,8 +93,8 @@ typedef priority_queue<int, vector<int>, greater<int>> pqmin;
 
 //>----------------------------ＳＯＬＶＥ-----------------------------------------------------------------------------------------------------------------------------------------------
 
-//>Based on graph coloring technique
-//> O(V+2E)
+//> Based on graph coloring technique
+//: T => O(V+2E)
 bool dfs(vector<vector<int>> &adjList, int color[], int node, int col)
 {
     color[node] = col;

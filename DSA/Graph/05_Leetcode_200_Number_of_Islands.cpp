@@ -101,6 +101,8 @@ bool isSafe(int x, int y, vector<vector<char>> &adjmatrix, vector<vector<bool>> 
 }
 void dfs(vector<vector<char>> &adjmatrix, int i, int j, int m, int n, vector<vector<bool>> &visited)
 {
+
+    //> DFS in all four adjacent dirs
     visited[i][j] = true;
     if (j - 1 >= 0 && adjmatrix[i][j - 1] == '1' && visited[i][j - 1] == false)
     {
@@ -118,16 +120,6 @@ void dfs(vector<vector<char>> &adjmatrix, int i, int j, int m, int n, vector<vec
     {
         dfs(adjmatrix, i + 1, j, m, n, visited);
     }
-
-    // for (int i = 0; i < 8; i++) // # DFS in 8 directions
-    // {
-    //     int adjx = x + dirRow[i];
-    //     int adjy = y + dirCol[i];
-    //     if (isSafe(adjx, adjy, adjmatrix, visited)) // # if adj dir not visited already and is not out of bound
-    //     {
-    //         dfs(adjmatrix, adjx, adjy, visited);
-    //     }
-    // }
 }
 
 int numIslands(vector<vector<char>> &grid)

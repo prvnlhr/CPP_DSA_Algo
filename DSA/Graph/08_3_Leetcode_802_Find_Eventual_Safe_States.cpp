@@ -94,6 +94,15 @@ typedef priority_queue<int, vector<int>, greater<int>> pqmin;
 //>----------------------------ＳＯＬＶＥ-----------------------------------------------------------------------------------------------------------------------------------------------
 bool dfs(vector<vector<int>> &adjList, bool visited[], bool recursionPath[], vector<int> &check, int node)
 {
+
+    /*
+    -> INTUITION:
+        > WHen observing carefully, every node which is part of a cycle and, are connected to the cycle
+        > will never be the safe node.
+        > so, do a cycle check in directed graph,and mark all nodes as '0' which are part of cycle
+        > if,  not part of cycle, then  mark it as '1'.
+    */
+
     visited[node] = true;
     recursionPath[node] = true;
 
@@ -103,16 +112,20 @@ bool dfs(vector<vector<int>> &adjList, bool visited[], bool recursionPath[], vec
         {
             if (dfs(adjList, visited, recursionPath, check, adjNode))
             {
+                //> if node was part of cycle then, in check array mark node as 0
                 check[node] = 0;
                 return true;
             }
         }
         else if (recursionPath[adjNode])
         {
+            //> if node was part of cycle then, in check array mark node as 0
             check[node] = 0;
             return true;
         }
     }
+
+    //> if node was not part of cycle then, in check array mark node as 1
     check[node] = 1;
     recursionPath[node] = false;
 
@@ -137,6 +150,9 @@ vector<int> eventualSafeNodes(vector<vector<int>> &graph)
             dfs(graph, visited, recursionPath, check, i);
         }
     }
+
+    //> AT end, if nodes are marked '1' in check array then, it was not found to be part of
+    //> cycle so, it is safe node.
     for (int i = 0; i < V; i++)
     {
         if (check[i] == 1)
@@ -144,6 +160,7 @@ vector<int> eventualSafeNodes(vector<vector<int>> &graph)
             res.push_back(i);
         }
     }
+
     return res;
 }
 void solve()
