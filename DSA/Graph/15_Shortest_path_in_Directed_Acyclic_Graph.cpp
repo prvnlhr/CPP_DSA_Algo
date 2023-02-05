@@ -94,6 +94,23 @@ typedef priority_queue<int, vector<int>, greater<int>> pqmin;
 //--------------------------------------------------------------------------------------------------------------------------------
 
 //>----------------------------ＳＯＬＶＥ-----------------------------------------------------------------------------------------------------------------------------------------------
+
+/*
+-Topological sorting for Directed Acyclic Graph (DAG) is a
+- linear ordering of vertices such that for every directed
+- edge u v, vertex u comes before v in the ordering.
+
+! Note: Topological Sorting for a graph is not possible if the graph is not a DAG.
+
+- For a general weighted graph, we can calculate single source shortest
+- distances in O(VE) time using Bellman–Ford Algorithm. For a graph
+- with no negative weights, we can do better and calculate single
+- source shortest distances in O(E + VLogV) time using Dijkstra’s algorithm.
+- Can we do even better for Directed Acyclic Graph (DAG)? We can calculate
+- single source shortest distances in O(V+E) time for DAGs. The idea is to
+- use Topological Sorting.
+
+*/
 void topoSort(int node, vector<pair<int, int>> adj[], int vis[], stack<int> &st)
 {
     // This is the function to implement Topological sort.

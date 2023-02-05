@@ -98,7 +98,10 @@ vector<vector<int>> nearest(vector<vector<int>> grid)
 
     int rows = grid.size();
     int cols = grid[0].size();
+
+    
     vector<vector<int>> visited(rows, vector<int>(cols, 0));
+    
     vector<vector<int>> dist(rows, vector<int>(cols, 0));
 
     queue<pair<pair<int, int>, int>> q;
@@ -128,7 +131,10 @@ vector<vector<int>> nearest(vector<vector<int>> grid)
         int col = q.front().first.second;
         int steps = q.front().second;
         q.pop();
+        
+        
         dist[row][col] = steps;
+
         for (int i = 0; i < 4; i++)
         {
             int nrow = row + delRow[i];

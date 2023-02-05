@@ -156,6 +156,7 @@ vector<int> shortestPath(int n, int m, vector<vector<int>> &edges)
         res.push_back(node);
         node = parent[node];
     }
+    
     res.push_back(1);
     reverse(res.begin(), res.end());
     return res;

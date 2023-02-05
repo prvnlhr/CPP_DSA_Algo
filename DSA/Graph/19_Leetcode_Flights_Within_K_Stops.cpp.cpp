@@ -95,6 +95,19 @@ typedef priority_queue<int, vector<int>, greater<int>> pqmin;
 int findCheapestPrice(int n, vector<vector<int>> &flights, int src, int dst, int k)
 {
 
+    /*
+    > The first intution would be to use dijkstra's algo
+    > but, dijkstra would always gives priority to distance or wt
+    > but it might happen that always taking smaller distance may not fullfill
+    > the constraint of k stops, and eventully the stops would exceed k.
+    > So, instead of storing {dist,node,stop} , we will store, {stop, node,dist} , where dist is cost
+    > One, more catch is, do we really need to use priority queue
+    > When observing carefully, we see that, the stops in pq, will always increase by one, at every step
+    > in increasing order, so maintaining pq, will be not benficial,so we can use normal queue
+    > In the case of distance or wt, which doesnt increases, by one every time, we need pq min
+
+
+    */
     vector<pair<int, int>> adjList[n];
 
     for (auto it : flights)
@@ -109,6 +122,8 @@ int findCheapestPrice(int n, vector<vector<int>> &flights, int src, int dst, int
     distArray[src] = 0;
 
     queue<pair<int, pair<int, int>>> q;
+
+    //> {stop, node, dist}
     q.push({0, {src, 0}});
 
     while (!q.empty())
@@ -120,6 +135,7 @@ int findCheapestPrice(int n, vector<vector<int>> &flights, int src, int dst, int
         int node = it.second.first;
         int cost = it.second.second;
 
+        //> if stops >= k, dont consider
         if (stops > k)
         {
             continue;
@@ -130,6 +146,7 @@ int findCheapestPrice(int n, vector<vector<int>> &flights, int src, int dst, int
             int adjNode = iter.first;
             int adjCost = iter.second;
 
+            //> also when relaxing, check for stops to not exceed k limit
             if (adjCost + cost < distArray[adjNode] && stops <= k)
             {
                 distArray[adjNode] = adjCost + cost;

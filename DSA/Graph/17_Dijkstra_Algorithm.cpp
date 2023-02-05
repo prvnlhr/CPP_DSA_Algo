@@ -99,13 +99,14 @@ typedef priority_queue<int, vector<int>, greater<int>> pqmin;
 //> path increasing the time complextiy,  whereas pq, at every instance consider the
 //> minal weight path, thus reducing the time complexity
 
-
 //> We can also use set instead of pq, bcoz in pq we cant remove a node which we updated in distArray
-//> but in set we can remove the node which is not required 
+//> but in set we can remove the node which is not required
 //> In some cases, depends on the type of h graph  set performs slightly better, but the remove node ,
 //> from set costs logN time, so we can say there is not much difference in pq and set, but using set would
 //> would reducing travering unwanted nodes, due to removal , and hence can improve futhere time complexities
 
+//: TC O(V + E) * O(LogV) which is O((V + E) * LogV) = O(ELogV)
+//> O(V+E) -> for BFS + Log(V) for operations in priority queue
 vector<int> dijkstra(int V, vector<vector<int>> adj[], int S)
 {
 
@@ -114,6 +115,8 @@ vector<int> dijkstra(int V, vector<vector<int>> adj[], int S)
     priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> pqmin;
 
     distArray[S] = 0;
+
+    //> pq ->{ wt , node}
     pqmin.push({0, S});
 
     while (!pqmin.empty())

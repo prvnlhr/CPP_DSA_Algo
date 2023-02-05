@@ -93,6 +93,8 @@ typedef priority_queue<int, vector<int>, greater<int>> pqmin;
 
 //>----------------------------ＳＯＬＶＥ-----------------------------------------------------------------------------------------------------------------------------------------------
 //>Striver solution
+//: T : O(V + E)
+//: S : O(V)
 void topoSort(vector<int> adjList[], int visited[], stack<int> &st, int node)
 {
 
@@ -112,6 +114,33 @@ void topoSort(vector<int> adjList[], int visited[], stack<int> &st, int node)
 string findOrder(string dict[], int N, int K)
 {
     vector<int> adjList[K];
+
+    /*
+                                  j
+                                  |
+    b a a    i            -> s =  b a a
+    a b c d  i + 1        -> t =  a b c d   s[j] != t[j] -> adjList[b].push_back(a);
+    a b c a
+    c a b
+    c a d
+
+
+    after above looping,we got adjList as
+{
+    b : a
+    d : a
+    a : c
+    b : d
+}
+
+            b --> a ---> c    now, when we find the toposort -> we get => [b, d, a, c]
+             \    ^                                                    => oue required ans
+              \   |
+               \  |
+                \ |
+                 \|
+                  d
+    */
 
     for (int i = 0; i < N - 1; i++)
     {
