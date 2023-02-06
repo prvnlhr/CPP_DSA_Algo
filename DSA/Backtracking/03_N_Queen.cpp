@@ -95,8 +95,21 @@ typedef priority_queue<int, vector<int>, greater<int>> pqmin;
 
 bool isSafe(int row, int col, vector<vector<int>> &board, int n)
 {
+    /* Now as, havent yet ,place a queen on downside of curr row,
+    so  we need not to check  downside of board.
+    So only place to check if are safe or not are, upper left dia, upper right dia
+    and upper straight col
+
+            \  |  /
+             \ | /
+               Q
+
+    */
+
+    //> Checking upper row
     int i = row - 1;
     int j = col;
+
     while (i >= 0)
     {
         if (board[i][j] == 1)
@@ -105,6 +118,8 @@ bool isSafe(int row, int col, vector<vector<int>> &board, int n)
         }
         i--;
     }
+
+    //> Checking upper left  diagonal
 
     i = row - 1;
     j = col - 1;
@@ -119,6 +134,8 @@ bool isSafe(int row, int col, vector<vector<int>> &board, int n)
         j--;
     }
 
+    //> Checking upper right  diagonal
+
     i = row - 1;
     j = col + 1;
 
@@ -131,6 +148,7 @@ bool isSafe(int row, int col, vector<vector<int>> &board, int n)
         i--;
         j++;
     }
+
     return true;
 }
 
@@ -142,8 +160,8 @@ void nqueen(vector<vector<int>> board, int row, int n)
         debug(board);
         return;
     }
-    //> explore all cols
 
+    //> explore all cols
     for (int col = 0; col < n; col++)
     {
 
@@ -151,6 +169,7 @@ void nqueen(vector<vector<int>> board, int row, int n)
         {
             board[row][col] = 1;
             nqueen(board, row + 1, n);
+
             //> backtrack
             board[row][col] = 0;
         }

@@ -95,8 +95,8 @@ typedef priority_queue<int, vector<int>, greater<int>> pqmin;
 
 int N = 8;
 
-int dirX[8] = {2, 1, -1, -2, -2, -1, 1, 2};
-int dirY[8] = {1, 2, 2, 1, -1, -2, -2, -1};
+int dirX[8] = {2, 1, -1, -2, -2, -1,  1,  2};
+int dirY[8] = {1, 2,  2,  1, -1, -2, -2, -1};
 
 bool isSafe(int x, int y, vector<vector<int>> &sol)
 {
@@ -109,6 +109,7 @@ bool moveUntil(int x, int y, vector<vector<int>> &sol, int currMoveI)
     {
         return true;
     }
+    
     for (int i = 0; i < N; i++)
     {
         int nextX = x + dirX[i];
