@@ -199,6 +199,7 @@ int maxProfit(vector<int> &prices)
 
     return maxPro;
 }
+
 void solve()
 {
     int ele;
