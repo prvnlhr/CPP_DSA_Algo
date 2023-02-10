@@ -173,6 +173,7 @@ void factOfN(ll n)
 /*
  * SLEF SOLVED LEETCODE 100%
  */
+
 int maxProfit(vector<int> &prices)
 {
     int maxPro = 0;
