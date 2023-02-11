@@ -223,70 +223,172 @@ TreeNode<int> *buildTree(vector<int> inputList)
     return root;
 }
 
+// class Codec
+// {
+
+// public:
+//     vector<string> arr;
+
+//     string serialize(TreeNode<int> *root)
+//     {
+//         arr.clear();
+
+//         string res = "";
+
+//         if (!root)
+//         {
+//             return res;
+//         }
+
+//         queue<TreeNode<int> *> q;
+
+//         q.push(root);
+
+//         while (!q.empty())
+//         {
+//             auto node = q.front();
+//             q.pop();
+
+//             if (node)
+//             {
+//                 q.push(node->left);
+//                 q.push(node->right);
+//             }
+
+//             if (node)
+//             {
+//                 arr.push_back(to_string(node->val));
+//             }
+//             else
+//             {
+//                 arr.push_back("#");
+//             }
+//         }
+
+//         bool check = false;
+//         for (auto ch : arr)
+//         {
+//             if (!check)
+//             {
+//                 check = true;
+//                 res += ch;
+//             }
+//             else
+//             {
+//                 res += ',' + ch;
+//             }
+//         }
+
+//         return res;
+//     }
+
+//     TreeNode<int> *deserialize(string data)
+//     {
+//         vector<string> strArr;
+//         stringstream ss(data);
+//         string item;
+//         while (getline(ss, item, ','))
+//         {
+//             strArr.push_back(item);
+//         }
+
+//         if (strArr.size() == 0)
+//         {
+//             return NULL;
+//         }
+
+//         int indx = 0;
+//         TreeNode<int> *root = new TreeNode(stoi(strArr[indx]));
+//         indx++;
+
+//         queue<TreeNode<int> *> q;
+//         q.push(root);
+
+//         while (!q.empty())
+//         {
+//             auto node = q.front();
+//             q.pop();
+//             if (strArr[indx] != "#")
+//             {
+//                 node->left = new TreeNode(stoi(strArr[indx]));
+//                 q.push(node->left);
+//             }
+//             indx++;
+//             if (strArr[indx] != "#")
+//             {
+//                 node->right = new TreeNode(stoi(strArr[indx]));
+//                 q.push(node->right);
+//             }
+//             indx++;
+//         }
+//         return root;
+//     }
+// };
+//> SIMILAR to ABOVE METHOD BUT DOES NOT USE arr in serialize function
 class Codec
 {
+    // : TC: O(N)
+    // : SC: O(N)
+
 public:
-    vector<string> arr;
     string serialize(TreeNode<int> *root)
     {
+
         string res = "";
 
         if (!root)
         {
             return res;
         }
+
         queue<TreeNode<int> *> q;
+
         q.push(root);
 
         while (!q.empty())
         {
             auto node = q.front();
             q.pop();
-            // debug(node->val, node->left->val, node->right->val);
-            if (node)
+
+            if (node == NULL)
+            {
+                res.append("#,");
+            }
+            else
+            {
+                res.append(to_string(node->val) + ',');
+            }
+
+            if (node != NULL)
             {
                 q.push(node->left);
                 q.push(node->right);
-            }
-
-            if (node)
-            {
-                // res += to_string(node->val) + ',';
-                arr.push_back(to_string(node->val));
-            }
-            else
-            {
-                arr.push_back("#");
-            }
-        }
-
-        bool check = false;
-        for (auto ch : arr)
-        {
-            if (!check)
-            {
-                check = true;
-                res += ch;
-            }
-            else
-            {
-                res += ',' + ch;
             }
         }
 
         return res;
     }
+
     TreeNode<int> *deserialize(string data)
     {
-        debug(arr);
-        if (arr.size() == 0)
+
+        //> spliting with ',' delimiter  and pushing to strArr
+        vector<string> strArr;
+        stringstream ss(data);
+        string item;
+        while (getline(ss, item, ','))
+        {
+            strArr.push_back(item);
+        }
+
+        if (strArr.size() == 0)
         {
             return NULL;
         }
+        debug(strArr);
 
         int indx = 0;
-
-        TreeNode<int> *root = new TreeNode(stoi(arr[indx]));
+        TreeNode<int> *root = new TreeNode(stoi(strArr[indx]));
         indx++;
 
         queue<TreeNode<int> *> q;
@@ -296,15 +398,15 @@ public:
         {
             auto node = q.front();
             q.pop();
-            if (arr[indx] != "#")
+            if (strArr[indx] != "#")
             {
-                node->left = new TreeNode(stoi(arr[indx]));
+                node->left = new TreeNode(stoi(strArr[indx]));
                 q.push(node->left);
             }
             indx++;
-            if (arr[indx] != "#")
+            if (strArr[indx] != "#")
             {
-                node->right = new TreeNode(stoi(arr[indx]));
+                node->right = new TreeNode(stoi(strArr[indx]));
                 q.push(node->right);
             }
             indx++;
@@ -316,14 +418,20 @@ public:
 void solve()
 {
     // vector<int> input{1, 2, 3, 4, 5, 6, 7, -1, -1, -1, -1, -1, -1, -1, -1};
-    vector<int> input{11, 23, 33, -1, -1, -1, -1};
+    vector<int> input{1, 2, 3, -1, -1, 4, 5, -1, -1, -1, -1};
+
+    // vector<int> input{1, 2, 3, 4, 5, 6, 7, -1, -1, 8, 9, -1, -1, -1, -1, 12, -1, 11, 14, -1, 18, -1, -1, 15, 20, -1, -1, 17, 16, -1, -1, -1, -1, -1, -1};
+
+    // vector<int> input{11, 23, 33, -1, -1, -1, -1};
     TreeNode<int> *root = buildTree(input);
-    printTree(root);
+    // printTree(root);
+
     Codec obj;
 
     string s = obj.serialize(root);
-    obj.deserialize(s);
     debug(s);
+    auto newRoot = obj.deserialize(s);
+    printTree(newRoot);
 }
 
 //>-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
