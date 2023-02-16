@@ -26,26 +26,30 @@ ostream &operator<<(ostream &os, const pair<T1, T2> &p)
     return os << '{' << p.first << ", " << p.second << '}';
 }
 
-template <class T, class = decay_t<decltype(*begin(declval<T>()))>,
+template <class T, class = decltype(begin(declval<T>())),
           class = enable_if_t<!is_same<T, string>::value>>
 ostream &operator<<(ostream &os, const T &c)
 {
     os << '[';
-    for (auto it = c.begin(); it != c.end(); ++it)
-        os << &", "[2 * (it == c.begin())] << *it;
+    for (auto it = begin(c); it != end(c); ++it)
+        os << (it == begin(c) ? "" : ", ") << *it;
     return os << ']';
 }
-//__support up to 5 args
-#define _NTH_ARG(_1, _2, _3, _4, _5, _6, N, ...) N
-#define _FE_0(_CALL, ...)
+
+#define _NTH_ARG(_1, _2, _3, _4, _5, _6, _7, _8, _9, _10, N, ...) N
 #define _FE_1(_CALL, x) _CALL(x)
 #define _FE_2(_CALL, x, ...) _CALL(x) _FE_1(_CALL, __VA_ARGS__)
 #define _FE_3(_CALL, x, ...) _CALL(x) _FE_2(_CALL, __VA_ARGS__)
 #define _FE_4(_CALL, x, ...) _CALL(x) _FE_3(_CALL, __VA_ARGS__)
 #define _FE_5(_CALL, x, ...) _CALL(x) _FE_4(_CALL, __VA_ARGS__)
-#define FOR_EACH_MACRO(MACRO, ...)                                           \
-    _NTH_ARG(dummy, ##__VA_ARGS__, _FE_5, _FE_4, _FE_3, _FE_2, _FE_1, _FE_0) \
-    (MACRO, ##__VA_ARGS__)
+#define _FE_6(_CALL, x, ...) _CALL(x) _FE_5(_CALL, __VA_ARGS__)
+#define _FE_7(_CALL, x, ...) _CALL(x) _FE_6(_CALL, __VA_ARGS__)
+#define _FE_8(_CALL, x, ...) _CALL(x) _FE_7(_CALL, __VA_ARGS__)
+#define _FE_9(_CALL, x, ...) _CALL(x) _FE_8(_CALL, __VA_ARGS__)
+#define _FE_10(_CALL, x, ...) _CALL(x) _FE_9(_CALL, __VA_ARGS__)
+#define FOR_EACH_MACRO(MACRO, ...)                                                               \
+    _NTH_ARG(__VA_ARGS__, _FE_10, _FE_9, _FE_8, _FE_7, _FE_6, _FE_5, _FE_4, _FE_3, _FE_2, _FE_1) \
+    (MACRO, __VA_ARGS__)
 
 //__Change output format here
 #define out(x) #x " = " << x << "; "
@@ -56,7 +60,6 @@ ostream &operator<<(ostream &os, const T &c)
 #else
 #define debug(...)
 #endif
-
 //>---DEBUG_TEMPLATE_END-----------------------------------------------------------------------------------------------------------------------------------------------------------
 
 // #define FOR(i, start, end) for (int i = start; i < end; i++)
@@ -86,52 +89,12 @@ typedef map<int, int> mpint;
 typedef pair<int, int> pi;
 typedef priority_queue<int> pqmax;
 typedef priority_queue<int, vector<int>, greater<int>> pqmin;
-//_____________________________
-ll gcd(ll a, ll b)
-{
-    if (b > a)
-    {
-        return gcd(b, a);
-    }
-    if (b == 0)
-    {
-        return a;
-    }
-    return gcd(b, a % b);
-}
-//_____________________________
-ll expo(ll a, ll b, ll mod)
-{
-    ll res = 1;
-    while (b > 0)
-    {
-        if (b & 1)
-            res = (res * a) % mod;
-        a = (a * a) % mod;
-        b = b >> 1;
-    }
-    return res;
-}
-//__factorial______________________________________________
-vector<ll> fact;
-void factOfN(ll n)
-{
-    ll prod = 1;
-    fact.resize(n + 1);
-    for (int f = 1; f <= n; f++)
-    {
-
-        fact[f] = prod * f;
-        prod = prod * f;
-    }
-}
 //--------------------------------------------------------------------------------------------------------------------------------
 
 //>----------------------------ＳＯＬＶＥ-----------------------------------------------------------------------------------------------------------------------------------------------
 
-void merge(vector<int> &nums, int left, int right, int mid)
+void merge(vector<int> &arr, int left, int right, int mid)
 {
-
     vector<int> mergeArr(right - left + 1);
 
     int i = left;
@@ -140,57 +103,60 @@ void merge(vector<int> &nums, int left, int right, int mid)
 
     while (i <= mid && j <= right)
     {
-        if (nums[i] <= nums[j])
+        if (arr[i] <= arr[j])
         {
-            mergeArr[k++] = nums[i++];
+            mergeArr[k++] = arr[i++];
         }
-        else
+
+        else if (arr[i] > arr[j])
         {
-            mergeArr[k++] = nums[j++];
+            mergeArr[k++] = arr[j++];
         }
     }
 
     while (i <= mid)
     {
-        mergeArr[k++] = nums[i++];
+        mergeArr[k++] = arr[i++];
     }
 
     while (j <= right)
     {
-        mergeArr[k++] = nums[j++];
+        mergeArr[k++] = arr[j++];
     }
 
     int pos = left;
-    for (int i = 0; i < mergeArr.size(); i++)
+    for (k = 0; k < right - left + 1; k++)
     {
-        nums[pos++] = mergeArr[i];
+        arr[pos++] = mergeArr[k];
     }
 }
 
-void mergeSort(vector<int> &nums, int left, int right)
+void mergeSortHelper(vector<int> &arr, int left, int right)
 {
-    if (left < right)
+    if (left >= right)
     {
-        int mid = left + (right - left) / 2;
-        mergeSort(nums, left, mid);
-        mergeSort(nums, mid + 1, right);
-        merge(nums, left, right, mid);
+        return;
     }
+    int mid = left + (right - left) / 2;
+    mergeSortHelper(arr, left, mid);
+    mergeSortHelper(arr, mid + 1, right);
+    merge(arr, left, right, mid);
+}
+
+void mergeSort(vector<int> &arr)
+{
+    int n = arr.size();
+    mergeSortHelper(arr, 0, arr.size() - 1);
 }
 
 void solve()
 {
-    int ele;
-    vector<int> nums;
-    while (cin >> ele)
-    {
-        nums.push_back(ele);
-    }
-    int n = nums.size();
-    int left = 0;
-    int right = n - 1;
-    mergeSort(nums, left, right);
-    debug(nums);
+    // vector<int> arr{5, 4, 3, 2, 1, 0};
+    // vector<int> arr{5, 14, 8, 2, 3, 6};
+    // vector<int> arr{5, 2, 3, 1};
+    vector<int> arr{9, 4, 7, 6, 3, 1, 5};
+    mergeSort(arr);
+    debug(arr);
 }
 
 //>-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------

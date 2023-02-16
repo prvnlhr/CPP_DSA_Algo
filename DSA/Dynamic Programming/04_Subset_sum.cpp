@@ -164,7 +164,7 @@ bool isSubSetSumIterative(vector<int> &arr, int sum, int n)
 {
     vector<vector<bool>> dp(n + 1, vector<bool>(sum + 1, false));
 
-    //> sum == 0 , -->true
+    //> sum == 0, => true
     for (int i = 0; i < n; i++)
     {
         dp[i][0] = true;

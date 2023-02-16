@@ -137,7 +137,7 @@ int merge(vector<int> &nums, int left, int right, int mid)
     int countInv = 0;
     int i = left;
     int j = mid + 1;
-    int k = left;
+    int k = 0;
 
     while (i <= mid && j <= right)
     {
@@ -148,7 +148,7 @@ int merge(vector<int> &nums, int left, int right, int mid)
         else if (nums[i] > nums[j])
         {
             mergeArr[k++] = nums[j++];
-            countInv = countInv + (mid - i);
+            countInv = countInv + (mid - i + 1);
         }
     }
 
@@ -163,10 +163,9 @@ int merge(vector<int> &nums, int left, int right, int mid)
     }
 
     int pos = left;
-    
-    for (int i = left; i < right; i++)
+    for (int i = 0; i < mergeArr.size(); i++)
     {
-        nums[i] = mergeArr[i];
+        nums[pos++] = mergeArr[i];
     }
 
     return countInv;
@@ -174,7 +173,6 @@ int merge(vector<int> &nums, int left, int right, int mid)
 
 int mergeSort(vector<int> &nums, int left, int right)
 {
-
     int invCount = 0;
     int mid = 0;
 
@@ -205,8 +203,8 @@ void solve()
     {
         nums.push_back(ele);
     }
-    cout << countInversion(nums) << endl;
-    debug(nums);
+    int cnt = countInversion(nums);
+    debug(nums, cnt);
 }
 
 //>-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
