@@ -93,75 +93,86 @@ typedef priority_queue<int, vector<int>, greater<int>> pqmin;
 
 //>----------------------------ＳＯＬＶＥ-----------------------------------------------------------------------------------------------------------------------------------------------
 
+//-> REFER APNA COLLEGE YT VIDEO
+
 /*
+
 > Time complexity Best	  : O(n*log n)
-> Time complexity Worst	  : O(n*log n)
+> Time complexity Worst	  : O(n^2)
 > Time complexity Average : O(n*log n)
-> Space Complexity	: O(n)
+> Space Complexity	: O(1)
+
+** IMP : When does the worst case occurs in quick sort
+> Worst Case:
+- The worst case occurs when the partition process always picks the greatest or smallest element
+- as the pivot. If we consider the above partition strategy where the last element is always
+- picked as a pivot, the worst case would occur when the array is already sorted in increasing
+- or decreasing order. Following is recurrence for the worst case.
+
+> Best Case:
+- The best case occurs when the partition process always picks the middle element as the pivot.
+
+
+
+** Why Quick Sort is preferred over MergeSort for sorting Arrays ?
+- Quick Sort in its general form is an in-place sort (i.e. it doesn’t require any extra storage)
+- whereas merge sort requires O(N) extra storage
+
+
+** Why MergeSort is preferred over QuickSort for Linked Lists ?
+- In case of linked lists the case is different mainly due to difference in memory
+- allocation of arrays and linked lists. Unlike arrays, linked list nodes may not be adjacent in memory.
+- Unlike array, in linked list, we can insert items in the middle in O(1) extra space and O(1) time.
+- Therefore merge operation of merge sort can be implemented without extra space for linked lists.
+
 */
-void merge(vector<int> &arr, int left, int right, int mid)
+
+int partition(vector<int> &arr, int low, int high)
 {
-    vector<int> mergeArr(right - left + 1);
+    int pivotElement = arr[high];
 
-    int i = left;
-    int j = mid + 1;
-    int k = 0;
+    int currSwappIndex = low - 1;
 
-    while (i <= mid && j <= right)
+    //> here j is going till : high - 1, because at high we have our pivot, so we are swapping
+    //> element between low and high-1, without considering high, i.e pivot
+    for (int j = low; j < high; j++)
     {
-        if (arr[i] <= arr[j])
+        if (arr[j] < pivotElement)
         {
-            mergeArr[k++] = arr[i++];
-        }
-
-        else if (arr[i] > arr[j])
-        {
-            mergeArr[k++] = arr[j++];
+            currSwappIndex++;
+            swap(arr[currSwappIndex], arr[j]);
         }
     }
 
-    while (i <= mid)
-    {
-        mergeArr[k++] = arr[i++];
-    }
-
-    while (j <= right)
-    {
-        mergeArr[k++] = arr[j++];
-    }
-
-    int pos = left;
-    for (k = 0; k < right - left + 1; k++)
-    {
-        arr[pos++] = mergeArr[k];
-    }
+    currSwappIndex++;
+    swap(arr[currSwappIndex], arr[high]);
+    return currSwappIndex;
 }
 
-void mergeSortHelper(vector<int> &arr, int left, int right)
+void quickSort(vector<int> &arr, int low, int high)
 {
-    if (left >= right)
-    {
-        return;
-    }
-    int mid = left + (right - left) / 2;
-    mergeSortHelper(arr, left, mid);
-    mergeSortHelper(arr, mid + 1, right);
-    merge(arr, left, right, mid);
-}
 
-void mergeSort(vector<int> &arr)
-{
-    int n = arr.size();
-    mergeSortHelper(arr, 0, arr.size() - 1);
+    if (low < high)
+    {
+
+        //> 1. first find pivot
+        int pivotIndex = partition(arr, low, high);
+
+        //> 2. apply  quick sort on left half and right half
+
+        //>   [low..........pivotIndex................high]
+        //> we are doing pivotIndex - 1, and pivotIndex+1, because we know that pivotElement will
+        //>  come at correct place after end, of step
+        quickSort(arr, low, pivotIndex - 1);
+        quickSort(arr, pivotIndex + 1, high);
+    }
 }
 
 void solve()
 {
-    // vector<int> arr{5, 4, 3, 2, 1, 0};
-    // vector<int> arr{5, 14, 8, 2, 3, 6};
-    // vector<int> arr{5, 2, 3, 1};
-    vector<int> arr{9, 4, 7, 6, 3, 1, 5};
-    mergeSort(arr);
+    // vector<int> arr{6, 3, 9, 5, 2, 8};
+    vector<int> arr{5, 4, 3, 2, 1};
+    quickSort(arr, 0, arr.size() - 1);
     debug(arr);
 }
 
