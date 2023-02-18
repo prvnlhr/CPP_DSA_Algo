@@ -143,6 +143,8 @@ int firstMissingPositive(vector<int> &nums)
     //> putting all positive  elements to thier correct place
     for (int i = 0; i < n; i++)
     {
+
+        //> This whlie  will keep running till, the element at 'ith' index is not set properly
         while (nums[i] >= 1 && nums[i] <= n && nums[i] != nums[nums[i] - 1])
         {
             swap(nums[i], nums[nums[i] - 1]);
@@ -157,7 +159,7 @@ int firstMissingPositive(vector<int> &nums)
             return i + 1;
         }
     }
-    //> not found the ans will be max element, which will be at end +1
+    //> not found the ans will be max element, which will be at end + 1
     return nums[n - 1] + 1;
 }
 void solve()

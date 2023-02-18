@@ -129,13 +129,6 @@ void factOfN(ll n)
 
 //>----------------------------ＳＯＬＶＥ-----------------------------------------------------------------------------------------------------------------------------------------------
 
-/*
-: Time Complexity: O(N)
-: Auxiliary Space: O(1)
-! NOTE: order of elements is not mainted, so this is easy problem
-- if we were asked to mainted the order, then this would've been Hard problem
-
-*/
 
 //> NAIVE , USING EXTRA ARRAY
 //> O(N) , O(N)
@@ -155,6 +148,7 @@ void moveAllNegativesToLeftNAV(vector<int> &arr)
             negIndx++;
         }
     }
+
     int posIndx = negIndx++;
     for (int i = 0; i < n; i++)
     {
@@ -188,7 +182,7 @@ void moveAllNegativesToLeftOP(vector<int> &arr)
 
     while (winEnd < n)
     {
-        //> if pos+, winEnd ++;
+        //> if pos +, winEnd ++;
         if (arr[winEnd] >= 0)
         {
             winEnd++;
