@@ -132,14 +132,13 @@ void factOfN(ll n)
 //> Self Solved 100% CN
 //> O(N)
 //>
+
 char kThCharaterOfDecryptedString(string s, long long k)
 {
-    string currString = "";
-    long long currDigit = 0;
-    long long numCharTillNow = 0;
-    long long currStringCharCnt = 0;
+    string currFormedString = "";
 
-    char ANS;
+    long long currDigit = 0;
+    long long cntCharTillNow = 0;
 
     long long n = s.size();
 
@@ -150,7 +149,7 @@ char kThCharaterOfDecryptedString(string s, long long k)
 
         while (currIndx < n && isalpha(s[currIndx]))
         {
-            currString += s[currIndx];
+            currFormedString += s[currIndx];
             currIndx++;
         }
 
@@ -159,20 +158,28 @@ char kThCharaterOfDecryptedString(string s, long long k)
             currDigit = currDigit * 10 + s[currIndx] - '0';
             currIndx++;
         }
-        numCharTillNow += currString.size() * currDigit;
 
-        if (numCharTillNow >= k)
+        cntCharTillNow += currFormedString.size() * currDigit;
+
+        if (cntCharTillNow >= k) //> Now, its for sure our result will be in '''currFormedString'''
         {
-            long long strStartIndex = numCharTillNow - (currString.size() * currDigit);
-            long long reqCharIndex = (((k - 1) - strStartIndex)) % currString.size();
-            return currString[reqCharIndex];
+            //> if could find what will be the index of resultant kth char in '''currFormedString'''
+
+            long long startIndxOfFormedStr = (cntCharTillNow - (currFormedString.size() * currDigit)); //> this will give index from where currFormedString starts
+
+            long long reqCharIndexInFormedStr = (k - startIndxOfFormedStr) - 1; //> This will give actual char index in currFormedString
+
+            //> doing % modulo because we are not forming the whole currFormedString with repeation.
+            char ANS = currFormedString[reqCharIndexInFormedStr % currFormedString.size()];
+            return ANS;
         }
-        currString = "";
+
+        currFormedString = "";
         currDigit = 0;
     }
+
     return s[k - 1];
 }
-
 void solve()
 {
 
