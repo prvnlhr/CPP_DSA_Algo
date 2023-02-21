@@ -144,6 +144,7 @@ int findDuplicate1(vector<int> &nums)
     int n = nums.size();
     vector<int> vis(n, -1);
     int ans = 0;
+
     for (int i = 0; i < n; i++)
     {
 
@@ -163,18 +164,19 @@ int findDuplicate1(vector<int> &nums)
 /*
 >SOL2: O(N);
 > manuplating array itself
-- There are n + 1 positive numbers in the array (nums) (all in the range [1, n][1,n]).
-- Since the array only contains positive integers, we can track each number (numnum)
+- There are n + 1 positive numbers in the array (nums) (all in the range [1, n]).
+- Since the array only contains positive integers, we can track each number (num)
 - that has been seen before by flipping the sign of the number located at
-- index |num|∣num∣, where ||∣∣ denotes absolute value.
+- index |num|, where || denotes absolute value.
 -
-- For example, if the input array is [1, 3, 3, 2][1,3,3,2], then for 11,
-- flip the number at index 11, making the array [1,-3,3,2][1,−3,3,2]. Next,
-- for -3−3 flip the number at index 33, making the array [1,-3,3,-2][1,−3,3,−2].
-- Finally, when we reach the second 33, we'll notice that nums[3]nums[3] is
-- already negative, indicating that 33 has been seen before and hence is the
+- For example, if the input array is [1, 3, 3, 2], then for 1,
+- flip the number at index 1, making the array [1,-3,3,2]. Next,
+- for -3 flip the number at index 3, making the array [1,-3,3,-2].
+- Finally, when we reach the second 3, we'll notice that nums[3] is
+- already negative, indicating that 3 has been seen before and hence is the
 - duplicate number.
 */
+
 int findDuplicate2(vector<int> &nums)
 {
     int n = nums.size();
@@ -183,12 +185,16 @@ int findDuplicate2(vector<int> &nums)
     for (int i = 0; i < n; i++)
     {
         int curr = abs(nums[i]);
+        debug(curr, nums[curr]);
         if (nums[curr] < 0)
         {
             ans = curr;
             break;
         }
+
+        //> fliping sign of curr Number
         nums[i] *= -1;
+        debug(nums);
     }
     return ans;
 }
@@ -236,7 +242,7 @@ void solve()
         arr.push_back(ele);
     }
     debug(arr);
-    cout << findDuplicateOP(arr) << endl;
+    cout << findDuplicate2(arr) << endl;
 }
 
 //>-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------

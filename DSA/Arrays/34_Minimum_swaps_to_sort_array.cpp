@@ -157,7 +157,7 @@ int minSwaps(vector<int> &arr)
 
     unordered_map<int, int> mpp;
     int n = arr.size();
-    
+
     for (int i = 0; i < n; i++)
     {
         mpp[arr[i]] = i;
@@ -168,15 +168,16 @@ int minSwaps(vector<int> &arr)
     {
         if (arr[i] != sortedArr[i])
         {
-            int curr = arr[i];
-            int currCorrect = sortedArr[i];
+            int ithElement = arr[i];
+            int correctIthElement = sortedArr[i];
 
             int correctIndx = mpp[sortedArr[i]];
+            
             swap(arr[i], arr[correctIndx]);
 
             //> Updating index in map
-            mpp[curr] = correctIndx;
-            mpp[currCorrect] = i;
+            mpp[ithElement] = correctIndx;
+            mpp[correctIthElement] = i;
 
             minSwaps++;
         }

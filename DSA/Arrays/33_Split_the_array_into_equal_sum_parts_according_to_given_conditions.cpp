@@ -148,8 +148,8 @@ void factOfN(ll n)
 # SOLUTION::
 # maintain two variable leftSum and rightSum and iterator i
 
-# if arr[i] is divisible by 3 , rightSum = rightSum + arr[i] and i = i + 1
-# if arr[i] is divisible by 5 , leftSum = leftSum + arr[i]  and  i = i + 1
+# if arr[i] is divisible by 3, rightSum = rightSum + arr[i] and i = i + 1
+# if arr[i] is divisible by 5, leftSum = leftSum + arr[i]  and  i = i + 1
 # if arr[i] is neither divisible by 5 or 3, then leftSum + arr[i] and rightSum + arr[i] and check further,
 
 # Time Complexity: O(2 ^ N)

@@ -134,6 +134,7 @@ int maximumDifference(vector<int> &nums)
     int n = nums.size();
     int maxUntil = nums[n - 1];
     int maxDiff = INT_MIN;
+    
     for (int i = n - 1; i >= 0; i--)
     {
         int currNum = nums[i];

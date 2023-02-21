@@ -129,9 +129,9 @@ void factOfN(ll n)
 
 //>----------------------------ＳＯＬＶＥ-----------------------------------------------------------------------------------------------------------------------------------------------
 
-int maxArea(vector<int> &height)
+int maxArea(vector<int> &heights)
 {
-    int n = height.size();
+    int n = heights.size();
     int i = 0;
     int j = n - 1;
 
@@ -139,13 +139,13 @@ int maxArea(vector<int> &height)
     while (i < j)
     {
         int base = j - i;
-        int len = min(height[i], height[j]);
-        maxArr = max(maxArr, base * len);
-        if (height[i] < height[j])
+        int height = min(heights[i], heights[j]);
+        maxArr = max(maxArr, base * height);
+        if (heights[i] < heights[j])
         {
             i++;
         }
-        else if (height[i] >= height[j])
+        else if (heights[i] >= heights[j])
         {
             j--;
         }

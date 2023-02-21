@@ -147,6 +147,7 @@ int minSubArray(vector<int> &nums)
 
         minSum = min(minSum, minEndingHere);
     }
+    
     return minSum;
 }
 void solve()

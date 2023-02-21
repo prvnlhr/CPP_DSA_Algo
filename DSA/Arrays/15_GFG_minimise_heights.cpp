@@ -191,15 +191,17 @@ void factOfN(ll n)
     if both and b are increased -> a = a + 1 , b = b + 1 => a = 2, b = 11,  diff = 11 -2 = 9.
 
  - Now, if we carefully observe, if we want to minimise the heights, we need to minimise the difference.
- - So case 3. would be correct,to increase a and decrease b. So when we increase a and decrease b, we are reduce the distance between them
+ - So case 3. would be correct, to increase a and decrease b. So when we increase a and decrease b,
+ - we are reducing the distance between them.
  -
  - Now again if we further look at the sorted array we find that, any two elements which are adjacent to each other
  - will have minimum difference. i.e  arr[i-1] and arr[i].
  - now if arr[i-1]{left ele} move towards right i.e arr[i-1]+k  and arr[i]{right ele} moves towards left i.e arr[i]-k , difference can be
  - further decreased.
- - Conclusion:
+
+ > Conclusion:
  - Initially our minELe -> arr[0] , maxEle -> arr[n-1] , because arr is sorted.
- - Further, to minimise diff ,we can do, minELe = arr[0]+k,  and maxELe = arr[n-1]-k , reducing the gap.
+ - Further, to minimise diff, we can do, minELe = arr[0]+k,  and maxELe = arr[n-1]-k , reducing the gap.
  - Now, two adjacent elements are given as arr[i-1] and arr[i].
  - If we want to reduce the gap between then, we can do -->  arr[i-1]+k  , arr[i]-k.
  - So our minEle will be minimum of initial minELe i.e arr[0]+k and arr[i]-k
@@ -224,6 +226,7 @@ int getMinDiff(vector<int> arr, int n, int k)
 {
     sort(arr.begin(), arr.end());
 
+    //> Intially our ans, maxEle - minEle , [0 <-> n-1]
     int ans = arr[n - 1] - arr[0];
 
     for (int i = 0; i < n; i++)

@@ -137,15 +137,25 @@ int secondLar(vector<int> arr)
     int secLargest = INT_MIN;
     for (int i = 0; i < n; i++)
     {
-        
+        if (arr[i] > largest)
+        {
+            secLargest = largest;
+            largest = arr[i];
+        }
+        if (arr[i] > secLargest && arr[i] < largest)
+        {
+            secLargest = arr[i];
+        }
     }
-    return secLargest;
+    return secLargest != INT_MIN ? secLargest : -1;
 }
 
 void solve()
 {
 
-    vector<int> arr{12, 35, 1, 10, 34, 1};
+    // vector<int> arr{12, 35, 1, 10, 34, 1};
+    // vector<int> arr{10, 5, 10};
+    vector<int> arr{10, 10, 10};
     cout << secondLar(arr) << endl;
 }
 
