@@ -95,7 +95,7 @@ typedef pair<int, int> pi;
 //> Naive using  insertion -> O(n^2)
 
 //> Optimised using priority queue
-//>Time Complexity: O(n Log n).
+//> Time Complexity: O(n Log n).
 //> Auxiliary Space : O(n).
 class MedianFinder
 {
@@ -108,15 +108,18 @@ public:
 
     void addNum(int num)
     {
-        if (pqmax.empty() || pqmax.top() >= num)
+
+        //> first add the curr element in respective pq
+        if (pqmax.empty() || pqmax.top() >= num) // * if pqmax is empty or pqmax top is greater then curr num
         {
             pqmax.push(num);
         }
-        else
+        else //> just put to pqmin
         {
             pqmin.push(num);
         }
 
+        //> Condition for balancing both the pq
         if (pqmax.size() > pqmin.size() + 1)
         {
             pqmin.push(pqmax.top());

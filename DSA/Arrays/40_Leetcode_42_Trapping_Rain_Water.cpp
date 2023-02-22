@@ -111,12 +111,21 @@ int trap(vector<int> &height)
         i++;
         j--;
     }
+
     int res = 0;
     for (int i = 0; i < n; i++)
     {
-        int currWater = min(leftMax[i], rightMax[i]);
-        int currheight = height[i];
-        res = res + (currWater - currheight);
+        int currWaterThatCanBefilled = min(leftMax[i], rightMax[i]);
+        int currheightOfTower = height[i];
+
+        /*
+        ** Let say we can fill 4 units of water, but height of tower is 3,
+        ** then nett water can be filled will be (currWaterThatCanBefilled - currheightOfTower)
+        ** Now, the currWaterThatCanBefilled will depend on heights of leftTower max, and rightTower max Height
+        ** but we will consider only min of leftMax and rightMax height
+        */
+
+        res = res + (currWaterThatCanBefilled - currheightOfTower);
     }
     return res;
 }

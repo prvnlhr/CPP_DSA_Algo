@@ -143,7 +143,7 @@ void factOfN(ll n)
 
 /*
 * 3. Using Binary search appraoch
-:TC : min(logN ,LogM)
+:TC : min(logN, LogM)
 :SC : O(1)
 */
 double getMedianBest(vector<int> arr1, vector<int> arr2)
@@ -154,6 +154,36 @@ double getMedianBest(vector<int> arr1, vector<int> arr2)
         getMedianBest(arr2, arr1);
     }
 
+    /*
+
+    - Total elements in a sorted array will be m + n
+    - if m = 4 , n = 6 , total element will be, 10
+    - if we do partition we will get 5 elements in one and 5 in other
+    - Now what is mid of first array of len 4 ?? 4 //2 = 2
+    - so if we took 2 elements from first array, then how much we took from second array , 5 - 2 =  3
+
+    - arr1 =  7  12  14  15 ,   m = 4
+    - arr2 =  1  2   3   4  9  11 , n = 6
+    - sorted array  =  1 2 3 4 7 9 11 12 14 15
+
+    - mid of first array 4//2 = 2
+    -
+    - so if we consider 2 ele from 1st array , then we need to consider 5-2 = 3, elements from 2nd array
+    -
+    - 1st arr ele ->  2 ele    7  12     |  14  15
+    - 2nd arr ele ->  3 ele    1  2  3   |   4   9  11
+
+    - left1  = 12,  left2  =  3
+    - right1 = 14,  right2 =  4
+
+    - now, if at any point, left1 <= right2 and left2 <= right1:
+    - we have our median as { max(left1,left2) + min(right1,right2) } // 2.0
+
+    - else if left1 >  right2 :  left - 1
+    - else if left1
+
+    */
+
     int lo = 0;
     int hi = arr1.size();
     int n1 = arr1.size();
@@ -161,8 +191,38 @@ double getMedianBest(vector<int> arr1, vector<int> arr2)
 
     while (lo <= hi)
     {
+
+        /*
+
+        - Now consider the combination of both the array,
+
+        -   lo                            hi
+        -   |                             |
+        -   0  1  2  3  4  5  6   7   8   9
+        -   1  2  3  4  7  9  11  12  14  15
+
+        - lo = 0 , hi = 9
+        - cut or cut1 will == (lo + hi)//2  == 0 + 9 = 9//2 = 4
+
+        - so we will consider 4 elements from 1st array
+        - Now, How much elements to consider from 2nd array ??
+
+        - Total elements in combined array is 10 == (ele in 1st )m + (ele in 2nd)n
+
+        - so (m + n - cut1)  will be elements to consider from 2nd array
+        - Now we are taking m + n + 1 , because we want to cut the array equal so one step further
+
+        */
         int cut1 = (lo + hi) / 2;
         int cut2 = (n1 + n2 + 1) / 2 - cut1;
+
+        /*
+
+          - We want to make cut at cut1-1, but if cut1 == 0 ,
+          - cut1-1 = 0-1 = -1, so we can make cut at arr[-1]
+          - so we take it as '-inf'
+       
+        */
 
         int l1 = cut1 == 0 ? INT_MIN : arr1[cut1 - 1];
         int l2 = cut2 == 0 ? INT_MIN : arr2[cut2 - 1];
@@ -196,10 +256,10 @@ double getMedianBest(vector<int> arr1, vector<int> arr2)
 
 void solve()
 {
-    // vector<int> arr1{7, 12, 14, 15};
-    // vector<int> arr2{1, 2, 3, 4, 9, 11};
-    vector<int> arr1{1, 2};
-    vector<int> arr2{3, 4};
+    vector<int> arr1{7, 12, 14, 15};
+    vector<int> arr2{1, 2, 3, 4, 9, 11};
+    // vector<int> arr1{1, 2};
+    // vector<int> arr2{3, 4};
     cout << getMedianBest(arr1, arr2) << endl;
 }
 
