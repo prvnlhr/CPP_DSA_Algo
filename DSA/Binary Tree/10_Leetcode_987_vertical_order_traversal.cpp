@@ -322,7 +322,7 @@ vector<vector<int>> verticalTraversal(TreeNode<int> *root)
         int vertical = obj.second.second;
 
         mpp[level][vertical].insert(node->val);
-       
+
         if (node->left)
         {
             q.push({node->left, {level - 1, vertical + 1}});
@@ -332,11 +332,10 @@ vector<vector<int>> verticalTraversal(TreeNode<int> *root)
             q.push({node->right, {level + 1, vertical + 1}});
         }
     }
-
     for (auto lvl : mpp)
     {
         vector<int> currLvl;
-
+        
         for (auto ver : lvl.second)
         {
             currLvl.insert(currLvl.end(), ver.second.begin(), ver.second.end());

@@ -328,7 +328,7 @@ void depth(TreeNode<int> *root, int dep, int x, int y, TreeNode<int> *par)
 bool isCousins(TreeNode<int> *root, int x, int y)
 {
     depth(root, 0, x, y, root);
-    if (depthX == depthY && xPar != yPar)
+    if (depthX == depthY && xPar != yPar) // ! Cousins have diff parent, but siblings have same
     {
         return true;
     }
@@ -337,6 +337,7 @@ bool isCousins(TreeNode<int> *root, int x, int y)
         return false;
     }
 }
+
 void solve()
 {
     int ele;

@@ -346,7 +346,6 @@ void solve()
 
     while (cin >> ele)
     {
-
         input.push_back(ele);
     }
     auto root = buildTree(input);

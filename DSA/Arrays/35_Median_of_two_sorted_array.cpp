@@ -160,7 +160,7 @@ double getMedianBest(vector<int> arr1, vector<int> arr2)
     - if m = 4 , n = 6 , total element will be, 10
     - if we do partition we will get 5 elements in one and 5 in other
     - Now what is mid of first array of len 4 ?? 4 //2 = 2
-    - so if we took 2 elements from first array, then how much we took from second array , 5 - 2 =  3
+    - so if we took 2 elements from first array, then how much we take from second array , 5 - 2 =  3
 
     - arr1 =  7  12  14  15 ,   m = 4
     - arr2 =  1  2   3   4  9  11 , n = 6
@@ -168,7 +168,7 @@ double getMedianBest(vector<int> arr1, vector<int> arr2)
 
     - mid of first array 4//2 = 2
     -
-    - so if we consider 2 ele from 1st array , then we need to consider 5-2 = 3, elements from 2nd array
+    - so if we consider 2 ele from 1st array, then we need to consider 5-2 = 3, elements from 2nd array
     -
     - 1st arr ele ->  2 ele    7  12     |  14  15
     - 2nd arr ele ->  3 ele    1  2  3   |   4   9  11

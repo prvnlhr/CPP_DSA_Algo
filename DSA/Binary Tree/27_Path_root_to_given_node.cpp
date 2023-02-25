@@ -326,6 +326,7 @@ bool findPath(TreeNode<int> *root, TreeNode<int> *node, vector<int> &path)
     {
         return false;
     }
+    
     path.push_back(root->val);
 
     if (root->val == node->val)

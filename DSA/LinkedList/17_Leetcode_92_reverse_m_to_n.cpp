@@ -225,12 +225,14 @@ ListNode *reverseBetween(ListNode *head, int m, int n)
     ListNode *rightNext = NULL;
 
     int cnt = 1;
+
     while (curr && cnt < m)
     {
         prevLeft = curr;
         curr = curr->next;
         cnt++;
     }
+
     left = curr;
 
     while (curr && cnt < n)
@@ -247,6 +249,7 @@ ListNode *reverseBetween(ListNode *head, int m, int n)
     {
         prevLeft->next = NULL;
     }
+    
     right->next = NULL;
     //> reversing m to n  nodes
     curr = left;

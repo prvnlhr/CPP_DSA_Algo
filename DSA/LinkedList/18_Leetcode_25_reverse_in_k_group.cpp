@@ -241,7 +241,7 @@ ListNode *reverseKGroup(ListNode *head, int k)
             //> updating values for next iteration
             end = start;
             start = nextGrphHead;
-            ptr = nextGrphHead; //* IMP: also move ptr,because connections has reversed
+            ptr = nextGrphHead; //* IMP: also move ptr, because connections has reversed
             cnt = 1;
         }
         else
