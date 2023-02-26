@@ -374,9 +374,9 @@ public:
 
         //> spliting with ',' delimiter  and pushing to strArr
         vector<string> strArr;
-        stringstream ss(data);
+        stringstream ss(data); //> this makes string iterable like array
         string item;
-        while (getline(ss, item, ','))
+        while (getline(ss, item, ',')) //> takes three parameters -> [stringStream, iterable_item, delimiter]
         {
             strArr.push_back(item);
         }

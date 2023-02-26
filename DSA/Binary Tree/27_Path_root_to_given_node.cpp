@@ -326,7 +326,7 @@ bool findPath(TreeNode<int> *root, TreeNode<int> *node, vector<int> &path)
     {
         return false;
     }
-    
+
     path.push_back(root->val);
 
     if (root->val == node->val)
@@ -359,7 +359,7 @@ void solve()
         input.push_back(ele);
     }
     auto root = buildTree(input);
-    TreeNode<int> *node = new TreeNode(12);
+    TreeNode<int> *node = new TreeNode(15);
     rootToNode(root, node);
     // printTree(root);
 }

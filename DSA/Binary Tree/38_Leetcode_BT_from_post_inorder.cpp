@@ -328,6 +328,7 @@ TreeNode<int> *buildBTTree(vector<int> &inorder, vector<int> &postorder, int lef
     {
         return nullptr;
     }
+  
     TreeNode<int> *root = new TreeNode(postorder[rootIndex]);
     rootIndex--;
 

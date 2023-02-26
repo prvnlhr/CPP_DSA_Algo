@@ -321,46 +321,102 @@ Ex_2: 1 2 3 4 5 6 7 -1 -1 8 9 -1 -1 -1 -1 -1 -1 -1 -1
 
 */
 
-void traverseDown(TreeNode<int> *root, int dis, vector<int> &res)
-{
+/*
+- Given the root of a binary tree, the value of a target node target,
+- and an integer k, return an array of the values of all nodes that
+- have a distance k from the target node.
+*/
 
-    if (!root)
-    {
-        return;
-    }
-    if (dis == 0)
-    {
-        res.push_back(root->val);
-        return;
-    }
-
-    traverseDown(root->left, dis, res);
-    traverseDown(root->right, dis, res);
-}
-
-void nodeAtKDisHepler(TreeNode<int> *root, int k, TreeNode<int> *target, vector<int> &nodes)
+void markedParentNodes(TreeNode<int> *root, unordered_map<TreeNode<int> *, TreeNode<int> *> &mpp)
 {
     if (!root)
     {
         return;
     }
-
-    if (root->val == target->val)
+    if (root->left)
     {
-        traverseDown(root, 0, nodes);
-        return;
+        mpp[root->left] = root;
     }
-
-    nodeAtKDisHepler(root->left, k - 1, target, nodes);
-    nodeAtKDisHepler(root->right, k - 1, target, nodes);
+    if (root->right)
+    {
+        mpp[root->right] = root;
+    }
+    markedParentNodes(root->left, mpp);
+    markedParentNodes(root->right, mpp);
 }
+
+/*
+
+:TC :O(N)
+:SC :O(N)
+*/
+
+/*
+** See strivers YT video
+: INTUTION:
+> This solution works similar to water ripple effect
+> from center(target node) , moving outwards k distance in every direction
+> So when moving outwards we just remove all nodes from queue.
+> When we hit kth distance, we break and all remaining nodes that are left in queue
+> will be our ans
+*/
 
 vector<int> distanceK(TreeNode<int> *root, int k, TreeNode<int> *target)
 {
-    vector<int> nodes;
-    nodeAtKDisHepler(root, k, target, nodes);
-    debug(nodes);
-    return nodes;
+
+    unordered_map<TreeNode<int> *, TreeNode<int> *> mpp;
+    markedParentNodes(root, mpp);
+
+    unordered_map<TreeNode<int> *, bool> visited;
+
+    queue<TreeNode<int> *> q;
+    q.push(target);
+    visited[target] = true;
+
+    int currDist = 0;
+
+    while (!q.empty())
+    {
+        int n = q.size();
+
+        if (currDist++ == k)
+        {
+            break;
+        }
+
+        for (int i = 0; i < n; i++)
+        {
+            auto currNode = q.front();
+            q.pop();
+
+            if (currNode->left && !visited[currNode->left])
+            {
+                q.push(currNode->left);
+                visited[currNode->left] = true;
+            }
+
+            if (currNode->right && !visited[currNode->right])
+            {
+                q.push(currNode->right);
+                visited[currNode->right] = true;
+            }
+
+            if (mpp[currNode] && !visited[mpp[currNode]])
+            {
+                q.push(mpp[currNode]);
+                visited[mpp[currNode]] = true;
+            }
+        }
+    }
+
+    vector<int> res;
+    while (!q.empty())
+    {
+        auto node = q.front();
+        q.pop();
+        res.push_back(node->val);
+    }
+    return res;
 }
 
 void solve()
@@ -377,7 +433,8 @@ void solve()
 
     TreeNode<int> *target = new TreeNode(5);
 
-    distanceK(root, k, target);
+    auto ans = distanceK(root, k, target);
+    debug(ans);
 }
 
 //>-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
