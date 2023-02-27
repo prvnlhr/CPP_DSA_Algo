@@ -374,7 +374,7 @@ TreeNode<int> *sortedListToBST(ListNode *head)
         return new TreeNode(val);
     }
 
-    //> 1.  find mid, same as in sorted array
+    //> 1. Find mid, same as in sorted array
 
     ListNode *prev = nullptr;
     ListNode *slow = head;
@@ -387,7 +387,7 @@ TreeNode<int> *sortedListToBST(ListNode *head)
         fast = fast->next->next;
     }
 
-        //> divide first half and second half
+    //> divide first half and second half
     prev->next = nullptr;
 
     int midData = slow->data;

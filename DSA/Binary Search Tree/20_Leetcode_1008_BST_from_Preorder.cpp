@@ -325,24 +325,24 @@ Ex: 6 2 8 1 4 7 9 -1 -1 3 5 -1 -1 -1 -1 -1 -1 -1 -1
 TreeNode<int> *helper2(vector<int> preorder, int &preIndx, int MIN, int MAX)
 {
 
-    //>> Edge case
+    //> Edge case
     int n = preorder.size();
     if (preIndx >= n)
     {
         return nullptr;
     }
 
-    //>> cant make a node if,
+    //> cant make a node if, preIndex element is out of range of MIN or MAX
     if (preorder[preIndx] < MIN || preorder[preIndx] > MAX)
     {
         return nullptr;
     }
 
-    //>> Make node
+    //> Make node
     TreeNode<int> *root = new TreeNode(preorder[preIndx]);
     preIndx = preIndx + 1;
 
-    //>> Bring left and right Nodes
+    //> Bring left and right Nodes
     root->left = helper2(preorder, preIndx, MIN, root->val);
     root->right = helper2(preorder, preIndx, root->val, MAX);
     return root;

@@ -378,6 +378,7 @@ TreeNode<int> *mergeDLL(TreeNode<int> *head1, TreeNode<int> *head2)
 
     TreeNode<int> *head = NULL;
     TreeNode<int> *tail = NULL;
+    
     while (head1 && head2)
     {
         debug(head1->val, head2->val);

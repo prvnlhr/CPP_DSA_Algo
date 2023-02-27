@@ -241,18 +241,18 @@ TreeNode<int> *deleteNode(TreeNode<int> *root, int node)
     if (root->val == node)
     {
 
-        //> 1. if only left child
+        //> 1. If only left child
         if (!root->right)
         {
             return root->left;
         }
-        //> 2. if only right child
+        //> 2. If only right child
 
         if (!root->left)
         {
             return root->right;
         }
-        //> 3. if both child present
+        //> 3. If both child present
         if (root->left && root->right)
         {
 
@@ -268,6 +268,7 @@ TreeNode<int> *deleteNode(TreeNode<int> *root, int node)
         }
     }
 
+    //> Recursive step
     if (root->val > node)
     {
 

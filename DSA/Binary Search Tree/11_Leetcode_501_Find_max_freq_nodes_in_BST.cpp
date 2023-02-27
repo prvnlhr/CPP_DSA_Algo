@@ -290,7 +290,8 @@ OP -> 7
 
 
 -> 10 5 12 5 5 12 16 -1 -1 -1 -1 -1 -1 -1 -1
-  :OP : 5
+=> OP : 5
+
 */
 
 int pre = INT_MIN;
@@ -308,7 +309,7 @@ vector<int> res;
 > if not equal means, we have got a new element so, currFreq = 1,
 > but store the previously store frequency(if any) to maxFreq and also put the element to  res
 > now , if we got another element with more freq, the clear the res vector and put that element
-* if we try to visualise the tree in form of sorted array the it became easy
+* if we try to visualise the tree in form of sorted array the it becomes easy
 */
 
 void inorder(TreeNode<int> *root)

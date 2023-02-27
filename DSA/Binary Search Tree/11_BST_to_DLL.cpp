@@ -206,7 +206,7 @@ TreeNode *prevNode = NULL;
 TreeNode *headNode = NULL;
 
 /*
-  Consider the BST in sorted form
+  Consider the inorder of BST, which will be in sorted form
  -> 1 2 3 4 5 6 7 8
 
   we will have a prev pointer
