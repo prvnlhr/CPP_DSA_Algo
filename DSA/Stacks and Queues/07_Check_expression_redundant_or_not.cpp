@@ -145,7 +145,7 @@ bool checkRedundacny(string s)
             bool isRedundant = true;
 
             //> if we enter this loop it means that we dont have immediate top element as opening bracket
-            //> means no redundant bracket, so isRedudant ==false
+            //> means no redundant bracket, so isRedudant == false
             while (st.top() != '(')
             {
                 char top = st.top();
@@ -174,10 +174,11 @@ bool checkRedundacny1(string s)
     int bracketsCount = 0;
 
     int n = s.size();
+
     for (int i = 0; i < n; i++)
     {
-        //> Edge case -> (a) 
-        if (i + 2 < n && s[i] == s[i + 2])
+        //> Edge case -> (a)
+        if (i + 2 < n && s[i] == '(' && s[i + 2] == ')')
         {
             return true;
         }
@@ -190,11 +191,12 @@ bool checkRedundacny1(string s)
             bracketsCount++;
         }
     }
-    
+
     if (bracketsCount > operatorCount)
     {
         return true;
     }
+
     return false;
 }
 
@@ -202,6 +204,14 @@ void solve()
 {
     string s;
     cin >> s;
+    if (checkRedundacny1(s))
+    {
+        cout << "True" << endl;
+    }
+    else
+    {
+        cout << "False" << endl;
+    }
 }
 
 //>-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------

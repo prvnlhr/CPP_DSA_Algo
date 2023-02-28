@@ -131,7 +131,7 @@ void factOfN(ll n)
 
 /*
 
-> This is same a implement queue using two stacks
+> This is same as implement queue using two stacks
 > There are two approaches to solve the problem
 -> 1. Making push operation costly
 -> 2. Making pop operation costly

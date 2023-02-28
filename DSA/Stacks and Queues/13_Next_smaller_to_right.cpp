@@ -154,7 +154,6 @@ vector<int> NSR(vector<int> arr)
         {
             st.pop_back();
         }
-        debug(i, arr[i], st);
         if (!st.empty())
         {
             res[i] = st.back();
