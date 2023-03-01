@@ -143,6 +143,7 @@ int calculate(string s)
             oprators.push_back(s[i]);
             i++;
         }
+
         else if (s[i] == '*' || s[i] == '/')
         {
             char op = s[i];

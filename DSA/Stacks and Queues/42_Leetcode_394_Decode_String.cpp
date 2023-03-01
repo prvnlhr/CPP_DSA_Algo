@@ -162,7 +162,7 @@ string decodeString(string s)
             //>   nums....]
             //>    |
 
-            //>get string of numbers
+            //> get string of numbers
             string timesStr = "";
             while (!chars.empty() && isdigit(chars.back()))
             {

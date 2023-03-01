@@ -179,13 +179,16 @@ int largestRectangleArea(vector<int> &heights)
         st.push(i);
     }
 
+    debug(leftSmallest);
+    debug(rightSmallest);
     int maxArea = 0;
 
     for (int i = 0; i < n; i++)
     {
-
+        debug(leftSmallest[i], rightSmallest[i], abs(leftSmallest[i] - rightSmallest[i]) + 1, heights[i]);
         int width = abs(leftSmallest[i] - rightSmallest[i]) + 1;
         maxArea = max(maxArea, width * heights[i]);
+        debug(maxArea);
     }
     return maxArea;
 }

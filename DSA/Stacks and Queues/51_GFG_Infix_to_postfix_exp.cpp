@@ -117,6 +117,16 @@ string infixToPostfix(string s)
     stack<char> st;
     string result;
 
+    /*
+    > There can be four conditions if for currChar
+        1. It can be A-Z, a-z,0-9->  Just append to res
+        2. It can be opening bracket-> put to stack
+        3. It can be closing bracket-> keep popping from stack and append to res till st.top is not '('
+        4. It can be ' + - / * ' -> 
+            a. check if st.top is opertor and has greater precedecence then  curr op, then add st.top
+            b. else, put curr op to st
+    */
+
     for (int i = 0; i < s.length(); i++)
     {
         char curr = s[i];

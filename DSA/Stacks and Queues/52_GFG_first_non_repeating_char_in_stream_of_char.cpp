@@ -103,6 +103,7 @@ string FirstNonRepeating(string s)
     for (int i = 0; i < n; i++)
     {
         char curr = s[i];
+
         if (mpp.find(curr) != mpp.end())
         {
             mpp[curr]++;
