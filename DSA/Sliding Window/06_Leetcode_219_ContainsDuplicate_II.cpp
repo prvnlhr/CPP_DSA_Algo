@@ -129,7 +129,7 @@ void factOfN(ll n)
 
 //>----------------------------ＳＯＬＶＥ-----------------------------------------------------------------------------------------------------------------------------------------------
 
-//> FAILED SOLUTION USING SLIDING WINDOW TECHNIQUE, MAY WASNT ABLE TO IMPLEMENT
+//> FAILED SOLUTION USING SLIDING WINDOW TECHNIQUE, MAY BE WASNT ABLE TO IMPLEMENT
 //> IF PASSED TC: O(N*N)
 bool containsNearbyDuplicate(vector<int> &nums, int k)
 {

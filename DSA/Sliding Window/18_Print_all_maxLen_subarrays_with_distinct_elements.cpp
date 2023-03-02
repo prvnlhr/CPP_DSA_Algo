@@ -142,6 +142,15 @@ int sumoflength(vector<int> nums, int n)
 
     /*
         5  2  3  5  4  3
+
+        SUBARRYS   |  len
+    ---------------|------
+        5, 2, 3    |   3
+        2, 3, 5, 4 | + 4
+        5, 4, 3    | + 3
+    ---------------|------
+        sum of Len | = 10
+
     */
 
     int winStart = 0;

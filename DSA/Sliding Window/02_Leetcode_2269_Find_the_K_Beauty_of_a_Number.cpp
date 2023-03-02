@@ -163,7 +163,7 @@ int divisorSubstrings(int num, int k)
         {
             string subStr = s.substr(windStart, k);
             debug(subStr);
-            //>O(K) ->> stoi --> k length string,so k
+            //> O(K) ->> stoi --> k length string,so k
             int x = stoi(subStr);
             if (x != 0 && num % x == 0)
             {

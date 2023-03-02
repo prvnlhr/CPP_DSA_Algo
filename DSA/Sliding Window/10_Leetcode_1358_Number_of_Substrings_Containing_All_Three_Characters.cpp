@@ -151,7 +151,6 @@ int numberOfSubstrings(string s)
 > so till winEnd(2) we have four substrings
 > How do we get 4 ->  s.size() - winEnd = 6 - 2 = 4
 
-
 Line 180: res = 4; s.size() = 6; winEnd = 2; s.size() - winEnd = 4;
 Line 180: res = 7; s.size() = 6; winEnd = 3; s.size() - winEnd = 3;
 Line 180: res = 9; s.size() = 6; winEnd = 4; s.size() - winEnd = 2;
