@@ -164,7 +164,7 @@ int minStepsDP(int n)
 
 int minSteps(int n)
 {
-    // return minStepsRec(;
+    // return minStepsRec(n);
     return minStepsDP(n);
 }
 void solve()

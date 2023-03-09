@@ -130,7 +130,7 @@ typedef priority_queue<int, vector<int>, greater<int>> pqmin;
 
 /*
 > Recursive naive
-: TC : O(N*N) -> its actually more then 2^N, because of case when we take a coin, we can again take it
+: TC : O(2^N) -> its actually more then 2^N, because of case when we take a coin, we can again take it
 : SC: O(N) -> More then N,  because of case when we take a coin, we can again take it
 */
 

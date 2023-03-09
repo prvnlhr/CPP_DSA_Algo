@@ -97,12 +97,12 @@ typedef priority_queue<int, vector<int>, greater<int>> pqmin;
 Naive recurisve solution wont be possible due to some unknown reason,
 tried but was not able to figure it out.
 
-> Now, We want to find maximum sum of subarray fo length that is even
+> Now, We want to find maximum sum of subarray of length that is even
 lets take a naive example and see what's happening
 
 -> Ex: 1 2 3 4 5 6 7 8
 
-If we want to calculate the subarray with max sum of only even length could we do it,
+If we want to calculate the subarray with max sum of only even length,what could we do?
 The basic intution would be to consider all subarray of even length, So lets take allsubarrays,
 of even length
 
@@ -112,10 +112,10 @@ of even length
                                                >> STEP 3:
 Starting from -> 1                             |
               -> 1 2                           |
-              -> 1 2 3 4                       | [1 2] + 3 4 -> as we can see that form above subarray[1 ,2] we can just need to add it to this array to get our ans
+              -> 1 2 3 4                       | [1 2] + 3 4 -> as we can see that form above subarray[1,2] we can just need to add it to this array to get our ans
               -> 1 2 3 4 5 6                   | [1 2 3 4] + 5 6   -> similarly from above subarray we can get our ans
               -> 1 2 3 4 5 6 7 8               | [1 2 3 4 5 6] + 7 8
-                                               | So we found that we only need to find arr[i] + arr[i+1] and then add it to previous sum of even lenght subarray
+                                               | So we found that we only need to find arr[i] + arr[i+1] and then add it to previous sum of even length subarray
                                                | (prev even len subarray sum) + (arr[i] + arr[i+1])
                                                | now prev even len subarray sum can be found using recurion or in case of DP we can store it
                                                | So we have to do (arr[i]+arr[i+1]) and call for (i + 2)th index and then finally add them both
@@ -124,7 +124,7 @@ Starting from -> 1                             |
                                                > finally sum = sum1 + sum2;  and return sum;
                                                | But there's a catch. We can also have negative elements and recF(i+2) can bring us negative sum
                                                | so do we really need to add (negative sum2) and sum1 and make final sum negative ?? a BIG NO NO!!
-                                               | Now before moving any futher taking let first convert it to DP solution from above recursence relation.
+                                               | Now before moving any futher taking let first convert it to DP solution from above recurence relation.
                                                |
                                                > int sum1 = arr[i] + arr[i+1];
                                                > int sum2 = dp[i+2] -> recF(i+2) converted to DP
@@ -159,10 +159,10 @@ Starting from -> 8
               -> No array of even length
 
 > STEP 2: now after adding all the elements from above all subarrays and taking sum which is max
->         we cant get our result
+>         we can get our result
 
 But wait. As we can see that there is repeated work when we are considering all subarrays
-Lets see how we are doing repeated work, Go to Step 3
+Lets see how we are doing repeated work, -> Go to Step 3
 
 
 
@@ -199,6 +199,7 @@ int maxSumDP_1(vector<int> arr)
     int maxSumRes = *max_element(dp.begin(), dp.end());
     return maxSumRes;
 }
+
 int maxSumDP_2(vector<int> arr)
 {
     int n = arr.size();
@@ -211,14 +212,14 @@ int maxSumDP_2(vector<int> arr)
     vector<int> dp(n + 1, 0);
 
     dp[n - 1] = 0;                       //> Sum at end of array will be 0
-    dp[n - 2] = arr[n - 2] + arr[n - 1]; //> Sum at second last index(n-2) will be arr[n-1]+arr[n-2]
+    dp[n - 2] = arr[n - 2] + arr[n - 1]; //> Sum at second last index(n-2) will be arr[n-1] + arr[n-2]
 
-    //> Starting from n-3
+    //> Starting from n - 3
     for (int i = n - 3; i >= 0; i--)
     {
         int sum1 = arr[i] + arr[i + 1];
 
-        int sum2 = arr[i] + arr[i + 1] + dp[i + 2]; //> dp[i+2] i.e, prev even lenght sum can be neagtive, which
+        int sum2 = arr[i] + arr[i + 1] + dp[i + 2]; //> dp[i+2] i.e, prev even length sum can be neagtive, which
                                                     //> which will make sum2 negative, so  we have to do max(sum1,sum2);
         dp[i] = max(sum1, sum2);                    //> sum2 can become negative, due to dp[i+2]
     }
@@ -226,6 +227,7 @@ int maxSumDP_2(vector<int> arr)
     int maxSumRes = *max_element(dp.begin(), dp.end());
     return maxSumRes;
 }
+
 void solve()
 {
 

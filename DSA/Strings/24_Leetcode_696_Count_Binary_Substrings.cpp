@@ -114,10 +114,11 @@ int countBinarySubstrings(string &s)
             curr = 1;
         }
     }
-
+    //> one more time at end
     res += min(prev, curr);
     return res;
 }
+
 void solve()
 {
 }

@@ -113,7 +113,7 @@ s1 - s2 = diff --(2)
 
 eq 2 - 1 ->  sum - diff = (s1 + s2) - (s1 - s2) = s1 + s2 - s1 + s2
          ->  sum - diff =  2 * s2
-         ->  s2 = (sum - diff)/2
+         **=>  s2 = (sum - diff)/2
 > if we are able to find set of sum s2 = (sum - diff)/2, then we have are ans
 > Now the problem boils down to find sum s2 in array.
 */
@@ -154,8 +154,11 @@ int countSubSet(vector<int> &arr, int diff)
         sum += ele;
     }
 
-    int new_sum = (sum - diff) / 2;
+    int new_sum = (sum - diff) / 2; //> here if (sum - diff) is odd, then (sum-diff /2 ) will give,
+                                    //> decimal value, and our array has only integer values
+                                    //> so we need to check for that it should be even
 
+    // !important  condition => diff cant be greater then sum, (sum-diff) cant be odd
     if ((diff > sum) || ((sum - diff) % 2 == 1))
     {
         return 0;
