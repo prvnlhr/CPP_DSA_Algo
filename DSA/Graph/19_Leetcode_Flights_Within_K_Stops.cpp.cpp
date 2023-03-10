@@ -102,7 +102,7 @@ int findCheapestPrice(int n, vector<vector<int>> &flights, int src, int dst, int
     > the constraint of k stops, and eventully the stops would exceed k.
     > So, instead of storing {dist,node,stop} , we will store, {stop, node,dist} , where dist is cost
     > One, more catch is, do we really need to use priority queue
-    > When observing carefully, we see that, the stops in pq, will always increase by one, at every step
+    > When observing carefully, we see that, the stops in pq, will always increase by one at every step
     > in increasing order, so maintaining pq, will be not benficial,so we can use normal queue
     > In the case of distance or wt, which doesnt increases, by one every time, we need pq min
 
@@ -135,17 +135,18 @@ int findCheapestPrice(int n, vector<vector<int>> &flights, int src, int dst, int
         int node = it.second.first;
         int cost = it.second.second;
 
-        //> if stops >= k, dont consider
+        //> if stops >= k, dont consider adjNode
         if (stops > k)
         {
             continue;
         }
-
+        //> if above condition is false, then we consider adjNode
         for (auto iter : adjList[node])
         {
             int adjNode = iter.first;
             int adjCost = iter.second;
 
+            //> RELAXATION STEP:
             //> also when relaxing, check for stops to not exceed k limit
             if (adjCost + cost < distArray[adjNode] && stops <= k)
             {
@@ -159,6 +160,7 @@ int findCheapestPrice(int n, vector<vector<int>> &flights, int src, int dst, int
     {
         return -1;
     }
+
     return distArray[dst];
 }
 void solve()

@@ -123,35 +123,36 @@ int countPaths(int n, vector<vector<int>> &roads)
     > The intution is to use dijkstra algo.
     > Now we have to count all the ways to reach dest, and also the distance should be minimum
     > So we can use dijkstra's algo.
-    > Now to find the num of ways at particular node, we should know, then
+    > Now to find the num of ways at particular node, we should know, the
     > now to ways of parent node, from where we reched that node. SO we can use a ways[]
     > Now if we have reached a node previously with same distance, and again we find the same dist in
-    > distArray, then in this case we have to find the no of ways of parent , and for that node will be
+    > distArray, then in this case we have to find the no of ways of parent, and for that node will be
     > ways[parent] + ways[node]
+
     */
 
     while (!pq.empty())
     {
-        long long dis = pq.top().first;
+        long long parentDis = pq.top().first;
         long long parent = pq.top().second;
         pq.pop();
 
         for (auto it : adjList[parent])
         {
             long long adjNode = it.first;
-            long long edW = it.second;
+            long long adjWt = it.second;
 
-            if (edW + dis < distArray[adjNode])
+            if (adjWt + parentDis < distArray[adjNode])
             {
-                distArray[adjNode] = edW + dis;
-                long long x = edW + dis;
+                distArray[adjNode] = adjWt + parentDis;
+                long long x = adjWt + parentDis;
                 pq.push({x, adjNode});
                 ways[adjNode] = ways[parent];
             }
 
-            //> if we distArray[adjNode] == edW + dis, have reach this node previously,
+            //> if we distArray[adjNode] == adjWt + dis, have reach this node previously,
             //> no of ways will be, parent node ways + adjNode ways
-            else if (edW + dis == distArray[adjNode])
+            else if (adjWt + parentDis == distArray[adjNode])
             {
                 ways[adjNode] = (ways[parent] + ways[adjNode]) % mod;
             }

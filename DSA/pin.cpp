@@ -140,16 +140,18 @@ void solve()
     cout << "TESTING INPUT : " << a << " OUPUT : " << a << endl;
     debug(a, "Error checking OK");
     /*
-    ! Warning
-    -> Problem 21 Find the subarray max sum of length k
-    > What is the best way
-    # Solve the problems
-    * What is the best way to approach a problem
-    ** What is the best way to approach a problem
-    - In oops We always compares it with real world problem
-    _ In oops We always compares it with real world problem
-    : TC O(N)
-    TODO: OK
+
+    !  Warning
+    -> This is test comment
+    >  This is test comment
+    #  This is test comment
+    *  This is test comment
+    ** This is test comment
+    -  This is test comment
+    _  This is test comment
+    :  This is test comment
+       TODO: This is test comment
+
     */
 }
 

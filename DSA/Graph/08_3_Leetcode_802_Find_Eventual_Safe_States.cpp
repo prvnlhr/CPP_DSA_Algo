@@ -97,7 +97,7 @@ bool dfs(vector<vector<int>> &adjList, bool visited[], bool recursionPath[], vec
 
     /*
     -> INTUITION:
-        > WHen observing carefully, every node which is part of a cycle and, are connected to the cycle
+        > When observing carefully, every node which is part of a cycle and, are connected to the cycle
         > will never be the safe node.
         > so, do a cycle check in directed graph,and mark all nodes as '0' which are part of cycle
         > if,  not part of cycle, then  mark it as '1'.
@@ -142,7 +142,6 @@ vector<int> eventualSafeNodes(vector<vector<int>> &graph)
     bool recursionPath[V];
     memset(recursionPath, false, sizeof recursionPath);
     vector<int> check(V + 1, 0);
-    vector<int> res;
     for (int i = 0; i < V; i++)
     {
         if (!visited[i])
@@ -151,8 +150,9 @@ vector<int> eventualSafeNodes(vector<vector<int>> &graph)
         }
     }
 
-    //> AT end, if nodes are marked '1' in check array then, it was not found to be part of
+    //> At the end, if nodes are marked '1' in check array then, it was not found to be part of
     //> cycle so, it is safe node.
+    vector<int> res;
     for (int i = 0; i < V; i++)
     {
         if (check[i] == 1)

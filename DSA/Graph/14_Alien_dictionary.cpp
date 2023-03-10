@@ -125,7 +125,7 @@ string findOrder(string dict[], int N, int K)
     c a d
 
 
-    after above looping,we got adjList as
+    after above looping, we got adjList as
 {
     b : a
     d : a
@@ -134,7 +134,7 @@ string findOrder(string dict[], int N, int K)
 }
 
             b --> a ---> c    now, when we find the toposort -> we get => [b, d, a, c]
-             \    ^                                                    => oue required ans
+             \    ^                                                    => our required ans
               \   |
                \  |
                 \ |

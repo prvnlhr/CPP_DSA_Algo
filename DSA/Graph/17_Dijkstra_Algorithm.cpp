@@ -92,8 +92,8 @@ typedef priority_queue<int, vector<int>, greater<int>> pqmin;
 //--------------------------------------------------------------------------------------------------------------------------------
 
 //>----------------------------ＳＯＬＶＥ-----------------------------------------------------------------------------------------------------------------------------------------------
-//> Dosnt works for negative weight cycle, will cause infinite loop
-//> bcoz adding negative will make samller negaitve and keepsmm decreasing
+//> Doesnt works for negative weight cycle, will cause infinite loop
+//> bcoz adding negative will make smaller negaitve and keeps on decreasing
 
 //> Instead of PQ, Queue also works but, using queue will consider every possible
 //> path increasing the time complextiy,  whereas pq, at every instance consider the
@@ -101,9 +101,9 @@ typedef priority_queue<int, vector<int>, greater<int>> pqmin;
 
 //> We can also use set instead of pq, bcoz in pq we cant remove a node which we updated in distArray
 //> but in set we can remove the node which is not required
-//> In some cases, depends on the type of h graph  set performs slightly better, but the remove node ,
+//> In some cases, depends on the type of the graph, set performs slightly better, but to remove node,
 //> from set costs logN time, so we can say there is not much difference in pq and set, but using set would
-//> would reducing travering unwanted nodes, due to removal , and hence can improve futhere time complexities
+//> would reducing travering unwanted nodes, due to removal, and hence can improve futhere time complexities
 
 //: TC O(V + E) * O(LogV) which is O((V + E) * LogV) = O(ELogV)
 //> O(V+E) -> for BFS + Log(V) for operations in priority queue
