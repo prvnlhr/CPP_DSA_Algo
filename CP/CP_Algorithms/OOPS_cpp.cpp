@@ -28,22 +28,22 @@ using namespace std;
 
 > LIMITATIONS of OOPS:
 
--    1. Steep learning curve: The thought process involved in object-oriented programming
--    may not be natural for some people, and it can take time to get used to it. It is
--    complex to create programs based on interaction of objects. Some of the key
--    programming techniques, such as inheritance and polymorphism, can be
--    challenging to comprehend initially
--
--    2. Larger program size: Object-oriented programs typically involve more lines of code
--    than procedural programs
--
--    3. Slower programs: Object-oriented programs are typically slower than procedure based
--    programs, as they typically require more instructions to be executed.
--
--    4. Not suitable for all types of problems: There are problems that lend themselves well
--   to functional-programming style, logic-programming style, or procedure-based
--   programming style, and applying object-oriented programming in those situations will
--   not result in efficient programs
+-   1. Steep learning curve: The thought process involved in object-oriented programming
+-      may not be natural for some people, and it can take time to get used to it. It is
+-      complex to create programs based on interaction of objects. Some of the key
+-      programming techniques, such as inheritance and polymorphism, can be
+-      challenging to comprehend initially
+
+-   2. Larger program size: Object-oriented programs typically involve more lines of code
+-      than procedural programs
+
+-   3. Slower programs: Object-oriented programs are typically slower than procedure based
+-      programs, as they typically require more instructions to be executed.
+
+-   4. Not suitable for all types of problems: There are problems that lend themselves well
+-      to functional-programming style, logic-programming style, or procedure-based
+-      programming style, and applying object-oriented programming in those situations will
+-      not result in efficient programs
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -116,7 +116,7 @@ int main()
     cout << c.getPower() << endl;
 
     //> Dynamic allocation
-    Car *cd = new Car;
+    Car *cd = new Car();
     cd->speed = 10;
     cd->changePower(865);
     cout << cd->getPower() << endl;
@@ -162,18 +162,17 @@ int main()
 ----------------------------------------------------------------------------------------------------------------------------------------------------------
 > Data Members and Members functions:
 
+ **   class Car{
 
-    class Car{
 
+:       public:
+            int limit;           ----->} Data Members
+            double mileage;      ----->}
 
-        public:
-            int limit;
-            double mileage;
-
-            void applyBrakes(){}
-
-            void increaseSpeed(){}
-    }
+            void applyBrakes(){}       --->
+                                            } Member functions
+            void increaseSpeed(){}     --->
+ **   }
 
 -    A Class is a user defined data-type which has data members and member functions.
 -
@@ -200,7 +199,7 @@ int main()
 -    The access modifiers of C++ allows us to determine which class members are accessible to other
 -    classes and functions, and which are not.
 
-    * Data Members and Member functions can  be accessed using .(dot operator)
+    * Data Members and Member functions can be accessed using .(dot operator)
 
 
 
@@ -232,13 +231,11 @@ public:
 
 /*
 ! IMP Point :
-* if Not access modifier is provided in class then __BY DEFAULT private access modifier is applied__
+* if no access modifier is provided in class then, by default 'private' access modifier is applied__
 
 
 
-
-
-> public Access Modifier :
+> 1.__public Access Modifier :____________________________________________________________________
 
     -The public keyword is used to create public members (data and functions).
 
@@ -252,7 +249,7 @@ public:
 *        class Sample
 -        {
 -
->>           public:
+:           public:
 -               int age;
 -
 -               void displayAge()
@@ -288,7 +285,7 @@ public:
 
 
 
-> private Access Modifiers :
+> 2.__private Access Modifiers :____________________________________________________________________
 
 -    The private keyword is used to create private members (data and functions).
 
@@ -315,7 +312,7 @@ int main()
     c.speed = 10;
 
     // gives error as private data memebers can only be access inside class
-    // c.horespower = 860;
+    //-     c.horespower = 860;
 
     //* so to access private data members and memeber functions, we use GETTERS and SETTERS
 }
@@ -326,23 +323,23 @@ int main()
         - It is the indirect way of access and modifying the private data members and member function
 
 
-        class Car
+**      class Car
         {
-        private:
+:        private:
             int horespower;
 
-        public:
+ :       public:
             int mileage;
             int speed;
 
-            void changePower(int p){
+           void changePower(int p){
                 this.horespower = p;
             }
-        };
+**       };
 
-        int main()
+**        int main()
         {
-            Car c;
+>            Car c;
 
             -as speed is public is can be access and modified
             c.speed = 10;
@@ -352,7 +349,7 @@ int main()
 
             c.changePower(854); -> calling setter function
 
-        }
+**        }
 
 */
 
@@ -396,6 +393,56 @@ int main()
 }
 
 /*
+
+/*
+> __3. Protected Access Modifier____________________________________________________________________
+    - The protected access modifier is similar to the private access modifier in the sense
+    - that it can’t be accessed outside of its class unless with the help of a friend class.
+    - The difference is that the class members declared as Protected can be accessed by
+    - any subclass (derived class) of that class as well.
+
+    ! Note: This access through inheritance can alter the access modifier of the
+    !       elements of base class in derived class depending on the mode of Inheritance.
+*/
+
+class Parent
+{
+
+protected:
+    int id_protected; //> Protect members
+};
+
+class Child : public Parent //> Sub class or Derived class from public base class
+{
+public:
+    void setId(int id)
+    {
+
+        //> Child class is able to access the inherited
+        //> protected data members of base class
+
+        id_protected = id;
+    }
+
+    void displayId()
+    {
+        cout << "id_protected is: " << id_protected << endl;
+    }
+};
+
+int main()
+{
+
+    Child obj1;
+
+    //> member function of the derived class can
+    //> access the protected data members of the base class
+    obj1.setId(81);
+    obj1.displayId();
+    return 0;
+}
+
+/*
 -------------------------------------------------------------------------------------------------------------------------------------------------
 
 > CONSTRUCTORS:
@@ -408,14 +455,17 @@ int main()
 
     -   In C++, a constructor has the same name as that of the class and it does not have a return type.
 
-            class  Wall {
-            public:
-                // create a constructor
-                Wall() {
-                // code
-                }
-            };
 
+**      class  Wall
+        {
+:        public:
+
+    -        Wall()   -> constructor
+    -        {
+                # code
+    -        }
+
+  **      };
 
         * Here, the function Wall() is a constructor of the class Wall. Notice that the constructor,
             - has the same name as the class,
@@ -427,9 +477,7 @@ int main()
 
 > 1. Default constructor
     - A constructor with no parameters is known as a default constructor.
-
     - If we do not specify any constructor then the c++ complier generates a default constructor for an object(which excepts no parameters and has no body).
-
     - When we write our own constructor explicitly, the  inbuilt constructor will not be available for us.
 */
 
@@ -455,6 +503,7 @@ int main()
     Wall w1;
     return 0;
 }
+
 //- Output:
 // * Creating a Wall
 // * Length = 5.5
@@ -470,9 +519,8 @@ int main()
 
 > 2. Parameterized Constructor
 
-    -A constructor with parameters is known as a parameterized constructor.
-
-    -This is the preferred method to initialize member data.
+    - A constructor with parameters is known as a parameterized constructor.
+    - This is the preferred method to initialize member data.
 */
 
 //_EXAMPLE: Parametrised constructor
@@ -515,10 +563,12 @@ int main()
 //* Area of Wall 2: 53.55
 
 /*
-> Copy Constructor
+
+> 3. Copy Constructor
+
     - The copy constructor in C++ is used to copy data of one object to another.
 
-    - These are particular type of constructor that takes an object as an argument and copies
+    - These are particular type of constructor that ''' takes an object as an argument ''' and copies
     - values of one objects's data members to another object.
 
     - We have to pass the object's name whose values we want to copy, and we are using or passing
@@ -526,23 +576,27 @@ int main()
 
 
     _Syntax :
-            class class_name
-            {
-                int data_member1;
-                string data_member2;
 
-            public:
+         **   class class_name
+
+            {
+        -       int data_member1;
+        -       string data_member2;
+
+        :   public:
                 // explicit copy constructor of our own
-                class_name(class_name &obj)
-                {
-                    data_member1 = obj.data_member1;
-                    data_member2 = obj.data_member2;
-                }
-            };
+
+        -       class_name(class_name &obj)
+        -       {
+        -           data_member1 = obj.data_member1;
+        -           data_member2 = obj.data_member2;
+        -       }
+
+       **     };
 
     !IMP NOTE :
     * if we dont use &(ampersand) we will get _infinte loop_ as the address of object in arguments of copy Const. will be same as,
-    *  the calling function. SEE love BABBAR yt video of oops c++ copy constructor.
+    * the calling function. SEE love BABBAR yt video of oops c++ copy constructor.
 
 
 */
@@ -595,12 +649,15 @@ int main()
 }
 /*
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-> Constructor overloading
+
+>> CONSTRUCTOR OVERLOADING :
+
     - Concept of having more then one constructor with different parameters.
 
     - It is same as function overloading
 
     - Criteria of overloading a constructor is to differ the number of arguments or type of arguments
+
 */
 //_EXAMPLE : Constuctor oveloading
 
@@ -653,15 +710,19 @@ int main()
     smartphone iphone("iphone 14 pro", 2022, true);
 }
 /*
+
+
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-> this keyword :
+>> this keyword :
+-> https://www.scaler.com/topics/cpp/this-pointer-in-cpp/
+
     - this pointer holds the address of the current  object. In  simple words, you can say that,
     - this pointer points to the current object of class.
 
-    - There  can be three main usage of this keyword in C++:
-      - It can be refer to current class instance variable.
-      - It can be used to pass the current  object  as a paramneter to another method.
-      - It canbe used  to declare indexers.
+    -- There can be three main usage of this keyword in C++:
+      -1. It can be refer to current class instance variable.
+      -2. It can be used to pass the current object as a parameter to another method.
+      -3. It can be used to declare indexers.
 
 */
 //_EXAMPLE: using this keyword
@@ -675,7 +736,6 @@ class Mobile
 public:
     void set_details(string model, int year_of_mau)
     {
-
         this->model = model;
         this->year_of_mau = year_of_mau;
     }
@@ -703,12 +763,12 @@ int main()
 //> Friend function in C++
 // - https://www.programiz.com/cpp-programming/friend-function-class
 /*
-TODO : this keyword , padding and greedy alignment,destructor, deep and shallow copy, const keyword , const in object creation, initilisation list
+TODO : this keyword, padding and greedy alignment,destructor, deep and shallow copy, const keyword, const in object creation, initilisation list
 */
 
 /*
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-> PILLARS OF OOPS:
+>> PILLARS OF OOPS::
 
 - There are four pillars of oops
     - 1. Encapsulation
@@ -716,9 +776,9 @@ TODO : this keyword , padding and greedy alignment,destructor, deep and shallow 
     - 3. Polymorphism
     - 4. Abstraction
 
->---- 1.ENCAPSULATION:
+>---- 1.ENCAPSULATION:______________________________________________________________________________________________
 
-    - Encapsulation refers to the bundling of dats and methods inside a single class.
+    - Encapsulation refers to the bundling of data and methods inside a single class.
 
     - It prevents outer classes from accessing and changing data and methods of a class.
     - This also helps to achieve data hiding.
@@ -779,16 +839,17 @@ int Main()
 }
 
 /*
->---- 2. INHERITANCE:
+
+>---- 2. INHERITANCE:______________________________________________________________________________________________
 
     - Inheritance is one of the key features of OOP that allows
     - us to create a new class from an existing class.
 
-    - The new class that is created is known as subclass (child or derived class)
+    - The new class that is created is known as Subclass (Child or Derived class)
     - and the existing class from where the child class is derived is known
-    - as superclass (parent or base class).
+    - as Superclass (Parent or Base class).
 
-    - The derived class can also have its own features
+    - The Derived class can also have its own features
 
 
 
@@ -802,7 +863,7 @@ int Main()
 
     *    };
 
-    - Here child_class is the name of child class, access_modifier is the access mode in which we want to inherit the base class
+    - Here child_class is the name of child class, access_modifier is the access mode in which we want to inherit the base class,
     - and parent_class is the name of parent class.
 
 
@@ -1073,7 +1134,7 @@ int main()
 }
 /*
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------
->---- 3. POLYMORPHISM:
+>---- 3. POLYMORPHISM:______________________________________________________________________________________________
 
     - It simply means more than one form. That is, the same entity (function or operator)
     - behaves differently in different scenarios.
@@ -1101,12 +1162,12 @@ int main()
             - same name but distinct parameters when numerous tasks are listed under one function.
 
             *__Method overloading is achieved by either:
-                1. changing the number of arguments.
-                2. or changing the data type of arguments.
+                1. changing the number of parameters.
+                2. or changing the data type of parameters.
 
-            !IMP NOTE : regarding function ovrloading
-                - The RETURN types of the methods may or may not the same.
-                - It is because method/function overloading is NOT associated with RETURN types.
+            ! IMP NOTE : Regarding function overloading
+                - The RETURN types of the methods may or may not the same,
+                - it is because method/function overloading is NOT associated with RETURN types.
                 - Overloaded methods may have the same or different return types, but they must differ in parameters.
 */
 //_EXAMPLE: Function overloading
@@ -1154,6 +1215,11 @@ int main()
 
             - C++ has the ability to provide the operators with a special meaning
             - for a data type, this ability is known as operator overloading.
+
+            - Syntax:
+                returnType operator symbol (arguments) {
+                        ... .. ...
+                }
 */
 //_EXAMPLE : Operator overloading
 class B
@@ -1183,16 +1249,17 @@ int main()
 
     obj1.a = 4;
     obj2.a = 7;
+
     obj1 + obj2;
 }
 /*
-    >-- COMPILE TIME POLYMORPHISM ::
+    >-- RUN-TIME  POLYMORPHISM ::
 
         - This type of polymorphism is achieved by Function Overriding.
 
-        - _Late binding_ and _dynamic polymorphism_ are other names for runtime polymorphism.
+        - `Late binding` and `dynamic polymorphism` are other names for runtime polymorphism.
 
-        >> Function overriding : https://www.programiz.com/cpp-programming/function-overriding
+        >> A. Function overriding : https://www.programiz.com/cpp-programming/function-overriding
 
             - As we know, inheritance is a feature of OOP that allows us to create derived classes from a base class.
             - The derived classes inherit features of the base class.
@@ -1235,12 +1302,15 @@ int main()
 // OUTPUT :  Derived Function
 /*
 - Here, the same function print() is defined in both Base and Derived classes.
-- So, when we call print() from the Derived object derived1, the print() from Derived is executed by overriding the function in Base.
+- So, when we call print() from the Derived object derived1, the print() from Derived is
+- executed by overriding the function in Base.
 
 
+        >> B. Virtual function
+        ->   https://www.programiz.com/cpp-programming/virtual-functions
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------
->---- 4. ABSTRACTION:
+>---- 4. ABSTRACTION:______________________________________________________________________________________________
 
     - Data abstraction is the process of hiding certain details and showing
     - only essential information to the user.
@@ -1250,7 +1320,7 @@ int main()
     - pressing the accelerator the speed is actually increasing, he does not know about the inner mechanism
     - of the car or the implementation of the accelerator, brakes, etc in the car. This is what abstraction is.
 
-    - Abstraction can be achieved using classes in C++.
+    ** Abstraction can be achieved using classes in C++.
 
     _Example of Abstraction :
             - Abstraction in header files:
@@ -1258,6 +1328,20 @@ int main()
              - Now we are not concerned with the implementation of pow function but we just want to calualate our result.
              - Thus, Abstraction is a mechanism which represent the essential features without including implementation details.
 
+
+
+
+->     Encapsulation:
+-      Is the packing of "data" and "functions operating on that data"
+-      into a single component and restricting the access to some of the object's components.
+-      Encapsulation means that the internal representation of an object is generally
+-      hidden from view outside of the object's definition.
+
+->     Abstraction:
+-      Is a mechanism which represent the essential features without including implementation details.
+
+-      Encapsulation:-- Information hiding.
+-      Abstraction:-- Implementation hiding.
 
     * WHat is difference between Abstraction and Encapsulatoin in C++
     https://stackoverflow.com/questions/742341/difference-between-abstraction-and-encapsulation

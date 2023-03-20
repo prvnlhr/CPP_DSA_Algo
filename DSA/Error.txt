@@ -1,1 +1,3 @@
-Time: 3
+Line 130: cntSwaps = 0; 
+Line 137: arr = [1, 2, 3, 4, 5]; 
+Time: 0

@@ -93,46 +93,77 @@ typedef priority_queue<int, vector<int>, greater<int>> pqmin;
 
 //>----------------------------ＳＯＬＶＥ-----------------------------------------------------------------------------------------------------------------------------------------------
 
-/*
-> Time Complexity - Best	: O(n^2)
-> Time Complexity - Worst	: O(n^2)
-> Time Complexity - Average	: O(n^2)
-> Space Complexity : O(1)
-
-
-
-
-- Checking of all the elements is compulsory,
-- Hence, even for best cases its gonna check all elements, So O(n^2).
-*/
-
-void selectionSort(vector<int> &arr)
+int modify(int a, int b)
 {
-    int n = arr.size();
-    for (int i = 0; i < n - 1; i++)
-    {
-        int minIndex = i;
-        for (int j = i + 1; j < n; j++)
-        {
-            if (arr[j] < arr[minIndex])
-            {
-                minIndex = j;
-            }
-        }
+    int c, d = 2;
+    c = a * d + b;
+    return c;
+}
+void fun(int x)
+{
 
-        //> swap only if minIndex != i, i.e if element is  not in correct place
-        if (minIndex != i)
-        {
-            swap(arr[i], arr[minIndex]);
-        }
+    // if (x > 0)
+    // {
+    //     fun(--x);
+    //     cout << x << " ";
+    //     fun(--x);
+    // }
+
+    // int data = 0;
+    // do
+    // {
+    //     data++;
+    //     if (data == 2)
+    //         continue;
+    //     cout << "Good ";
+    // } while (data > 2);
+    // cout << data;
+
+    // int a = 5;
+    // int b = 0 == 2 && a++;
+    // cout << a << " " << b;
+
+    // int a = 5, b = 20, c;
+    // int d = 10;
+    // c = modify(a, b);
+    // c = c + d;
+    // cout << c << endl;
+
+    // int a = 5, b, c;
+    // b = --a;
+    // debug(b, a);
+    // c = a--;
+    // debug(b, a);
+    // // cout << a << b << c << endl;
+    // debug(a, b, c);
+
+    // int n = 0;
+    // for (n++; n == 1; n = 2)
+    // {
+
+    // }
+
+    int num = 997486874;
+    int res = 0;
+    while (num > 0)
+    {
+        int lastDigit = num % 10;
+        res += lastDigit;
+        num = num / 10;
     }
+
+    if (res >= 10)
+    {
+        int digitOne = res % 10;
+        res = res / 10;
+        res = res + digitOne;
+    }
+    debug(res);
 }
 void solve()
 {
-    // vector<int> arr{20, 12, 10, 15, 2};
-    vector<int> arr{3, 5, 1, 2, 4};
-    selectionSort(arr);
-    debug(arr);
+    int a = 4;
+    fun(a);
 }
 
 //>-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
