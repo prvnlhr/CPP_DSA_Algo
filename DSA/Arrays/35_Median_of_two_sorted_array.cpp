@@ -213,6 +213,7 @@ double getMedianBest(vector<int> arr1, vector<int> arr2)
         - Now we are taking m + n + 1 , because we want to cut the array equal so one step further
 
         */
+
         int cut1 = (lo + hi) / 2;
         int cut2 = (n1 + n2 + 1) / 2 - cut1;
 
@@ -221,7 +222,7 @@ double getMedianBest(vector<int> arr1, vector<int> arr2)
           - We want to make cut at cut1-1, but if cut1 == 0 ,
           - cut1-1 = 0-1 = -1, so we can make cut at arr[-1]
           - so we take it as '-inf'
-       
+
         */
 
         int l1 = cut1 == 0 ? INT_MIN : arr1[cut1 - 1];

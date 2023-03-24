@@ -118,6 +118,7 @@ vector<string> letterCombinations(string digits)
     {
         string strCurrNum = mpp[num];
         vector<string> temp;
+        
         for (auto ch : strCurrNum)
         {
             if (res.empty())

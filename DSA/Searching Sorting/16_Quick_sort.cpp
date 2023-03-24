@@ -133,8 +133,28 @@ int partition(vector<int> &arr, int low, int high)
 
     int currSwappIndex = low - 1;
 
-    //> here j is going till : high - 1, because at high we have our pivot, so we are swapping
+    //> Here j is going till : high - 1, because at high we have our pivot, so we are swapping
     //> element between low and high-1, without considering high, i.e pivot
+
+    /*
+
+         Ex. 8 7 6 1 0 9 2
+                         |
+                     pivot element
+
+
+        after doing the below step, we get
+
+
+        1 0 2 8 7 9 6
+            |
+        pivot element
+
+        as we can see that all the elements smaller then pivot all on left and
+        greater then pivot are on right side of pivot
+
+    */
+
     for (int j = low; j < high; j++)
     {
         if (arr[j] < pivotElement)
@@ -146,6 +166,7 @@ int partition(vector<int> &arr, int low, int high)
 
     currSwappIndex++;
     swap(arr[currSwappIndex], arr[high]);
+
     return currSwappIndex;
 }
 
@@ -160,9 +181,10 @@ void quickSort(vector<int> &arr, int low, int high)
 
         //> 2. apply  quick sort on left half and right half
 
-        //>   [low..........pivotIndex................high]
-        //> we are doing pivotIndex - 1, and pivotIndex+1, because we know that pivotElement will
+        //>  [low..........pivotIndex................high]
+        //>  we are doing pivotIndex - 1, and pivotIndex + 1, because we know that pivotElement will
         //>  come at correct place after end, of step
+
         quickSort(arr, low, pivotIndex - 1);
         quickSort(arr, pivotIndex + 1, high);
     }

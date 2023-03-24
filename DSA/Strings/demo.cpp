@@ -143,23 +143,47 @@ void fun(int x)
 
     // }
 
-    int num = 997486874;
-    int res = 0;
-    while (num > 0)
-    {
-        int lastDigit = num % 10;
-        res += lastDigit;
-        num = num / 10;
-    }
+    // int num = 997486874;
+    // int res = 0;
+    // while (num > 0)
+    // {
+    //     int lastDigit = num % 10;
+    //     res += lastDigit;
+    //     num = num / 10;
+    // }
 
-    if (res >= 10)
+    // if (res >= 10)
+    // {
+    //     int digitOne = res % 10;
+    //     res = res / 10;
+    //     res = res + digitOne;
+    // }
+    // debug(res);
+    int i = 0;
+    while (++i)
     {
-        int digitOne = res % 10;
-        res = res / 10;
-        res = res + digitOne;
+        cout << 'H' << endl;
     }
-    debug(res);
+    // int a = 12;
+    // int a = 14;
+
+    int i = 0;
+    int j = 5;
+    while (i < j)
+    {
+        cout << "sdslml"
+             << endl;
+    }
 }
+class Sam
+{
+};
+class Demo
+{
+};
+class Sample : public Sam, protected Demo
+{
+};
 void solve()
 {
     int a = 4;

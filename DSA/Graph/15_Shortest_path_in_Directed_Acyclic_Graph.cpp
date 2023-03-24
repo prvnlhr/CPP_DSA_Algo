@@ -137,6 +137,7 @@ vector<int> shortestPath(int N, int M, vector<vector<int>> &edges)
         int wt = edges[i][2];
         adj[u].push_back({v, wt});
     }
+    
     // A visited array is created with initially
     // all the nodes marked as unvisited (0).
     int vis[N] = {0};

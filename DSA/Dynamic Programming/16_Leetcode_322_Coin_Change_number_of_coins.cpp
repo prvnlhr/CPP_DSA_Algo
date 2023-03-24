@@ -163,7 +163,7 @@ int coinChangeMemo(vector<int> &coins, int amount, int n, vector<vector<int>> &d
         return 0;
     }
 
-    //** edge case :we were not able to make the denominations
+    //* edge case: we were not able to make the denominations
     if (amount < 0 || n < 0)
     {
         return 1e9;
