@@ -163,6 +163,7 @@ int countSubStrings(string str, int k)
     {
         unordered_set<char> st;
         string s = "";
+    
 
         for (int j = i; j < n; j++)
         {
@@ -199,9 +200,9 @@ int main()
     cin.tie(0);
 
 #ifndef ONLINE_JUDGE
-    freopen("../Error.txt", "w", stderr);
-    freopen("../output.txt", "w", stdout);
-    freopen("../input.txt", "r", stdin);
+    freopen("../../Error.txt", "w", stderr);
+    freopen("../../output.txt", "w", stdout);
+    freopen("../../input.txt", "r", stdin);
 #endif
     auto start1 = high_resolution_clock::now();
     solve();

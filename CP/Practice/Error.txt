@@ -1,3 +1,1 @@
-Line 146: a = [7, 6]; b = [7, 7]; 
-Line 165: cnt1 = 0; cnt2 = 0; 
-Time: 0
+Time: 96

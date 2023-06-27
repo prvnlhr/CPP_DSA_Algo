@@ -532,10 +532,10 @@ int main()
 
     >> Lets say we want to sort table vector on the basis of first element in decreasing order
     >> but if the first elements are equal then we want to consider second element
-    >>and sort according to the second element but in increasing order.
+    >> and sort according to the second element but in increasing order.
 
     >  O/P: [{4, 3}, {4, 10}, {4, 10}, {3, 20}, {2, 1}, {2, 1}, {1, 10}];
-    >  As we can se table is sorted on basis of first element, whith biggest
+    >  As we can see table is sorted on basis of first element, whith biggest
     > value placed at first but if first element is eqaul then,  according to second
     > element value are sorted in inceasing order.
      */

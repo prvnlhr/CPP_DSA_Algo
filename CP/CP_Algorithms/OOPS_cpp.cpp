@@ -1033,7 +1033,7 @@ int main()
 {
     derived obj;
     //* obj.someFunction() // Error! , doesn't know which function to call
-    //>> this problem can be solved using the scope resolution function to specify which function to class either base1or base2.
+    //>> this problem can be solved using the scope resolution function to specify which function to class either base1 or base2.
 }
 
 // _Avoiding ambiguity using scope resolution operator( :: )
@@ -1047,7 +1047,7 @@ int main()
 
 /*
 ! IMPORTANT :: https://www.makeuseof.com/what-is-diamond-problem-in-cpp/
-- What is calling order of contructor and derstructor in multiple inheritance ??
+- What is calling order of contructor and destructor in multiple inheritance ??
 - What is Diamond problem and how to avoid it ??
 -----------------------------------------------------------------------------------------------------------------------------
 
@@ -1149,10 +1149,10 @@ int main()
 
     >-- COMPILE TIME POLYMORPHISM ::
         - This type of polymorphism is achieved by:
-           1. function overloading
-           2. operator overloading
+           1. Method overloading
+           2. Operator overloading
 
-        >>__A. Function Overloading:
+        >>__A. Method Overloading:
 
             - When there are multiple functions with the same name but different parameters,
             - then the functions are said to be overloaded, hence this is known as Function Overloading.
@@ -1255,11 +1255,11 @@ int main()
 /*
     >-- RUN-TIME  POLYMORPHISM ::
 
-        - This type of polymorphism is achieved by Function Overriding.
+        - This type of polymorphism is achieved by Method Overriding.
 
         - `Late binding` and `dynamic polymorphism` are other names for runtime polymorphism.
 
-        >> A. Function overriding : https://www.programiz.com/cpp-programming/function-overriding
+        >> A. Method overriding : https://www.programiz.com/cpp-programming/function-overriding
 
             - As we know, inheritance is a feature of OOP that allows us to create derived classes from a base class.
             - The derived classes inherit features of the base class.
@@ -1320,7 +1320,10 @@ int main()
     - pressing the accelerator the speed is actually increasing, he does not know about the inner mechanism
     - of the car or the implementation of the accelerator, brakes, etc in the car. This is what abstraction is.
 
-    ** Abstraction can be achieved using classes in C++.
+    ** Abstraction can be achieved:
+     -> 1. Using classes in C++.
+     -> 2. Using Access Specifiers.
+     -> 3. Abstraction In Header Files.
 
     _Example of Abstraction :
             - Abstraction in header files:

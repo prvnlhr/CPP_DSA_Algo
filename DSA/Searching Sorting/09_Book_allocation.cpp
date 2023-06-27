@@ -160,7 +160,7 @@ bool canAllocate(int arr[], int studs, int n, int pagesToAllocate)
         else
         {
             currStudsCnt++;
-            currntlyAlloPages = arr[i]; 
+            currntlyAlloPages = arr[i];
             if (currStudsCnt > studs)
             {
                 return false;
@@ -213,9 +213,9 @@ int main()
     cin.tie(0);
 
 #ifndef ONLINE_JUDGE
-    freopen("../Error.txt", "w", stderr);
-    freopen("../output.txt", "w", stdout);
-    freopen("../input.txt", "r", stdin);
+    freopen("../../Error.txt", "w", stderr);
+    freopen("../../output.txt", "w", stdout);
+    freopen("../../input.txt", "r", stdin);
 #endif
     auto start1 = high_resolution_clock::now();
     solve();

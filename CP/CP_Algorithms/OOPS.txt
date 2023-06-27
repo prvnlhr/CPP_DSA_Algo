@@ -67,23 +67,23 @@
 _____________________________________________________________________________________________________________________________________________
 _____________________________________________________________________________________________________________________________________________
 
-  CLASS:A class in C++ is the building block that leads to Object-Oriented programming. 
-        It is a user-defined data type, which holds its own data members and member functions,
-        which can be accessed and used by creating an instance of that class. A C++ class 
-        is like a blueprint for an object. For Example: Consider the Class of Cars. 
-        There may be many cars with different names and brand but all of them will share 
-        some common properties like all of them will have 4 wheels, Speed Limit, Mileage range etc. 
-        So here, Car is the class and wheels, speed limits, mileage are their properties.
+  CLASS: A class in C++ is the building block that leads to Object-Oriented programming. 
+         It is a user-defined data type, which holds its own data members and member functions,
+         which can be accessed and used by creating an instance of that class. A C++ class 
+         is like a blueprint for an object. For Example: Consider the Class of Cars. 
+         There may be many cars with different names and brand but all of them will share 
+         some common properties like all of them will have 4 wheels, Speed Limit, Mileage range etc. 
+         So here, Car is the class and wheels, speed limits, mileage are their properties.
+ 
+         A Class is a user defined data-type which has data members and member functions.
+         Data members are the data variables and member functions are the functions used to 
+         manipulate these variables and together these data members and member functions defines 
+         the properties and behavior of the objects in a Class.
+         In the above example of class Car, the data member will be speed limit, mileage etc and
+         member functions can be apply brakes, increase speed etc.
 
-        A Class is a user defined data-type which has data members and member functions.
-        Data members are the data variables and member functions are the functions used to 
-        manipulate these variables and together these data members and member functions defines 
-        the properties and behavior of the objects in a Class.
-        In the above example of class Car, the data member will be speed limit, mileage etc and
-        member functions can be apply brakes, increase speed etc.
-
- OBJECT:An Object is an instance of a Class. When a class is defined, no memory is allocated 
-        but when it is instantiated (i.e. an object is created) memory is allocated.
+ OBJECT: An Object is an instance of a Class. When a class is defined, no memory is allocated 
+         but when it is instantiated (i.e. an object is created) memory is allocated.
 _____________________________________________________________________________________________________________________________________________
 
   5. ACCESS MODIFIERS
@@ -185,7 +185,7 @@ ________2. DEFAULT access modifier______________________________________________
 
 		If you don't use any modifier, it is treated as default by default.
 
-		In this example, we have created two packages pack and mypack.
+		In this example, we have created two packages 'pack' and 'mypack'.
 		We are accessing the A class from outside its package, since A class
 		is not public, so it cannot be accessed from outside the package.
 
@@ -261,6 +261,7 @@ ________________________________________________________________________________
 _____________________________________________________________________________________________________________________________________________
 
 	6. PILLARS OF OOPS :
+	
 		The four pillars for OOP are:
 		- 1.Encapsulation.
 		- 2.Inheritance.
@@ -276,17 +277,14 @@ ________________________________________________________________________________
 
 			There are two types of polymorphism in Java:
 
-				* Compile-time polymorphism and
+				* Compile-time polymorphism -> Method Overloading , Operator Overloading
 
-			 	* Runtime polymorphism.
+			 	* Runtime polymorphism. -> Method Overriding
 
 			We can perform polymorphism in java by METHOD OVERLOADING and METHOD OVERRIDING
 
 			If you overload a static method in Java, it is the example of compile time
-			polymorphism. Here, we will focus on runtime polymorphism in java.
-
-
-
+			polymorphism.
 
 
 			A . JAVA METHOD OVERRIDING
@@ -297,7 +295,7 @@ ________________________________________________________________________________
 				overriding.
 
 				NOTE: The method that is called is determined during the execution
-				of the program. Hence, method overriding is a run-time polymorphism.
+				of the program. Hence, method overriding is a '''run-time polymorphism'''.
 
 				Example 1: Polymorphism using METHOD OVERRIDING
 
@@ -366,8 +364,6 @@ ________________________________________________________________________________
 
 
 				Example 3: Polymorphism using method overloading
-
-
 
 				 class Pattern {
 
@@ -477,7 +473,7 @@ ________________________________________________________________________________
 			    // create an object of the subclass
 			    Dog labrador = new Dog();
 
-			    labrador.name = "Tommy";       dog class doe not have name field, but it has inherited it from Animal class
+			    labrador.name = "Tommy";       dog class does not have name field, but it has inherited it from Animal class
 			    labrador.display();
 
 			    // call method of superclass
@@ -600,6 +596,7 @@ ________________________________________________________________________________
 				 // fields and methods
 				}
 
+
 				4.__MULTIPLE
 
 					NOTE : Multiple inheritance is not supported in Java through class.
@@ -607,8 +604,8 @@ ________________________________________________________________________________
 
 					To reduce the complexity and simplify the language, multiple inheritance is not supported in java.
 
-					Example, why java does not support multiple.
-
+				->> Why java does not support multiple ?
+					
 					Consider a scenario where A, B, and C are three classes.
 					The C class inherits A and B classes. If A and B classes
 					have the same method, and you call it from child class object,

@@ -134,7 +134,7 @@ void factOfN(ll n)
 //> O(N), O(K);
 
 /*
-        5   
+        5
         5 2
         -8 2 3 -6 10
         5 2
@@ -214,9 +214,9 @@ int main()
     cin.tie(0);
 
 #ifndef ONLINE_JUDGE
-    freopen("../Error.txt", "w", stderr);
-    freopen("../output.txt", "w", stdout);
-    freopen("../input.txt", "r", stdin);
+    freopen("../../Error.txt", "w", stderr);
+    freopen("../../output.txt", "w", stdout);
+    freopen("../../input.txt", "r", stdin);
 #endif
     auto start1 = high_resolution_clock::now();
     solve();

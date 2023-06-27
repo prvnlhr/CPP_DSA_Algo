@@ -129,6 +129,21 @@ void factOfN(ll n)
 
 //>----------------------------ＳＯＬＶＥ-----------------------------------------------------------------------------------------------------------------------------------------------
 
+/*
+- Sample Input 1 :
+> a2b3cd3
+> 8
+
+-> Sample Output 1 :
+-> c
+
+- Explanation to Sample Input 1 :
+- S = "a2b3cd3"
+- Decrypted String of S = "aabbbcdcdcd"
+- According to 1-based indexing for S, the 8th character is 'c'.
+
+*/
+
 //> Self Solved 100% CN
 //> O(N)
 //>
@@ -197,9 +212,9 @@ int main()
     cin.tie(0);
 
 #ifndef ONLINE_JUDGE
-    freopen("../Error.txt", "w", stderr);
-    freopen("../output.txt", "w", stdout);
-    freopen("../input.txt", "r", stdin);
+    freopen("../../Error.txt", "w", stderr);
+    freopen("../../output.txt", "w", stdout);
+    freopen("../../input.txt", "r", stdin);
 #endif
     auto start1 = high_resolution_clock::now();
     solve();

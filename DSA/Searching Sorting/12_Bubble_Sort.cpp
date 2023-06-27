@@ -102,7 +102,7 @@ typedef priority_queue<int, vector<int>, greater<int>> pqmin;
 void bubbleSort(vector<int> &arr)
 {
     int n = arr.size();
-   
+
     for (int s = 0; s < n; s++)
     {
         for (int i = 0; i < n - 1 - s; i++)
@@ -137,7 +137,7 @@ void bubbleSortOP(vector<int> &arr)
 {
     int n = arr.size();
     int swapped = 0;
-    
+
     for (int s = 0; s < n; s++)
     {
         for (int i = 0; i < n - 1 - s; i++)
@@ -168,9 +168,9 @@ int main()
     cin.tie(0);
 
 #ifndef ONLINE_JUDGE
-    freopen("../Error.txt", "w", stderr);
-    freopen("../output.txt", "w", stdout);
-    freopen("../input.txt", "r", stdin);
+    freopen("../../Error.txt", "w", stderr);
+    freopen("../../output.txt", "w", stdout);
+    freopen("../../input.txt", "r", stdin);
 #endif
     auto start1 = high_resolution_clock::now();
     solve();
