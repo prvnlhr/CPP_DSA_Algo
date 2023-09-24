@@ -10,7 +10,6 @@
 using namespace std;
 using namespace chrono;
 
-
 #define MOD 1000000007
 #define MOD1 998244353
 #define PI 3.141592653589793238462
@@ -90,90 +89,139 @@ typedef pair<int, int> pi;
 typedef priority_queue<int> pqmax;
 typedef priority_queue<int, vector<int>, greater<int>> pqmin;
 
-//|> ---GCD -------------------------------------------------------------------
-ll gcd(ll a, ll b)
+//|> ---ＳＯＬＶＥ-----------------------------------------------------------------------------------------------------------------------------------------------
+vector<int> intersect(vector<int> &nums1, vector<int> &nums2)
 {
-    if (b > a)
-    {
-        return gcd(b, a);
-    }
-    if (b == 0)
-    {
-        return a;
-    }
-    return gcd(b, a % b);
-}
+    /*
+                           i
+                           |
+    4   9   5  =>  4   5   9
 
-//|> ---EXPONENTIAL ----------------------------------------------------------
-ll expo(ll a, ll b, ll mod)
-{
-    ll res = 1;
-    while (b > 0)
+                                       j
+                                       |
+    9   4   9   8   4  =>  4   4   8   9   9
+
+    => {4, 9}
+
+    */
+
+    sort(nums1.begin(), nums1.end()); // : O(nlogn)
+    sort(nums2.begin(), nums2.end()); // : O(nlogn)
+
+    int i = 0;
+    int j = 0;
+    vector<int> res;
+
+    // : O(N)
+    while (i < nums1.size() && j < nums2.size())
     {
-        if (b & 1)
-            res = (res * a) % mod;
-        a = (a * a) % mod;
-        b = b >> 1;
+
+        if (nums1[i] == nums2[j])
+        {
+            res.push_back(nums1[i]);
+            i++;
+            j++;
+        }
+        else if (nums1[i] < nums2[j])
+        {
+            i++;
+        }
+        else
+        {
+            j++;
+        }
     }
     return res;
 }
 
-//|> ---FACTORIAL ------------------------------------------------------------
-vector<ll> fact;
-void factOfN(ll n)
+vector<int> intersectOP(vector<int> &nums1, vector<int> &nums2)
 {
-    ll prod = 1;
-    fact.resize(n + 1);
-    for (int f = 1; f <= n; f++)
+    /*
+    using hashmap to find common elements
+
+    4   9   5
+    9   4   9   8   4
+
+    map= {
+        4:1
+        9:1 -> 9 : 0
+        5:1
+        }
+
+    i
+    9   4   9   8   4
+
+    */
+
+    if (nums1.size() > nums2.size())
     {
-
-        fact[f] = prod * f;
-        prod = prod * f;
+        swap(nums1, nums2);
     }
+
+    unordered_map<int, int> mpp;
+    for (auto ele : nums1)
+    {
+        mpp[ele]++;
+    }
+
+    debug(mpp);
+
+    vector<int> res;
+
+    int i = 0;
+    while (i < nums2.size())
+    {
+        int currEle = nums2[i];
+
+        if (mpp[currEle])
+        {
+            mpp[currEle]--;
+
+            if (mpp[currEle] == 0)
+            {
+                mpp.erase(currEle);
+            }
+
+            res.push_back(currEle);
+        }
+
+        i++;
+    }
+    return res;
 }
-
-
-//|> ---ＳＯＬＶＥ-----------------------------------------------------------------------------------------------------------------------------------------------
 
 void solve()
 {
 
-    int a;
-    cin >> a;
-    cout << "TESTING INPUT : " << a << " OUPUT : " << a << endl;
-    debug(a, "Error checking OK");
-    /*
+    vector<int> nums1;
+    vector<int> nums2;
 
-    -> This is test comment
-    => This is test comment
-    >  This is test
-    |> This is test
+    int ele1;
+    int ele2;
 
-    #  This is test comment
+    while (cin >> ele1 && ele1 != -1)
+    {
+        nums1.push_back(ele1);
+    }
 
-    *  This is test comment
-    ** This is test comment
-
-    -  This is test comment
-    _  This is test comment
-
-    !  Warning
-    :  This is test comment
-       TODO: This is test comment
-
-    */
+    while (cin >> ele2 && ele2 != -1)
+    {
+        nums2.push_back(ele2);
+    }
+    auto ans = intersectOP(nums1, nums2);
+    debug(ans);
 }
 
-//|> --- MAIN -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+//|> ---MAIN-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 int main()
 {
     ios::sync_with_stdio(0);
     cin.tie(0);
 
 #ifndef ONLINE_JUDGE
-    freopen("../Error.txt", "w", stderr);
-    freopen("../output.txt", "w", stdout);
-    freopen("../input.txt", "r", stdin);
+    freopen("../../Error.txt", "w", stderr);
+    freopen("../../output.txt", "w", stdout);
+    freopen("../../input.txt", "r", stdin);
 #endif
     auto start1 = high_resolution_clock::now();
     solve();

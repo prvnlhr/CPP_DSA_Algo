@@ -10,7 +10,6 @@
 using namespace std;
 using namespace chrono;
 
-
 #define MOD 1000000007
 #define MOD1 998244353
 #define PI 3.141592653589793238462
@@ -90,90 +89,105 @@ typedef pair<int, int> pi;
 typedef priority_queue<int> pqmax;
 typedef priority_queue<int, vector<int>, greater<int>> pqmin;
 
-//|> ---GCD -------------------------------------------------------------------
-ll gcd(ll a, ll b)
-{
-    if (b > a)
-    {
-        return gcd(b, a);
-    }
-    if (b == 0)
-    {
-        return a;
-    }
-    return gcd(b, a % b);
-}
-
-//|> ---EXPONENTIAL ----------------------------------------------------------
-ll expo(ll a, ll b, ll mod)
-{
-    ll res = 1;
-    while (b > 0)
-    {
-        if (b & 1)
-            res = (res * a) % mod;
-        a = (a * a) % mod;
-        b = b >> 1;
-    }
-    return res;
-}
-
-//|> ---FACTORIAL ------------------------------------------------------------
-vector<ll> fact;
-void factOfN(ll n)
-{
-    ll prod = 1;
-    fact.resize(n + 1);
-    for (int f = 1; f <= n; f++)
-    {
-
-        fact[f] = prod * f;
-        prod = prod * f;
-    }
-}
-
-
 //|> ---ＳＯＬＶＥ-----------------------------------------------------------------------------------------------------------------------------------------------
+
+/*
+
+Ex:1 => s = loveleetcode,  c = e
+
+    0   1   2   3   4   5   6   7   8   9   10  11
+    l   o   v   e   l   e   e   t   c   o   d   e
+    0   0   0   0   1   0   2   2   3   4   5   0
+    3   2   1   0   1   0   0   4   3   2   1   0
+
+    3   2   1   0   1   0   0   2   3   2   1   0
+
+    3   2   1   0   1   0   0   1   2   2   1   0
+
+
+    0   1   2   3   4   5   6   7   8   9   10  11
+    l   o   v   e   l   e   e   t   c   o   d   e
+    0   0   0   0   1   0   0   1   2   3   4   0
+    3   2   1   0   1   0   0   4   3   2   1   0
+    3   2   1   0   1   0   0   1   2   2   1   0
+
+
+
+Ex:2 =>  s = aaab, c = b
+
+     0   1   2   3
+     a   a   a   b
+     0   0   0   0
+     3   2   1   0
+
+Ex:3 => aaba,  c = b
+
+
+        distOfChar = INT_MAX
+
+        0   1   2   3
+        a   a   b   a
+
+        M   M   0   1
+
+        2   1   0   M
+
+        2   1   0   1
+
+*/
+
+vector<int> shortestToChar(string s, char c)
+{
+    int n = s.size();
+    vector<int> result(n, n); //|> Initialize the result array with a large value
+
+    //|> Calculate shortest distance from 'c' to the left
+    int distance = n;
+    for (int i = 0; i < n; i++)
+    {
+        if (s[i] == c)
+        {
+            distance = 0;
+        }
+        result[i] = min(result[i], distance);
+        distance++;
+    }
+
+    //|> Calculate shortest distance from 'c' to the right
+    distance = n;
+    for (int i = n - 1; i >= 0; i--)
+    {
+        if (s[i] == c)
+        {
+            distance = 0;
+        }
+        result[i] = min(result[i], distance);
+        distance++;
+    }
+
+    return result;
+}
 
 void solve()
 {
 
-    int a;
-    cin >> a;
-    cout << "TESTING INPUT : " << a << " OUPUT : " << a << endl;
-    debug(a, "Error checking OK");
-    /*
+    string s;
+    char c;
+    cin >> s >> c;
 
-    -> This is test comment
-    => This is test comment
-    >  This is test
-    |> This is test
-
-    #  This is test comment
-
-    *  This is test comment
-    ** This is test comment
-
-    -  This is test comment
-    _  This is test comment
-
-    !  Warning
-    :  This is test comment
-       TODO: This is test comment
-
-    */
+    auto res = shortestToChar(s, c);
 }
 
-//|> --- MAIN -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+//|> ---MAIN-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 int main()
 {
     ios::sync_with_stdio(0);
     cin.tie(0);
 
 #ifndef ONLINE_JUDGE
-    freopen("../Error.txt", "w", stderr);
-    freopen("../output.txt", "w", stdout);
-    freopen("../input.txt", "r", stdin);
+    freopen("../../Error.txt", "w", stderr);
+    freopen("../../output.txt", "w", stdout);
+    freopen("../../input.txt", "r", stdin);
 #endif
     auto start1 = high_resolution_clock::now();
     solve();

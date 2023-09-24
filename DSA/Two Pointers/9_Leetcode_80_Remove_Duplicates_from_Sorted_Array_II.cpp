@@ -10,15 +10,13 @@
 using namespace std;
 using namespace chrono;
 
-//__________________________________________________________________________________________________________________________________________________________________________________________________
-
 #define MOD 1000000007
 #define MOD1 998244353
 #define PI 3.141592653589793238462
 
 typedef long long ll;
 
-//>---DEBUG_TEMPLATE_START---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+// |> ---DEBUG_TEMPLATE_START---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 template <class T1, class T2>
 ostream &operator<<(ostream &os, const pair<T1, T2> &p)
@@ -26,28 +24,32 @@ ostream &operator<<(ostream &os, const pair<T1, T2> &p)
     return os << '{' << p.first << ", " << p.second << '}';
 }
 
-template <class T, class = decay_t<decltype(*begin(declval<T>()))>,
+template <class T, class = decltype(begin(declval<T>())),
           class = enable_if_t<!is_same<T, string>::value>>
 ostream &operator<<(ostream &os, const T &c)
 {
     os << '[';
-    for (auto it = c.begin(); it != c.end(); ++it)
-        os << &", "[2 * (it == c.begin())] << *it;
+    for (auto it = begin(c); it != end(c); ++it)
+        os << (it == begin(c) ? "" : ", ") << *it;
     return os << ']';
 }
-//__support up to 5 args
-#define _NTH_ARG(_1, _2, _3, _4, _5, _6, N, ...) N
-#define _FE_0(_CALL, ...)
+
+#define _NTH_ARG(_1, _2, _3, _4, _5, _6, _7, _8, _9, _10, N, ...) N
 #define _FE_1(_CALL, x) _CALL(x)
 #define _FE_2(_CALL, x, ...) _CALL(x) _FE_1(_CALL, __VA_ARGS__)
 #define _FE_3(_CALL, x, ...) _CALL(x) _FE_2(_CALL, __VA_ARGS__)
 #define _FE_4(_CALL, x, ...) _CALL(x) _FE_3(_CALL, __VA_ARGS__)
 #define _FE_5(_CALL, x, ...) _CALL(x) _FE_4(_CALL, __VA_ARGS__)
-#define FOR_EACH_MACRO(MACRO, ...)                                           \
-    _NTH_ARG(dummy, ##__VA_ARGS__, _FE_5, _FE_4, _FE_3, _FE_2, _FE_1, _FE_0) \
-    (MACRO, ##__VA_ARGS__)
+#define _FE_6(_CALL, x, ...) _CALL(x) _FE_5(_CALL, __VA_ARGS__)
+#define _FE_7(_CALL, x, ...) _CALL(x) _FE_6(_CALL, __VA_ARGS__)
+#define _FE_8(_CALL, x, ...) _CALL(x) _FE_7(_CALL, __VA_ARGS__)
+#define _FE_9(_CALL, x, ...) _CALL(x) _FE_8(_CALL, __VA_ARGS__)
+#define _FE_10(_CALL, x, ...) _CALL(x) _FE_9(_CALL, __VA_ARGS__)
+#define FOR_EACH_MACRO(MACRO, ...)                                                               \
+    _NTH_ARG(__VA_ARGS__, _FE_10, _FE_9, _FE_8, _FE_7, _FE_6, _FE_5, _FE_4, _FE_3, _FE_2, _FE_1) \
+    (MACRO, __VA_ARGS__)
 
-//__Change output format here
+//__Change output format here______________________________________________________________________________________________________________________________________________________
 #define out(x) #x " = " << x << "; "
 
 #ifndef ONLINE_JUDGE
@@ -57,7 +59,7 @@ ostream &operator<<(ostream &os, const T &c)
 #define debug(...)
 #endif
 
-//>---DEBUG_TEMPLATE_END-----------------------------------------------------------------------------------------------------------------------------------------------------------
+//|> ---DEBUG_TEMPLATE_END-----------------------------------------------------------------------------------------------------------------------------------------------------------
 
 // #define FOR(i, start, end) for (int i = start; i < end; i++)
 #define FOR(i, begin, end) for (__typeof(end) i = (begin) - ((begin) > (end)); i != (end) - ((begin) > (end)); i += 1 - 2 * ((begin) > (end)))
@@ -86,97 +88,82 @@ typedef map<int, int> mpint;
 typedef pair<int, int> pi;
 typedef priority_queue<int> pqmax;
 typedef priority_queue<int, vector<int>, greater<int>> pqmin;
-//_____________________________
-ll gcd(ll a, ll b)
-{
-    if (b > a)
-    {
-        return gcd(b, a);
-    }
-    if (b == 0)
-    {
-        return a;
-    }
-    return gcd(b, a % b);
-}
-//_____________________________
-// >
-ll expo(ll a, ll b, ll mod)
-{
-    ll res = 1;
-    while (b > 0)
-    {
-        if (b & 1)
-            res = (res * a) % mod;
-        a = (a * a) % mod;
-        b = b >> 1;
-    }
-    return res;
-}
-//__factorial______________________________________________
-vector<ll> fact;
-void factOfN(ll n)
-{
-    ll prod = 1;
-    fact.resize(n + 1);
-    for (int f = 1; f <= n; f++)
-    {
 
-        fact[f] = prod * f;
-        prod = prod * f;
-    }
-}
-//--------------------------------------------------------------------------------------------------------------------------------
+//|> ---ＳＯＬＶＥ-----------------------------------------------------------------------------------------------------------------------------------------------
 
-//----------------------------_ＳＯＬＶＥ_----------------------------------------------------------------------------------------------------
+/*
+    0   1   2   3   4   5
+    1   1   1   2   2   3
 
-// > TC: O(N), SC: O(1)
-int numOfSubarrays(vector<int> &arr, int k, int threshold)
+=>  1   1   2   2   3   _
+
+
+prev = 1
+
+    |
+    1   1   1   2   2   3
+
+
+prev = 1
+
+    0   1   2   3
+    1   2   2   3
+
+
+
+*/
+
+int removeDuplicates(vector<int> &nums)
 {
 
-    int winStart = 0;
-    int winEnd = 0;
-    int res = 0;
-    int n = arr.size();
-    int currSum = 0;
+    int i = 0;
+    int j = 0;
+    int lastInsertPos = 0;
+    int cnt = 0;
+    int sz = nums.size();
 
-    while (winStart < n && winEnd < n)
+    while (i < sz)
     {
-        currSum += arr[winEnd];
-        if (winEnd - winStart + 1 == k)
+        cnt = 0;
+        int curr = nums[i];
+
+        while (i < sz && nums[i] == curr)
         {
-            int avg = currSum / k;
-            if (avg >= threshold)
-            {
-                res++;
-            }
-            currSum -= arr[winStart];
-            winStart++;
-            winEnd++;
+            cnt++;
+            i++;
+        }
+        if (cnt > 1)
+        {
+            nums[lastInsertPos++] = curr;
+            nums[lastInsertPos++] = curr;
         }
         else
         {
-            winEnd++;
+            nums[lastInsertPos++] = curr;
         }
     }
-    return res;
+
+    return lastInsertPos;
 }
+
 void solve()
 {
 
-    int k, thre;
-    cin >> k >> thre;
+    vector<int> nums;
     int ele;
-    vector<int> arr;
     while (cin >> ele)
     {
-        arr.push_back(ele);
+        nums.push_back(ele);
     }
-    debug(arr, k, thre);
-    cout << numOfSubarrays(arr, k, thre) << endl;
+    int k = removeDuplicates(nums);
+    debug(nums);
+    for (int i = 0; i < k; i++)
+    {
+        cout << nums[i] << " ";
+    }
 }
 
-//> -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+//|> ---MAIN-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 int main()
 {
     ios::sync_with_stdio(0);

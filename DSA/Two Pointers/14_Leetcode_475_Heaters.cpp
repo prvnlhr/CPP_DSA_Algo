@@ -10,7 +10,6 @@
 using namespace std;
 using namespace chrono;
 
-
 #define MOD 1000000007
 #define MOD1 998244353
 #define PI 3.141592653589793238462
@@ -90,90 +89,103 @@ typedef pair<int, int> pi;
 typedef priority_queue<int> pqmax;
 typedef priority_queue<int, vector<int>, greater<int>> pqmin;
 
-//|> ---GCD -------------------------------------------------------------------
-ll gcd(ll a, ll b)
-{
-    if (b > a)
-    {
-        return gcd(b, a);
-    }
-    if (b == 0)
-    {
-        return a;
-    }
-    return gcd(b, a % b);
-}
-
-//|> ---EXPONENTIAL ----------------------------------------------------------
-ll expo(ll a, ll b, ll mod)
-{
-    ll res = 1;
-    while (b > 0)
-    {
-        if (b & 1)
-            res = (res * a) % mod;
-        a = (a * a) % mod;
-        b = b >> 1;
-    }
-    return res;
-}
-
-//|> ---FACTORIAL ------------------------------------------------------------
-vector<ll> fact;
-void factOfN(ll n)
-{
-    ll prod = 1;
-    fact.resize(n + 1);
-    for (int f = 1; f <= n; f++)
-    {
-
-        fact[f] = prod * f;
-        prod = prod * f;
-    }
-}
-
-
 //|> ---ＳＯＬＶＥ-----------------------------------------------------------------------------------------------------------------------------------------------
+
+int findRadius(vector<int> &houses, vector<int> &heaters)
+{
+    sort(houses.begin(), houses.end());
+    sort(heaters.begin(), heaters.end());
+
+    vector<int> res(houses.size(), INT_MAX);
+
+    int houseIter = 0;
+    int heaterIter = 0;
+
+    while (houseIter < houses.size() && heaterIter < heaters.size())
+    {
+        if (houses[houseIter] <= heaters[heaterIter])
+        {
+            res[houseIter] = heaters[heaterIter] - houses[houseIter];
+            houseIter++;
+        }
+        else
+        {
+            heaterIter++;
+        }
+    }
+
+    houseIter = houses.size() - 1;
+    heaterIter = heaters.size() - 1;
+
+    while (houseIter >= 0 && heaterIter >= 0)
+    {
+        if (heaters[heaterIter] <= houses[houseIter])
+        {
+            int dist = houses[houseIter] - heaters[heaterIter];
+            res[houseIter] = min(dist, res[houseIter]);
+            houseIter--;
+        }
+        else
+        {
+            heaterIter--;
+        }
+    }
+
+    return *max_element(res.begin(), res.end());
+}
+
+int findRadiusOP(vector<int> &houses, vector<int> &heaters)
+{
+    sort(houses.begin(), houses.end());
+    sort(heaters.begin(), heaters.end());
+
+    int maxRadius = 0;
+    int heaterIndex = 0;
+
+    for (int house : houses)
+    {
+        
+        while (heaterIndex < heaters.size() - 1 && abs(heaters[heaterIndex + 1] - house) <= abs(heaters[heaterIndex] - house))
+        {
+            heaterIndex++;
+        }
+
+        maxRadius = max(maxRadius, abs(heaters[heaterIndex] - house));
+    }
+
+    return maxRadius;
+}
 
 void solve()
 {
+    vector<int> houses;
+    int ele1;
 
-    int a;
-    cin >> a;
-    cout << "TESTING INPUT : " << a << " OUPUT : " << a << endl;
-    debug(a, "Error checking OK");
-    /*
+    vector<int> heaters;
+    int ele2;
 
-    -> This is test comment
-    => This is test comment
-    >  This is test
-    |> This is test
+    while (cin >> ele1 && ele1 != -1)
+    {
+        houses.push_back(ele1);
+    }
 
-    #  This is test comment
-
-    *  This is test comment
-    ** This is test comment
-
-    -  This is test comment
-    _  This is test comment
-
-    !  Warning
-    :  This is test comment
-       TODO: This is test comment
-
-    */
+    while (cin >> ele2 && ele2 != -1)
+    {
+        heaters.push_back(ele2);
+    }
+    cout << findRadius(houses, heaters) << endl;
 }
 
-//|> --- MAIN -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+//|> ---MAIN-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 int main()
 {
     ios::sync_with_stdio(0);
     cin.tie(0);
 
 #ifndef ONLINE_JUDGE
-    freopen("../Error.txt", "w", stderr);
-    freopen("../output.txt", "w", stdout);
-    freopen("../input.txt", "r", stdin);
+    freopen("../../Error.txt", "w", stderr);
+    freopen("../../output.txt", "w", stdout);
+    freopen("../../input.txt", "r", stdin);
 #endif
     auto start1 = high_resolution_clock::now();
     solve();

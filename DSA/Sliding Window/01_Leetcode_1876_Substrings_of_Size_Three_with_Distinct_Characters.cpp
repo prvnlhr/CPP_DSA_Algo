@@ -171,6 +171,7 @@ int countGoodSubstrings(string s)
     }
     return res;
 }
+
 void solve()
 {
     int tc;

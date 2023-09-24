@@ -1,0 +1,3 @@
+Line 114: nums1 = []; 
+Line 115: nums2 = []; 
+Time: 10

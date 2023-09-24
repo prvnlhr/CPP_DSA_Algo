@@ -10,7 +10,6 @@
 using namespace std;
 using namespace chrono;
 
-
 #define MOD 1000000007
 #define MOD1 998244353
 #define PI 3.141592653589793238462
@@ -90,90 +89,127 @@ typedef pair<int, int> pi;
 typedef priority_queue<int> pqmax;
 typedef priority_queue<int, vector<int>, greater<int>> pqmin;
 
-//|> ---GCD -------------------------------------------------------------------
-ll gcd(ll a, ll b)
-{
-    if (b > a)
-    {
-        return gcd(b, a);
-    }
-    if (b == 0)
-    {
-        return a;
-    }
-    return gcd(b, a % b);
-}
-
-//|> ---EXPONENTIAL ----------------------------------------------------------
-ll expo(ll a, ll b, ll mod)
-{
-    ll res = 1;
-    while (b > 0)
-    {
-        if (b & 1)
-            res = (res * a) % mod;
-        a = (a * a) % mod;
-        b = b >> 1;
-    }
-    return res;
-}
-
-//|> ---FACTORIAL ------------------------------------------------------------
-vector<ll> fact;
-void factOfN(ll n)
-{
-    ll prod = 1;
-    fact.resize(n + 1);
-    for (int f = 1; f <= n; f++)
-    {
-
-        fact[f] = prod * f;
-        prod = prod * f;
-    }
-}
-
-
 //|> ---ＳＯＬＶＥ-----------------------------------------------------------------------------------------------------------------------------------------------
+int compress(vector<char> &chars)
+{
+
+    int i = 0;
+    int n = chars.size();
+    int k = 0;
+    while (i < n)
+    {
+        int j = i + 1;
+        char currChar = chars[i];
+        int cntCurr = 1;
+        while (j < n && chars[j] == currChar)
+        {
+            cntCurr++;
+            j++;
+        }
+
+        if (cntCurr > 1)
+        {
+            chars[k++] = currChar;
+
+            if (cntCurr >= 10)
+            {
+                string currCntNumStr = "";
+
+                while (cntCurr > 0)
+                {
+                    char digit = (cntCurr % 10) + '0';
+                    currCntNumStr = digit + currCntNumStr;
+                    cntCurr = cntCurr / 10;
+                }
+                int pos = 0;
+                while (pos < currCntNumStr.size())
+                {
+                    chars[k++] = currCntNumStr[pos++];
+                }
+            }
+            else
+            {
+                chars[k++] = cntCurr + '0';
+            }
+        }
+        else
+        {
+            chars[k] = currChar;
+            k++;
+            cerr << endl;
+        }
+        i = j;
+    }
+
+    return k;
+}
+
+// |> ChatGPT version__________
+class Solution
+{
+public:
+    int compress(vector<char> &chars)
+    {
+        int n = chars.size();
+        int k = 0;
+
+        for (int i = 0; i < n;)
+        {
+            char currChar = chars[i];
+            int j = i + 1;
+            int cnt = 1;
+            while (j < n && chars[j] == currChar)
+            {
+                cnt++;
+                j++;
+            }
+
+            chars[k++] = currChar;
+
+            if (cnt > 1)
+            {
+                string cntStr = to_string(cnt);
+                for (char c : cntStr)
+                {
+                    chars[k++] = c;
+                }
+            }
+
+            i = j;
+        }
+
+        return k;
+    }
+};
 
 void solve()
 {
 
-    int a;
-    cin >> a;
-    cout << "TESTING INPUT : " << a << " OUPUT : " << a << endl;
-    debug(a, "Error checking OK");
-    /*
-
-    -> This is test comment
-    => This is test comment
-    >  This is test
-    |> This is test
-
-    #  This is test comment
-
-    *  This is test comment
-    ** This is test comment
-
-    -  This is test comment
-    _  This is test comment
-
-    !  Warning
-    :  This is test comment
-       TODO: This is test comment
-
-    */
+    vector<char> chars;
+    char ele;
+    while (cin >> ele)
+    {
+        chars.push_back(ele);
+    }
+    debug(chars);
+    int ans = compress(chars);
+    for (int i = 0; i < ans; i++)
+    {
+        cout << chars[i] << " ";
+    }
+    cout << endl;
 }
 
-//|> --- MAIN -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+//|> ---MAIN-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 int main()
 {
     ios::sync_with_stdio(0);
     cin.tie(0);
 
 #ifndef ONLINE_JUDGE
-    freopen("../Error.txt", "w", stderr);
-    freopen("../output.txt", "w", stdout);
-    freopen("../input.txt", "r", stdin);
+    freopen("../../Error.txt", "w", stderr);
+    freopen("../../output.txt", "w", stdout);
+    freopen("../../input.txt", "r", stdin);
 #endif
     auto start1 = high_resolution_clock::now();
     solve();

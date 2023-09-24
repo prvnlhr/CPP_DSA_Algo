@@ -10,7 +10,6 @@
 using namespace std;
 using namespace chrono;
 
-
 #define MOD 1000000007
 #define MOD1 998244353
 #define PI 3.141592653589793238462
@@ -90,90 +89,158 @@ typedef pair<int, int> pi;
 typedef priority_queue<int> pqmax;
 typedef priority_queue<int, vector<int>, greater<int>> pqmin;
 
-//|> ---GCD -------------------------------------------------------------------
-ll gcd(ll a, ll b)
-{
-    if (b > a)
-    {
-        return gcd(b, a);
-    }
-    if (b == 0)
-    {
-        return a;
-    }
-    return gcd(b, a % b);
-}
-
-//|> ---EXPONENTIAL ----------------------------------------------------------
-ll expo(ll a, ll b, ll mod)
-{
-    ll res = 1;
-    while (b > 0)
-    {
-        if (b & 1)
-            res = (res * a) % mod;
-        a = (a * a) % mod;
-        b = b >> 1;
-    }
-    return res;
-}
-
-//|> ---FACTORIAL ------------------------------------------------------------
-vector<ll> fact;
-void factOfN(ll n)
-{
-    ll prod = 1;
-    fact.resize(n + 1);
-    for (int f = 1; f <= n; f++)
-    {
-
-        fact[f] = prod * f;
-        prod = prod * f;
-    }
-}
-
-
 //|> ---ＳＯＬＶＥ-----------------------------------------------------------------------------------------------------------------------------------------------
+
+pair<int, int> getVersion(string s, int currIndx)
+{
+    int ver = 0;
+    debug(currIndx);
+    while (currIndx < s.size() && s[currIndx] != '.')
+    {
+        char ch = s[currIndx];
+        int intOfCh = ch - '0';
+        ver = ver * 10 + intOfCh;
+        currIndx++;
+    }
+    if (s[currIndx] == '.')
+    {
+        currIndx++;
+    }
+    debug(s, currIndx, ver);
+    cerr << endl;
+
+    return {ver, currIndx};
+}
+
+int compareVersion(string version1, string version2)
+{
+    int i = 0;
+    int j = 0;
+    int currIndex = 0;
+    int n1 = version1.size();
+    int n2 = version2.size();
+
+    while (i < n1 && j < n2)
+    {
+        auto num1 = getVersion(version1, i);
+
+        auto num2 = getVersion(version2, j);
+
+        if (num1.first < num2.first)
+        {
+            return -1;
+        }
+        else if (num1.first > num2.first)
+        {
+            return 1;
+        }
+        else
+        {
+            i = num1.second;
+            j = num2.second;
+        }
+        debug(i, j);
+    }
+
+    cerr << endl;
+    debug("end of loop--", n1, i, n2, j);
+
+    while (i < n1)
+    {
+        auto num1 = getVersion(version1, i);
+        if (num1.first == 0)
+        {
+            i = num1.second;
+        }
+        else
+        {
+            return 1;
+        }
+    }
+    while (j < n2)
+    {
+        auto num2 = getVersion(version2, j);
+        if (num2.first == 0)
+        {
+            j = num2.second;
+        }
+        else
+        {
+            return -1;
+        }
+    }
+
+    return 0;
+}
+
+// |> ChatGPT version_____________________  
+class Solution
+{
+public:
+    pair<int, int> getVersion(const string &s, int currIndex)
+    {
+        int ver = 0;
+        while (currIndex < s.size() && s[currIndex] != '.')
+        {
+            ver = ver * 10 + (s[currIndex] - '0');
+            currIndex++;
+        }
+        if (s[currIndex] == '.')
+        {
+            currIndex++;
+        }
+        return {ver, currIndex};
+    }
+
+    int compareVersion(const string &version1, const string &version2)
+    {
+        int i = 0;
+        int j = 0;
+        int n1 = version1.size();
+        int n2 = version2.size();
+
+        while (i < n1 || j < n2) // here we are using or which make this code better and short
+                                 // as we do not need while loops for remaining char at end.
+        {
+            auto num1 = getVersion(version1, i);
+            auto num2 = getVersion(version2, j);
+
+            if (num1.first < num2.first)
+            {
+                return -1;
+            }
+            else if (num1.first > num2.first)
+            {
+                return 1;
+            }
+
+            i = num1.second;
+            j = num2.second;
+        }
+
+        return 0;
+    }
+};
 
 void solve()
 {
 
-    int a;
-    cin >> a;
-    cout << "TESTING INPUT : " << a << " OUPUT : " << a << endl;
-    debug(a, "Error checking OK");
-    /*
-
-    -> This is test comment
-    => This is test comment
-    >  This is test
-    |> This is test
-
-    #  This is test comment
-
-    *  This is test comment
-    ** This is test comment
-
-    -  This is test comment
-    _  This is test comment
-
-    !  Warning
-    :  This is test comment
-       TODO: This is test comment
-
-    */
+    string v1, v2;
+    cin >> v1 >> v2;
+    int ans = compareVersion(v1, v2);
+    debug(ans);
 }
 
-//|> --- MAIN -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+//|> ---MAIN-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 int main()
 {
     ios::sync_with_stdio(0);
     cin.tie(0);
 
 #ifndef ONLINE_JUDGE
-    freopen("../Error.txt", "w", stderr);
-    freopen("../output.txt", "w", stdout);
-    freopen("../input.txt", "r", stdin);
+    freopen("../../Error.txt", "w", stderr);
+    freopen("../../output.txt", "w", stdout);
+    freopen("../../input.txt", "r", stdin);
 #endif
     auto start1 = high_resolution_clock::now();
     solve();

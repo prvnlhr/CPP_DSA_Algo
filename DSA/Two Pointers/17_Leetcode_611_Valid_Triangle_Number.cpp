@@ -10,7 +10,6 @@
 using namespace std;
 using namespace chrono;
 
-
 #define MOD 1000000007
 #define MOD1 998244353
 #define PI 3.141592653589793238462
@@ -90,90 +89,110 @@ typedef pair<int, int> pi;
 typedef priority_queue<int> pqmax;
 typedef priority_queue<int, vector<int>, greater<int>> pqmin;
 
-//|> ---GCD -------------------------------------------------------------------
-ll gcd(ll a, ll b)
-{
-    if (b > a)
-    {
-        return gcd(b, a);
-    }
-    if (b == 0)
-    {
-        return a;
-    }
-    return gcd(b, a % b);
-}
-
-//|> ---EXPONENTIAL ----------------------------------------------------------
-ll expo(ll a, ll b, ll mod)
-{
-    ll res = 1;
-    while (b > 0)
-    {
-        if (b & 1)
-            res = (res * a) % mod;
-        a = (a * a) % mod;
-        b = b >> 1;
-    }
-    return res;
-}
-
-//|> ---FACTORIAL ------------------------------------------------------------
-vector<ll> fact;
-void factOfN(ll n)
-{
-    ll prod = 1;
-    fact.resize(n + 1);
-    for (int f = 1; f <= n; f++)
-    {
-
-        fact[f] = prod * f;
-        prod = prod * f;
-    }
-}
-
-
 //|> ---ＳＯＬＶＥ-----------------------------------------------------------------------------------------------------------------------------------------------
+
+//|> O(N^3)
+bool isTriangle(int a, int b, int c)
+{
+    return (a + b > c) && (a + c > b) && (b + c > a);
+}
+
+int triangleNumber(vector<int> &nums)
+{
+    int cntTriplets = 0;
+    int n = nums.size();
+
+    for (int i = 0; i < n; i++)
+    {
+        for (int j = i + 1; j < n; j++)
+        {
+            for (int k = j + 1; k < n; k++)
+            {
+                if (isTriangle(nums[i], nums[j], nums[k]))
+                {
+                    debug(nums[i], nums[j], nums[k]);
+                    cntTriplets++;
+                }
+            }
+        }
+    }
+    return cntTriplets;
+}
+
+//|> O(N^2)
+/*
+This problem is very similar to 3-Sum, in 3-Sum, we can use three pointers (i, j, k and i < j < k) to solve the problem in O(n^2) time for a sorted array, the way we do in 3-Sum is that we first lock pointer i and then scan j and k, if nums[j] + nums[k] is too large, k--, otherwise j++, once we complete the scan, increase pointer i and repeat.
+
+For this problem, once we sort the input array nums, the key to solve the problem is that given nums[k], count the combination of i and j where nums[i] + nums[j] > nums[k] (so that they can form a triangle). If nums[i] + nums[j] is larger than nums[k], we know that there will be j - i combination.
+
+Let's take the following array for example, let's mark the three pointers:
+
+ i                  j   k
+[3, 19, 22, 24, 35, 82, 84]
+because 3 + 82 > 84 and the numbers between 3 and 82 are always larger than 3, so we can quickly tell that there will be j - i combination which can form the triangle, and they are:
+
+3,  82, 84
+19, 82, 84
+22, 82, 84
+24, 82, 84
+35, 82, 84
+Now let's lock k and point to 35:
+
+ i          j   k
+[3, 19, 22, 24, 35, 82, 84]
+because 3 + 24 < 35, if we move j to the left, the sum will become even smaller, so we have to move pointer i to the next number 19, and now we found that 19 + 24 > 35, and we don't need to scan 22, we know that 22 must be ok!
+
+*/
+
+int triangleNumber(vector<int> &nums)
+{
+    int cntTriplets = 0;
+    int n = nums.size();
+    sort(nums.begin(), nums.end());
+
+    for (int k = n - 1; k >= 2; k--)
+    {
+        int i = 0;
+        int j = k - 1;
+        while (i < j)
+        {
+            if (nums[i] + nums[j] > nums[k])
+            {
+                cntTriplets = cntTriplets + (j - i);
+                j--;
+            }
+            else
+            {
+                i++;
+            }
+        }
+    }
+
+    return cntTriplets;
+}
 
 void solve()
 {
-
-    int a;
-    cin >> a;
-    cout << "TESTING INPUT : " << a << " OUPUT : " << a << endl;
-    debug(a, "Error checking OK");
-    /*
-
-    -> This is test comment
-    => This is test comment
-    >  This is test
-    |> This is test
-
-    #  This is test comment
-
-    *  This is test comment
-    ** This is test comment
-
-    -  This is test comment
-    _  This is test comment
-
-    !  Warning
-    :  This is test comment
-       TODO: This is test comment
-
-    */
+    vector<int> nums;
+    int ele;
+    while (cin >> ele)
+    {
+        nums.push_back(ele);
+    }
+    int res = triangleNumber(nums);
+    debug(res);
 }
 
-//|> --- MAIN -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+//|> ---MAIN-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 int main()
 {
     ios::sync_with_stdio(0);
     cin.tie(0);
 
 #ifndef ONLINE_JUDGE
-    freopen("../Error.txt", "w", stderr);
-    freopen("../output.txt", "w", stdout);
-    freopen("../input.txt", "r", stdin);
+    freopen("../../Error.txt", "w", stderr);
+    freopen("../../output.txt", "w", stdout);
+    freopen("../../input.txt", "r", stdin);
 #endif
     auto start1 = high_resolution_clock::now();
     solve();
