@@ -34,6 +34,25 @@ ostream &operator<<(ostream &os, const T &c)
     return os << ']';
 }
 
+// Specialization for unordered_map
+template <class Key, class T, class Hash, class Pred, class Alloc>
+ostream &operator<<(ostream &os, const unordered_map<Key, T, Hash, Pred, Alloc> &m)
+{
+    os << '{';
+    for (auto it = m.begin(); it != m.end(); ++it)
+    {
+        os << it->first << ": " << it->second;
+        auto next = it;
+        ++next;
+        if (next != m.end())
+        {
+            os << ", ";
+        }
+    }
+    os << '}';
+    return os;
+}
+
 #define _NTH_ARG(_1, _2, _3, _4, _5, _6, _7, _8, _9, _10, N, ...) N
 #define _FE_1(_CALL, x) _CALL(x)
 #define _FE_2(_CALL, x, ...) _CALL(x) _FE_1(_CALL, __VA_ARGS__)
@@ -49,7 +68,7 @@ ostream &operator<<(ostream &os, const T &c)
     _NTH_ARG(__VA_ARGS__, _FE_10, _FE_9, _FE_8, _FE_7, _FE_6, _FE_5, _FE_4, _FE_3, _FE_2, _FE_1) \
     (MACRO, __VA_ARGS__)
 
-//__Change output format here______________________________________________________________________________________________________________________________________________________
+// Change output format here
 #define out(x) #x " = " << x << "; "
 
 #ifndef ONLINE_JUDGE
@@ -90,55 +109,102 @@ typedef priority_queue<int> pqmax;
 typedef priority_queue<int, vector<int>, greater<int>> pqmin;
 
 //|> ---ＳＯＬＶＥ-----------------------------------------------------------------------------------------------------------------------------------------------
-
-bool isVovel(char v)
+bool hasWord(string w, string s)
 {
-    return v == 'a' || v == 'e' || v == 'i' || v == 'o' || v == 'u';
+    int i = 0;
+    int j = 0;
+    while (i < w.size() && j < s.size())
+    {
+        if (w[i] == s[j])
+        {
+            i++;
+            j++;
+        }
+        else
+        {
+            j++;
+        }
+    }
+    return i == w.size();
 }
 
-int maxVowels(string s, int k)
+int numMatchingSubseq(string s, vector<string> &words)
 {
-    int cntVovels = 0;
-
-    int l = 0;
-    int r = 0;
-
-    int n = s.size();
-
-    cntVovels = 0;
     int res = 0;
-
-    while (r < n)
+    for (auto word : words) // |> O(words.size())
     {
-        if (isVovel(s[r]))
+        if (hasWord(word, s))
         {
-            cntVovels++;
+            res++;
         }
-
-        while (r - l + 1 > k)
-        {
-            if (isVovel(s[l]))
-            {
-                cntVovels--;
-            }
-            l++;
-        }
-
-        if (r - l + 1 == k)
-        {
-            res = max(res, cntVovels);
-        }
-
-        r++;
     }
     return res;
 }
+
+void printMap(map<char, vector<int>> &mpp)
+{
+    for (const auto &entry : mpp)
+    {
+        char ch = entry.first;
+        const vector<int> &indices = entry.second;
+
+        cerr << "Character: " << ch << ", Indices: ";
+        for (int index : indices)
+        {
+            cerr << index << " ";
+        }
+        cerr << endl;
+    }
+}
+int numMatchingSubseqOP(string s, vector<string> &words)
+{
+    map<char, vector<int>> mpp;
+    vector<vector<int>> mapping(26);
+
+    for (int i = 0; i < s.size(); i++) //|>  O(s.size())
+    {
+        char ch = s[i];
+        int indx = i;
+        mpp[ch].push_back(indx);
+    }
+
+    printMap(mpp);
+
+    int res = 0;
+    for (auto word : words) //|>  O(words.size())
+    {
+        bool wordFound = true;
+
+        for (int i = 0, prevIndex = -1; wordFound && i < word.size(); i++) //|>  O(word.size())
+        {
+            char currCharOfWord = word[i];
+            auto &vec = mpp[currCharOfWord];
+            auto iter = upper_bound(begin(vec), end(vec), prevIndex); //|>  O(logN)
+            if (iter == vec.end())
+            {
+                wordFound = false;
+            }
+            else
+            {
+                prevIndex = *iter;
+            }
+        }
+        res += wordFound;
+    }
+    return res;
+}
+
 void solve()
 {
+    vector<string> words;
+    string w;
+    while (cin >> w && w != "#")
+    {
+        words.push_back(w);
+    }
     string s;
-    int k;
-    cin >> s >> k;
-    int res = maxVowels(s, k);
+    cin >> s;
+    int res = numMatchingSubseqOP(s, words);
     debug(res);
 }
 

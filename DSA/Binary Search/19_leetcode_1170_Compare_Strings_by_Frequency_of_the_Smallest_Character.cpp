@@ -90,55 +90,63 @@ typedef priority_queue<int> pqmax;
 typedef priority_queue<int, vector<int>, greater<int>> pqmin;
 
 //|> ---ＳＯＬＶＥ-----------------------------------------------------------------------------------------------------------------------------------------------
-
-bool isVovel(char v)
+int minCharFrequency(string &word)
 {
-    return v == 'a' || v == 'e' || v == 'i' || v == 'o' || v == 'u';
+    char minChar = *min_element(word.begin(), word.end());
+    int frequency = count(word.begin(), word.end(), minChar);
+    return frequency;
 }
 
-int maxVowels(string s, int k)
+vector<int> getFrequencyArr(vector<string> &arr)
 {
-    int cntVovels = 0;
+    vector<int> frequencyVec;
 
-    int l = 0;
-    int r = 0;
-
-    int n = s.size();
-
-    cntVovels = 0;
-    int res = 0;
-
-    while (r < n)
+    for (string w : arr)
     {
-        if (isVovel(s[r]))
-        {
-            cntVovels++;
-        }
-
-        while (r - l + 1 > k)
-        {
-            if (isVovel(s[l]))
-            {
-                cntVovels--;
-            }
-            l++;
-        }
-
-        if (r - l + 1 == k)
-        {
-            res = max(res, cntVovels);
-        }
-
-        r++;
+        int freq = minCharFrequency(w);
+        frequencyVec.push_back(freq);
     }
-    return res;
+
+    return frequencyVec;
+}
+
+vector<int> numSmallerByFrequency(vector<string> &queries, vector<string> &words)
+{
+    auto qFreqVec = getFrequencyArr(queries);
+    auto wFreqVec = getFrequencyArr(words);
+    int n = wFreqVec.size();
+
+    sort(begin(wFreqVec), end(wFreqVec));
+
+    vector<int> counts;
+
+    for (int a : qFreqVec)
+    {
+        auto it = upper_bound(wFreqVec.begin(), wFreqVec.end(), a);
+
+        int count = distance(it, wFreqVec.end());
+
+        counts.push_back(count);
+    }
+
+    return counts;
 }
 void solve()
 {
-    string s;
-    int k;
-    cin >> s >> k;
-    int res = maxVowels(s, k);
+    vector<string> queries;
+    string q;
+    while (cin >> q && q != "#")
+    {
+        queries.push_back(q);
+    }
+
+    vector<string> words;
+    string w;
+    while (cin >> w && w != "#")
+    {
+        words.push_back(w);
+    }
+    auto res = numSmallerByFrequency(queries, words);
     debug(res);
 }
 

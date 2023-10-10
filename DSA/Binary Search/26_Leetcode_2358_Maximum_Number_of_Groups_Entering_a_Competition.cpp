@@ -90,55 +90,30 @@ typedef priority_queue<int> pqmax;
 typedef priority_queue<int, vector<int>, greater<int>> pqmin;
 
 //|> ---ＳＯＬＶＥ-----------------------------------------------------------------------------------------------------------------------------------------------
-
-bool isVovel(char v)
+int maximumGroups(vector<int> &grades)
 {
-    return v == 'a' || v == 'e' || v == 'i' || v == 'o' || v == 'u';
-}
-
-int maxVowels(string s, int k)
-{
-    int cntVovels = 0;
-
-    int l = 0;
-    int r = 0;
-
-    int n = s.size();
-
-    cntVovels = 0;
-    int res = 0;
-
-    while (r < n)
+    long long n = grades.size();
+    long long lo = 1;
+    long long hi = n;
+    long long res = 1;
+    while (lo <= hi)
     {
-        if (isVovel(s[r]))
+        long long mid = lo + (hi - lo) / 2;
+        if (((mid * (mid + 1)) / 2) <= n)
         {
-            cntVovels++;
+            lo = mid + 1;
         }
-
-        while (r - l + 1 > k)
+        else
         {
-            if (isVovel(s[l]))
-            {
-                cntVovels--;
-            }
-            l++;
+            hi = mid - 1;
         }
-
-        if (r - l + 1 == k)
-        {
-            res = max(res, cntVovels);
-        }
-
-        r++;
     }
     return res;
 }
 void solve()
 {
-    string s;
-    int k;
-    cin >> s >> k;
-    int res = maxVowels(s, k);
+    vector<int> grades;
+    int res = maximumGroups(grades);
     debug(res);
 }
 

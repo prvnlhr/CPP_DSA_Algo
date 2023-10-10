@@ -90,56 +90,91 @@ typedef priority_queue<int> pqmax;
 typedef priority_queue<int, vector<int>, greater<int>> pqmin;
 
 //|> ---ＳＯＬＶＥ-----------------------------------------------------------------------------------------------------------------------------------------------
-
-bool isVovel(char v)
+bool checkIfExist(vector<int> &arr)
 {
-    return v == 'a' || v == 'e' || v == 'i' || v == 'o' || v == 'u';
-}
+    bool res = false;
+    int i = 0;
 
-int maxVowels(string s, int k)
-{
-    int cntVovels = 0;
-
-    int l = 0;
-    int r = 0;
-
-    int n = s.size();
-
-    cntVovels = 0;
-    int res = 0;
-
-    while (r < n)
+    while (i < arr.size())
     {
-        if (isVovel(s[r]))
+        int j = 0;
+        while (j < arr.size())
         {
-            cntVovels++;
-        }
-
-        while (r - l + 1 > k)
-        {
-            if (isVovel(s[l]))
+            debug(arr[i], arr[j], arr[j] * 2);
+            if (arr[i] == 2 * arr[j] && i != j)
             {
-                cntVovels--;
+                res = true;
+                return res;
             }
-            l++;
+            j++;
         }
-
-        if (r - l + 1 == k)
-        {
-            res = max(res, cntVovels);
-        }
-
-        r++;
+        i++;
     }
     return res;
 }
+bool checkIfExistOP(vector<int> &arr)
+{
+    unordered_map<int, int> mpp;
+
+    for (int i = 0; i < arr.size(); i++)
+    {
+        int curr = arr[i];
+        debug(curr, mpp);
+        if (mpp.find(curr * 2) != mpp.end())
+        {
+            return true;
+        }
+        else if (curr % 2 == 0 && mpp.find(curr / 2) != mpp.end())
+        {
+            return true;
+        }
+        mpp[curr] = i;
+    }
+
+    debug(mpp);
+    return false;
+}
+bool checkIfExistBinarySearch(vector<int> &arr)
+{
+
+    for (int i = 0; i < arr.size(); i++)
+    {
+        int curr = arr[i];
+
+        int lo = 0;
+        int hi = arr.size() - 1;
+        while (lo <= hi)
+        {
+            int mid = lo + (hi - lo) / 2;
+            if (arr[mid] == curr * 2 && mid != i)
+            {
+                return true;
+            }
+            else if (arr[mid] < curr * 2)
+            {
+                lo = mid + 1;
+            }
+            else
+            {
+                hi = mid - 1;
+            }
+        }
+    }
+
+    return false;
+}
+
 void solve()
 {
-    string s;
-    int k;
-    cin >> s >> k;
-    int res = maxVowels(s, k);
-    debug(res);
+    vector<int> arr;
+    int ele;
+    while (cin >> ele && ele != -1)
+    {
+        arr.push_back(ele);
+    }
+    // bool res = checkIfExist(arr);
+    bool res1 = checkIfExistOP(arr);
+    debug(res1);
 }
 
 //|> ---MAIN-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------

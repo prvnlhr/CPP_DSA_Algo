@@ -91,54 +91,166 @@ typedef priority_queue<int, vector<int>, greater<int>> pqmin;
 
 //|> ---ＳＯＬＶＥ-----------------------------------------------------------------------------------------------------------------------------------------------
 
-bool isVovel(char v)
+int maxConsecutiveAnswers(string answerKey, int k)
 {
-    return v == 'a' || v == 'e' || v == 'i' || v == 'o' || v == 'u';
+
+    int n = answerKey.size();
+    int cntT = 0;
+    int cntF = 0;
+    int res = INT_MIN;
+    for (int i = 0; i < n; i++)
+    {
+        if (answerKey[i] == 'T')
+        {
+            cntT++;
+        }
+        else
+        {
+            cntF++;
+        }
+    }
+    vector<int> consecLen(n);
+    int prevCnt = 0;
+
+    if (cntT == cntF)
+    {
+        for (int i = 0; i < n; i++)
+        {
+            if (answerKey[i] == 'F')
+            {
+                consecLen[i] = prevCnt;
+                prevCnt = 0;
+            }
+            else
+            {
+                prevCnt++;
+            }
+        }
+
+        int windStart = 0;
+        int windEnd = 0;
+        int prevCnt = 0;
+        int cntK = k;
+        while (windEnd < n)
+        {
+            if (answerKey[windEnd] == 'T')
+            {
+                prevCnt++;
+                windEnd++;
+            }
+            else if (answerKey[windEnd] == 'F' && cntK >= 1)
+            {
+                prevCnt++;
+                cntK--;
+                windEnd++;
+            }
+            else
+            {
+                int winLen = windEnd - windStart;
+                res = max(winLen, res);
+                prevCnt = consecLen[windEnd] + 1;
+                cntK = k;
+                cntK--;
+                windStart = windEnd;
+                windEnd++;
+            }
+        }
+        int winLen = windEnd - windStart;
+        res = max(winLen, res);
+    }
+    else
+    {
+        for (int i = 0; i < n; i++)
+        {
+            for (int i = 0; i < n; i++)
+            {
+                if (answerKey[i] == 'T')
+                {
+                    consecLen[i] = prevCnt;
+                    prevCnt = 0;
+                }
+                else
+                {
+                    prevCnt++;
+                }
+            }
+        }
+
+        int windStart = 0;
+        int windEnd = 0;
+        int prevCnt = 0;
+        int cntK = k;
+        while (windEnd < n)
+        {
+            if (answerKey[windEnd] == 'F')
+            {
+                prevCnt++;
+                windEnd++;
+            }
+            else if (answerKey[windEnd] == 'T' && cntK >= 1)
+            {
+                prevCnt++;
+                cntK--;
+                windEnd++;
+            }
+            else
+            {
+                int winLen = windEnd - windStart;
+                res = max(winLen, res);
+                prevCnt = consecLen[windEnd] + 1;
+                cntK = k;
+                cntK--;
+                windStart = windEnd;
+                windEnd++;
+            }
+        }
+        int winLen = windEnd - windStart;
+        res = max(winLen, res);
+    }
+    debug(consecLen);
+    return res;
 }
 
-int maxVowels(string s, int k)
+int slidingWindow(string &answerKey, int &k, char x)
 {
-    int cntVovels = 0;
+    int n = answerKey.size();
 
-    int l = 0;
-    int r = 0;
-
-    int n = s.size();
-
-    cntVovels = 0;
-    int res = 0;
-
-    while (r < n)
+    int s = 0;
+    int e = 0;
+    int cnt = 0;
+    int res = INT_MIN;
+    while (e < n)
     {
-        if (isVovel(s[r]))
+        char curr = answerKey[e];
+        if (curr == x)
         {
-            cntVovels++;
+            cnt++;
         }
-
-        while (r - l + 1 > k)
+        while (cnt > k)
         {
-            if (isVovel(s[l]))
+            if (answerKey[s] == x)
             {
-                cntVovels--;
+                cnt--;
             }
-            l++;
+            s++;
         }
-
-        if (r - l + 1 == k)
-        {
-            res = max(res, cntVovels);
-        }
-
-        r++;
+        res = max(res, e - s + 1);
+        e++;
     }
     return res;
 }
+
+int maxConsecutiveAnswersBetter(string answerKey, int k)
+{
+    return max(slidingWindow(answerKey, k, 'F'), slidingWindow(answerKey, k, 'T'));
+}
 void solve()
 {
-    string s;
+    string answerKey;
+    cin >> answerKey;
     int k;
-    cin >> s >> k;
-    int res = maxVowels(s, k);
+    cin >> k;
+    int res = maxConsecutiveAnswersBetter(answerKey, k);
     debug(res);
 }
 

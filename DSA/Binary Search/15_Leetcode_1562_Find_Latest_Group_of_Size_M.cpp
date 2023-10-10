@@ -90,56 +90,40 @@ typedef priority_queue<int> pqmax;
 typedef priority_queue<int, vector<int>, greater<int>> pqmin;
 
 //|> ---ＳＯＬＶＥ-----------------------------------------------------------------------------------------------------------------------------------------------
-
-bool isVovel(char v)
+int findLatestStep(vector<int> &arr, int m)
 {
-    return v == 'a' || v == 'e' || v == 'i' || v == 'o' || v == 'u';
-}
-
-int maxVowels(string s, int k)
-{
-    int cntVovels = 0;
-
-    int l = 0;
-    int r = 0;
-
-    int n = s.size();
-
-    cntVovels = 0;
-    int res = 0;
-
-    while (r < n)
+    int n = arr.size();
+    vector<int> length(n + 2);
+    int res = -1;
+    if (n == m)
     {
-        if (isVovel(s[r]))
-        {
-            cntVovels++;
-        }
+        return n;
+    }
 
-        while (r - l + 1 > k)
+    for (int i = 0; i < n; i++)
+    {
+        int a = arr[i], left = length[a - 1], right = length[a + 1];
+        length[a - left] = length[a + right] = left + right + 1;
+        if (left == m || right == m)
         {
-            if (isVovel(s[l]))
-            {
-                cntVovels--;
-            }
-            l++;
+            res = i;
         }
-
-        if (r - l + 1 == k)
-        {
-            res = max(res, cntVovels);
-        }
-
-        r++;
     }
     return res;
 }
 void solve()
 {
-    string s;
-    int k;
-    cin >> s >> k;
-    int res = maxVowels(s, k);
-    debug(res);
+
+    vector<int> arr;
+    int ele;
+    while (cin >> ele && ele != -1)
+    {
+
+        arr.push_back(ele);
+    }
+    int m;
+    cin >> m;
+    int res = findLatestStep(arr, m);
 }
 
 //|> ---MAIN-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------

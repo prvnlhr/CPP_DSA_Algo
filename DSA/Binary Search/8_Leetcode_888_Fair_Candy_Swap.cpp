@@ -91,55 +91,90 @@ typedef priority_queue<int, vector<int>, greater<int>> pqmin;
 
 //|> ---ＳＯＬＶＥ-----------------------------------------------------------------------------------------------------------------------------------------------
 
-bool isVovel(char v)
+vector<int> fairCandySwap(vector<int> &aliceSizes, vector<int> &bobSizes)
 {
-    return v == 'a' || v == 'e' || v == 'i' || v == 'o' || v == 'u';
-}
+    debug(aliceSizes, bobSizes);
 
-int maxVowels(string s, int k)
-{
-    int cntVovels = 0;
+    int sum_a = 0;
+    int sum_b = 0;
 
-    int l = 0;
-    int r = 0;
-
-    int n = s.size();
-
-    cntVovels = 0;
-    int res = 0;
-
-    while (r < n)
+    for (auto a : aliceSizes)
     {
-        if (isVovel(s[r]))
-        {
-            cntVovels++;
-        }
-
-        while (r - l + 1 > k)
-        {
-            if (isVovel(s[l]))
-            {
-                cntVovels--;
-            }
-            l++;
-        }
-
-        if (r - l + 1 == k)
-        {
-            res = max(res, cntVovels);
-        }
-
-        r++;
+        sum_a = sum_a + a;
     }
-    return res;
+
+    for (auto b : bobSizes)
+    {
+        sum_b = sum_b + b;
+    }
+
+    int diff = (sum_a - sum_b) / 2;
+    for (int a : aliceSizes)
+    {
+        for (int b : bobSizes)
+        {
+            debug(a, b, a - b);
+            if (a - b == diff)
+            {
+                return {a, b};
+            }
+        }
+    }
+
+    return {0, 0};
 }
+
+//|> https://leetcode.com/problems/fair-candy-swap/solutions/2727134/c-5-different-approaches-brute-force-hash-set-bitset-binary-search-two-pointers/
+
+vector<int> fairCandySwapOP(vector<int> &aliceSizes, vector<int> &bobSizes)
+{
+    debug(aliceSizes, bobSizes);
+
+    int sum_a = 0;
+    int sum_b = 0;
+
+    for (auto a : aliceSizes)
+    {
+        sum_a = sum_a + a;
+    }
+
+    for (auto b : bobSizes)
+    {
+        sum_b = sum_b + b;
+    }
+
+    int diff = (sum_a - sum_b) / 2;
+    sort(bobSizes.begin(), bobSizes.end());
+
+    for (int a : aliceSizes)
+    {
+        if (binary_search(bobSizes.begin(), bobSizes.end(), a - diff))
+        {
+            return {a, a - diff};
+        }
+    }
+
+    return {0, 0};
+}
+
 void solve()
 {
-    string s;
-    int k;
-    cin >> s >> k;
-    int res = maxVowels(s, k);
-    debug(res);
+    vector<int> aliceSizes;
+    int a;
+    while (cin >> a && a != -1)
+    {
+        aliceSizes.push_back(a);
+    }
+
+    vector<int> bobSizes;
+    int b;
+    while (cin >> b && b != -1)
+    {
+        bobSizes.push_back(b);
+    }
+    auto res = fairCandySwap(aliceSizes, bobSizes);
+    auto res1 = fairCandySwapOP(aliceSizes, bobSizes);
+    debug(res, res1);
 }
 
 //|> ---MAIN-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------

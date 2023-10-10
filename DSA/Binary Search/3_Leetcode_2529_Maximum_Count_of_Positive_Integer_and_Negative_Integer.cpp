@@ -91,55 +91,113 @@ typedef priority_queue<int, vector<int>, greater<int>> pqmin;
 
 //|> ---ＳＯＬＶＥ-----------------------------------------------------------------------------------------------------------------------------------------------
 
-bool isVovel(char v)
+/*
+
+            |       |
+        -3  -2  -1  0   0   1   2
+                 |
+
+
+
+*/
+int maximumCountBinarySearch(vector<int> &nums)
 {
-    return v == 'a' || v == 'e' || v == 'i' || v == 'o' || v == 'u';
-}
+    int n = nums.size();
 
-int maxVowels(string s, int k)
-{
-    int cntVovels = 0;
+    int lo = 0;
+    int hi = n - 1;
 
-    int l = 0;
-    int r = 0;
+    int neg = -1;
+    int pos = -1;
+    int res;
 
-    int n = s.size();
-
-    cntVovels = 0;
-    int res = 0;
-
-    while (r < n)
+    while (lo <= hi)
     {
-        if (isVovel(s[r]))
-        {
-            cntVovels++;
-        }
+        int mid = lo + (hi - lo) / 2;
 
-        while (r - l + 1 > k)
+        if (nums[mid] < 0)
         {
-            if (isVovel(s[l]))
-            {
-                cntVovels--;
-            }
-            l++;
+            neg = mid;
+            lo = mid + 1;
         }
-
-        if (r - l + 1 == k)
+        else if (nums[mid] >= 0)
         {
-            res = max(res, cntVovels);
+            hi = mid - 1;
         }
+    }
 
-        r++;
+    lo = 0;
+    hi = nums.size() - 1;
+
+    while (lo <= hi)
+    {
+        int mid = lo + (hi - lo) / 2;
+
+        if (nums[mid] > 0)
+        {
+            pos = mid;
+            hi = mid - 1;
+        }
+        else if (nums[mid] <= 0)
+        {
+            lo = mid + 1;
+        }
+    }
+
+    debug(pos, neg);
+
+    if (pos == -1 && neg == -1)
+    {
+        return 0;
+    }
+
+    if (pos == -1)
+    {
+        return neg + 1;
+    }
+
+    else if (neg == -1)
+    {
+        return nums.size() - pos;
+    }
+    else
+    {
+        res = max(n - pos, neg + 1);
     }
     return res;
 }
+
+int maximumCount(vector<int> &nums)
+{
+    int pos = 0;
+    int neg = 0;
+    for (int num : nums)
+    {
+        if (num < 0)
+        {
+            neg++;
+        }
+        else if (num > 0)
+        {
+            pos++;
+        }
+    }
+    return max(pos, neg);
+}
 void solve()
 {
-    string s;
-    int k;
-    cin >> s >> k;
-    int res = maxVowels(s, k);
-    debug(res);
+
+    vector<int> nums;
+    int ele;
+    while (cin >> ele)
+    {
+
+        nums.push_back(ele);
+    }
+    int res = maximumCount(nums);
+    int resOP = maximumCountBinarySearch(nums);
+
+    debug(res, resOP);
 }
 
 //|> ---MAIN-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------

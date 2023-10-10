@@ -91,55 +91,33 @@ typedef priority_queue<int, vector<int>, greater<int>> pqmin;
 
 //|> ---ＳＯＬＶＥ-----------------------------------------------------------------------------------------------------------------------------------------------
 
-bool isVovel(char v)
+int minimumSize(vector<int> &nums, int maxOperations)
 {
-    return v == 'a' || v == 'e' || v == 'i' || v == 'o' || v == 'u';
-}
+    int lo = 1;
+    int hi = *max_element(nums.begin(), nums.end());
 
-int maxVowels(string s, int k)
-{
-    int cntVovels = 0;
-
-    int l = 0;
-    int r = 0;
-
-    int n = s.size();
-
-    cntVovels = 0;
-    int res = 0;
-
-    while (r < n)
+    while (lo <= hi)
     {
-        if (isVovel(s[r]))
-        {
-            cntVovels++;
-        }
+        int mid = lo + (hi - lo) / 2;
 
-        while (r - l + 1 > k)
+        int cntOP = 0;
+        for (int bag : nums)
         {
-            if (isVovel(s[l]))
-            {
-                cntVovels--;
-            }
-            l++;
+            cntOP += (bag - 1) / mid;
         }
-
-        if (r - l + 1 == k)
+        if (cntOP > maxOperations)
         {
-            res = max(res, cntVovels);
+            lo = mid + 1;
         }
-
-        r++;
+        else
+        {
+            hi = mid - 1;
+        }
     }
-    return res;
+    return lo;
 }
 void solve()
 {
-    string s;
-    int k;
-    cin >> s >> k;
-    int res = maxVowels(s, k);
-    debug(res);
 }
 
 //|> ---MAIN-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------

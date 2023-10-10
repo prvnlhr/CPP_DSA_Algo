@@ -90,56 +90,134 @@ typedef priority_queue<int> pqmax;
 typedef priority_queue<int, vector<int>, greater<int>> pqmin;
 
 //|> ---ＳＯＬＶＥ-----------------------------------------------------------------------------------------------------------------------------------------------
+/*
+    1 1 2 2 3 3
+    1 2 3 1 2 3
+    1 1 2 2 3 3
+    1 2 => 1 2 3 3
+    1 2 => 3 3
 
-bool isVovel(char v)
+*/
+bool isPossibleDivide(vector<int> &nums, int k)
 {
-    return v == 'a' || v == 'e' || v == 'i' || v == 'o' || v == 'u';
-}
-
-int maxVowels(string s, int k)
-{
-    int cntVovels = 0;
-
-    int l = 0;
-    int r = 0;
-
-    int n = s.size();
-
-    cntVovels = 0;
-    int res = 0;
-
-    while (r < n)
+    int n = nums.size();
+    if (n % k != 0)
     {
-        if (isVovel(s[r]))
-        {
-            cntVovels++;
-        }
-
-        while (r - l + 1 > k)
-        {
-            if (isVovel(s[l]))
-            {
-                cntVovels--;
-            }
-            l++;
-        }
-
-        if (r - l + 1 == k)
-        {
-            res = max(res, cntVovels);
-        }
-
-        r++;
+        return false;
     }
-    return res;
+    int numOfSets = n / k;
+    priority_queue<int, vector<int>, greater<int>> pq;
+
+    for (auto num : nums)
+    {
+        pq.push(num);
+    }
+
+    vector<int> temp;
+    while (!pq.empty())
+    {
+        int curr = pq.top();
+        pq.pop();
+
+        int cnt = 1;
+
+        while (cnt < k && !pq.empty())
+        {
+            int next = pq.top();
+            if (curr + 1 == next)
+            {
+                curr = next;
+                cnt++;
+            }
+            else if (curr == next)
+            {
+                temp.push_back(next);
+            }
+            else
+            {
+                return false;
+            }
+            pq.pop();
+        }
+        if (cnt != k)
+        {
+            return false;
+        }
+        while (temp.size() > 0)
+        {
+            pq.push(temp.back());
+            temp.pop_back();
+        }
+    }
+
+    return true;
 }
+//  1 1 2 2 3 3 1 2
+
+bool isPossibleDivideOP(vector<int> &nums, int k)
+{
+    int n = nums.size();
+
+    if (n % k != 0)
+    {
+        return false;
+    }
+
+    unordered_map<int, int> freqMap;
+
+    for (int num : nums)
+    {
+        freqMap[num]++;
+    }
+
+    sort(nums.begin(), nums.end());
+    debug(freqMap, nums);
+
+    for (int i = 0; i < n; i++)
+    {
+        int curr = nums[i];
+        debug(curr);
+        if (freqMap[curr] == 0)
+        {
+            continue;
+        }
+
+        int freq = freqMap[curr];
+
+        for (int j = 0; j < k; j++)
+        {
+            int next = curr + j;
+
+            if (freqMap[next] < freq)
+            {
+                return false;
+            }
+
+            freqMap[next] -= freq;
+        }
+    }
+
+    return true;
+}
+
 void solve()
 {
-    string s;
-    int k;
-    cin >> s >> k;
-    int res = maxVowels(s, k);
-    debug(res);
+    int t;
+    cin >> t;
+    while (t--)
+    {
+
+        vector<int> nums;
+        int n;
+        while (cin >> n && n != -1)
+        {
+            nums.push_back(n);
+        }
+        int k;
+        cin >> k;
+        bool res = isPossibleDivideOP(nums, k);
+        debug(res);
+    }
 }
 
 //|> ---MAIN-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------

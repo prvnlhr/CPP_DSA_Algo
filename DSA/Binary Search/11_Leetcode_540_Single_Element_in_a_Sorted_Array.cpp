@@ -91,54 +91,130 @@ typedef priority_queue<int, vector<int>, greater<int>> pqmin;
 
 //|> ---ＳＯＬＶＥ-----------------------------------------------------------------------------------------------------------------------------------------------
 
-bool isVovel(char v)
+/*
+
+mid = even_index => left same
+mid = odd_index => right same
+
+
+        0   1   2   3   4   5   6   7   8
+        |                               |
+ ex_1   1   1   2   3   3   4   4   8   8
+                        |
+                 mid -> | <- for both
+                        |
+ ex_2   1   1   2   2   3   3   4   8   8
+
+ we things we observe from ex_1 and ex_2:
+ 1. array sizes will always be odd, bcoz every element is twice except one.
+ 2. if arr[mid] == arr[mid+1] ->  single element is on right side array.
+ 3. if arr[mid-1] == arr[mid] -> single element is on left side of array.
+
+
+0   1   2   3   4   5   6   7   8   9   10  11  12  13  14
+1   1   2   2   3   3   4   5   5   6   6   7   7   8   8
+                            |
+
+|                       |
+                |
+
+
+*/
+//|> https://leetcode.com/problems/single-element-in-a-sorted-array/solutions/628111/c-solution-o-logn-with-detailed-explanation/
+int singleNonDuplicate(vector<int> &arr)
 {
-    return v == 'a' || v == 'e' || v == 'i' || v == 'o' || v == 'u';
-}
-
-int maxVowels(string s, int k)
-{
-    int cntVovels = 0;
-
-    int l = 0;
-    int r = 0;
-
-    int n = s.size();
-
-    cntVovels = 0;
-    int res = 0;
-
-    while (r < n)
+    int lo = 0;
+    int hi = arr.size() - 1;
+    while (lo <= hi)
     {
-        if (isVovel(s[r]))
-        {
-            cntVovels++;
-        }
+        int mid = lo + (hi - lo) / 2;
+        bool even_length = (hi - mid) % 2;
 
-        while (r - l + 1 > k)
+        if (arr[mid - 1] == arr[mid])
         {
-            if (isVovel(s[l]))
+            if (even_length)
             {
-                cntVovels--;
+                hi = mid - 2;
             }
-            l++;
+            else
+            {
+                hi = mid + 1;
+            }
         }
-
-        if (r - l + 1 == k)
+        else if (arr[mid] == arr[mid + 1])
         {
-            res = max(res, cntVovels);
+            if (even_length)
+            {
+                lo = mid + 2;
+            }
+            else
+            {
+                hi = mid - 1;
+            }
         }
-
-        r++;
+        else
+        {
+            return arr[mid];
+        }
     }
-    return res;
+    return -1;
 }
+
+//|> didnt work
+int singleNonDuplicate2(vector<int> &arr)
+{
+    int lo = 0;
+    int hi = arr.size() - 1;
+    if (arr.size() == 1)
+    {
+        return arr[0];
+    }
+    while (lo <= hi)
+    {
+        debug(lo, hi);
+        int mid = lo + (hi - lo) / 2;
+
+        if (arr[mid - 1] == arr[mid])
+        {
+            bool even_length = (mid - lo - 1) % 2;
+            if (!even_length)
+            {
+                lo = mid + 1;
+            }
+            else
+            {
+                hi = mid - 2;
+            }
+        }
+        else if (arr[mid] == arr[mid + 1])
+        {
+            bool even_length = (hi - mid - 1) % 2;
+            if (!even_length)
+            {
+                hi = mid - 1;
+            }
+            else
+            {
+                lo = mid + 2;
+            }
+        }
+        else
+        {
+            return arr[mid];
+        }
+    }
+    return -1;
+}
+
 void solve()
 {
-    string s;
-    int k;
-    cin >> s >> k;
-    int res = maxVowels(s, k);
+    vector<int> nums;
+    int ele;
+    while (cin >> ele && ele != -1)
+    {
+        nums.push_back(ele);
+    }
+    int res = singleNonDuplicate2(nums);
     debug(res);
 }
 

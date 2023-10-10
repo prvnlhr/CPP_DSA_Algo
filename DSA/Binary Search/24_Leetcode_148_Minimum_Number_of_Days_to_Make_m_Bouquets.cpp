@@ -90,55 +90,72 @@ typedef priority_queue<int> pqmax;
 typedef priority_queue<int, vector<int>, greater<int>> pqmin;
 
 //|> ---ＳＯＬＶＥ-----------------------------------------------------------------------------------------------------------------------------------------------
-
-bool isVovel(char v)
+bool canMake(vector<int> &bloomDay, int m, int k, int minDays)
 {
-    return v == 'a' || v == 'e' || v == 'i' || v == 'o' || v == 'u';
+
+    int n = bloomDay.size();
+
+    int flowersCollected = 0;
+    int bouq = 0;
+
+    for (int i = 0; i < n; i++)
+    {
+        if (bloomDay[i] <= minDays)
+        {
+            flowersCollected++;
+        }
+        else
+        {
+            flowersCollected = 0;
+        }
+        if (flowersCollected == k)
+        {
+            bouq++;
+            flowersCollected = 0;
+        }
+        if (bouq == m)
+        {
+            return true;
+        }
+    }
+    return false;
 }
 
-int maxVowels(string s, int k)
+int minDays(vector<int> &bloomDay, int m, int k)
 {
-    int cntVovels = 0;
 
-    int l = 0;
-    int r = 0;
+    int n = bloomDay.size();
 
-    int n = s.size();
+    int lo = 1;
+    int hi = *max_element(bloomDay.begin(), bloomDay.end());
 
-    cntVovels = 0;
-    int res = 0;
-
-    while (r < n)
+    int res = -1;
+    while (lo <= hi)
     {
-        if (isVovel(s[r]))
+        int mid = lo + (hi - lo) / 2;
+        if (canMake(bloomDay, m, k, mid))
         {
-            cntVovels++;
+            res = mid;
+            hi = mid - 1;
         }
-
-        while (r - l + 1 > k)
+        else
         {
-            if (isVovel(s[l]))
-            {
-                cntVovels--;
-            }
-            l++;
+            lo = mid + 1;
         }
-
-        if (r - l + 1 == k)
-        {
-            res = max(res, cntVovels);
-        }
-
-        r++;
     }
     return res;
 }
 void solve()
 {
-    string s;
-    int k;
-    cin >> s >> k;
-    int res = maxVowels(s, k);
+    vector<int> bloomDay;
+    int b;
+    while (cin >> b && b != -1)
+    {
+        bloomDay.push_back(b);
+    }
+    int m, k;
+    cin >> m >> k;
+    int res = minDays(bloomDay, m, k);
     debug(res);
 }
 

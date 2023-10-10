@@ -90,55 +90,33 @@ typedef priority_queue<int> pqmax;
 typedef priority_queue<int, vector<int>, greater<int>> pqmin;
 
 //|> ---ＳＯＬＶＥ-----------------------------------------------------------------------------------------------------------------------------------------------
-
-bool isVovel(char v)
+int minIncrementForUnique(vector<int> &nums)
 {
-    return v == 'a' || v == 'e' || v == 'i' || v == 'o' || v == 'u';
-}
-
-int maxVowels(string s, int k)
-{
-    int cntVovels = 0;
-
-    int l = 0;
-    int r = 0;
-
-    int n = s.size();
-
-    cntVovels = 0;
     int res = 0;
-
-    while (r < n)
+    sort(nums.begin(), nums.end());
+    int diff = 0;
+    for (int i = 0; i < nums.size(); i++)
     {
-        if (isVovel(s[r]))
-        {
-            cntVovels++;
-        }
 
-        while (r - l + 1 > k)
+        if (nums[i - 1] >= nums[i])
         {
-            if (isVovel(s[l]))
-            {
-                cntVovels--;
-            }
-            l++;
+            diff = nums[i - 1] - nums[i] + 1;
+            res += diff;
+            nums[i] = nums[i - 1] + 1;
         }
-
-        if (r - l + 1 == k)
-        {
-            res = max(res, cntVovels);
-        }
-
-        r++;
     }
     return res;
 }
 void solve()
 {
-    string s;
-    int k;
-    cin >> s >> k;
-    int res = maxVowels(s, k);
+
+    vector<int> nums;
+    int n;
+    while (cin >> n && n != -1)
+    {
+        nums.push_back(n);
+    }
+    int res = minIncrementForUnique(nums);
     debug(res);
 }
 

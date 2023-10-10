@@ -91,54 +91,66 @@ typedef priority_queue<int, vector<int>, greater<int>> pqmin;
 
 //|> ---ＳＯＬＶＥ-----------------------------------------------------------------------------------------------------------------------------------------------
 
-bool isVovel(char v)
+/*
+5621 1743 5532 3549 9581 -1
+913 9787 4121 5039 1481 -1
+*/
+vector<int> advantageCount(vector<int> &nums1, vector<int> &nums2)
 {
-    return v == 'a' || v == 'e' || v == 'i' || v == 'o' || v == 'u';
-}
+    int n = nums1.size();
+    priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> pq1;
+    priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> pq2;
 
-int maxVowels(string s, int k)
-{
-    int cntVovels = 0;
-
-    int l = 0;
-    int r = 0;
-
-    int n = s.size();
-
-    cntVovels = 0;
-    int res = 0;
-
-    while (r < n)
+    for (int i = 0; i < n; i++)
     {
-        if (isVovel(s[r]))
-        {
-            cntVovels++;
-        }
+        pq1.push({nums1[i], i});
+        pq2.push({nums2[i], i});
+    }
 
-        while (r - l + 1 > k)
-        {
-            if (isVovel(s[l]))
-            {
-                cntVovels--;
-            }
-            l++;
-        }
+    vector<int> res(n, -1);
+    vector<int> left;
 
-        if (r - l + 1 == k)
+    while (!pq2.empty() && !pq1.empty())
+    {
+        auto [num1, indx1] = pq1.top();
+        auto [num2, indx2] = pq2.top();
+        if (num1 > num2)
         {
-            res = max(res, cntVovels);
+            res[indx2] = num1;
+            pq1.pop();
+            pq2.pop();
         }
-
-        r++;
+        else
+        {
+            left.push_back(num1);
+            pq1.pop();
+        }
+    }
+    for (int i = 0; i < n; i++)
+    {
+        if (res[i] == -1 && !res.empty())
+        {
+            res[i] = left.back();
+            left.pop_back();
+        }
     }
     return res;
 }
+
 void solve()
 {
-    string s;
-    int k;
-    cin >> s >> k;
-    int res = maxVowels(s, k);
+    vector<int> nums1, nums2;
+    int e1, e2;
+    while (cin >> e1 && e1 != -1)
+    {
+        nums1.push_back(e1);
+    }
+    while (cin >> e2 && e2 != -1)
+    {
+        nums2.push_back(e2);
+    }
+
+    auto res = advantageCount(nums1, nums2);
     debug(res);
 }
 

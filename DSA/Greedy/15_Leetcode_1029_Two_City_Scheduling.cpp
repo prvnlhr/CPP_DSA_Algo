@@ -91,55 +91,27 @@ typedef priority_queue<int, vector<int>, greater<int>> pqmin;
 
 //|> ---ＳＯＬＶＥ-----------------------------------------------------------------------------------------------------------------------------------------------
 
-bool isVovel(char v)
+int twoCitySchedCost(vector<vector<int>> &costs)
 {
-    return v == 'a' || v == 'e' || v == 'i' || v == 'o' || v == 'u';
-}
-
-int maxVowels(string s, int k)
-{
-    int cntVovels = 0;
-
-    int l = 0;
-    int r = 0;
-
-    int n = s.size();
-
-    cntVovels = 0;
-    int res = 0;
-
-    while (r < n)
+    vector<int> refund;
+    int minCost = 0;
+    for (auto cost : costs)
     {
-        if (isVovel(s[r]))
-        {
-            cntVovels++;
-        }
-
-        while (r - l + 1 > k)
-        {
-            if (isVovel(s[l]))
-            {
-                cntVovels--;
-            }
-            l++;
-        }
-
-        if (r - l + 1 == k)
-        {
-            res = max(res, cntVovels);
-        }
-
-        r++;
+        minCost += cost[0];
+        refund.push_back(cost[1] - cost[0]);
     }
-    return res;
+    int N = costs.size() / 2;
+    sort(refund.begin(), refund.end());
+
+    for (int i = 0; i < N; i++)
+    {
+        minCost += refund[i];
+    }
+    return minCost;
 }
+
 void solve()
 {
-    string s;
-    int k;
-    cin >> s >> k;
-    int res = maxVowels(s, k);
-    debug(res);
 }
 
 //|> ---MAIN-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------

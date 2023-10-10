@@ -91,54 +91,58 @@ typedef priority_queue<int, vector<int>, greater<int>> pqmin;
 
 //|> ---ＳＯＬＶＥ-----------------------------------------------------------------------------------------------------------------------------------------------
 
-bool isVovel(char v)
+bool canDivide(vector<int> &nums, int threshold, int divisor)
 {
-    return v == 'a' || v == 'e' || v == 'i' || v == 'o' || v == 'u';
+
+    int n = nums.size();
+    int sum = 0;
+    for (int i = 0; i < n; i++)
+    {
+        int num = nums[i];
+        sum += (num + divisor - 1) / divisor;
+        debug(sum);
+        if (sum > threshold)
+        {
+            return false;
+        }
+    }
+    return true;
 }
 
-int maxVowels(string s, int k)
+int smallestDivisor(vector<int> &nums, int threshold)
 {
-    int cntVovels = 0;
+    int lo = 1;
+    int hi = 1e6;
+    int res = -1;
 
-    int l = 0;
-    int r = 0;
-
-    int n = s.size();
-
-    cntVovels = 0;
-    int res = 0;
-
-    while (r < n)
+    while (lo <= hi)
     {
-        if (isVovel(s[r]))
+        int mid = lo + (hi - lo) / 2;
+        debug(mid);
+        if (canDivide(nums, threshold, mid))
         {
-            cntVovels++;
+            res = mid;
+            hi = mid - 1;
         }
-
-        while (r - l + 1 > k)
+        else
         {
-            if (isVovel(s[l]))
-            {
-                cntVovels--;
-            }
-            l++;
+            lo = mid + 1;
         }
-
-        if (r - l + 1 == k)
-        {
-            res = max(res, cntVovels);
-        }
-
-        r++;
     }
     return res;
 }
 void solve()
 {
-    string s;
-    int k;
-    cin >> s >> k;
-    int res = maxVowels(s, k);
+    vector<int> nums;
+    int ele;
+    while (cin >> ele && ele != -1)
+    {
+
+        nums.push_back(ele);
+    }
+    int threshold;
+    cin >> threshold;
+    int res = smallestDivisor(nums, threshold);
     debug(res);
 }
 

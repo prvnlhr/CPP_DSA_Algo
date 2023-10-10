@@ -90,55 +90,52 @@ typedef priority_queue<int> pqmax;
 typedef priority_queue<int, vector<int>, greater<int>> pqmin;
 
 //|> ---ＳＯＬＶＥ-----------------------------------------------------------------------------------------------------------------------------------------------
-
-bool isVovel(char v)
+int findLengthOfShortestSubarray(vector<int> &arr)
 {
-    return v == 'a' || v == 'e' || v == 'i' || v == 'o' || v == 'u';
-}
-
-int maxVowels(string s, int k)
-{
-    int cntVovels = 0;
-
+    int n = arr.size();
     int l = 0;
-    int r = 0;
+    int r = n - 1;
 
-    int n = s.size();
-
-    cntVovels = 0;
-    int res = 0;
-
-    while (r < n)
+    while (l + 1 < n && arr[l] <= arr[l + 1])
     {
-        if (isVovel(s[r]))
-        {
-            cntVovels++;
-        }
-
-        while (r - l + 1 > k)
-        {
-            if (isVovel(s[l]))
-            {
-                cntVovels--;
-            }
-            l++;
-        }
-
-        if (r - l + 1 == k)
-        {
-            res = max(res, cntVovels);
-        }
-
-        r++;
+        l++;
     }
-    return res;
+    if (l == n - 1)
+    {
+        return 0;
+    }
+
+    while (l < r && arr[r - 1] <= arr[r])
+    {
+        r--;
+    }
+    int ans = min(n - l - 1, r);
+    int i = 0;
+    int j = r;
+
+    while (i <= l && j < n)
+    {
+        if (arr[i] <= arr[j])
+        {
+            ans = min(ans, j - i - 1);
+            i++;
+        }
+        else
+        {
+            j++;
+        }
+    }
+    return ans;
 }
 void solve()
 {
-    string s;
-    int k;
-    cin >> s >> k;
-    int res = maxVowels(s, k);
+    vector<int> arr;
+    int ele;
+    while (cin >> ele && ele != -1)
+    {
+        arr.push_back(ele);
+    }
+    int res = findLengthOfShortestSubarray(arr);
     debug(res);
 }
 

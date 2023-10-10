@@ -91,54 +91,87 @@ typedef priority_queue<int, vector<int>, greater<int>> pqmin;
 
 //|> ---ＳＯＬＶＥ-----------------------------------------------------------------------------------------------------------------------------------------------
 
-bool isVovel(char v)
+int maxDistance(vector<int> &nums1, vector<int> &nums2) //|> Brute force O(n*m) :TLE
 {
-    return v == 'a' || v == 'e' || v == 'i' || v == 'o' || v == 'u';
+
+    int n = nums1.size();
+    int m = nums2.size();
+    int maxDist = INT_MIN;
+
+    for (int i = 0; i < n; i++)
+    {
+        for (int j = i; j < m; j++)
+        {
+            if (nums1[i] <= nums2[j])
+            {
+                maxDist = max(maxDist, j - i);
+            }
+        }
+    }
+
+    return maxDist == INT_MIN ? 0 : maxDist;
 }
 
-int maxVowels(string s, int k)
+int binarySearch(vector<int> &arr, int target)
 {
-    int cntVovels = 0;
+    int res = -1;
+    int lo = 0;
+    int hi = arr.size() - 1;
 
-    int l = 0;
-    int r = 0;
-
-    int n = s.size();
-
-    cntVovels = 0;
-    int res = 0;
-
-    while (r < n)
+    while (lo <= hi)
     {
-        if (isVovel(s[r]))
+        int mid = lo + (hi - lo) / 2;
+        if (arr[mid] >= target)
         {
-            cntVovels++;
+            res = mid;
+            lo = mid + 1;
         }
-
-        while (r - l + 1 > k)
+        else
         {
-            if (isVovel(s[l]))
-            {
-                cntVovels--;
-            }
-            l++;
+            hi = mid - 1;
         }
-
-        if (r - l + 1 == k)
-        {
-            res = max(res, cntVovels);
-        }
-
-        r++;
     }
     return res;
 }
+
+int maxDistanceOP(vector<int> &nums1, vector<int> &nums2) //|> O(NLogM)
+{
+
+    int n = nums1.size();
+    int m = nums2.size();
+    int maxDist = 0;
+
+    for (int i = 0; i < n; i++)
+    {
+        int target = nums1[i];
+
+        int j = binarySearch(nums2, target);
+        if (j != -1)
+        {
+            maxDist = max(maxDist, j - i);
+        }
+    }
+
+    return maxDist;
+}
+
 void solve()
 {
-    string s;
-    int k;
-    cin >> s >> k;
-    int res = maxVowels(s, k);
+    vector<int> arr1;
+    int ele1;
+    while (cin >> ele1 && ele1 != -1)
+    {
+        arr1.push_back(ele1);
+    }
+
+    vector<int> arr2;
+    int ele2;
+    while (cin >> ele2 && ele2 != -1)
+    {
+        arr2.push_back(ele2);
+    }
+
+    int res = maxDistanceOP(arr1, arr2);
     debug(res);
 }
 

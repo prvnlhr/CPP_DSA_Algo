@@ -90,56 +90,64 @@ typedef priority_queue<int> pqmax;
 typedef priority_queue<int, vector<int>, greater<int>> pqmin;
 
 //|> ---ＳＯＬＶＥ-----------------------------------------------------------------------------------------------------------------------------------------------
-
-bool isVovel(char v)
+int largestValsFromLabels(vector<int> &values, vector<int> &labels, int numWanted, int useLimit)
 {
-    return v == 'a' || v == 'e' || v == 'i' || v == 'o' || v == 'u';
-}
 
-int maxVowels(string s, int k)
-{
-    int cntVovels = 0;
+    priority_queue<pair<int, int>> pq;
+    unordered_map<int, int> mpp;
 
-    int l = 0;
-    int r = 0;
-
-    int n = s.size();
-
-    cntVovels = 0;
-    int res = 0;
-
-    while (r < n)
+    for (int i = 0; i < values.size(); i++)
     {
-        if (isVovel(s[r]))
-        {
-            cntVovels++;
-        }
+        pq.push({values[i], labels[i]});
+    }
 
-        while (r - l + 1 > k)
+    int res = 0;
+    int cntTaken = 0;
+    while (!pq.empty() && cntTaken != numWanted)
+    {
+        auto [val, lab] = pq.top();
+        pq.pop();
+        if (mpp.find(lab) != mpp.end())
         {
-            if (isVovel(s[l]))
+            if (mpp[lab] < useLimit)
             {
-                cntVovels--;
+                res += val;
+                cntTaken++;
+                mpp[lab]++;
             }
-            l++;
         }
-
-        if (r - l + 1 == k)
+        else
         {
-            res = max(res, cntVovels);
+            mpp[lab] = 1;
+            cntTaken++;
+            res += val;
         }
-
-        r++;
     }
     return res;
 }
+
 void solve()
 {
-    string s;
-    int k;
-    cin >> s >> k;
-    int res = maxVowels(s, k);
-    debug(res);
+    int t;
+    cin >> t;
+    while (t--)
+    {
+        vector<int> values, labels;
+        int numWanted, useLimit, v, l;
+
+        while (cin >> v && v != -1)
+        {
+            values.push_back(v);
+        }
+        while (cin >> l && l != -1)
+        {
+            labels.push_back(l);
+        }
+
+        cin >> numWanted >> useLimit;
+        int res = largestValsFromLabels(values, labels, numWanted, useLimit);
+        debug(res);
+    }
 }
 
 //|> ---MAIN-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------

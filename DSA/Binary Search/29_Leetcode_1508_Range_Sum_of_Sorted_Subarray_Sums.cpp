@@ -90,55 +90,43 @@ typedef priority_queue<int> pqmax;
 typedef priority_queue<int, vector<int>, greater<int>> pqmin;
 
 //|> ---ＳＯＬＶＥ-----------------------------------------------------------------------------------------------------------------------------------------------
-
-bool isVovel(char v)
+int rangeSum(vector<int> &arr, int n, int left, int right)
 {
-    return v == 'a' || v == 'e' || v == 'i' || v == 'o' || v == 'u';
-}
+    vector<int> sumarr;
 
-int maxVowels(string s, int k)
-{
-    int cntVovels = 0;
-
-    int l = 0;
-    int r = 0;
-
-    int n = s.size();
-
-    cntVovels = 0;
+    for (int i = 0; i < arr.size(); i++)
+    {
+        int prefix_sum = 0;
+        for (int j = i; j < arr.size(); j++)
+        {
+            prefix_sum += arr[j];
+            sumarr.push_back(prefix_sum);
+        }
+    }
+    sort(sumarr.begin(), sumarr.end());
     int res = 0;
 
-    while (r < n)
+    while (left <= right)
     {
-        if (isVovel(s[r]))
-        {
-            cntVovels++;
-        }
-
-        while (r - l + 1 > k)
-        {
-            if (isVovel(s[l]))
-            {
-                cntVovels--;
-            }
-            l++;
-        }
-
-        if (r - l + 1 == k)
-        {
-            res = max(res, cntVovels);
-        }
-
-        r++;
+        res += sumarr[left - 1] % 1000000007;
+        left++;
     }
     return res;
 }
 void solve()
 {
-    string s;
-    int k;
-    cin >> s >> k;
-    int res = maxVowels(s, k);
+
+    vector<int> arr;
+    int ele;
+    while (cin >> ele && ele != -1)
+    {
+        arr.push_back(ele);
+    }
+    int n;
+    cin >> n;
+    int left, right;
+    cin >> left >> right;
+    int res = rangeSum(arr, n, left, right);
     debug(res);
 }
 

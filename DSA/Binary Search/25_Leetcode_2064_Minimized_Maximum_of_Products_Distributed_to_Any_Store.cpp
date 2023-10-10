@@ -91,54 +91,55 @@ typedef priority_queue<int, vector<int>, greater<int>> pqmin;
 
 //|> ---ＳＯＬＶＥ-----------------------------------------------------------------------------------------------------------------------------------------------
 
-bool isVovel(char v)
+bool canDistribute(int n, vector<int> &quantities, int minQ)
 {
-    return v == 'a' || v == 'e' || v == 'i' || v == 'o' || v == 'u';
-}
 
-int maxVowels(string s, int k)
-{
-    int cntVovels = 0;
-
-    int l = 0;
-    int r = 0;
-
-    int n = s.size();
-
-    cntVovels = 0;
-    int res = 0;
-
-    while (r < n)
+    int cntStoresDist = 0;
+    for (int i = 0; i < quantities.size(); i++)
     {
-        if (isVovel(s[r]))
+        cntStoresDist += (quantities[i] / minQ);
+        if (quantities[i] % minQ == 1)
         {
-            cntVovels++;
+            cntStoresDist++;
         }
+    }
+    return cntStoresDist <= n;
+}
+int minimizedMaximum(int n, vector<int> &quantities)
+{
 
-        while (r - l + 1 > k)
+    int lo = 1;
+    int hi = *max_element(begin(quantities), end(quantities));
+
+    int res = -1;
+    while (lo <= hi)
+    {
+        int mid = lo + (hi - lo) / 2;
+        if (canDistribute(n, quantities, mid))
         {
-            if (isVovel(s[l]))
-            {
-                cntVovels--;
-            }
-            l++;
+            res = mid;
+            hi = mid - 1;
         }
-
-        if (r - l + 1 == k)
+        else
         {
-            res = max(res, cntVovels);
+            lo = mid + 1;
         }
-
-        r++;
     }
     return res;
 }
 void solve()
 {
-    string s;
-    int k;
-    cin >> s >> k;
-    int res = maxVowels(s, k);
+
+    vector<int> quantities;
+    int q;
+    while (cin >> q && q != -1)
+    {
+        quantities.push_back(q);
+    }
+
+    int n;
+    cin >> n;
+    int res = minimizedMaximum(n, quantities);
     debug(res);
 }
 

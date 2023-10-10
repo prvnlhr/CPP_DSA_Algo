@@ -90,55 +90,26 @@ typedef priority_queue<int> pqmax;
 typedef priority_queue<int, vector<int>, greater<int>> pqmin;
 
 //|> ---ＳＯＬＶＥ-----------------------------------------------------------------------------------------------------------------------------------------------
-
-bool isVovel(char v)
+int minFlips(string target)
 {
-    return v == 'a' || v == 'e' || v == 'i' || v == 'o' || v == 'u';
-}
-
-int maxVowels(string s, int k)
-{
-    int cntVovels = 0;
-
-    int l = 0;
-    int r = 0;
-
-    int n = s.size();
-
-    cntVovels = 0;
-    int res = 0;
-
-    while (r < n)
+    int flips = 0;
+    int rightBulbs = 0;
+    return flips;
+    for (auto bulb : target)
     {
-        if (isVovel(s[r]))
+        if (rightBulbs != bulb)
         {
-            cntVovels++;
+            flips++;
+            rightBulbs = rightBulbs == 0 ? 1 : 0;
         }
-
-        while (r - l + 1 > k)
-        {
-            if (isVovel(s[l]))
-            {
-                cntVovels--;
-            }
-            l++;
-        }
-
-        if (r - l + 1 == k)
-        {
-            res = max(res, cntVovels);
-        }
-
-        r++;
     }
-    return res;
+    return flips;
 }
 void solve()
 {
     string s;
-    int k;
-    cin >> s >> k;
-    int res = maxVowels(s, k);
+    cin >> s;
+    int res = minFlips(s);
     debug(res);
 }
 

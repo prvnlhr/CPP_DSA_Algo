@@ -90,55 +90,50 @@ typedef priority_queue<int> pqmax;
 typedef priority_queue<int, vector<int>, greater<int>> pqmin;
 
 //|> ---ＳＯＬＶＥ-----------------------------------------------------------------------------------------------------------------------------------------------
-
-bool isVovel(char v)
+vector<int> pancakeSort(vector<int> &arr)
 {
-    return v == 'a' || v == 'e' || v == 'i' || v == 'o' || v == 'u';
-}
-
-int maxVowels(string s, int k)
-{
-    int cntVovels = 0;
-
-    int l = 0;
-    int r = 0;
-
-    int n = s.size();
-
-    cntVovels = 0;
-    int res = 0;
-
-    while (r < n)
+    vector<int> res;
+    int lo = 0;
+    int hi = arr.size() - 1;
+    while (lo < hi)
     {
-        if (isVovel(s[r]))
+        int maxEle = 0;
+        int maxIndx = 0;
+        for (int i = 0; i < arr.size(); i++)
         {
-            cntVovels++;
-        }
-
-        while (r - l + 1 > k)
-        {
-            if (isVovel(s[l]))
+            if (arr[i] > maxEle)
             {
-                cntVovels--;
+                maxEle = arr[i];
+                maxIndx = i;
             }
-            l++;
         }
 
-        if (r - l + 1 == k)
+        int s = lo;
+        int e = maxIndx;
+        res.push_back(maxIndx + 1);
+        while (s < e)
         {
-            res = max(res, cntVovels);
+            swap(arr[s++], arr[e--]);
         }
-
-        r++;
+        s = lo, e = hi;
+        while (s < e)
+        {
+            swap(arr[s++], arr[e--]);
+        }
+        res.push_back(hi + 1);
+        hi--;
     }
     return res;
 }
 void solve()
 {
-    string s;
-    int k;
-    cin >> s >> k;
-    int res = maxVowels(s, k);
+    vector<int> arr;
+    int a;
+    while (cin >> a && a != -1)
+    {
+        arr.push_back(a);
+    }
+    auto res = pancakeSort(arr);
     debug(res);
 }
 

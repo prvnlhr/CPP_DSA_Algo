@@ -90,55 +90,79 @@ typedef priority_queue<int> pqmax;
 typedef priority_queue<int, vector<int>, greater<int>> pqmin;
 
 //|> ---ＳＯＬＶＥ-----------------------------------------------------------------------------------------------------------------------------------------------
-
-bool isVovel(char v)
+int binarySearch(vector<int> &nums, int q)
 {
-    return v == 'a' || v == 'e' || v == 'i' || v == 'o' || v == 'u';
+    // int lo = 0;
+    // int hi = nums.size() - 1;
+    // int mid = 0;
+    // while (lo <= hi)
+    // {
+    //     mid = lo + (hi - lo) / 2;
+    //     debug(lo, hi, mid, nums[mid]);
+    //     if (nums[mid] <= q)
+    //     {
+    //         lo = mid + 1;
+    //     }
+    //     else
+    //     {
+    //         hi = mid - 1;
+    //     }
+    // }
+    int lo = 0;
+    int hi = nums.size();
+    int mid = 0;
+    while (lo < hi)
+    {
+        mid = lo + (hi - lo) / 2;
+        debug(lo, hi, mid, nums[mid]);
+        if (nums[mid] <= q)
+        {
+            lo = mid + 1;
+        }
+        else
+        {
+            hi = mid;
+        }
+    }
+
+    return lo;
 }
 
-int maxVowels(string s, int k)
+vector<int> answerQueries(vector<int> &nums, vector<int> &queries)
 {
-    int cntVovels = 0;
 
-    int l = 0;
-    int r = 0;
-
-    int n = s.size();
-
-    cntVovels = 0;
-    int res = 0;
-
-    while (r < n)
+    sort(nums.begin(), nums.end());
+    for (int i = 1; i < nums.size(); i++)
     {
-        if (isVovel(s[r]))
-        {
-            cntVovels++;
-        }
+        nums[i] = nums[i - 1] + nums[i];
+    }
 
-        while (r - l + 1 > k)
-        {
-            if (isVovel(s[l]))
-            {
-                cntVovels--;
-            }
-            l++;
-        }
-
-        if (r - l + 1 == k)
-        {
-            res = max(res, cntVovels);
-        }
-
-        r++;
+    int i = 0;
+    vector<int> res(queries.size());
+    for (int q : queries)
+    {
+        debug(q);
+        int index = binarySearch(nums, q);
+        debug(index);
+        res[i++] = index;
     }
     return res;
 }
 void solve()
 {
-    string s;
-    int k;
-    cin >> s >> k;
-    int res = maxVowels(s, k);
+    vector<int> nums;
+    int ele;
+    while (cin >> ele && ele != -1)
+    {
+        nums.push_back(ele);
+    }
+    vector<int> queries;
+    int q;
+    while (cin >> q && q != -1)
+    {
+        queries.push_back(q);
+    }
+    auto res = answerQueries(nums, queries);
     debug(res);
 }
 

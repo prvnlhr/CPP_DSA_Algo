@@ -10,7 +10,6 @@
 using namespace std;
 using namespace chrono;
 
-
 #define MOD 1000000007
 #define MOD1 998244353
 #define PI 3.141592653589793238462
@@ -132,8 +131,42 @@ void factOfN(ll n)
     }
 }
 
-
 //|> ---ＳＯＬＶＥ-----------------------------------------------------------------------------------------------------------------------------------------------
+string convertToValidFileName(const std::string &input)
+{
+    regex invalidChars("[^a-zA-Z0-9 ]");
+    string validFileName = regex_replace(input, invalidChars, "");
+
+    // Replace spaces with underscores and add ".cpp" extension
+    replace(validFileName.begin(), validFileName.end(), ' ', '_');
+    validFileName += ".cpp";
+
+    return validFileName;
+}
+
+void createFile(string validFileName)
+{
+    string folderPath = "../DSA/Binary Search"; // Replace with the desired folder path
+
+    // Combine the folder path and file name to create the complete file path
+    string filePath = folderPath + "/" + validFileName;
+
+    // Create an output file stream
+    ofstream outputFile(filePath);
+
+    // Check if the file was successfully created
+    if (outputFile.is_open())
+    {
+        cout << "File created successfully: " << filePath << endl;
+        // You can write data to the file if needed
+        outputFile << "Hello, world!" << endl;
+        outputFile.close(); // Close the file when done
+    }
+    else
+    {
+        debug(filePath);
+    }
+}
 
 void solve()
 {
@@ -160,8 +193,13 @@ void solve()
     !  Warning
     :  This is test comment
        TODO: This is test comment
-
     */
+
+    string inputFileName;
+    getline(cin, inputFileName);
+    string validFileName = convertToValidFileName(inputFileName);
+    debug(validFileName);
+    createFile(validFileName);
 }
 
 //|> --- MAIN -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------

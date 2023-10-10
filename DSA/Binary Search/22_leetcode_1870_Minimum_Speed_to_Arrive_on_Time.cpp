@@ -91,54 +91,59 @@ typedef priority_queue<int, vector<int>, greater<int>> pqmin;
 
 //|> ---ＳＯＬＶＥ-----------------------------------------------------------------------------------------------------------------------------------------------
 
-bool isVovel(char v)
+bool canReach(int speed, vector<int> &dist, double hour)
 {
-    return v == 'a' || v == 'e' || v == 'i' || v == 'o' || v == 'u';
+
+    int n = dist.size();
+    double time = 0;
+    for (int i = 0; i < n; i++)
+    {
+        time = ceil(time);
+        time += (double)dist[i] / speed;
+        if (time > hour)
+        {
+            return false;
+        }
+    }
+    return true;
 }
 
-int maxVowels(string s, int k)
+int minSpeedOnTime(vector<int> &dist, double hour)
 {
-    int cntVovels = 0;
-
-    int l = 0;
-    int r = 0;
-
-    int n = s.size();
-
-    cntVovels = 0;
-    int res = 0;
-
-    while (r < n)
+    if (hour < dist.size() - 1)
     {
-        if (isVovel(s[r]))
-        {
-            cntVovels++;
-        }
+        return -1;
+    }
 
-        while (r - l + 1 > k)
+    int lo = 1;
+    int hi = 1e7;
+    int res = -1;
+    while (lo <= hi)
+    {
+        int mid = lo + (hi - lo) / 2;
+        if (canReach(mid, dist, hour))
         {
-            if (isVovel(s[l]))
-            {
-                cntVovels--;
-            }
-            l++;
+            res = mid;
+            hi = mid - 1;
         }
-
-        if (r - l + 1 == k)
+        else
         {
-            res = max(res, cntVovels);
+            lo = mid + 1;
         }
-
-        r++;
     }
     return res;
 }
 void solve()
 {
-    string s;
-    int k;
-    cin >> s >> k;
-    int res = maxVowels(s, k);
+    vector<int> dist;
+    int d;
+    while (cin >> d && d != -1)
+    {
+        dist.push_back(d);
+    }
+    double hour;
+    cin >> hour;
+    int res = minSpeedOnTime(dist, hour);
     debug(res);
 }
 

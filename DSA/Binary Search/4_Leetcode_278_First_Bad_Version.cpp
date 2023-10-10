@@ -91,55 +91,30 @@ typedef priority_queue<int, vector<int>, greater<int>> pqmin;
 
 //|> ---ＳＯＬＶＥ-----------------------------------------------------------------------------------------------------------------------------------------------
 
-bool isVovel(char v)
-{
-    return v == 'a' || v == 'e' || v == 'i' || v == 'o' || v == 'u';
+int isBadVersion(int n)
+{ //|> API mock
+    return 0;
 }
-
-int maxVowels(string s, int k)
+int firstBadVersion(int n)
 {
-    int cntVovels = 0;
-
-    int l = 0;
-    int r = 0;
-
-    int n = s.size();
-
-    cntVovels = 0;
-    int res = 0;
-
-    while (r < n)
+    int lo = 1;
+    int hi = n;
+    while (lo <= hi)
     {
-        if (isVovel(s[r]))
+        int mid = lo + (hi - lo) / 2;
+        if (!isBadVersion(mid))
         {
-            cntVovels++;
+            lo = mid + 1;
         }
-
-        while (r - l + 1 > k)
+        else
         {
-            if (isVovel(s[l]))
-            {
-                cntVovels--;
-            }
-            l++;
+            hi = mid;
         }
-
-        if (r - l + 1 == k)
-        {
-            res = max(res, cntVovels);
-        }
-
-        r++;
     }
-    return res;
+    return lo;
 }
 void solve()
 {
-    string s;
-    int k;
-    cin >> s >> k;
-    int res = maxVowels(s, k);
-    debug(res);
 }
 
 //|> ---MAIN-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------

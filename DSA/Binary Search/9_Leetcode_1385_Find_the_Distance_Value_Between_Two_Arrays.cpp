@@ -90,56 +90,97 @@ typedef priority_queue<int> pqmax;
 typedef priority_queue<int, vector<int>, greater<int>> pqmin;
 
 //|> ---ＳＯＬＶＥ-----------------------------------------------------------------------------------------------------------------------------------------------
-
-bool isVovel(char v)
+int findTheDistanceValue(vector<int> &arr1, vector<int> &arr2, int d)
 {
-    return v == 'a' || v == 'e' || v == 'i' || v == 'o' || v == 'u';
+    debug(arr1, arr2, d);
+
+    int cnt = 0;
+    int res = 0;
+    for (int a : arr1)
+    {
+        for (int b : arr2) //|> In worst case it can can go upto O(n), to conclude that,
+                           //|> for a particular value a in arr1, condition1 is true.
+                           //|> But if we use binary search we can find in O(logN) that for value a in arr1,
+                           //|> it does not meet our condition1.
+        {
+            if (!(abs(a - b) <= d)) //|> condition1 : we want this condition to be false
+            {
+                cnt++;
+            }
+            else
+            {
+                cnt = 0;
+                break;
+            }
+        }
+        if (cnt == arr2.size())
+        {
+            cnt = 0;
+            res++;
+        }
+    }
+    return res;
 }
 
-int maxVowels(string s, int k)
+int binarySearch(vector<int> &arr, int num, int d)
 {
-    int cntVovels = 0;
-
-    int l = 0;
-    int r = 0;
-
-    int n = s.size();
-
-    cntVovels = 0;
-    int res = 0;
-
-    while (r < n)
+    int lo = 0;
+    int hi = arr.size() - 1;
+    while (lo <= hi)
     {
-        if (isVovel(s[r]))
+        int mid = lo + (hi - lo) / 2;
+        if (abs(arr[mid] - num) <= d)
         {
-            cntVovels++;
+            return false;
         }
-
-        while (r - l + 1 > k)
+        else if (arr[mid] < num)
         {
-            if (isVovel(s[l]))
-            {
-                cntVovels--;
-            }
-            l++;
+            lo = mid + 1;
         }
-
-        if (r - l + 1 == k)
+        else
         {
-            res = max(res, cntVovels);
+            hi = mid - 1;
         }
+    }
+    return true;
+}
+int findTheDistanceValueOP(vector<int> &arr1, vector<int> &arr2, int d)
+{
+    debug(arr1, arr2, d);
+    sort(arr2.begin(), arr2.end());
 
-        r++;
+    int res = 0;
+    for (int a : arr1)
+    {
+        if (binarySearch(arr2, a, d))
+        {
+            res++;
+        }
     }
     return res;
 }
 void solve()
 {
-    string s;
-    int k;
-    cin >> s >> k;
-    int res = maxVowels(s, k);
-    debug(res);
+    vector<int> arr1;
+    int ele1;
+    while (cin >> ele1 && ele1 != -1)
+    {
+
+        arr1.push_back(ele1);
+    }
+    vector<int> arr2;
+    int ele2;
+    while (cin >> ele2 && ele2 != -1)
+    {
+
+        arr2.push_back(ele2);
+    }
+
+    int d;
+    cin >> d;
+    auto res = findTheDistanceValue(arr1, arr2, d);
+    auto res1 = findTheDistanceValueOP(arr1, arr2, d);
+    debug(res, res1);
 }
 
 //|> ---MAIN-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------

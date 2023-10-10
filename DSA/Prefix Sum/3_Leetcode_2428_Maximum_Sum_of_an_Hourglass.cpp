@@ -90,55 +90,25 @@ typedef priority_queue<int> pqmax;
 typedef priority_queue<int, vector<int>, greater<int>> pqmin;
 
 //|> ---ＳＯＬＶＥ-----------------------------------------------------------------------------------------------------------------------------------------------
-
-bool isVovel(char v)
+int maxSum(vector<vector<int>> &grid)
 {
-    return v == 'a' || v == 'e' || v == 'i' || v == 'o' || v == 'u';
-}
-
-int maxVowels(string s, int k)
-{
-    int cntVovels = 0;
-
-    int l = 0;
-    int r = 0;
-
-    int n = s.size();
-
-    cntVovels = 0;
-    int res = 0;
-
-    while (r < n)
+    int res = INT_MIN;
+    int rows = grid.size();
+    int cols = grid[0].size();
+    for (int i = 0; i < rows - 2; i++)
     {
-        if (isVovel(s[r]))
+        for (int j = 0; j < cols - 2; j++)
         {
-            cntVovels++;
+            res = max(res, grid[i + 1][j + 1] + grid[i][j + 1] + grid[i][j + 2] + grid[i + 2][j] + grid[i + 2][j + 1] + grid[i + 2][j + 2] + grid[i][j]);
         }
-
-        while (r - l + 1 > k)
-        {
-            if (isVovel(s[l]))
-            {
-                cntVovels--;
-            }
-            l++;
-        }
-
-        if (r - l + 1 == k)
-        {
-            res = max(res, cntVovels);
-        }
-
-        r++;
     }
     return res;
 }
 void solve()
 {
-    string s;
-    int k;
-    cin >> s >> k;
-    int res = maxVowels(s, k);
+    vector<vector<int>> grid;
+
+    int res = maxSum(grid);
     debug(res);
 }
 

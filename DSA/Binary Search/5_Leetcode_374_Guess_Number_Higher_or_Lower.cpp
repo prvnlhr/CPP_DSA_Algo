@@ -91,55 +91,50 @@ typedef priority_queue<int, vector<int>, greater<int>> pqmin;
 
 //|> ---ＳＯＬＶＥ-----------------------------------------------------------------------------------------------------------------------------------------------
 
-bool isVovel(char v)
+int guess(int n)
 {
-    return v == 'a' || v == 'e' || v == 'i' || v == 'o' || v == 'u';
-}
-
-int maxVowels(string s, int k)
-{
-    int cntVovels = 0;
-
-    int l = 0;
-    int r = 0;
-
-    int n = s.size();
-
-    cntVovels = 0;
-    int res = 0;
-
-    while (r < n)
+    int p = 5;
+    if (n > p)
     {
-        if (isVovel(s[r]))
-        {
-            cntVovels++;
-        }
 
-        while (r - l + 1 > k)
-        {
-            if (isVovel(s[l]))
-            {
-                cntVovels--;
-            }
-            l++;
-        }
-
-        if (r - l + 1 == k)
-        {
-            res = max(res, cntVovels);
-        }
-
-        r++;
+        return -1;
     }
-    return res;
+    else if (n < p)
+    {
+        return 1;
+    }
+    else if (n == p)
+    {
+        return 0;
+    }
+}
+int guessNumber(int n)
+{
+
+    int first = 1, last = n;
+
+    while (first <= last)
+    {
+        int mid = first + (last - first) / 2;
+
+        if (guess(mid) == 0)
+        {
+            return mid;
+        }
+        else if (guess(mid == -1))
+        {
+            last = mid - 1;
+        }
+        else
+        {
+            first = mid + 1;
+        }
+    }
+
+    return -1;
 }
 void solve()
 {
-    string s;
-    int k;
-    cin >> s >> k;
-    int res = maxVowels(s, k);
-    debug(res);
 }
 
 //|> ---MAIN-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------

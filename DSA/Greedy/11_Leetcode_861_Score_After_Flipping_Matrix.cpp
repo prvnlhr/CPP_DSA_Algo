@@ -90,56 +90,67 @@ typedef priority_queue<int> pqmax;
 typedef priority_queue<int, vector<int>, greater<int>> pqmin;
 
 //|> ---ＳＯＬＶＥ-----------------------------------------------------------------------------------------------------------------------------------------------
-
-bool isVovel(char v)
+void flipRow(vector<vector<int>> &A, int row, int n)
 {
-    return v == 'a' || v == 'e' || v == 'i' || v == 'o' || v == 'u';
+    for (int j = 0; j < n; j++)
+    {
+        if (A[row][j] == 0)
+            A[row][j] = 1;
+        else
+            A[row][j] = 0;
+    }
 }
 
-int maxVowels(string s, int k)
+void flipCol(vector<vector<int>> &A, int col, int m)
 {
-    int cntVovels = 0;
-
-    int l = 0;
-    int r = 0;
-
-    int n = s.size();
-
-    cntVovels = 0;
-    int res = 0;
-
-    while (r < n)
+    for (int i = 0; i < m; i++)
     {
-        if (isVovel(s[r]))
-        {
-            cntVovels++;
-        }
-
-        while (r - l + 1 > k)
-        {
-            if (isVovel(s[l]))
-            {
-                cntVovels--;
-            }
-            l++;
-        }
-
-        if (r - l + 1 == k)
-        {
-            res = max(res, cntVovels);
-        }
-
-        r++;
+        if (A[i][col] == 0)
+            A[i][col] = 1;
+        else
+            A[i][col] = 0;
     }
-    return res;
+}
+
+int matrixScore(vector<vector<int>> &A)
+{
+    int m = A.size();
+    int n = A[0].size();
+    vector<int> col(n, 0);
+
+    for (int i = 0; i < m; i++)
+    {
+        if (A[i][0] == 0)
+            flipRow(A, i, n);
+        for (int j = 0; j < n; j++)
+        {
+            if (A[i][j] == 1)
+                col[j]++;
+        }
+    }
+
+    for (int j = 0; j < n; j++)
+    {
+        if (col[j] <= m / 2)
+            flipCol(A, j, m);
+    }
+
+    int result = 0, sum;
+    for (vector<int> v : A)
+    {
+        sum = 0;
+        for (int j = v.size() - 1; j >= 0; j--)
+        {
+            if (v[j] == 1)
+                sum += pow(2, v.size() - 1 - j);
+        }
+        result += sum;
+    }
+
+    return result;
 }
 void solve()
 {
-    string s;
-    int k;
-    cin >> s >> k;
-    int res = maxVowels(s, k);
-    debug(res);
 }
 
 //|> ---MAIN-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------

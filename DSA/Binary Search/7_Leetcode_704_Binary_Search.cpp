@@ -90,56 +90,46 @@ typedef priority_queue<int> pqmax;
 typedef priority_queue<int, vector<int>, greater<int>> pqmin;
 
 //|> ---ＳＯＬＶＥ-----------------------------------------------------------------------------------------------------------------------------------------------
-
-bool isVovel(char v)
+int search(vector<int> &nums, int target)
 {
-    return v == 'a' || v == 'e' || v == 'i' || v == 'o' || v == 'u';
-}
+    debug(nums, target);
+    int lo = 0;
+    int hi = nums.size() - 1;
 
-int maxVowels(string s, int k)
-{
-    int cntVovels = 0;
-
-    int l = 0;
-    int r = 0;
-
-    int n = s.size();
-
-    cntVovels = 0;
-    int res = 0;
-
-    while (r < n)
+    while (lo <= hi)
     {
-        if (isVovel(s[r]))
-        {
-            cntVovels++;
-        }
+        int mid = lo + (hi - lo) / 2;
 
-        while (r - l + 1 > k)
+        if (nums[mid] < target)
         {
-            if (isVovel(s[l]))
-            {
-                cntVovels--;
-            }
-            l++;
-        }
 
-        if (r - l + 1 == k)
+            lo = mid + 1;
+        }
+        else if (nums[mid] > target)
         {
-            res = max(res, cntVovels);
+            hi = mid - 1;
         }
-
-        r++;
+        else
+        {
+            return mid;
+        }
     }
-    return res;
+    return -1;
 }
+
 void solve()
 {
-    string s;
-    int k;
-    cin >> s >> k;
-    int res = maxVowels(s, k);
+    vector<int> nums;
+    int ele;
+    while (cin >> ele && ele != -1)
+    {
+        nums.push_back(ele);
+    }
+    int target;
+    cin >> target;
+    auto res = search(nums, target);
     debug(res);
+    debug(nums[res]);
 }
 
 //|> ---MAIN-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------

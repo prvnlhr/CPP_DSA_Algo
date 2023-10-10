@@ -91,54 +91,104 @@ typedef priority_queue<int, vector<int>, greater<int>> pqmin;
 
 //|> ---ＳＯＬＶＥ-----------------------------------------------------------------------------------------------------------------------------------------------
 
-bool isVovel(char v)
+int findPeakElement(vector<int> &nums)
 {
-    return v == 'a' || v == 'e' || v == 'i' || v == 'o' || v == 'u';
+
+    int n = nums.size();
+    if (n == 1)
+    {
+        return 0;
+    }
+
+    for (int i = 0; i < n; i++)
+    {
+        int val = nums[i];
+
+        if (i == 0 && val > nums[1])
+        {
+            return 0;
+        }
+        else if (i == n - 1 && val > nums[i - 1])
+        {
+            return i;
+        }
+        else if (i > 0 && i < n - 1 && val > nums[i - 1] && val > nums[i + 1])
+        {
+            return i;
+        }
+    }
+    return -1;
+}
+int findPeakElement(vector<int> &nums)
+{
+    int n = nums.size();
+
+    // Handle the edge case of an array with only one element
+    if (n == 1)
+    {
+        return 0;
+    }
+
+    for (int i = 0; i < n; i++)
+    {
+        int val = nums[i];
+
+        // Check if val is greater than its neighbors (or if it's the edge element)
+        if ((i == 0 || val > nums[i - 1]) && (i == n - 1 || val > nums[i + 1]))
+        {
+            return i;
+        }
+    }
+
+    // If no peak element is found, return -1
+    return -1;
 }
 
-int maxVowels(string s, int k)
+int findPeakElementOP(vector<int> &nums)
 {
-    int cntVovels = 0;
-
-    int l = 0;
-    int r = 0;
-
-    int n = s.size();
-
-    cntVovels = 0;
-    int res = 0;
-
-    while (r < n)
+    int n = nums.size();
+    if (n == 1)
     {
-        if (isVovel(s[r]))
-        {
-            cntVovels++;
-        }
-
-        while (r - l + 1 > k)
-        {
-            if (isVovel(s[l]))
-            {
-                cntVovels--;
-            }
-            l++;
-        }
-
-        if (r - l + 1 == k)
-        {
-            res = max(res, cntVovels);
-        }
-
-        r++;
+        return 0;
     }
-    return res;
+
+    if (nums[0] > nums[1])
+    {
+        return 0;
+    }
+    if (nums[n - 1] > nums[n - 2])
+    {
+        return n - 1;
+    }
+    int lo = 0;
+    int hi = n - 1;
+    while (lo <= hi)
+    {
+        int mid = lo + (hi - lo) / 2;
+        if (nums[mid - 1] < nums[mid] && nums[mid] > nums[mid + 1])
+        {
+            return mid;
+        }
+        else if (nums[mid] < nums[mid - 1])
+        {
+            hi = mid - 1;
+        }
+        else if (nums[mid] < nums[mid + 1])
+        {
+            lo = mid + 1;
+        }
+    }
 }
 void solve()
 {
-    string s;
-    int k;
-    cin >> s >> k;
-    int res = maxVowels(s, k);
+
+    vector<int> nums;
+    int ele;
+    while (cin >> ele && ele != -1)
+    {
+        nums.push_back(ele);
+    }
+    int res = findPeakElement(nums);
     debug(res);
 }
 

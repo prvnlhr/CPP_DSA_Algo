@@ -91,54 +91,69 @@ typedef priority_queue<int, vector<int>, greater<int>> pqmin;
 
 //|> ---ＳＯＬＶＥ-----------------------------------------------------------------------------------------------------------------------------------------------
 
-bool isVovel(char v)
+/*
+    13  5   1   8   21  2
+
+    1   2   5   8   12  21
+
+
+
+*/
+bool canSell(vector<int> &price, int k, int minDiff)
 {
-    return v == 'a' || v == 'e' || v == 'i' || v == 'o' || v == 'u';
+
+    int n = price.size();
+    int lastPos = 0;
+    int cnt = 0;
+    for (int i = 0; i < n; i++)
+    {
+        if (abs(price[lastPos] - price[i]) >= minDiff)
+        {
+            cnt++;
+            lastPos = i;
+            if (cnt >= k)
+            {
+                return true;
+            }
+        }
+    }
+    return false;
 }
-
-int maxVowels(string s, int k)
+int maximumTastiness(vector<int> &price, int k)
 {
-    int cntVovels = 0;
+    sort(begin(price), end(price));
 
-    int l = 0;
-    int r = 0;
-
-    int n = s.size();
-
-    cntVovels = 0;
+    int lo = 0;
+    int hi = 1e9;
     int res = 0;
 
-    while (r < n)
+    while (lo <= hi)
     {
-        if (isVovel(s[r]))
+        int mid = lo + (hi - lo) / 2;
+        if (canSell(price, k, mid))
         {
-            cntVovels++;
+            res = mid;
+            hi = mid - 1;
         }
-
-        while (r - l + 1 > k)
+        else
         {
-            if (isVovel(s[l]))
-            {
-                cntVovels--;
-            }
-            l++;
+            lo = mid + 1;
         }
-
-        if (r - l + 1 == k)
-        {
-            res = max(res, cntVovels);
-        }
-
-        r++;
     }
     return res;
 }
 void solve()
 {
-    string s;
+
+    vector<int> price;
+    int p;
+    while (cin >> p && p != -1)
+    {
+        price.push_back(p);
+    }
     int k;
-    cin >> s >> k;
-    int res = maxVowels(s, k);
+    cin >> k;
+    int res = maximumTastiness(price, k);
     debug(res);
 }
 

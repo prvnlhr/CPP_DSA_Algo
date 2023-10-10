@@ -91,54 +91,51 @@ typedef priority_queue<int, vector<int>, greater<int>> pqmin;
 
 //|> ---ＳＯＬＶＥ-----------------------------------------------------------------------------------------------------------------------------------------------
 
-bool isVovel(char v)
+bool canUse(vector<int> &nums, int minVal)
 {
-    return v == 'a' || v == 'e' || v == 'i' || v == 'o' || v == 'u';
+    int prefixSum = minVal;
+    for (int num : nums)
+    {
+        prefixSum += num;
+        if (prefixSum < 1)
+        {
+            return false;
+        }
+    }
+    return true;
 }
 
-int maxVowels(string s, int k)
+int minStartValue(vector<int> &nums)
 {
-    int cntVovels = 0;
-
-    int l = 0;
-    int r = 0;
-
-    int n = s.size();
-
-    cntVovels = 0;
+    int lo = 1;
+    int hi = 10000;
     int res = 0;
-
-    while (r < n)
+    while (lo <= hi)
     {
-        if (isVovel(s[r]))
+        int mid = lo + (hi - lo) / 2;
+        debug(mid);
+        if (canUse(nums, mid))
         {
-            cntVovels++;
+            res = mid;
+            hi = mid - 1;
         }
-
-        while (r - l + 1 > k)
+        else
         {
-            if (isVovel(s[l]))
-            {
-                cntVovels--;
-            }
-            l++;
+            lo = mid + 1;
         }
-
-        if (r - l + 1 == k)
-        {
-            res = max(res, cntVovels);
-        }
-
-        r++;
     }
     return res;
 }
 void solve()
 {
-    string s;
-    int k;
-    cin >> s >> k;
-    int res = maxVowels(s, k);
+    vector<int> nums;
+    int n;
+    while (cin >> n && n != -1)
+    {
+        nums.push_back(n);
+    }
+
+    int res = minStartValue(nums);
     debug(res);
 }
 

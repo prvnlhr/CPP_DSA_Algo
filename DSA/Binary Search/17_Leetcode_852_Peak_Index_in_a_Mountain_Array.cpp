@@ -90,56 +90,52 @@ typedef priority_queue<int> pqmax;
 typedef priority_queue<int, vector<int>, greater<int>> pqmin;
 
 //|> ---ＳＯＬＶＥ-----------------------------------------------------------------------------------------------------------------------------------------------
-
-bool isVovel(char v)
+int peakIndexInMountainArray(vector<int> &arr)
 {
-    return v == 'a' || v == 'e' || v == 'i' || v == 'o' || v == 'u';
-}
+    int n = arr.size();
+    int lo = 0;
+    int hi = n - 1;
 
-int maxVowels(string s, int k)
-{
-    int cntVovels = 0;
-
-    int l = 0;
-    int r = 0;
-
-    int n = s.size();
-
-    cntVovels = 0;
-    int res = 0;
-
-    while (r < n)
+    while (lo <= hi)
     {
-        if (isVovel(s[r]))
-        {
-            cntVovels++;
-        }
+        int mid = lo + (hi - lo) / 2;
 
-        while (r - l + 1 > k)
+        if (mid != 0 && mid != n - 1 && arr[mid - 1] <= arr[mid] && arr[mid] <= arr[mid + 1])
         {
-            if (isVovel(s[l]))
+            lo = mid + 1;
+        }
+        else if (mid != 0 && mid != n - 1 && arr[mid - 1] >= arr[mid] && arr[mid] >= arr[mid + 1])
+        {
+            hi = mid - 1;
+        }
+        else if (mid == 0 || mid == n - 1)
+        {
+            if (mid == 0)
             {
-                cntVovels--;
+                lo = mid + 1;
             }
-            l++;
+            else
+            {
+                hi = mid - 1;
+            }
         }
-
-        if (r - l + 1 == k)
+        else
         {
-            res = max(res, cntVovels);
+            return mid;
         }
-
-        r++;
     }
-    return res;
+    return -1;
 }
 void solve()
 {
-    string s;
-    int k;
-    cin >> s >> k;
-    int res = maxVowels(s, k);
-    debug(res);
+    vector<int> arr;
+    int ele;
+    while (cin >> ele && ele != -1)
+    {
+        arr.push_back(ele);
+    }
+    int res = peakIndexInMountainArray(arr);
+    debug(res, arr[res]);
 }
 
 //|> ---MAIN-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------

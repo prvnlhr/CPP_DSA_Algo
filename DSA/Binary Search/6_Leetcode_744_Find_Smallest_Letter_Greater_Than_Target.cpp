@@ -90,56 +90,45 @@ typedef priority_queue<int> pqmax;
 typedef priority_queue<int, vector<int>, greater<int>> pqmin;
 
 //|> ---ＳＯＬＶＥ-----------------------------------------------------------------------------------------------------------------------------------------------
-
-bool isVovel(char v)
+char nextGreatestLetter(vector<char> &letters, char target)
 {
-    return v == 'a' || v == 'e' || v == 'i' || v == 'o' || v == 'u';
-}
+    debug(letters, target);
+    int n = letters.size();
+    int lo = 0;
+    int hi = n - 1;
 
-int maxVowels(string s, int k)
-{
-    int cntVovels = 0;
-
-    int l = 0;
-    int r = 0;
-
-    int n = s.size();
-
-    cntVovels = 0;
-    int res = 0;
-
-    while (r < n)
+    while (lo <= hi)
     {
-        if (isVovel(s[r]))
-        {
-            cntVovels++;
-        }
+        int mid = lo + (hi - lo) / 2;
+        debug(lo, hi, mid);
 
-        while (r - l + 1 > k)
+        if (letters[mid] <= target)
         {
-            if (isVovel(s[l]))
-            {
-                cntVovels--;
-            }
-            l++;
+            lo = mid + 1;
         }
-
-        if (r - l + 1 == k)
+        else
         {
-            res = max(res, cntVovels);
+            hi = mid - 1;
         }
-
-        r++;
     }
-    return res;
+
+    debug(lo, hi);
+    return letters[lo % letters.size()];
 }
+
 void solve()
 {
-    string s;
-    int k;
-    cin >> s >> k;
-    int res = maxVowels(s, k);
-    debug(res);
+    vector<char> letters;
+
+    char ch;
+    while (cin >> ch && ch != '#')
+    {
+        letters.push_back(ch);
+    }
+    char target;
+    cin >> target;
+    auto ans = nextGreatestLetter(letters, target);
+    debug(ans);
 }
 
 //|> ---MAIN-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------

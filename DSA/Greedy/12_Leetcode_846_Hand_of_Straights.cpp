@@ -90,55 +90,115 @@ typedef priority_queue<int> pqmax;
 typedef priority_queue<int, vector<int>, greater<int>> pqmin;
 
 //|> ---ＳＯＬＶＥ-----------------------------------------------------------------------------------------------------------------------------------------------
+/*
+1 2 3 6 2 3 4 7 8 -1
+3
+*/
 
-bool isVovel(char v)
+bool isNStraightHand(vector<int> &hand, int groupSize)
 {
-    return v == 'a' || v == 'e' || v == 'i' || v == 'o' || v == 'u';
-}
-
-int maxVowels(string s, int k)
-{
-    int cntVovels = 0;
-
-    int l = 0;
-    int r = 0;
-
-    int n = s.size();
-
-    cntVovels = 0;
-    int res = 0;
-
-    while (r < n)
+    int n = hand.size();
+    if (n % groupSize != 0)
     {
-        if (isVovel(s[r]))
-        {
-            cntVovels++;
-        }
-
-        while (r - l + 1 > k)
-        {
-            if (isVovel(s[l]))
-            {
-                cntVovels--;
-            }
-            l++;
-        }
-
-        if (r - l + 1 == k)
-        {
-            res = max(res, cntVovels);
-        }
-
-        r++;
+        return false;
     }
-    return res;
+
+    sort(hand.begin(), hand.end());
+    // debug(hand);
+
+    int elements = 0;
+    int countGroup = 0;
+    int i = 0;
+
+    while (i < n)
+    {
+        if (hand[i] != -1)
+        {
+            int j = i + 1;
+            int groupEleCnt = 1;
+            int currGroupStart = hand[i];
+            // debug(i, currGroupStart);
+
+            while (j < n)
+            {
+                if (groupEleCnt == groupSize)
+                {
+                    break;
+                }
+                if (currGroupStart + 1 == hand[j])
+                {
+                    currGroupStart = hand[j];
+                    hand[j] = -1;
+                    groupEleCnt++;
+                }
+
+                j++;
+            }
+            // debug(i, currGroupStart, groupEleCnt, groupSize);
+
+            if (groupEleCnt == groupSize)
+            {
+                hand[i] = -1;
+                elements += groupSize;
+                countGroup++;
+            }
+        }
+        i++;
+    }
+
+    // debug(hand);
+    return elements == n;
 }
+
+bool isNStraightHandOP(vector<int> &hand, int groupSize)
+{
+    int n = hand.size();
+    if (n % groupSize != 0)
+    {
+        return false;
+    }
+
+    sort(hand.begin(), hand.end()); //|> O(NlogN)
+
+    map<int, int> mpp;
+
+    for (auto i : hand)
+    {
+        mpp[i]++;
+    }
+
+    for (int i = 0; i < n; i++)
+    {
+
+        if (mpp[hand[i]] == 0)
+        {
+            continue;
+        }
+
+        for (int j = 0; j < groupSize; j++)
+        {
+            int curr_card = hand[i] + j;
+            if (mpp[curr_card] == 0)
+            {
+                return false;
+            }
+            mpp[curr_card]--;
+        }
+    }
+    return true;
+}
+
 void solve()
 {
-    string s;
-    int k;
-    cin >> s >> k;
-    int res = maxVowels(s, k);
+    vector<int> hand;
+    int h;
+    while (cin >> h && h != -1)
+    {
+        hand.push_back(h);
+    }
+    int groupSize;
+    cin >> groupSize;
+    bool res = isNStraightHand(hand, groupSize);
     debug(res);
 }
 

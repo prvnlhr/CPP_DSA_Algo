@@ -91,54 +91,56 @@ typedef priority_queue<int, vector<int>, greater<int>> pqmin;
 
 //|> ---ＳＯＬＶＥ-----------------------------------------------------------------------------------------------------------------------------------------------
 
-bool isVovel(char v)
+vector<int> corpFlightBookings(vector<vector<int>> &bookings, int n) //|> O(NlogN)
 {
-    return v == 'a' || v == 'e' || v == 'i' || v == 'o' || v == 'u';
-}
+    vector<int> res(n);
 
-int maxVowels(string s, int k)
-{
-    int cntVovels = 0;
-
-    int l = 0;
-    int r = 0;
-
-    int n = s.size();
-
-    cntVovels = 0;
-    int res = 0;
-
-    while (r < n)
+    for (auto book : bookings)
     {
-        if (isVovel(s[r]))
-        {
-            cntVovels++;
-        }
 
-        while (r - l + 1 > k)
+        int s = book[0];
+        int e = book[1];
+        int seats = book[2];
+        for (int i = s; i <= e; i++)
         {
-            if (isVovel(s[l]))
-            {
-                cntVovels--;
-            }
-            l++;
+            res[i - 1] += seats;
         }
-
-        if (r - l + 1 == k)
-        {
-            res = max(res, cntVovels);
-        }
-
-        r++;
     }
     return res;
 }
+
+vector<int> corpFlightBookingsOP(vector<vector<int>> &bookings, int n) //|> O(NlogN)
+{
+    vector<int> res(n);
+
+    for (auto book : bookings)
+    {
+        int s = book[0];
+        int e = book[1];
+        int seats = book[2];
+
+        res[s - 1] += seats;
+        if (e < n)
+        {
+            res[e] -= seats;
+        }
+    }
+
+    for (int i = 1; i < n; i++)
+    {
+        res[i] += res[i - 1];
+    }
+    return res;
+}
+
 void solve()
 {
-    string s;
-    int k;
-    cin >> s >> k;
-    int res = maxVowels(s, k);
+    vector<vector<int>> bookings{{1, 2, 10}, {2, 3, 20}, {2, 5, 25}};
+    // vector<vector<int>> bookings{{1, 2, 10}, {2, 2, 15}};
+
+    int n = 5;
+
+    auto res = corpFlightBookingsOP(bookings, n);
     debug(res);
 }
 

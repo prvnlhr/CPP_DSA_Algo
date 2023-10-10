@@ -90,55 +90,67 @@ typedef priority_queue<int> pqmax;
 typedef priority_queue<int, vector<int>, greater<int>> pqmin;
 
 //|> ---ＳＯＬＶＥ-----------------------------------------------------------------------------------------------------------------------------------------------
-
-bool isVovel(char v)
+bool canPlace(int minDist, vector<int> &position, int balls)
 {
-    return v == 'a' || v == 'e' || v == 'i' || v == 'o' || v == 'u';
+    int n = position.size();
+    int lastBallPos = position[0];
+    int cntBalls = 1;
+    for (int i = 1; i < n; i++)
+    {
+        int currPos = position[i];
+        if (abs(currPos - lastBallPos) >= minDist)
+        {
+            lastBallPos = position[i];
+            cntBalls++;
+            if (cntBalls >= balls)
+            {
+                return true;
+            }
+        }
+    }
+    return false;
 }
 
-int maxVowels(string s, int k)
+int maxDistance(vector<int> &position, int m)
 {
-    int cntVovels = 0;
+    sort(position.begin(), position.end());
+    debug(position);
 
-    int l = 0;
-    int r = 0;
-
-    int n = s.size();
-
-    cntVovels = 0;
+    int n = position.size();
+    // int lo = position[0];
+    int lo = 1;
+    int hi = position[n - 1];
     int res = 0;
-
-    while (r < n)
+    while (lo <= hi)
     {
-        if (isVovel(s[r]))
+        int mid = lo + (hi - lo) / 2;
+        debug(lo, hi, mid);
+        if (canPlace(mid, position, m))
         {
-            cntVovels++;
+            res = mid;
+            lo = mid + 1;
         }
-
-        while (r - l + 1 > k)
+        else
         {
-            if (isVovel(s[l]))
-            {
-                cntVovels--;
-            }
-            l++;
-        }
 
-        if (r - l + 1 == k)
-        {
-            res = max(res, cntVovels);
+            hi = mid - 1;
         }
-
-        r++;
     }
     return res;
 }
 void solve()
 {
-    string s;
-    int k;
-    cin >> s >> k;
-    int res = maxVowels(s, k);
+
+    vector<int> position;
+    int ele;
+    while (cin >> ele && ele != -1)
+    {
+        position.push_back(ele);
+    }
+
+    int m;
+    cin >> m;
+    int res = maxDistance(position, m);
     debug(res);
 }
 

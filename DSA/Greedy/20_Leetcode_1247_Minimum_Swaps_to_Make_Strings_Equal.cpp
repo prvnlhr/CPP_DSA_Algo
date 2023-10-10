@@ -90,56 +90,48 @@ typedef priority_queue<int> pqmax;
 typedef priority_queue<int, vector<int>, greater<int>> pqmin;
 
 //|> ---ＳＯＬＶＥ-----------------------------------------------------------------------------------------------------------------------------------------------
-
-bool isVovel(char v)
+int minimumSwap(string s1, string s2)
 {
-    return v == 'a' || v == 'e' || v == 'i' || v == 'o' || v == 'u';
-}
-
-int maxVowels(string s, int k)
-{
-    int cntVovels = 0;
-
-    int l = 0;
-    int r = 0;
-
-    int n = s.size();
-
-    cntVovels = 0;
-    int res = 0;
-
-    while (r < n)
+    int x_y = 0;
+    int y_x = 0;
+    int n = s1.size();
+    for (int i = 0; i < n; i++)
     {
-        if (isVovel(s[r]))
+        if (s1[i] == 'x' && s2[i] == 'y')
         {
-            cntVovels++;
+            x_y++;
         }
-
-        while (r - l + 1 > k)
+        else if (s1[i] == 'y' && s2[i] == 'x')
         {
-            if (isVovel(s[l]))
-            {
-                cntVovels--;
-            }
-            l++;
+            y_x++;
         }
+    }
 
-        if (r - l + 1 == k)
-        {
-            res = max(res, cntVovels);
-        }
+    if ((x_y + y_x) % 2 == 1)
+    {
+        return -1;
+    }
+    int res = 0;
+    res += x_y / 2;
+    res += y_x / 2;
 
-        r++;
+    if (x_y % 2 == 1)
+    {
+        res += 2;
     }
     return res;
 }
 void solve()
 {
-    string s;
-    int k;
-    cin >> s >> k;
-    int res = maxVowels(s, k);
-    debug(res);
+    int t;
+    cin >> t;
+    while (t--)
+    {
+        string s1, s2;
+        cin >> s1 >> s2;
+        int res = minimumSwap(s1, s2);
+        debug(res);
+    }
 }
 
 //|> ---MAIN-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------

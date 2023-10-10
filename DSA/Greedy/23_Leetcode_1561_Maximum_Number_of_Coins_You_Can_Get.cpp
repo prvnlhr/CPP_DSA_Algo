@@ -90,55 +90,31 @@ typedef priority_queue<int> pqmax;
 typedef priority_queue<int, vector<int>, greater<int>> pqmin;
 
 //|> ---ＳＯＬＶＥ-----------------------------------------------------------------------------------------------------------------------------------------------
-
-bool isVovel(char v)
+int maxCoins(vector<int> &piles)
 {
-    return v == 'a' || v == 'e' || v == 'i' || v == 'o' || v == 'u';
-}
-
-int maxVowels(string s, int k)
-{
-    int cntVovels = 0;
-
-    int l = 0;
-    int r = 0;
-
-    int n = s.size();
-
-    cntVovels = 0;
+    int lo = 0;
+    int hi = piles.size() - 1;
     int res = 0;
+    sort(piles.begin(), piles.end());
+    debug(piles);
 
-    while (r < n)
+    while (lo < hi)
     {
-        if (isVovel(s[r]))
-        {
-            cntVovels++;
-        }
-
-        while (r - l + 1 > k)
-        {
-            if (isVovel(s[l]))
-            {
-                cntVovels--;
-            }
-            l++;
-        }
-
-        if (r - l + 1 == k)
-        {
-            res = max(res, cntVovels);
-        }
-
-        r++;
+        res += piles[hi - 1];
+        hi = hi - 2;
+        lo++;
     }
     return res;
 }
 void solve()
 {
-    string s;
-    int k;
-    cin >> s >> k;
-    int res = maxVowels(s, k);
+    vector<int> piles;
+    int p;
+    while (cin >> p && p != -1)
+    {
+        piles.push_back(p);
+    }
+    int res = maxCoins(piles);
     debug(res);
 }
 

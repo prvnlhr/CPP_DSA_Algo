@@ -91,54 +91,32 @@ typedef priority_queue<int, vector<int>, greater<int>> pqmin;
 
 //|> ---ＳＯＬＶＥ-----------------------------------------------------------------------------------------------------------------------------------------------
 
-bool isVovel(char v)
+vector<int> findRightInterval(vector<vector<int>> &intervals)
 {
-    return v == 'a' || v == 'e' || v == 'i' || v == 'o' || v == 'u';
-}
 
-int maxVowels(string s, int k)
-{
-    int cntVovels = 0;
+    map<int, int> mpp;
 
-    int l = 0;
-    int r = 0;
-
-    int n = s.size();
-
-    cntVovels = 0;
-    int res = 0;
-
-    while (r < n)
+    for (int i = 0; i < intervals.size(); i++)
     {
-        if (isVovel(s[r]))
-        {
-            cntVovels++;
-        }
+        mpp[intervals[i][0]] = i;
+    }
 
-        while (r - l + 1 > k)
-        {
-            if (isVovel(s[l]))
-            {
-                cntVovels--;
-            }
-            l++;
-        }
-
-        if (r - l + 1 == k)
-        {
-            res = max(res, cntVovels);
-        }
-
-        r++;
+    vector<int> res(intervals.size());
+    for (int i = 0; i < intervals.size(); i++)
+    {
+        int val = intervals[i][1];
+        auto iter = mpp.lower_bound(val); //|> gives pointer
+        debug(val, iter->second);
+        res[i] = iter != mpp.end() ? iter->second : -1;
     }
     return res;
 }
+
 void solve()
 {
-    string s;
-    int k;
-    cin >> s >> k;
-    int res = maxVowels(s, k);
+    vector<vector<int>> intervals{{1, 12}, {2, 9}, {3, 10}, {13, 14}, {15, 16}, {16, 17}};
+
+    auto res = findRightInterval(intervals);
     debug(res);
 }
 

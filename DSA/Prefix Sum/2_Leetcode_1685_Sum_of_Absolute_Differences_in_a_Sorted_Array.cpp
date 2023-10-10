@@ -90,55 +90,43 @@ typedef priority_queue<int> pqmax;
 typedef priority_queue<int, vector<int>, greater<int>> pqmin;
 
 //|> ---ＳＯＬＶＥ-----------------------------------------------------------------------------------------------------------------------------------------------
+#include <vector>
 
-bool isVovel(char v)
+vector<int> getSumAbsoluteDifferences(vector<int> &nums)
 {
-    return v == 'a' || v == 'e' || v == 'i' || v == 'o' || v == 'u';
-}
+    int n = nums.size();
+    vector<int> prefixSum(n);
+    vector<int> suffixSum(n);
 
-int maxVowels(string s, int k)
-{
-    int cntVovels = 0;
+    prefixSum[0] = nums[0];
+    suffixSum[n - 1] = nums[n - 1];
 
-    int l = 0;
-    int r = 0;
-
-    int n = s.size();
-
-    cntVovels = 0;
-    int res = 0;
-
-    while (r < n)
+    for (int i = 1; i < n; ++i)
     {
-        if (isVovel(s[r]))
-        {
-            cntVovels++;
-        }
-
-        while (r - l + 1 > k)
-        {
-            if (isVovel(s[l]))
-            {
-                cntVovels--;
-            }
-            l++;
-        }
-
-        if (r - l + 1 == k)
-        {
-            res = max(res, cntVovels);
-        }
-
-        r++;
+        prefixSum[i] = prefixSum[i - 1] + nums[i];
+        suffixSum[n - 1 - i] = suffixSum[n - i] + nums[n - 1 - i];
     }
-    return res;
+
+    vector<int> result(n);
+
+    for (int i = 0; i < n; ++i)
+    {
+        int absolute_diff_sum = (i * nums[i]) - prefixSum[i] + suffixSum[i] - ((n - i - 1) * nums[i]);
+        result[i] = absolute_diff_sum;
+    }
+
+    return result;
 }
+
 void solve()
 {
-    string s;
-    int k;
-    cin >> s >> k;
-    int res = maxVowels(s, k);
+    vector<int> nums;
+    int n;
+    while (cin >> n && n != -1)
+    {
+        nums.push_back(n);
+    }
+    auto res = getSumAbsoluteDifferences(nums);
     debug(res);
 }
 
