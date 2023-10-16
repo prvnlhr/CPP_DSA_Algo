@@ -90,40 +90,54 @@ typedef priority_queue<int> pqmax;
 typedef priority_queue<int, vector<int>, greater<int>> pqmin;
 
 //|> ---ＳＯＬＶＥ-----------------------------------------------------------------------------------------------------------------------------------------------
-
-int findScoreOfP1(vector<int> &nums, int s, int e)
+int maxProd = 1, n;
+bool isPalindrome(const string &s)
 {
+    int n = s.size();
+    for (int i = 0; i < n / 2; i++)
+        if (s[i] != s[n - 1 - i])
+            return false;
+    return true;
+}
 
-    if (s > e)
+void recursive(string &s, string &first, string &second, int idx)
+{
+    if (idx == n)
     {
-        return 0;
+        // Check if both strings are palindrome or not
+        // If yes, then find product or their lengths
+        if (isPalindrome(first) && isPalindrome(second))
+        {
+            maxProd = max(maxProd, (int)(first.size() * second.size()));
+        }
+        return;
     }
 
-    int p1 = nums[s] + min(findScoreOfP1(nums, s + 2, e), findScoreOfP1(nums, s + 1, e - 1));
-    int p2 = nums[e] + min(findScoreOfP1(nums, s, e - 2), findScoreOfP1(nums, s + 1, e - 1));
-    debug(p1, p2);
-    return max(p1, p2);
+    // Choice 1 : Exclude current element from both strings
+    recursive(s, first, second, idx + 1);
+
+    // Choice 2 : Include current element into first string
+    first.push_back(s[idx]);
+    recursive(s, first, second, idx + 1);
+    first.pop_back();
+
+    // Choice 3 : Include current element into second string
+    second.push_back(s[idx]);
+    recursive(s, first, second, idx + 1);
+    second.pop_back();
 }
 
-bool predictTheWinner(vector<int> &nums)
+int maxProduct(string s)
 {
-    int n = nums.size();
-    int score_p1 = findScoreOfP1(nums, 0, n - 1);
-    int total_score = 0;
-    total_score = accumulate(nums.begin(), nums.end(), total_score);
-    return score_p1 >= total_score - score_p1;
+    n = s.size();
+    string first = "", second = "";
+    recursive(s, first, second, 0); // Start from 0th index
+    return maxProd;
 }
+
 void solve()
 {
-
-    vector<int> nums;
-    int ele;
-    while (cin >> ele && ele != -1)
-    {
-        nums.push_back(ele);
-    }
-    bool res = predictTheWinner(nums);
-    debug(res);
+    
 }
 
 //|> ---MAIN-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------

@@ -90,37 +90,51 @@ typedef priority_queue<int> pqmax;
 typedef priority_queue<int, vector<int>, greater<int>> pqmin;
 
 //|> ---ＳＯＬＶＥ-----------------------------------------------------------------------------------------------------------------------------------------------
-
-void helper(int l, int r, int n, string curr, vector<string> &res)
+int maxSum = 0;
+void calculateScore(vector<vector<int>> &students, vector<vector<int>> &mentors)
 {
-    if (l == n && r == n)
-    {
-        res.push_back(curr);
-        return;
-    }
-    if (l < n)
-    {
 
-        helper(l + 1, r, n, curr + '(', res);
-    }
-    if (r < l)
+    int compScore = 0;
+    for (int i = 0; i < students.size(); i++)
     {
-        helper(l, r + 1, n, curr + ')', res);
+        for (int j = 0; j < students[0].size(); j++)
+        {
+            if (students[i][j] == mentors[i][j])
+            {
+                compScore++;
+            }
+        }
     }
+    maxSum = max(maxSum, compScore);
 }
 
-vector<string> generateParenthesis(int n)
+void permutations(vector<vector<int>> &students, vector<vector<int>> &mentors, int pos)
 {
-    vector<string> res;
-    helper(0, 0, 3, "", res);
-    return res;
+    if (mentors.size() == students.size())
+    {
+        calculateScore(students, mentors);
+    }
+
+    for (int i = pos; i < mentors.size(); i++)
+    {
+        swap(mentors[i], mentors[pos]);
+        permutations(students, mentors, pos + 1);
+        swap(mentors[i], mentors[pos]);
+    }
+}
+int maxCompatibilitySum(vector<vector<int>> &students, vector<vector<int>> &mentors)
+{
+    permutations(students, mentors, 0);
+    return maxSum;
 }
 void solve()
 {
+    // vector<vector<int>> students{{1, 1, 0}, {1, 0, 1}, {0, 0, 1}};
+    // vector<vector<int>> mentors{{1, 0, 0}, {0, 0, 1}, {1, 1, 0}};
+    vector<vector<int>> students{{0, 0}, {0, 0}, {0, 0}};
+    vector<vector<int>> mentors{{1, 1}, {1, 1}, {1, 1}};
 
-    int n;
-    cin >> n;
-    auto res = generateParenthesis(n);
+    auto res = maxCompatibilitySum(students, mentors);
     debug(res);
 }
 

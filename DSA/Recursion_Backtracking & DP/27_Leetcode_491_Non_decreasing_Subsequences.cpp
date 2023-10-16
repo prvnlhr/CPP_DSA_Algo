@@ -91,52 +91,108 @@ typedef priority_queue<int, vector<int>, greater<int>> pqmin;
 
 //|> ---ＳＯＬＶＥ-----------------------------------------------------------------------------------------------------------------------------------------------
 
-int helper(vector<vector<int>> &grid, int m, int n)
+/*
+
+|> Recursion tree
+
+> findSubsequences({4, 6, 7, 7})
+> |
+> |-- helper({4, 6, 7, 7}, {}, 0)
+> |   |
+> |   |-- helper({4, 6, 7, 7}, {4}, 1)
+> |   |   |
+> |   |   |-- helper({4, 6, 7, 7}, {4, 6}, 2)
+> |   |   |   |
+> |   |   |   |-- helper({4, 6, 7, 7}, {4, 6, 7}, 3)
+> |   |   |   |   |
+> |   |   |   |   |-- helper({4, 6, 7, 7}, {4, 6, 7, 7}, 4) (Terminates)
+> |   |   |   |   |
+> |   |   |   |   |-- helper({4, 6, 7, 7}, {4, 6, 7}, 4) (Terminates)
+> |   |   |   |
+> |   |   |   |-- helper({4, 6, 7, 7}, {4, 6}, 3) (Terminates)
+> |   |   |   |
+> |   |   |   |-- helper({4, 6, 7, 7}, {4, 7}, 3) (Terminates)
+> |   |   |
+> |   |   |-- helper({4, 6, 7, 7}, {4}, 2)
+> |   |   |   |
+> |   |   |   |-- helper({4, 6, 7, 7}, {4, 7}, 3)
+> |   |   |   |   |
+> |   |   |   |   |-- helper({4, 6, 7, 7}, {4, 7, 7}, 4) (Terminates)
+> |   |   |   |   |
+> |   |   |   |   |-- helper({4, 6, 7, 7}, {4, 7}, 4) (Terminates)
+> |   |   |   |
+> |   |   |   |-- helper({4, 6, 7, 7}, {4}, 3) (Terminates)
+> |   |   |
+> |   |-- helper({4, 6, 7, 7}, {6}, 2)
+> |   |   |
+> |   |   |-- helper({4, 6, 7, 7}, {6, 7}, 3)
+> |   |   |   |
+> |   |   |   |-- helper({4, 6, 7, 7}, {6, 7, 7}, 4) (Terminates)
+> |   |   |   |
+> |   |   |   |-- helper({4, 6, 7, 7}, {6, 7}, 4) (Terminates)
+> |   |   |
+> |   |   |-- helper({4, 6, 7, 7}, {6}, 3) (Terminates)
+> |   |
+> |   |-- helper({4, 6, 7, 7}, {7}, 2)
+> |   |   |
+> |   |   |-- helper({4, 6, 7, 7}, {7, 7}, 3)
+> |   |   |   |
+> |   |   |   |-- helper({4, 6, 7, 7}, {7, 7, 7}, 4) (Terminates)
+> |   |   |   |
+> |   |   |   |-- helper({4, 6, 7, 7}, {7, 7}, 4) (Terminates)
+> |   |   |
+> |   |   |-- helper({4, 6, 7, 7}, {7}, 3) (Terminates)
+> |   |
+> |   |-- helper({4, 6, 7, 7}, {}, 2)
+> |   |   |
+> |   |   |-- helper({4, 6, 7, 7}, {7}, 3)
+> |   |   |   |
+> |   |   |   |-- helper({4, 6, 7, 7}, {7, 7}, 4) (Terminates)
+> |   |   |   |
+> |   |   |   |-- helper({4, 6, 7, 7}, {7}, 4) (Terminates)
+> |   |   |
+> |   |   |-- helper({4, 6, 7, 7}, {}, 3) (Terminates)
+> |
+-> Resulting subsequences: [[4, 6], [4, 6, 7], [4, 7], [6, 7], [6, 7, 7], [7, 7]]
+
+*/
+set<vector<int>> res;
+
+void helper(vector<int> &nums, vector<int> sub, int pos)
 {
-    if (m < 0 || n < 0)
+
+    if (sub.size() >= 2)
     {
-        return INT_MAX;
+        res.insert(sub);
     }
-    else if (m == 0 && n == 0)
+
+    for (int i = pos; i < nums.size(); i++)
     {
-        return grid[m][n];
+        if (sub.empty() || sub.back() <= nums[i])
+        {
+            sub.push_back(nums[i]);
+            helper(nums, sub, i + 1);
+            sub.pop_back();
+        }
     }
-    return grid[m][n] + min(helper(grid, m - 1, n), helper(grid, m, n - 1));
 }
 
-int helperMemoize(vector<vector<int>> &grid, int m, int n, vector<vector<int>> &dp)
+vector<vector<int>> findSubsequences(vector<int> &nums)
 {
-    if (m < 0 || n < 0)
-    {
-        return INT_MAX;
-    }
-    else if (m == 0 && n == 0)
-    {
-        return grid[m][n];
-    }
-    if (dp[m][n] != -1)
-    {
-        return dp[m][n];
-    }
-    int cost = grid[m][n] + min(helperMemoize(grid, m - 1, n, dp), helperMemoize(grid, m, n - 1, dp));
-    dp[m][n] = cost;
-    return dp[m][n];
+    vector<int> sub;
+    helper(nums, sub, 0);
+    return vector(res.begin(), res.end());
 }
 
-int minPathSum(vector<vector<int>> &grid)
-{
-    int numrows = grid.size();
-    int numcols = grid[0].size();
-    vector<vector<int>> dp(numrows + 1, vector<int>(numcols + 1, -1));
-    int res = helperMemoize(grid, numrows - 1, numcols - 1, dp);
-    debug(dp);
-    return res;
-}
 void solve()
 {
-    // vector<vector<int>> grid{{1, 3, 1}, {1, 5, 1}, {4, 2, 1}};
-    vector<vector<int>> grid{{1, 2, 3}, {4, 5, 6}};
-    int res = minPathSum(grid);
+    vector<int> nums;
+    int ele;
+    while (cin >> ele && ele != -1)
+    {
+        nums.push_back(ele);
+    }
+    auto res = findSubsequences(nums);
     debug(res);
 }
 

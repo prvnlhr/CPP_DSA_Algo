@@ -90,56 +90,23 @@ typedef priority_queue<int> pqmax;
 typedef priority_queue<int, vector<int>, greater<int>> pqmin;
 
 //|> ---ＳＯＬＶＥ-----------------------------------------------------------------------------------------------------------------------------------------------
-
-int helper(vector<int> &cost, int i, vector<int> &dp)
+vector<int> beautifulArray(int n)
 {
-    if (i >= cost.size())
-    {
-        return 0;
-    }
-    if (dp[i] != -1)
-    {
-        return dp[i];
-    }
-    int costOneStep = cost[i] + helper(cost, i + 1, dp);
-    int costTwoStep = cost[i] + helper(cost, i + 2, dp);
-    dp[i] = min(costOneStep, costTwoStep);
-    return dp[i];
+
+    return res;
 }
-
-int minCostClimbingStairsIterDp(vector<int> &cost)
-{
-    int n = cost.size();
-    vector<int> dp(n + 1, -1);
-
-    dp[0] = cost[0];
-    dp[1] = cost[1];
-
-    for (int i = 2; i < n + 1; i++)
-    {
-        dp[i] = min(cost[i] + dp[i - 1], cost[i] + dp[i - 2]);
-    }
-    return dp[n - 1];
-}
-
-int minCostClimbingStairs(vector<int> &cost)
-{
-    int n = cost.size();
-    vector<int> dp(n + 1, -1);
-    // return min(helper(cost, 0, dp), helper(cost, 1, dp));
-    return minCostClimbingStairsIterDp(cost);
-}
-
 void solve()
 {
-    vector<int> cost;
-    int c;
-    while (cin >> c && c != -1)
+    int t;
+    cin >> t;
+    while (t--)
     {
-        cost.push_back(c);
+
+        int n;
+        cin >> n;
+        auto res = beautifulArray(n);
+        debug(n, res);
     }
-    int res = minCostClimbingStairs(cost);
-    debug(res);
 }
 
 //|> ---MAIN-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------

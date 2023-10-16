@@ -90,60 +90,48 @@ typedef priority_queue<int> pqmax;
 typedef priority_queue<int, vector<int>, greater<int>> pqmin;
 
 //|> ---ＳＯＬＶＥ-----------------------------------------------------------------------------------------------------------------------------------------------
-
-int calculate(int x, int y, char op)
+struct TreeNode
 {
-    if (op == '+')
-    {
-        return x + y;
-    }
-    else if (op == '-')
-    {
-        return x - y;
-    }
-    else if (op == '*')
-    {
-        return x * y;
-    }
-    return 0;
-}
-
-vector<int> diffWaysToCompute(string exp)
+    int val;
+    TreeNode *left;
+    TreeNode *right;
+    TreeNode() : val(0), left(nullptr), right(nullptr) {}
+    TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+    TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+};
+vector<TreeNode *> allPossibleFBT(int n)
 {
-    int n = exp.size();
-    vector<int> res;
-    bool isNum = true;
-    for (int i = 0; i < n; i++)
+
+    if (n % 2 == 0)
     {
-        char curr_exp = exp[i];
-        if (curr_exp == '+' || curr_exp == '-' || curr_exp == '*')
+        return {};
+    }
+    if (n == 1)
+        return {
+            new TreeNode()};
+
+    vector<TreeNode *> res;
+    for (int i = 1; i < n - 1; i += 2)
+    {
+
+        vector<TreeNode *> left = allPossibleFBT(i);
+        vector<TreeNode *> right = allPossibleFBT(n - i - 1);
+
+        for (auto lNode : left)
         {
-            isNum = false;
-            vector<int> left = diffWaysToCompute(exp.substr(0, i));
-            vector<int> right = diffWaysToCompute(exp.substr(i + 1));
-
-            for (auto x : left)
+            for (auto rNode : right)
             {
-                for (auto y : right)
-                {
-                    int val = calculate(x, y, curr_exp);
-                    res.push_back(val);
-                }
+                TreeNode *root = new TreeNode();
+                root->left = lNode;
+                root->right = rNode;
+                res.push_back(root);
             }
         }
-    }
-    if (isNum)
-    {
-        res.push_back(stoi(exp));
     }
     return res;
 }
 void solve()
 {
-    string exp;
-    cin >> exp;
-    auto res = diffWaysToCompute(exp);
-    debug(res);
 }
 
 //|> ---MAIN-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------

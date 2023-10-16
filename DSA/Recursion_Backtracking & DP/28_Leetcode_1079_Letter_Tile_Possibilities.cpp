@@ -90,54 +90,45 @@ typedef priority_queue<int> pqmax;
 typedef priority_queue<int, vector<int>, greater<int>> pqmin;
 
 //|> ---ＳＯＬＶＥ-----------------------------------------------------------------------------------------------------------------------------------------------
+set<string> res;
 
-bool isPalindrome(string &s, int l, int r)
+unordered_map<int, bool> mpp;
+void helper(string tiles, string &sub)
 {
-    while (l < r)
+    if (sub.size() > tiles.size())
     {
-        if (s[l++] != s[r--])
-        {
-            return false;
-        }
-    }
-    return true;
-}
-void partionHelper(string s, int start, vector<vector<string>> &res, vector<string> &path)
-{
-    if (start == s.size())
-    {
-        res.push_back(path);
         return;
     }
-    else
+    if (sub.size() >= 1)
     {
-        for (int i = start; i < s.size(); i++)
+        res.insert(sub);
+    }
+    for (int i = 0; i < tiles.size(); i++)
+    {
+        if (!mpp[i])
         {
-            if (isPalindrome(s, start, i))
-            {
-                string part = s.substr(start, i - start + 1);
-                path.push_back(part);
-                partionHelper(s, i + 1, res, path);
-                path.pop_back();
-            }
+            sub += tiles[i];
+            mpp[i] = true;
+            helper(tiles, sub);
+            sub.pop_back();
+            mpp[i] = false;
         }
     }
 }
-
-vector<vector<string>> partition(string s)
+int numTilePossibilities(string tiles)
 {
-    vector<string> path;
-    vector<vector<string>> res;
-    partionHelper(s, 0, res, path);
-    return res;
+
+    string sub = "";
+    helper(tiles, sub);
+    return res.size();
 }
 
 void solve()
 {
-    string s;
-    cin >> s;
-    auto res = partition(s);
-    debug(res);
+    string tiles;
+    cin >> tiles;
+    auto ans = numTilePossibilities(tiles);
+    debug(ans);
 }
 
 //|> ---MAIN-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------

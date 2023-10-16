@@ -91,52 +91,75 @@ typedef priority_queue<int, vector<int>, greater<int>> pqmin;
 
 //|> ---ＳＯＬＶＥ-----------------------------------------------------------------------------------------------------------------------------------------------
 
-void addDot(string currIpString, int currIndex, int dotsAdded, string s, vector<string> &res)
+bool checkConditions(int currNum, int indx, string formed)
 {
-    if (dotsAdded > 4)
+    if (currNum == 'I')
     {
-        return;
     }
-    if (dotsAdded == 4 && currIndex >= s.size())
+    else if (currNum == 'D')
     {
-        res.push_back(currIpString);
     }
+}
+void helper(string &pattern, int currNum, int pos, string &formed)
+{
 
-    for (int length = 1; length <= 3 && length + currIndex <= s.size(); length++)
+    for (int i = currNum; i <= pattern.size(); i++)
     {
-        string segment = s.substr(currIndex, length);
-
-        if (segment[0] == '0' && length != 1) //|> leading zeroes,avoid
+        if (formed.size() == 0)
         {
-            break;
+            formed += (currNum + '0');
         }
-        int num = stoi(segment);
-        
-        if (0 <= num && num <= 255)
+        else
         {
-            if (dotsAdded < 3)
+            if (checkConditions(currNum, pos, pattern))
             {
-                segment += '.';
             }
-            addDot(currIpString + segment, length + currIndex, dotsAdded + 1, s, res);
+            else
+            {
+                continue;
+            }
         }
     }
 }
 
-vector<string> restoreIpAddresses(string s)
+// |> using stack
+string smallestNumber(string pattern)
 {
-    vector<string> res;
-    int n = s.size();
-    addDot("", 0, 0, s, res);
-    return res;
+    string result;
+    stack<int> s;
+    for (int i = 0; i <= pattern.length(); i++)
+    {
+        s.push(i + 1);
+        if (i == pattern.length() || pattern[i] == 'I')
+        {
+            while (!s.empty())
+            {
+                result += to_string(s.top());
+                s.pop();
+            }
+        }
+    }
+
+    return result;
+}
+string smallestNumber(string pattern)
+{
+    string formed = "";
+    helper(pattern, 1, 0, formed);
+    return formed;
 }
 void solve()
 {
-    string s;
-    cin >> s;
+    int t;
+    cin >> t;
+    while (t--)
+    {
 
-    auto res = restoreIpAddresses(s);
-    debug(res);
+        string s;
+        cin >> s;
+        auto res = smallestNumber(s);
+        debug(res);
+    }
 }
 
 //|> ---MAIN-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------

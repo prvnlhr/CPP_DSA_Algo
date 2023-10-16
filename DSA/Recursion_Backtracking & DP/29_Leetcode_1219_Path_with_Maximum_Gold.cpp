@@ -90,76 +90,75 @@ typedef priority_queue<int> pqmax;
 typedef priority_queue<int, vector<int>, greater<int>> pqmin;
 
 //|> ---ＳＯＬＶＥ-----------------------------------------------------------------------------------------------------------------------------------------------
-class Solution
+vector<pair<int, int>> dirs = {{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
+
+bool isValid(int x, int y, int rows, int cols)
 {
-public:
-    int solve(vector<int> &nums, set<int> &s, int index, int n)
+    return x >= 0 && x < rows && y >= 0 && y < cols;
+}
+
+int helper(vector<vector<int>> &grid, int curr_x, int curr_y, vector<vector<int>> vis)
+{
+    int rows = grid.size();
+    int cols = grid[0].size();
+
+    int currGold = grid[curr_x][curr_y];
+
+    vis[curr_x][curr_y] = 1;
+
+    for (auto [x, y] : dirs)
     {
-        if (index == n + 1)
+        int new_x = curr_x + x;
+        int new_y = curr_y + y;
+
+        if (isValid(new_x, new_y, rows, cols) && vis[new_x][new_y] == -1 && grid[new_x][new_y] != 0)
         {
-            return 1;
+            int goldFromCurrCell = grid[curr_x][curr_y] + helper(grid, new_x, new_y, vis);
+            currGold = max(currGold, goldFromCurrCell);
+            vis[new_x][new_y] = -1;
         }
-        int res = 0;
-        for (int i = 0; i < nums.size(); i++)
+    }
+    vis[curr_x][curr_y] = -1;
+    return currGold;
+}
+
+int getMaximumGold(vector<vector<int>> &grid)
+{
+    int rows = grid.size();
+    int cols = grid[0].size();
+
+    if (rows == 0)
+    {
+        return 0;
+    }
+    if (cols == 0)
+    {
+        return 0;
+    }
+
+    int goldCollected = 0;
+    vector<vector<int>> vis(rows, vector<int>(cols, -1));
+
+    for (int i = 0; i < rows; i++)
+    {
+        for (int j = 0; j < cols; j++)
         {
-            if (s.find(nums[i]) == s.end() && (nums[i] % index == 0 || index % nums[i] == 0))
+            if (grid[i][j] > 0)
             {
-                s.insert(nums[i]);
-                res += solve(nums, s, index + 1, n);
-                s.erase(nums[i]);
+                vis[i][j] = 1;
+                goldCollected = max(goldCollected, helper(grid, i, j, vis));
+                vis[i][j] = -1;
             }
         }
-        return res;
     }
+    return goldCollected;
+}
 
-    int countArrangement(int n)
-    {
-        vector<int> nums;
-        for (int i = 1; i <= n; i++)
-        {
-            nums.push_back(i);
-        }
-        set<int> s;
-        int ans = solve(nums, s, 1, n);
-        return ans;
-    }
-};
-
-class Solution
-{
-public:
-    int solve(vector<int> &nums, vector<int> &vis, int index, int n)
-    {
-        if (index == n + 1)
-        {
-            return 1;
-        }
-        int res = 0;
-        for (int i = 0; i < nums.size(); i++)
-        {
-            if (vis[nums[i]] == 0 && (nums[i] % index == 0 || index % nums[i] == 0))
-            {
-                vis[nums[i]] = 1;
-                res += solve(nums, vis, index + 1, n);
-                vis[nums[i]] = 0;
-            }
-        }
-        return res;
-    }
-    int countArrangement(int n)
-    {
-        vector<int> nums, vis(n + 1, 0);
-        for (int i = 1; i <= n; i++)
-        {
-            nums.push_back(i);
-        }
-
-        int ans = solve(nums, vis, 1, n);
-        return ans;
-    }
-};
 void solve()
 {
+    vector<vector<int>> grid{{0, 6, 0}, {5, 8, 7}, {0, 9, 0}};
+    auto res = getMaximumGold(grid);
+    debug(res);
 }
 
 //|> ---MAIN-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
