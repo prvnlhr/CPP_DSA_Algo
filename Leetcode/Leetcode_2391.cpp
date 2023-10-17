@@ -112,8 +112,9 @@ void solve()
     vector<string> garbage{"MMM", "PGM", "GP"};
     // vector<int> travel{2, 4, 3};
     vector<int> travel{3, 10};
-   
-   
+
+    
+
     int ans = 0;
 
     int n = garbage.size();
@@ -179,6 +180,7 @@ void solve()
                     currTime += times[i];
                 }
             }
+
             ans += x;
 
             debug(x);

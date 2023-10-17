@@ -24,6 +24,16 @@
         "regex": "cpp",
         "valarray": "cpp",
         "utility": "cpp",
-        "new": "cpp"
-    }
+        "new": "cpp",
+        "complex": "cpp",
+        "numbers": "cpp",
+        "bitset": "cpp",
+        "functional": "cpp"
+    },
+    "editor.fontFamily": "'Fira Code' , 'Fira Code iScript'",
+    "editor.fontLigatures": true,
+    "files.autoSave": "afterDelay",
+    "editor.fontVariations": false,
+    "editor.fontSize": 12.5,
+    "editor.fontWeight": "normal"
 }

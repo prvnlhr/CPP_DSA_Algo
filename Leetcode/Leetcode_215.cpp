@@ -93,6 +93,7 @@ ll gcd(ll a, ll b)
     {
         return gcd(b, a);
     }
+
     if (b == 0)
     {
         return a;
