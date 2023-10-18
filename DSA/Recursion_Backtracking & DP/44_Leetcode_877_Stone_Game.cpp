@@ -1,16 +1,14 @@
 
 /*
->------------------------------------------------------------------------------------------------------------------------------------------------------------
->                               █▀ ▀█▀ █▀▀ █░░ █░░ █░█ █▀█
->                               ▄█ ░█░ ██▄ █▄▄ █▄▄ █▀█ █▀▄
->------------------------------------------------------------------------------------------------------------------------------------------------------------
+|>------------------------------------------------------------------------------------------------------------------------------------------------------------
+|>                               █▀ ▀█▀ █▀▀ █░░ █░░ █░█ █▀█
+|>                               ▄█ ░█░ ██▄ █▄▄ █▄▄ █▀█ █▀▄
+|>------------------------------------------------------------------------------------------------------------------------------------------------------------
 */
 
 #include <bits/stdc++.h>
 using namespace std;
 using namespace chrono;
-
-//__________________________________________________________________________________________________________________________________________________________________________________________________
 
 #define MOD 1000000007
 #define MOD1 998244353
@@ -18,7 +16,7 @@ using namespace chrono;
 
 typedef long long ll;
 
-//>---DEBUG_TEMPLATE_START---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+// |> ---DEBUG_TEMPLATE_START---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 template <class T1, class T2>
 ostream &operator<<(ostream &os, const pair<T1, T2> &p)
@@ -51,7 +49,7 @@ ostream &operator<<(ostream &os, const T &c)
     _NTH_ARG(__VA_ARGS__, _FE_10, _FE_9, _FE_8, _FE_7, _FE_6, _FE_5, _FE_4, _FE_3, _FE_2, _FE_1) \
     (MACRO, __VA_ARGS__)
 
-//__Change output format here
+//__Change output format here______________________________________________________________________________________________________________________________________________________
 #define out(x) #x " = " << x << "; "
 
 #ifndef ONLINE_JUDGE
@@ -60,7 +58,8 @@ ostream &operator<<(ostream &os, const T &c)
 #else
 #define debug(...)
 #endif
-//>---DEBUG_TEMPLATE_END-----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+//|> ---DEBUG_TEMPLATE_END-----------------------------------------------------------------------------------------------------------------------------------------------------------
 
 // #define FOR(i, start, end) for (int i = start; i < end; i++)
 #define FOR(i, begin, end) for (__typeof(end) i = (begin) - ((begin) > (end)); i != (end) - ((begin) > (end)); i += 1 - 2 * ((begin) > (end)))
@@ -89,60 +88,67 @@ typedef map<int, int> mpint;
 typedef pair<int, int> pi;
 typedef priority_queue<int> pqmax;
 typedef priority_queue<int, vector<int>, greater<int>> pqmin;
-//--------------------------------------------------------------------------------------------------------------------------------
 
-//>----------------------------ＳＯＬＶＥ-----------------------------------------------------------------------------------------------------------------------------------------------
-
-/*
-- A thief robbing a store can carry a maximal weight of W into his knapsack.
-- There are N items, and i-th item weigh 'Wi' and the value being 'Vi.'
-- What would be the maximum value V, that the thief can steal?
-- Examples::
-- Input 1:
-- 4
-- V --> 5 4 8 6
-- W --> 1 2 4 5
-- maxW --> 5
-- output 1: 13
--
-- Input 2:
-- 5
-- 24 13 23 15 16
-- 12 7 11 8 9
-- 26
-- output 2: 51
-*/
-
-int knapsack(vector<int> weights, vector<int> values, int maxW, int n)
+//|> ---ＳＯＬＶＥ-----------------------------------------------------------------------------------------------------------------------------------------------
+bool stone_game_brute_force_recursive(vector<int> &piles, int i, int j)
 {
-    if (n <= 0 || maxW == 0)
+    // If the current player is at the end of the pile, they can only win if they take the current pile.
+    if (i == j)
+    {
+        return true;
+    }
+
+    // The current player can either take the first or last pile.
+    return (
+        piles[i] + !stone_game_brute_force_recursive(piles, i + 1, j) ||
+        piles[j] + !stone_game_brute_force_recursive(piles, i, j - 1));
+}
+
+bool stoneGame(vector<int> &piles)
+{
+    return stone_game_brute_force_recursive(piles, 0, piles.size() - 1);
+}
+
+//  ---------------------------------------------------------------------------------
+int max_coinRec(vector<int> &piles, int start, int end, vector<vector<int>> &dp)
+{
+    if (start > end)
     {
         return 0;
     }
-    if (weights[n - 1] <= maxW)
+
+    if (dp[start][end] != -1)
     {
-        int a = values[n - 1] + knapsack(weights, values, maxW - weights[n - 1], n - 1);
-        int b = knapsack(weights, values, maxW, n - 1);
-        return max(a, b);
+        return dp[start][end];
     }
-    else
-    {
-        return knapsack(weights, values, maxW, n - 1);
-    }
+
+    int a = piles[start] + min(max_coinRec(piles, start + 2, end, dp),
+                               max_coinRec(piles, start + 1, end - 1, dp));
+    int b = piles[end] + min(max_coinRec(piles, start + 1, end - 1, dp),
+                             max_coinRec(piles, start, end - 2, dp));
+
+    dp[start][end] = max(a, b);
+    return dp[start][end];
+}
+
+bool stoneGame(vector<int> &piles)
+{
+    vector<vector<int>> dp(piles.size(), vector<int>(piles.size(), -1));
+    int res = max_coinRec(piles, 0, piles.size() - 1, dp);
+
+    int sum = accumulate(piles.begin(), piles.end(), 0);
+    int bobS = sum - res;
+    return res > bobS;
 }
 
 void solve()
 {
-
-    vector<int> weights{1, 2, 4, 5};
-    vector<int> values{5, 4, 8, 6};
-    int maxW = 5;
-    int n = 4;
-    cout << knapsack(weights, values, maxW, n) << endl;
-    ;
+    vector<int> piles{5, 3, 4, 5};
+    auto res = stoneGame(piles);
+    debug(res);
 }
 
-//>-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+//|> ---MAIN-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 int main()
 {
     ios::sync_with_stdio(0);
