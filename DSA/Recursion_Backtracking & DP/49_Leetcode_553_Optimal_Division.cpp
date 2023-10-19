@@ -91,53 +91,41 @@ typedef priority_queue<int, vector<int>, greater<int>> pqmin;
 
 //|> ---ＳＯＬＶＥ-----------------------------------------------------------------------------------------------------------------------------------------------
 
-
-//|> Combination Sum 1 & 4 are similar, and Combination Sum 2 & 3 are similar
-
-
-void helper(int start, int target, int currSum, vector<int> &arr, vector<int> &currSelected, vector<vector<int>> &res)
+string optimalDivision(vector<int> &nums)
 {
-
-    if (currSum == target)
+    string res = "";
+    int n = nums.size();
+    if (n == 1)
     {
-        debug(currSum);
-        res.push_back(currSelected);
-        return;
+        return to_string(nums[0]);
     }
-    else
+    if (n == 2)
     {
-        for (int i = start; i < arr.size(); i++)
-        {
-            if (currSum + arr[i] <= target)
-            {
-                currSum += arr[i];
-                currSelected.push_back(arr[i]);
-                helper(i + 1, target, currSum, arr, currSelected, res);
-                currSelected.pop_back();
-                currSum -= arr[i];
-            }
-        }
+        res += to_string(nums[0]) + '/' + to_string(nums[1]);
+        return res;
     }
-}
 
-vector<vector<int>> combinationSum(vector<int> &candidates, int target)
-{
-    vector<vector<int>> res;
-    vector<int> currSelected;
-    helper(0, target, 0, candidates, currSelected, res);
+    res += to_string(nums[0]) + '/' + '(';
+
+    for (int i = 1; i < n; i++)
+    {
+        res += to_string(nums[i]) + '/';
+    }
+    res.pop_back();
+    res += ')';
     return res;
 }
+
 void solve()
 {
-    vector<int> candidates;
-    int c;
-    while (cin >> c && c != -1)
+
+    vector<int> nums;
+    int ele;
+    while (cin >> ele && ele != -1)
     {
-        candidates.push_back(c);
+        nums.push_back(ele);
     }
-    int target;
-    cin >> target;
-    auto res = combinationSum(candidates, target);
+    auto res = optimalDivision(nums);
     debug(res);
 }
 

@@ -91,53 +91,61 @@ typedef priority_queue<int, vector<int>, greater<int>> pqmin;
 
 //|> ---ＳＯＬＶＥ-----------------------------------------------------------------------------------------------------------------------------------------------
 
-
-//|> Combination Sum 1 & 4 are similar, and Combination Sum 2 & 3 are similar
-
-
-void helper(int start, int target, int currSum, vector<int> &arr, vector<int> &currSelected, vector<vector<int>> &res)
+int numSquaresRec(int n)
 {
-
-    if (currSum == target)
+    if (n == 0)
     {
-        debug(currSum);
-        res.push_back(currSelected);
-        return;
+        return 0;
     }
-    else
+    if (n < 0)
     {
-        for (int i = start; i < arr.size(); i++)
-        {
-            if (currSum + arr[i] <= target)
-            {
-                currSum += arr[i];
-                currSelected.push_back(arr[i]);
-                helper(i + 1, target, currSum, arr, currSelected, res);
-                currSelected.pop_back();
-                currSum -= arr[i];
-            }
-        }
+        return INT_MAX;
     }
+    int minAns = INT_MAX;
+    for (int i = 1; i * i <= n; i++)
+    {
+        int sqr = i * i;
+        minAns = min(minAns, 1 + numSquaresRec(n - sqr));
+    }
+    return minAns;
 }
 
-vector<vector<int>> combinationSum(vector<int> &candidates, int target)
+int numSquaresRecMemo(int n, vector<int> &dp)
 {
-    vector<vector<int>> res;
-    vector<int> currSelected;
-    helper(0, target, 0, candidates, currSelected, res);
-    return res;
+    if (n == 0)
+    {
+        return 0;
+    }
+    if (n < 0)
+    {
+        return INT_MAX;
+    }
+    if (dp[n] != -1)
+    {
+        return dp[n];
+    }
+    int minAns = INT_MAX;
+    for (int i = 1; i * i <= n; i++)
+    {
+        int sqr = i * i;
+        minAns = min(minAns, 1 + numSquaresRecMemo(n - sqr, dp));
+    }
+    dp[n] = minAns;
+    return minAns;
 }
+
+int numSquares(int n)
+{
+    vector<int> dp(n + 1, -1);
+    return numSquaresRecMemo(n, dp);
+    // return numSquaresRec(n);
+}
+
 void solve()
 {
-    vector<int> candidates;
-    int c;
-    while (cin >> c && c != -1)
-    {
-        candidates.push_back(c);
-    }
-    int target;
-    cin >> target;
-    auto res = combinationSum(candidates, target);
+    int n;
+    cin >> n;
+    int res = numSquares(n);
     debug(res);
 }
 

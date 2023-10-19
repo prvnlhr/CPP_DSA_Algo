@@ -91,54 +91,58 @@ typedef priority_queue<int, vector<int>, greater<int>> pqmin;
 
 //|> ---ＳＯＬＶＥ-----------------------------------------------------------------------------------------------------------------------------------------------
 
-
-//|> Combination Sum 1 & 4 are similar, and Combination Sum 2 & 3 are similar
-
-
-void helper(int start, int target, int currSum, vector<int> &arr, vector<int> &currSelected, vector<vector<int>> &res)
+int integerBreakRec(int n)
 {
+    if (n == 1 || n == 0)
+    {
+        return 1;
+    }
 
-    if (currSum == target)
+    int maxAns = 0;
+
+    for (int i = 1; i < n; i++)
     {
-        debug(currSum);
-        res.push_back(currSelected);
-        return;
+        maxAns = max(maxAns, max(i * (n - i), integerBreakRec(n - i) * i));
     }
-    else
+    return maxAns;
+}
+int integerBreakRecMemo(int n, vector<int> &dp)
+{
+    if (n == 1 || n == 0)
     {
-        for (int i = start; i < arr.size(); i++)
-        {
-            if (currSum + arr[i] <= target)
-            {
-                currSum += arr[i];
-                currSelected.push_back(arr[i]);
-                helper(i + 1, target, currSum, arr, currSelected, res);
-                currSelected.pop_back();
-                currSum -= arr[i];
-            }
-        }
+        return 1;
     }
+    if (dp[n] != -1)
+    {
+        return dp[n];
+    }
+    int maxAns = 0;
+
+    for (int i = 1; i < n; i++)
+    {
+        maxAns = max(maxAns, max(i * (n - i), integerBreakRecMemo(n - i, dp) * i));
+    }
+    dp[n] = maxAns;
+    return maxAns;
 }
 
-vector<vector<int>> combinationSum(vector<int> &candidates, int target)
+int integerBreak(int n)
 {
-    vector<vector<int>> res;
-    vector<int> currSelected;
-    helper(0, target, 0, candidates, currSelected, res);
-    return res;
+    vector<int> dp(n + 1, -1);
+    return integerBreakRecMemo(n, dp);
+    // return integerBreakRec(n);
 }
 void solve()
 {
-    vector<int> candidates;
-    int c;
-    while (cin >> c && c != -1)
+    int t;
+    cin >> t;
+    while (t--)
     {
-        candidates.push_back(c);
+        int n;
+        cin >> n;
+        int res = integerBreak(n);
+        debug(n, res);
     }
-    int target;
-    cin >> target;
-    auto res = combinationSum(candidates, target);
-    debug(res);
 }
 
 //|> ---MAIN-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------

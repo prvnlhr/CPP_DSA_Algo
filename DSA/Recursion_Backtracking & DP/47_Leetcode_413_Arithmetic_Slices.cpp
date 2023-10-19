@@ -90,54 +90,70 @@ typedef priority_queue<int> pqmax;
 typedef priority_queue<int, vector<int>, greater<int>> pqmin;
 
 //|> ---ＳＯＬＶＥ-----------------------------------------------------------------------------------------------------------------------------------------------
-
-
-//|> Combination Sum 1 & 4 are similar, and Combination Sum 2 & 3 are similar
-
-
-void helper(int start, int target, int currSum, vector<int> &arr, vector<int> &currSelected, vector<vector<int>> &res)
+int numberOfArithmeticSlices(vector<int> &nums)
 {
 
-    if (currSum == target)
+    int n = nums.size();
+    if (n < 3)
     {
-        debug(currSum);
-        res.push_back(currSelected);
-        return;
+        return 0;
     }
-    else
+    int cnt = 0;
+    for (int i = 0; i < n - 2; i++)
     {
-        for (int i = start; i < arr.size(); i++)
+        int diff = nums[i + 1] - nums[i];
+        for (int j = i + 2; j < n; i + j++)
         {
-            if (currSum + arr[i] <= target)
+            if (nums[j] - nums[j - 1] == diff)
             {
-                currSum += arr[i];
-                currSelected.push_back(arr[i]);
-                helper(i + 1, target, currSum, arr, currSelected, res);
-                currSelected.pop_back();
-                currSum -= arr[i];
+                cnt++;
+            }
+            else
+            {
+                break;
             }
         }
     }
+    return cnt;
+}
+int numberOfArithmeticSlicesOP(vector<int> &nums)
+{
+
+    int n = nums.size();
+    if (n < 3)
+    {
+        return 0;
+    }
+    int prevDiff = nums[1] - nums[0];
+    int cnt = 0;
+    int ans = 0;
+    for (int i = 1; i < n - 1; i++)
+    {
+        int currDiff = nums[i + 1] - nums[i];
+        if (currDiff == prevDiff)
+        {
+            cnt++;
+        }
+        else
+        {
+            prevDiff = currDiff;
+            cnt = 0;
+        }
+        ans += cnt;
+    }
+    return ans;
 }
 
-vector<vector<int>> combinationSum(vector<int> &candidates, int target)
-{
-    vector<vector<int>> res;
-    vector<int> currSelected;
-    helper(0, target, 0, candidates, currSelected, res);
-    return res;
-}
 void solve()
 {
-    vector<int> candidates;
-    int c;
-    while (cin >> c && c != -1)
+
+    vector<int> nums;
+    int ele;
+    while (cin >> ele && ele != -1)
     {
-        candidates.push_back(c);
+        nums.push_back(ele);
     }
-    int target;
-    cin >> target;
-    auto res = combinationSum(candidates, target);
+    int res = numberOfArithmeticSlices(nums);
     debug(res);
 }
 

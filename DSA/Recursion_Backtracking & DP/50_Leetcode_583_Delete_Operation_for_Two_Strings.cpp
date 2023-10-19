@@ -91,53 +91,78 @@ typedef priority_queue<int, vector<int>, greater<int>> pqmin;
 
 //|> ---ＳＯＬＶＥ-----------------------------------------------------------------------------------------------------------------------------------------------
 
-
-//|> Combination Sum 1 & 4 are similar, and Combination Sum 2 & 3 are similar
-
-
-void helper(int start, int target, int currSum, vector<int> &arr, vector<int> &currSelected, vector<vector<int>> &res)
+int recursive(string word1, string word2, int m, int n)
 {
-
-    if (currSum == target)
+    if (m == 0 && n == 0)
     {
-        debug(currSum);
-        res.push_back(currSelected);
-        return;
+        return 0;
+    }
+    if (m == 0 && n != 0)
+    {
+        return n;
+    }
+    if (m != 0 && n == 0)
+    {
+        return m;
+    }
+    if (word1[m] != word2[n])
+    {
+        int a = recursive(word1, word2, m - 1, n) + 1;
+        int b = recursive(word1, word2, m, n - 1) + 1;
+        return min(a, b);
     }
     else
     {
-        for (int i = start; i < arr.size(); i++)
-        {
-            if (currSum + arr[i] <= target)
-            {
-                currSum += arr[i];
-                currSelected.push_back(arr[i]);
-                helper(i + 1, target, currSum, arr, currSelected, res);
-                currSelected.pop_back();
-                currSum -= arr[i];
-            }
-        }
+        return recursive(word1, word2, m - 1, n - 1);
     }
+}
+int recursive(string &word1, string &word2, int m, int n, vector<vector<int>> &dp)
+{
+    if (m == 0 && n == 0)
+    {
+        return 0;
+    }
+    if (m == 0 && n != 0)
+    {
+        return n;
+    }
+    if (m != 0 && n == 0)
+    {
+        return m;
+    }
+
+    if (dp[m][n] != -1)
+    {
+        return dp[m][n];
+    }
+
+    if (word1[m - 1] != word2[n - 1])
+    {
+        int a = recursive(word1, word2, m - 1, n, dp) + 1;
+        int b = recursive(word1, word2, m, n - 1, dp) + 1;
+        dp[m][n] = min(a, b);
+    }
+    else
+    {
+        dp[m][n] = recursive(word1, word2, m - 1, n - 1, dp);
+    }
+
+    return dp[m][n];
 }
 
-vector<vector<int>> combinationSum(vector<int> &candidates, int target)
+int minDistance(string word1, string word2)
 {
-    vector<vector<int>> res;
-    vector<int> currSelected;
-    helper(0, target, 0, candidates, currSelected, res);
-    return res;
+    int m = word1.length();
+    int n = word2.length();
+    vector<vector<int>> dp(m + 1, vector<int>(n + 1, -1));
+    return recursive(word1, word2, m, n, dp);
 }
+
 void solve()
 {
-    vector<int> candidates;
-    int c;
-    while (cin >> c && c != -1)
-    {
-        candidates.push_back(c);
-    }
-    int target;
-    cin >> target;
-    auto res = combinationSum(candidates, target);
+    string w1, w2;
+    cin >> w1 >> w2;
+    int res = minDistance(w1, w2);
     debug(res);
 }
 
