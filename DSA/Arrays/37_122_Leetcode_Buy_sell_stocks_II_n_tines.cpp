@@ -197,6 +197,7 @@ int maxProfit(vector<int> &prices)
     }
     maxPro += profitUntil;
 
+    debug(maxPro);
     return maxPro;
 }
 
@@ -208,7 +209,7 @@ void solve()
     {
         prices.push_back(ele);
     }
-    debug(prices);
+
     cout << maxProfit(prices) << endl;
 }
 
