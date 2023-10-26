@@ -183,9 +183,8 @@ int coinChangeMemo(vector<int> &coins, int amount, int n, vector<vector<int>> &d
 ::TODO
 */
 
-int coinChange(vector<int> &coins, int amount)
+int coinChange(int n, int amount, vector<int> &coins)
 {
-    int n = coins.size();
     // int ans = coinChangeRec(coins, amount, n - 1);
     vector<vector<int>> dp(n + 1, vector<int>(amount + 1, -1));
     int ans = coinChangeMemo(coins, amount, n - 1, dp);
@@ -199,17 +198,18 @@ int coinChange(vector<int> &coins, int amount)
 
 void solve()
 {
-
-    int amount;
-    cin >> amount;
+    int n, x;
+    cin >> n >> x;
     vector<int> coins;
     int cn;
-    while (cin >> cn)
+    for (int i = 0; i < n; i++)
     {
-        coins.push_back(cn);
+        int ele;
+        cin >> ele;
+        coins.push_back(ele);
     }
     debug(coins);
-    cout << coinChange(coins, amount) << endl;
+    cout << coinChange(n, x, coins) << endl;
 }
 
 //>-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
