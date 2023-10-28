@@ -119,7 +119,7 @@ typedef priority_queue<int, vector<int>, greater<int>> pqmin;
 : Auxiliary Space: O(N), Stack space required for recursion
 */
 int knapSackRec(vector<int> weights, vector<int> values, int maxW, int i, int n)
-{ 
+{
     if (maxW == 0 || i == n)
     {
         return 0;

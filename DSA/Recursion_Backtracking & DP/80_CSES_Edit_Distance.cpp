@@ -1,16 +1,14 @@
 
 /*
->------------------------------------------------------------------------------------------------------------------------------------------------------------
->                               █▀ ▀█▀ █▀▀ █░░ █░░ █░█ █▀█
->                               ▄█ ░█░ ██▄ █▄▄ █▄▄ █▀█ █▀▄
->------------------------------------------------------------------------------------------------------------------------------------------------------------
+|>------------------------------------------------------------------------------------------------------------------------------------------------------------
+|>                               █▀ ▀█▀ █▀▀ █░░ █░░ █░█ █▀█
+|>                               ▄█ ░█░ ██▄ █▄▄ █▄▄ █▀█ █▀▄
+|>------------------------------------------------------------------------------------------------------------------------------------------------------------
 */
 
 #include <bits/stdc++.h>
 using namespace std;
 using namespace chrono;
-
-//__________________________________________________________________________________________________________________________________________________________________________________________________
 
 #define MOD 1000000007
 #define MOD1 998244353
@@ -18,7 +16,7 @@ using namespace chrono;
 
 typedef long long ll;
 
-//>---DEBUG_TEMPLATE_START---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+// |> ---DEBUG_TEMPLATE_START---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 template <class T1, class T2>
 ostream &operator<<(ostream &os, const pair<T1, T2> &p)
@@ -51,7 +49,7 @@ ostream &operator<<(ostream &os, const T &c)
     _NTH_ARG(__VA_ARGS__, _FE_10, _FE_9, _FE_8, _FE_7, _FE_6, _FE_5, _FE_4, _FE_3, _FE_2, _FE_1) \
     (MACRO, __VA_ARGS__)
 
-//__Change output format here
+//__Change output format here______________________________________________________________________________________________________________________________________________________
 #define out(x) #x " = " << x << "; "
 
 #ifndef ONLINE_JUDGE
@@ -60,7 +58,8 @@ ostream &operator<<(ostream &os, const T &c)
 #else
 #define debug(...)
 #endif
-//>---DEBUG_TEMPLATE_END-----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+//|> ---DEBUG_TEMPLATE_END-----------------------------------------------------------------------------------------------------------------------------------------------------------
 
 // #define FOR(i, start, end) for (int i = start; i < end; i++)
 #define FOR(i, begin, end) for (__typeof(end) i = (begin) - ((begin) > (end)); i != (end) - ((begin) > (end)); i += 1 - 2 * ((begin) > (end)))
@@ -89,85 +88,30 @@ typedef map<int, int> mpint;
 typedef pair<int, int> pi;
 typedef priority_queue<int> pqmax;
 typedef priority_queue<int, vector<int>, greater<int>> pqmin;
-//--------------------------------------------------------------------------------------------------------------------------------
 
-//>----------------------------ＳＯＬＶＥ-----------------------------------------------------------------------------------------------------------------------------------------------
+//|> ---ＳＯＬＶＥ-----------------------------------------------------------------------------------------------------------------------------------------------
 
-/*
->Recursive
-:O(2^N)
-*/
-
-int minDisRec(string s, string t, int n1, int n2)
+void solve()
 {
-    if (n1 == 0)
-    {
-        return n2;
-    }
-    if (n2 == 0)
-    {
-        return n1;
-    }
-    if (s[n1 - 1] == t[n2 - 1])
-    {
-        minDisRec(s, t, n1 - 1, n2 - 1);
-    }
-    int a = minDisRec(s, t, n1, n2 - 1);     // # Insert
-    int b = minDisRec(s, t, n1 - 1, n2);     // # Delete
-    int c = minDisRec(s, t, n1 - 1, n2 - 1); // # Replace
-    return 1 + min({a, b, c});
-}
+    string s, t;
+    cin >> s;
+    cin >> t;
 
-/*
-> Recursive Memoization
-> O(n*n)
-*/
-int minDisRecMemo(string s, string t, int n1, int n2, vector<vector<int>> &dp)
-{
-    if (n1 == 0)
-    {
-        return n2;
-    }
-    if (n2 == 0)
-    {
-        return n1;
-    }
-    if (dp[n1][n2] != -1)
-    {
-        return dp[n1][n2];
-    }
-    if (s[n1 - 1] == t[n2 - 1])
-    {
-        return dp[n1][n2] = 0 + minDisRecMemo(s, t, n1 - 1, n2 - 1, dp);
-    }
-    int a = minDisRecMemo(s, t, n1, n2 - 1, dp);     // # Insert
-    int b = minDisRecMemo(s, t, n1 - 1, n2, dp);     // # Delete
-    int c = minDisRecMemo(s, t, n1 - 1, n2 - 1, dp); // # Replace
-    int ans = 1 + min({a, b, c});
-    dp[n1][n2] = ans;
-    return ans;
-}
-
-/*
-> Iterative Dp
-:O(n*n)
-*/
-int minDistanceIterDp(string s, string t)
-{
     int n1 = s.size();
     int n2 = t.size();
 
     vector<vector<int>> dp(n1 + 1, vector<int>(n2 + 1, -1));
 
-
     for (int i = 0; i < n1 + 1; i++)
     {
         dp[i][0] = i;
     }
+
     for (int j = 0; j < n2 + 1; j++)
     {
         dp[0][j] = j;
     }
+
     for (int i = 1; i < n1 + 1; i++)
     {
         for (int j = 1; j < n2 + 1; j++)
@@ -178,31 +122,15 @@ int minDistanceIterDp(string s, string t)
             }
             else
             {
-                dp[i][j] = 1 + min({dp[i - 1][j - 1], dp[i][j - 1], dp[i - 1][j]});
+                dp[i][j] = 1 + min({dp[i - 1][j - 1], dp[i - 1][j], dp[i][j - 1]});
             }
         }
     }
-    return dp[n1][n2];
+    debug(dp);
+    cout << dp[n1][n2] << endl;
 }
 
-int minDistance(string word1, string word2)
-{
-    int n1 = word1.size();
-    int n2 = word2.size();
-
-    vector<vector<int>> dp(n1 + 1, vector<int>(n2 + 1, -1));
-    // return minDisRecMemo(word1, word2, n1, n2, dp);
-    return minDistanceIterDp(word1, word2);
-}
-void solve()
-{
-    string s, t;
-    cin >> s >> t;
-    debug(s, t);
-    cout << minDistance(s, t) << endl;
-}
-
-//>-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+//|> ---MAIN-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 int main()
 {
     ios::sync_with_stdio(0);
