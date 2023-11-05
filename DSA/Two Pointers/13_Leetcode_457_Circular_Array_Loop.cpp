@@ -101,7 +101,7 @@ bool circularArrayLoop(vector<int> &nums)
     while (true)
     {
         cerr << currIndex << "-> ";
-        debug(mpp); 
+        debug(mpp);
         if (mpp[currIndex])
         {
             return true;

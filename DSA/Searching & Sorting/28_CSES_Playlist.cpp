@@ -135,49 +135,51 @@ void factOfN(ll n)
 
 void solve()
 {
-    int tc;
-    cin >> tc;
-    while (tc--)
+    ll n;
+    cin >> n;
+
+    vector<ll> arr(n);
+
+    FOR(i, 0, n)
     {
-        int n;
-        cin >> n;
+        ll ele;
+        cin >> ele;
+        arr[i] = ele;
+    }
+    if (arr.size() == 0)
+        cout << 0 << '\n';
 
-        vector<long long> a(n);
+    else if (arr.size() == 1)
+    {
+        cout << 1 << '\n';
+    }
+    else
+    {
+        int s = 0;
+        int e = 0;
 
-        for (int i = 0; i < n; i++)
+        map<int, bool> visited;
+        for (auto ele : arr)
         {
-            cin >> a[i];
+            visited[ele] = false;
         }
 
-        sort(a.rbegin(), a.rend());
-
-        long long total_attacks = 0;
-        long long combo = 0;
-        long long i = 0;
-        long long j = n - 1;
-
-        while (i < n)
+        int maxLen = 0;
+        while (e < n)
         {
-            if (combo >= a[i])
+            if (visited[arr[e]] == true)
             {
-                combo -= a[i];
-                i++;
-            }
-            else
-            {
-                j++;
-                combo++;
-                total_attacks++;
-                if (j == n)
+                while (s < n && visited[arr[e]] == true)
                 {
-                    i++;
+                    visited[arr[s]] = false;
+                    s++;
                 }
             }
+            visited[arr[e]] = true;
+            maxLen = max(maxLen, (e - s + 1));
+            e++;
         }
-
-        total_attacks += (combo + n - 1) / n;
-
-        cout << total_attacks << endl;
+        cout << maxLen << '\n';
     }
 }
 

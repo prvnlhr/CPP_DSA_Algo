@@ -135,50 +135,54 @@ void factOfN(ll n)
 
 void solve()
 {
-    int tc;
-    cin >> tc;
-    while (tc--)
+    // int n;
+    // cin >> n;
+
+    // vector<int> arr(n);
+    // unordered_map<int, int> mpp;
+
+    // FOR(i, 0, n)
+    // {
+    //     int ele;
+    //     cin >> ele;
+    //     arr[i] = ele;
+    //     mpp[ele] = i;
+    // }
+
+    // int cnt = 1;
+
+    // for (int i = 1; i <= n; i++)
+    // {
+    //     int num = i;
+
+    //     if (mpp[num] > mpp[num + 1])
+    //     {
+    //         cnt++;
+    //     }
+    // }
+    // cout << cnt << endl;
+
+    int n;
+    int ans = 1;
+    cin >> n;
+
+    int mpp[n + 1];
+
+    for (int i = 1; i <= n; i++)
     {
-        int n;
-        cin >> n;
-
-        vector<long long> a(n);
-
-        for (int i = 0; i < n; i++)
-        {
-            cin >> a[i];
-        }
-
-        sort(a.rbegin(), a.rend());
-
-        long long total_attacks = 0;
-        long long combo = 0;
-        long long i = 0;
-        long long j = n - 1;
-
-        while (i < n)
-        {
-            if (combo >= a[i])
-            {
-                combo -= a[i];
-                i++;
-            }
-            else
-            {
-                j++;
-                combo++;
-                total_attacks++;
-                if (j == n)
-                {
-                    i++;
-                }
-            }
-        }
-
-        total_attacks += (combo + n - 1) / n;
-
-        cout << total_attacks << endl;
+        int a;
+        cin >> a;
+        mpp[a] = i;
     }
+
+    for (int i = 1; i < n; i++)
+    {
+        if (mpp[i + 1] < mpp[i])
+        {
+            ans++;
+        }
+    }
+    cout << ans << '\n';
 }
 
 //|> --- MAIN -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------

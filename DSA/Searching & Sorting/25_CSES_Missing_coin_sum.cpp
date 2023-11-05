@@ -135,50 +135,31 @@ void factOfN(ll n)
 
 void solve()
 {
-    int tc;
-    cin >> tc;
-    while (tc--)
+    int n;
+    cin >> n;
+
+    vector<long long> coins(n);
+    for (int i = 0; i < n; i++)
     {
-        int n;
-        cin >> n;
-
-        vector<long long> a(n);
-
-        for (int i = 0; i < n; i++)
-        {
-            cin >> a[i];
-        }
-
-        sort(a.rbegin(), a.rend());
-
-        long long total_attacks = 0;
-        long long combo = 0;
-        long long i = 0;
-        long long j = n - 1;
-
-        while (i < n)
-        {
-            if (combo >= a[i])
-            {
-                combo -= a[i];
-                i++;
-            }
-            else
-            {
-                j++;
-                combo++;
-                total_attacks++;
-                if (j == n)
-                {
-                    i++;
-                }
-            }
-        }
-
-        total_attacks += (combo + n - 1) / n;
-
-        cout << total_attacks << endl;
+        cin >> coins[i];
     }
+
+    sort(coins.begin(), coins.end());
+
+    debug(coins);
+
+    long long smallestSum = 1;
+
+    for (int i = 0; i < n; i++)
+    {
+        if (coins[i] > smallestSum)
+        {
+            break;
+        }
+        smallestSum += coins[i];
+    }
+
+    cout << smallestSum << endl;
 }
 
 //|> --- MAIN -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------

@@ -135,49 +135,52 @@ void factOfN(ll n)
 
 void solve()
 {
-    int tc;
-    cin >> tc;
-    while (tc--)
+    ll n, x;
+    cin >> n >> x;
+    vector<pair<ll, ll>> arr;
+
+    FOR(i, 0, n)
     {
-        int n;
-        cin >> n;
+        ll ele;
+        cin >> ele;
+        arr.push_back({ele, i});
+    }
 
-        vector<long long> a(n);
+    sort(arr.begin(), arr.end());
+    int i = 0;
+    int j = n - 1;
+    int ans_i = -1;
+    int ans_j = -1;
+    while (i < j)
+    {
+        auto [val1, ii] = arr[i];
+        auto [val2, jj] = arr[j];
 
-        for (int i = 0; i < n; i++)
+        if (val1 + val2 == x)
         {
-            cin >> a[i];
+            ans_i = ii + 1;
+            ans_j = jj + 1;
+            break;
         }
-
-        sort(a.rbegin(), a.rend());
-
-        long long total_attacks = 0;
-        long long combo = 0;
-        long long i = 0;
-        long long j = n - 1;
-
-        while (i < n)
+        else if (val1 + val2 < x)
         {
-            if (combo >= a[i])
-            {
-                combo -= a[i];
-                i++;
-            }
-            else
-            {
-                j++;
-                combo++;
-                total_attacks++;
-                if (j == n)
-                {
-                    i++;
-                }
-            }
+            i++;
         }
+        else
+        {
+            j--;
+        }
+    }
+    int ix = min(ans_i, ans_j);
+    int jx = max(ans_i, ans_j);
 
-        total_attacks += (combo + n - 1) / n;
-
-        cout << total_attacks << endl;
+    if (ans_i == -1 && ans_j == -1)
+    {
+        cout << "IMPOSSIBLE" << endl;
+    }
+    else
+    {
+        cout << ix << " " << jx << endl;
     }
 }
 

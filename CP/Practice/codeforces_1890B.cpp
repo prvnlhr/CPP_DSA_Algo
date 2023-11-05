@@ -1,4 +1,3 @@
-
 /*
 |>------------------------------------------------------------------------------------------------------------------------------------------------------------
 |>                               █▀ ▀█▀ █▀▀ █░░ █░░ █░█ █▀█
@@ -133,51 +132,65 @@ void factOfN(ll n)
 
 //|> --- SOLVE -----------------------------------------------------------------------------------------------------------------------------------------------
 
+bool isGood(string s)
+{
+    for (int i = 0; i < s.size() - 1; i++)
+    {
+        if (s[i] == s[i + 1])
+        {
+            return false;
+        }
+    }
+    return true;
+}
 void solve()
 {
     int tc;
     cin >> tc;
     while (tc--)
     {
-        int n;
-        cin >> n;
-
-        vector<long long> a(n);
-
-        for (int i = 0; i < n; i++)
+        int n, m;
+        cin >> n >> m;
+        string s, t;
+        cin >> s;
+        cin >> t;
+        string ans = "YES";
+        if (isGood(s))
         {
-            cin >> a[i];
+            cout << "YES" << endl;
         }
-
-        sort(a.rbegin(), a.rend());
-
-        long long total_attacks = 0;
-        long long combo = 0;
-        long long i = 0;
-        long long j = n - 1;
-
-        while (i < n)
+        else //|> is s is not good intially
         {
-            if (combo >= a[i])
+            if (isGood(t))
             {
-                combo -= a[i];
-                i++;
+                char t_first = t[0];
+                char t_last = t[t.size() - 1];
+                if (t_first != t_last)
+                {
+                    cout << "NO" << endl;
+                }
+                else
+                {
+                    string ans = "YES";
+                    for (int i = 0; i < n - 1; i++)
+                    {
+                        if (s[i] == s[i + 1])
+                        {
+                            if (t_first == s[i] || t_last == s[i + 1])
+                            {
+                                ans = "NO";
+                                break;
+                            }
+                        }
+                    }
+                    cout << ans << endl;
+                }
             }
             else
             {
-                j++;
-                combo++;
-                total_attacks++;
-                if (j == n)
-                {
-                    i++;
-                }
+                cout << "NO" << endl;
             }
         }
-
-        total_attacks += (combo + n - 1) / n;
-
-        cout << total_attacks << endl;
     }
 }
 

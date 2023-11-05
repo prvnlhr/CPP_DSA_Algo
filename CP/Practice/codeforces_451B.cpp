@@ -133,51 +133,112 @@ void factOfN(ll n)
 
 //|> --- SOLVE -----------------------------------------------------------------------------------------------------------------------------------------------
 
+/*
+1 2 5 3 4 6 7 8
+3 2 1 4 5 6 7 8
+1 2 3 4 5 8 7 6
+*/
 void solve()
 {
-    int tc;
-    cin >> tc;
-    while (tc--)
+    int n;
+    cin >> n;
+
+    vector<int> arr(n);
+    vector<int> sarr(n);
+
+    FOR(i, 0, n)
     {
-        int n;
-        cin >> n;
+        int ele;
+        cin >> ele;
+        arr[i] = ele;
+        sarr[i] = ele;
+    }
 
-        vector<long long> a(n);
+    int s = 0;
+    int e = 0;
 
-        for (int i = 0; i < n; i++)
+    int ans_s = 0;
+    int ans_e = 0;
+    string ans = "No";
+
+    while (s < n && s + 1 < n && arr[s] <= arr[s + 1])
+    {
+        s++;
+    }
+    e = s;
+    while (e < n && e + 1 < n && arr[e] >= arr[e + 1])
+    {
+        e++;
+    }
+
+    if (s == 0 && e >= n - 1)
+    {
+        sort(arr.begin() + s, arr.begin() + e + 1);
+        ans = "yes";
+        ans_s = s + 1;
+        ans_e = e + 1;
+    }
+    else if (s == 0 && e < n - 1)
+    {
+
+        if (arr[s] <= arr[e + 1])
         {
-            cin >> a[i];
+            sort(arr.begin() + s, arr.begin() + e + 1);
+            ans = "yes";
+            ans_s = s + 1;
+            ans_e = e + 1;
         }
-
-        sort(a.rbegin(), a.rend());
-
-        long long total_attacks = 0;
-        long long combo = 0;
-        long long i = 0;
-        long long j = n - 1;
-
-        while (i < n)
+        else
         {
-            if (combo >= a[i])
-            {
-                combo -= a[i];
-                i++;
-            }
-            else
-            {
-                j++;
-                combo++;
-                total_attacks++;
-                if (j == n)
-                {
-                    i++;
-                }
-            }
+            ans = "no";
         }
+    }
+    else if (s != 0 && e >= n - 1)
+    {
+        if (arr[e] >= arr[s - 1])
+        {
+            sort(arr.begin() + s, arr.begin() + e + 1);
+            ans = "yes";
+            ans_s = s + 1;
+            ans_e = e + 1;
+        }
+        else
+        {
+            ans = "no";
+        }
+    }
+    else if (s != 0 && e < n - 1)
+    {
 
-        total_attacks += (combo + n - 1) / n;
-
-        cout << total_attacks << endl;
+        if (arr[e] >= arr[s - 1] && arr[s] <= arr[e + 1])
+        {
+            sort(arr.begin() + s, arr.begin() + e + 1);
+            ans = "yes";
+            ans_s = s + 1;
+            ans_e = e + 1;
+        }
+        else
+        {
+            ans = "no";
+        }
+    }
+    sort(sarr.begin(), sarr.end());
+    for (int i = 0; i < n; i++)
+    {
+        if (sarr[i] != arr[i])
+        {
+            ans = "no";
+            break;
+        }
+    }
+    if (ans == "no")
+    {
+        cout << ans << endl;
+    }
+    else
+    {
+        cout << ans << endl;
+        cout << ans_s << " " << ans_e << endl;
     }
 }
 

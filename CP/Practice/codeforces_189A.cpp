@@ -133,52 +133,38 @@ void factOfN(ll n)
 
 //|> --- SOLVE -----------------------------------------------------------------------------------------------------------------------------------------------
 
+int recursive(int sum, int a, int b, int c, int dp[])
+{
+    if (sum == 0)
+    {
+        return 0;
+    }
+    if (sum < 0)
+    {
+        return INT_MIN;
+    }
+    if (dp[sum] != -1)
+    {
+        return dp[sum];
+    }
+
+    int ans1 = 1 + recursive(sum - a, a, b, c, dp);
+    int ans2 = 1 + recursive(sum - b, a, b, c, dp);
+    int ans3 = 1 + recursive(sum - c, a, b, c, dp);
+
+    return dp[sum] = max({ans1, ans2, ans3});
+}
+
 void solve()
 {
-    int tc;
-    cin >> tc;
-    while (tc--)
-    {
-        int n;
-        cin >> n;
 
-        vector<long long> a(n);
-
-        for (int i = 0; i < n; i++)
-        {
-            cin >> a[i];
-        }
-
-        sort(a.rbegin(), a.rend());
-
-        long long total_attacks = 0;
-        long long combo = 0;
-        long long i = 0;
-        long long j = n - 1;
-
-        while (i < n)
-        {
-            if (combo >= a[i])
-            {
-                combo -= a[i];
-                i++;
-            }
-            else
-            {
-                j++;
-                combo++;
-                total_attacks++;
-                if (j == n)
-                {
-                    i++;
-                }
-            }
-        }
-
-        total_attacks += (combo + n - 1) / n;
-
-        cout << total_attacks << endl;
-    }
+    int n, a, b, c;
+    cin >> n >> a >> b >> c;
+    debug(n, a, b, c);
+    int dp[n + 1];
+    memset(dp, -1, sizeof(dp));
+    int ans = recursive(n, a, b, c, dp);
+    cout << ans << endl;
 }
 
 //|> --- MAIN -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------

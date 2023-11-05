@@ -16,7 +16,7 @@ using namespace chrono;
 
 typedef long long ll;
 
-// |> --- DEBUG_TEMPLATE_START ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+// |> ---DEBUG_TEMPLATE_START---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 template <class T1, class T2>
 ostream &operator<<(ostream &os, const pair<T1, T2> &p)
@@ -49,7 +49,7 @@ ostream &operator<<(ostream &os, const T &c)
     _NTH_ARG(__VA_ARGS__, _FE_10, _FE_9, _FE_8, _FE_7, _FE_6, _FE_5, _FE_4, _FE_3, _FE_2, _FE_1) \
     (MACRO, __VA_ARGS__)
 
-//-- Change output format here ______________________________________________________________________________________________________________________________________________________
+//__Change output format here______________________________________________________________________________________________________________________________________________________
 #define out(x) #x " = " << x << "; "
 
 #ifndef ONLINE_JUDGE
@@ -59,7 +59,7 @@ ostream &operator<<(ostream &os, const T &c)
 #define debug(...)
 #endif
 
-//|> --- DEBUG_TEMPLATE_END -----------------------------------------------------------------------------------------------------------------------------------------------------------
+//|> ---DEBUG_TEMPLATE_END-----------------------------------------------------------------------------------------------------------------------------------------------------------
 
 // #define FOR(i, start, end) for (int i = start; i < end; i++)
 #define FOR(i, begin, end) for (__typeof(end) i = (begin) - ((begin) > (end)); i != (end) - ((begin) > (end)); i += 1 - 2 * ((begin) > (end)))
@@ -89,99 +89,66 @@ typedef pair<int, int> pi;
 typedef priority_queue<int> pqmax;
 typedef priority_queue<int, vector<int>, greater<int>> pqmin;
 
-//|> --- GCD -------------------------------------------------------------------
-ll gcd(ll a, ll b)
+//|> ---ＳＯＬＶＥ-----------------------------------------------------------------------------------------------------------------------------------------------
+int findSmallestOrEqual(vector<int> &arr, int target)
 {
-    if (b > a)
+    int left = 0;
+    int right = arr.size() - 1;
+    int result = -1; // Initialize to a value that indicates no valid result
+
+    while (left <= right)
     {
-        return gcd(b, a);
+        int mid = left + (right - left) / 2;
+        if (arr[mid] <= target && arr[mid] != -1)
+        {
+            result = mid;
+            left = mid + 1; // Continue searching on the right side for a larger element
+        }
+        else
+        {
+            right = mid - 1; // Search on the left side for a smaller element
+        }
     }
-    if (b == 0)
-    {
-        return a;
-    }
-    return gcd(b, a % b);
+
+    return result;
 }
-
-//|> --- EXPONENTIAL ----------------------------------------------------------
-ll expo(ll a, ll b, ll mod)
-{
-    ll res = 1;
-    while (b > 0)
-    {
-        if (b & 1)
-            res = (res * a) % mod;
-        a = (a * a) % mod;
-        b = b >> 1;
-    }
-    return res;
-}
-
-//|> --- FACTORIAL ------------------------------------------------------------
-vector<ll> fact;
-void factOfN(ll n)
-{
-    ll prod = 1;
-    fact.resize(n + 1);
-    for (int f = 1; f <= n; f++)
-    {
-
-        fact[f] = prod * f;
-        prod = prod * f;
-    }
-}
-
-//|> --- SOLVE -----------------------------------------------------------------------------------------------------------------------------------------------
 
 void solve()
 {
-    int tc;
-    cin >> tc;
-    while (tc--)
+
+    ll n, m;
+    cin >> n >> m;
+
+    multiset<ll, greater<ll>> st;
+
+    FOR(i, 0, n)
     {
-        int n;
-        cin >> n;
+        ll ele;
+        cin >> ele;
+        st.insert(ele);
+    }
 
-        vector<long long> a(n);
+    while (m--)
+    {
+        ll p;
+        cin >> p;
+        // auto it = lower_bound(st.begin(), st.end(), p); //|> gives different result
 
-        for (int i = 0; i < n; i++)
+        auto it = st.lower_bound(p);
+
+        if (it == st.end())
         {
-            cin >> a[i];
+            cout << -1 << endl;
         }
-
-        sort(a.rbegin(), a.rend());
-
-        long long total_attacks = 0;
-        long long combo = 0;
-        long long i = 0;
-        long long j = n - 1;
-
-        while (i < n)
+        else
         {
-            if (combo >= a[i])
-            {
-                combo -= a[i];
-                i++;
-            }
-            else
-            {
-                j++;
-                combo++;
-                total_attacks++;
-                if (j == n)
-                {
-                    i++;
-                }
-            }
+            cout << *it << endl;
+            st.erase(it);
         }
-
-        total_attacks += (combo + n - 1) / n;
-
-        cout << total_attacks << endl;
     }
 }
 
-//|> --- MAIN -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+//|> ---MAIN-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 int main()
 {
     ios::sync_with_stdio(0);

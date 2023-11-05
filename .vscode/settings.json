@@ -28,7 +28,8 @@
         "complex": "cpp",
         "numbers": "cpp",
         "bitset": "cpp",
-        "functional": "cpp"
+        "functional": "cpp",
+        "random": "cpp"
     },
     "editor.fontFamily": "'Fira Code' , 'Fira Code iScript'",
     "editor.fontLigatures": true,

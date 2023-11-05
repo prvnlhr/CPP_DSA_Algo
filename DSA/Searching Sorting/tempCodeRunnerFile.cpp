@@ -1,4 +1,0 @@
-   // if (minIndex != i)
-        // {
-        //     cntSwaps++;
-        // }

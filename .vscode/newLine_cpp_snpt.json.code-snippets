@@ -2,8 +2,9 @@
 	"newLineSnpt": {
 		"prefix": "/",
 		"body": [
-		  "<< endl;"
-		],
+			"<<'\\n';"
+		  ],
 		"description": ""
 	  }
 }
+

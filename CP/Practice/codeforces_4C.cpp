@@ -135,49 +135,24 @@ void factOfN(ll n)
 
 void solve()
 {
-    int tc;
-    cin >> tc;
-    while (tc--)
+
+    int n;
+    cin >> n;
+    unordered_map<string, int> mpp;
+    for (int i = 0; i < n; i++)
     {
-        int n;
-        cin >> n;
-
-        vector<long long> a(n);
-
-        for (int i = 0; i < n; i++)
+        string name;
+        cin >> name;
+        if (mpp.find(name) != mpp.end())
         {
-            cin >> a[i];
+            cout << name + to_string(mpp[name]) << endl;
+            mpp[name]++;
         }
-
-        sort(a.rbegin(), a.rend());
-
-        long long total_attacks = 0;
-        long long combo = 0;
-        long long i = 0;
-        long long j = n - 1;
-
-        while (i < n)
+        else
         {
-            if (combo >= a[i])
-            {
-                combo -= a[i];
-                i++;
-            }
-            else
-            {
-                j++;
-                combo++;
-                total_attacks++;
-                if (j == n)
-                {
-                    i++;
-                }
-            }
+            mpp[name]++;
+            cout << "OK" << endl;
         }
-
-        total_attacks += (combo + n - 1) / n;
-
-        cout << total_attacks << endl;
     }
 }
 

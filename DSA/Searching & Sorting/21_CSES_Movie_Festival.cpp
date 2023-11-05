@@ -132,53 +132,42 @@ void factOfN(ll n)
 }
 
 //|> --- SOLVE -----------------------------------------------------------------------------------------------------------------------------------------------
-
+bool compareIntervals(pair<ll, ll> &a, pair<ll, ll> &b)
+{
+    if (a.second == b.second)
+    {
+        return a.first < b.first;
+    }
+    return a.second < b.second;
+}
 void solve()
 {
-    int tc;
-    cin >> tc;
-    while (tc--)
+    ll n;
+    cin >> n;
+
+    vector<pair<ll, ll>> arr;
+
+    FOR(i, 0, n)
     {
-        int n;
-        cin >> n;
-
-        vector<long long> a(n);
-
-        for (int i = 0; i < n; i++)
-        {
-            cin >> a[i];
-        }
-
-        sort(a.rbegin(), a.rend());
-
-        long long total_attacks = 0;
-        long long combo = 0;
-        long long i = 0;
-        long long j = n - 1;
-
-        while (i < n)
-        {
-            if (combo >= a[i])
-            {
-                combo -= a[i];
-                i++;
-            }
-            else
-            {
-                j++;
-                combo++;
-                total_attacks++;
-                if (j == n)
-                {
-                    i++;
-                }
-            }
-        }
-
-        total_attacks += (combo + n - 1) / n;
-
-        cout << total_attacks << endl;
+        ll s, e;
+        cin >> s >> e;
+        arr.push_back({s, e});
     }
+
+    sort(arr.begin(), arr.end(), compareIntervals);
+
+    int cnt = 0;
+    int prevEnd = -1;
+    for (int i = 0; i < n; i++)
+    {
+        auto [s, e] = arr[i];
+        if (prevEnd <= s)
+        {
+            prevEnd = e;
+            cnt++;
+        }
+    }
+    cout << cnt << endl;
 }
 
 //|> --- MAIN -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------

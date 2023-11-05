@@ -16,7 +16,7 @@ using namespace chrono;
 
 typedef long long ll;
 
-// |> --- DEBUG_TEMPLATE_START ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+// |> ---DEBUG_TEMPLATE_START---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 template <class T1, class T2>
 ostream &operator<<(ostream &os, const pair<T1, T2> &p)
@@ -49,7 +49,7 @@ ostream &operator<<(ostream &os, const T &c)
     _NTH_ARG(__VA_ARGS__, _FE_10, _FE_9, _FE_8, _FE_7, _FE_6, _FE_5, _FE_4, _FE_3, _FE_2, _FE_1) \
     (MACRO, __VA_ARGS__)
 
-//-- Change output format here ______________________________________________________________________________________________________________________________________________________
+//__Change output format here______________________________________________________________________________________________________________________________________________________
 #define out(x) #x " = " << x << "; "
 
 #ifndef ONLINE_JUDGE
@@ -59,7 +59,7 @@ ostream &operator<<(ostream &os, const T &c)
 #define debug(...)
 #endif
 
-//|> --- DEBUG_TEMPLATE_END -----------------------------------------------------------------------------------------------------------------------------------------------------------
+//|> ---DEBUG_TEMPLATE_END-----------------------------------------------------------------------------------------------------------------------------------------------------------
 
 // #define FOR(i, start, end) for (int i = start; i < end; i++)
 #define FOR(i, begin, end) for (__typeof(end) i = (begin) - ((begin) > (end)); i != (end) - ((begin) > (end)); i += 1 - 2 * ((begin) > (end)))
@@ -89,99 +89,89 @@ typedef pair<int, int> pi;
 typedef priority_queue<int> pqmax;
 typedef priority_queue<int, vector<int>, greater<int>> pqmin;
 
-//|> --- GCD -------------------------------------------------------------------
-ll gcd(ll a, ll b)
+//|> ---ＳＯＬＶＥ-----------------------------------------------------------------------------------------------------------------------------------------------
+bool comp(pair<ll, ll> &a, pair<ll, ll> &b)
 {
-    if (b > a)
+    if (a.first == b.first)
     {
-        return gcd(b, a);
+        return a.second < b.second;
     }
-    if (b == 0)
-    {
-        return a;
-    }
-    return gcd(b, a % b);
+    return a.first < b.first;
 }
 
-//|> --- EXPONENTIAL ----------------------------------------------------------
-ll expo(ll a, ll b, ll mod)
-{
-    ll res = 1;
-    while (b > 0)
-    {
-        if (b & 1)
-            res = (res * a) % mod;
-        a = (a * a) % mod;
-        b = b >> 1;
-    }
-    return res;
-}
+// void solve()
+// {
+//     ll n;
+//     cin >> n;
 
-//|> --- FACTORIAL ------------------------------------------------------------
-vector<ll> fact;
-void factOfN(ll n)
-{
-    ll prod = 1;
-    fact.resize(n + 1);
-    for (int f = 1; f <= n; f++)
-    {
+//     vector<pair<ll, ll>> arr;
 
-        fact[f] = prod * f;
-        prod = prod * f;
-    }
-}
+//     FOR(i, 0, n)
+//     {
+//         int a, l;
+//         cin >> a >> l;
+//         arr.push_back({a, l});
+//     }
+//     sort(arr.begin(), arr.end(), comp);
 
-//|> --- SOLVE -----------------------------------------------------------------------------------------------------------------------------------------------
+//     int prevS = arr[0].first;
+//     int prevE = arr[0].second;
+//     int cnt = 1;
+//     int maxCnt = 0;
+
+//     for (int i = 1; i < n; i++)
+//     {
+//         auto [s, e] = arr[i];
+
+//         debug(prevS, prevE, s, e);
+
+//         if (s <= prevE)
+//         {
+//             prevS = s;
+//             prevE = e;
+//             cnt++;
+//         }
+//         else
+//         {
+//             prevS = s;
+//             prevE = e;
+//             maxCnt = max(maxCnt, cnt);
+//             cnt = 0;
+//         }
+//     }
+
+//     maxCnt = max(maxCnt, cnt);
+//     int ans = maxCnt;
+//     cout << ans << endl;
+// }
 
 void solve()
 {
-    int tc;
-    cin >> tc;
-    while (tc--)
+    ll n;
+    cin >> n;
+
+    vector<pair<ll, ll>> arr;
+
+    FOR(i, 0, n)
     {
-        int n;
-        cin >> n;
-
-        vector<long long> a(n);
-
-        for (int i = 0; i < n; i++)
-        {
-            cin >> a[i];
-        }
-
-        sort(a.rbegin(), a.rend());
-
-        long long total_attacks = 0;
-        long long combo = 0;
-        long long i = 0;
-        long long j = n - 1;
-
-        while (i < n)
-        {
-            if (combo >= a[i])
-            {
-                combo -= a[i];
-                i++;
-            }
-            else
-            {
-                j++;
-                combo++;
-                total_attacks++;
-                if (j == n)
-                {
-                    i++;
-                }
-            }
-        }
-
-        total_attacks += (combo + n - 1) / n;
-
-        cout << total_attacks << endl;
+        int a, l;
+        cin >> a >> l;
+        arr.push_back({a, 1});
+        arr.push_back({l, -1});
     }
-}
+    sort(arr.begin(), arr.end());
+    debug(arr);
+    int currCnt = 0;
+    int maxCnt = 0;
 
-//|> --- MAIN -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    for (auto [s, e] : arr)
+    {
+        currCnt += e;
+        maxCnt = max(maxCnt, currCnt);
+    }
+    cout << maxCnt << endl;
+}
+//|> ---MAIN-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 int main()
 {
     ios::sync_with_stdio(0);

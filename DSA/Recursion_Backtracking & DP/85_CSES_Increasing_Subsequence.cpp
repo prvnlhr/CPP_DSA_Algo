@@ -119,7 +119,6 @@ int lisIterative(vector<ll> &arr, int n)
 //|> Striver's YT video
 int LISBinary(vector<int> &arr, int n)
 {
-
     vector<int> dp;
     dp.push_back(arr[0]);
 
@@ -133,7 +132,7 @@ int LISBinary(vector<int> &arr, int n)
         else
         {
             // |> do a binary search to find index of element equal to or greater then num.
-            auto indxs = lower_bound(dp.begin(), dp.end(), num);
+            // auto indxs = lower_bound(dp.begin(), dp.end(), num);
             int indx = lower_bound(dp.begin(), dp.end(), num) - dp.begin();
             dp[indx] = num;
         }

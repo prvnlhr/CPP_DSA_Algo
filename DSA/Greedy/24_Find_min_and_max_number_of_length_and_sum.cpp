@@ -133,52 +133,100 @@ void factOfN(ll n)
 
 //|> --- SOLVE -----------------------------------------------------------------------------------------------------------------------------------------------
 
+void generateSmallestArray(vector<int> &result, vector<int> &current, int s, int m)
+{
+
+    if (s < 0 || m < 0)
+    {
+        return;
+    }
+
+    if (s == 0 && m == 0)
+    {
+        debug(current);
+        if (result.empty())
+        {
+            result = current;
+        }
+        // else
+        // {
+        //     string resultStr = "";
+        //     string currentStr = "";
+
+        //     for (int num : result)
+        //     {
+        //         resultStr += to_string(num);
+        //     }
+
+        //     for (int num : current)
+        //     {
+        //         currentStr += to_string(num);
+        //     }
+
+        //     if (currentStr < resultStr)
+        //     {
+        //         result = current;
+        //     }
+        // }
+        return;
+    }
+
+    for (int digit = 0; digit <= 9; digit++)
+    {
+        if (current.empty() && digit == 0)
+        {
+            continue;
+        }
+        current.push_back(digit);
+        generateSmallestArray(result, current, s - digit, m - 1);
+        current.pop_back();
+    }
+}
+bool can(int m, int s)
+{
+    return s >= 0 && s <= 9 * m;
+}
 void solve()
 {
-    int tc;
-    cin >> tc;
-    while (tc--)
+    int m, s;
+    cin >> m >> s;
+
+    string maxnum;
+    if (s == 0)
     {
-        int n;
-        cin >> n;
-
-        vector<long long> a(n);
-
-        for (int i = 0; i < n; i++)
-        {
-            cin >> a[i];
-        }
-
-        sort(a.rbegin(), a.rend());
-
-        long long total_attacks = 0;
-        long long combo = 0;
-        long long i = 0;
-        long long j = n - 1;
-
-        while (i < n)
-        {
-            if (combo >= a[i])
-            {
-                combo -= a[i];
-                i++;
-            }
-            else
-            {
-                j++;
-                combo++;
-                total_attacks++;
-                if (j == n)
-                {
-                    i++;
-                }
-            }
-        }
-
-        total_attacks += (combo + n - 1) / n;
-
-        cout << total_attacks << endl;
+        cout << (m == 1 ? "0 0" : "-1 -1");
     }
+
+    for (int i = 0; i < m; i++)
+    {
+        int t = min(s, 9);
+        maxnum += (t + '0');
+        s -= t;
+    }
+
+    if (s != 0) //|> Ex : m = 3, s = 28  [9 9 9] = 27 < s=28 can't form sum = 28
+    {
+        cout << "-1 -1\n";
+    }
+
+    string minnum = maxnum;
+
+    int k = 0;
+    reverse(minnum.begin(), minnum.end());
+
+    while (minnum[k] == '0')
+    {
+        k++;
+    }
+
+    /*
+     |> maxnum = 960 -> reverse -> 069
+     |>  0 6 9 -> 0++ , 6-- -> 1 5 9 => bcoz we can keep leading zero like 069
+    */
+
+    minnum[0]++, minnum[k]--;
+
+    cout << minnum << " " << maxnum << endl;
 }
 
 //|> --- MAIN -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------

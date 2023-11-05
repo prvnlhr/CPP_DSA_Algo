@@ -16,7 +16,7 @@ using namespace chrono;
 
 typedef long long ll;
 
-// |> --- DEBUG_TEMPLATE_START ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+// |> ---DEBUG_TEMPLATE_START---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 template <class T1, class T2>
 ostream &operator<<(ostream &os, const pair<T1, T2> &p)
@@ -49,7 +49,7 @@ ostream &operator<<(ostream &os, const T &c)
     _NTH_ARG(__VA_ARGS__, _FE_10, _FE_9, _FE_8, _FE_7, _FE_6, _FE_5, _FE_4, _FE_3, _FE_2, _FE_1) \
     (MACRO, __VA_ARGS__)
 
-//-- Change output format here ______________________________________________________________________________________________________________________________________________________
+//__Change output format here______________________________________________________________________________________________________________________________________________________
 #define out(x) #x " = " << x << "; "
 
 #ifndef ONLINE_JUDGE
@@ -59,7 +59,7 @@ ostream &operator<<(ostream &os, const T &c)
 #define debug(...)
 #endif
 
-//|> --- DEBUG_TEMPLATE_END -----------------------------------------------------------------------------------------------------------------------------------------------------------
+//|> ---DEBUG_TEMPLATE_END-----------------------------------------------------------------------------------------------------------------------------------------------------------
 
 // #define FOR(i, start, end) for (int i = start; i < end; i++)
 #define FOR(i, begin, end) for (__typeof(end) i = (begin) - ((begin) > (end)); i != (end) - ((begin) > (end)); i += 1 - 2 * ((begin) > (end)))
@@ -89,99 +89,66 @@ typedef pair<int, int> pi;
 typedef priority_queue<int> pqmax;
 typedef priority_queue<int, vector<int>, greater<int>> pqmin;
 
-//|> --- GCD -------------------------------------------------------------------
-ll gcd(ll a, ll b)
-{
-    if (b > a)
-    {
-        return gcd(b, a);
-    }
-    if (b == 0)
-    {
-        return a;
-    }
-    return gcd(b, a % b);
-}
-
-//|> --- EXPONENTIAL ----------------------------------------------------------
-ll expo(ll a, ll b, ll mod)
-{
-    ll res = 1;
-    while (b > 0)
-    {
-        if (b & 1)
-            res = (res * a) % mod;
-        a = (a * a) % mod;
-        b = b >> 1;
-    }
-    return res;
-}
-
-//|> --- FACTORIAL ------------------------------------------------------------
-vector<ll> fact;
-void factOfN(ll n)
-{
-    ll prod = 1;
-    fact.resize(n + 1);
-    for (int f = 1; f <= n; f++)
-    {
-
-        fact[f] = prod * f;
-        prod = prod * f;
-    }
-}
-
-//|> --- SOLVE -----------------------------------------------------------------------------------------------------------------------------------------------
+//|> ---ＳＯＬＶＥ-----------------------------------------------------------------------------------------------------------------------------------------------
 
 void solve()
 {
+
     int tc;
     cin >> tc;
     while (tc--)
     {
-        int n;
-        cin >> n;
 
-        vector<long long> a(n);
+        int n, k;
+        cin >> n >> k;
 
-        for (int i = 0; i < n; i++)
+        vector<int> arr(n);
+        FOR(i, 0, n)
         {
-            cin >> a[i];
+            int ele;
+            cin >> ele;
+            arr[i] = ele;
         }
+        int s = 0;
+        int e = 0;
+        int cnt = 0;
+        int cntOdd = 0;
+        int cntEven = 0;
 
-        sort(a.rbegin(), a.rend());
-
-        long long total_attacks = 0;
-        long long combo = 0;
-        long long i = 0;
-        long long j = n - 1;
-
-        while (i < n)
+        while (e < n)
         {
-            if (combo >= a[i])
+            if (arr[e] % 2 != 0)
             {
-                combo -= a[i];
-                i++;
+                cntOdd++;
             }
             else
             {
-                j++;
-                combo++;
-                total_attacks++;
-                if (j == n)
-                {
-                    i++;
-                }
+                cntEven++;
             }
+            if (e - s + 1 == k)
+            {
+                if (cntOdd >= 1)
+                {
+                    cnt++;
+                }
+
+                if (arr[s] % 2 != 0)
+                {
+                    cntOdd--;
+                }
+                else
+                {
+                    cntEven--;
+                }
+                s++;
+            }
+            e++;
         }
-
-        total_attacks += (combo + n - 1) / n;
-
-        cout << total_attacks << endl;
+        cout << cnt << endl;
     }
 }
 
-//|> --- MAIN -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+//|> ---MAIN-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 int main()
 {
     ios::sync_with_stdio(0);

@@ -135,49 +135,69 @@ void factOfN(ll n)
 
 void solve()
 {
-    int tc;
-    cin >> tc;
-    while (tc--)
+
+    int n, m;
+    cin >> n >> m;
+
+    //|> considering 1-base indexing;
+    int mpp[n + 1];
+    // int arr[n + 1];
+    vector<int> arr(n + 1);
+    int ans = 1;
+
+    for (int i = 1; i <= n; i++)
     {
-        int n;
-        cin >> n;
+        int ele;
+        cin >> ele;
+        mpp[ele] = i;
+        arr[i] = ele;
+    }
 
-        vector<long long> a(n);
-
-        for (int i = 0; i < n; i++)
+    for (int i = 1; i < n; i++)
+    {
+        if (mpp[i + 1] < mpp[i])
         {
-            cin >> a[i];
+            ans++;
         }
+    }
+    debug(ans);
 
-        sort(a.rbegin(), a.rend());
+    debug(arr);
 
-        long long total_attacks = 0;
-        long long combo = 0;
-        long long i = 0;
-        long long j = n - 1;
+    while (m--)
+    {
+        int a, b;
+        cin >> a >> b;
 
-        while (i < n)
-        {
-            if (combo >= a[i])
-            {
-                combo -= a[i];
-                i++;
-            }
-            else
-            {
-                j++;
-                combo++;
-                total_attacks++;
-                if (j == n)
-                {
-                    i++;
-                }
-            }
-        }
+        
+        int l = arr[a];
+        int r = arr[b];
 
-        total_attacks += (combo + n - 1) / n;
+        swap(arr[a], arr[b]);
+        debug(arr);
 
-        cout << total_attacks << endl;
+        if (mpp[l - 1] <= mpp[l] && mpp[l - 1] > b)
+            ans++;
+        if (mpp[l - 1] > mpp[l] && mpp[l - 1] <= b)
+            ans--;
+        if (mpp[l] <= mpp[l + 1] && mpp[l + 1] < b)
+            ans++;
+        if (mpp[l] > mpp[l + 1] && mpp[l + 1] >= b)
+            ans--;
+
+        mpp[l] = b;
+
+        if (mpp[r - 1] <= mpp[r] && mpp[r - 1] > a)
+            ans++;
+        if (mpp[r - 1] > mpp[r] && mpp[r - 1] <= a)
+            ans--;
+        if (mpp[r] <= mpp[r + 1] && mpp[r + 1] < a)
+            ans++;
+        if (mpp[r] > mpp[r + 1] && mpp[r + 1] >= a)
+            ans--;
+
+        mpp[r] = a;
+        cout << ans << '\n';
     }
 }
 
