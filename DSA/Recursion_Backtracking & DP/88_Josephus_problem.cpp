@@ -16,7 +16,7 @@ using namespace chrono;
 
 typedef long long ll;
 
-// |> ---DEBUG_TEMPLATE_START---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+// |> --- DEBUG_TEMPLATE_START ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 template <class T1, class T2>
 ostream &operator<<(ostream &os, const pair<T1, T2> &p)
@@ -48,8 +48,8 @@ ostream &operator<<(ostream &os, const T &c)
 #define FOR_EACH_MACRO(MACRO, ...)                                                               \
     _NTH_ARG(__VA_ARGS__, _FE_10, _FE_9, _FE_8, _FE_7, _FE_6, _FE_5, _FE_4, _FE_3, _FE_2, _FE_1) \
     (MACRO, __VA_ARGS__)
-    
-//__Change output format here______________________________________________________________________________________________________________________________________________________
+
+//-- Change output format here ______________________________________________________________________________________________________________________________________________________
 #define out(x) #x " = " << x << "; "
 
 #ifndef ONLINE_JUDGE
@@ -59,7 +59,7 @@ ostream &operator<<(ostream &os, const T &c)
 #define debug(...)
 #endif
 
-//|> ---DEBUG_TEMPLATE_END-----------------------------------------------------------------------------------------------------------------------------------------------------------
+//|> --- DEBUG_TEMPLATE_END -----------------------------------------------------------------------------------------------------------------------------------------------------------
 
 // #define FOR(i, start, end) for (int i = start; i < end; i++)
 #define FOR(i, begin, end) for (__typeof(end) i = (begin) - ((begin) > (end)); i != (end) - ((begin) > (end)); i += 1 - 2 * ((begin) > (end)))
@@ -89,7 +89,7 @@ typedef pair<int, int> pi;
 typedef priority_queue<int> pqmax;
 typedef priority_queue<int, vector<int>, greater<int>> pqmin;
 
-//|> ---GCD -------------------------------------------------------------------
+//|> --- GCD -------------------------------------------------------------------
 ll gcd(ll a, ll b)
 {
     if (b > a)
@@ -103,7 +103,7 @@ ll gcd(ll a, ll b)
     return gcd(b, a % b);
 }
 
-//|> ---EXPONENTIAL ----------------------------------------------------------
+//|> --- EXPONENTIAL ----------------------------------------------------------
 ll expo(ll a, ll b, ll mod)
 {
     ll res = 1;
@@ -117,7 +117,7 @@ ll expo(ll a, ll b, ll mod)
     return res;
 }
 
-//|> ---FACTORIAL ------------------------------------------------------------
+//|> --- FACTORIAL ------------------------------------------------------------
 vector<ll> fact;
 void factOfN(ll n)
 {
@@ -131,75 +131,22 @@ void factOfN(ll n)
     }
 }
 
-//|> ---ＳＯＬＶＥ-----------------------------------------------------------------------------------------------------------------------------------------------
-string convertToValidFileName(const std::string &input)
+//|> --- SOLVE -----------------------------------------------------------------------------------------------------------------------------------------------
+
+int circular(int n, int k)
 {
-    regex invalidChars("[^a-zA-Z0-9 ]");
-    string validFileName = regex_replace(input, invalidChars, "");
-
-    // Replace spaces with underscores and add ".cpp" extension
-    replace(validFileName.begin(), validFileName.end(), ' ', '_');
-    validFileName += ".cpp";
-
-    return validFileName;
-}
-
-void createFile(string validFileName)
-{
-    string folderPath = "../DSA/Binary Search"; // Replace with the desired folder path
-
-    // Combine the folder path and file name to create the complete file path
-    string filePath = folderPath + "/" + validFileName;
-
-    // Create an output file stream
-    ofstream outputFile(filePath);
-
-    // Check if the file was successfully created
-    if (outputFile.is_open())
+    if (n == 1)
     {
-        cout << "File created successfully: " << filePath << endl;
-        // You can write data to the file if needed
-        outputFile << "Hello, world!" << endl;
-        outputFile.close(); // Close the file when done
+        return 0;
     }
-    else
-    {
-        debug(filePath);
-    }
+    return (circular(n - 1, k) + k) % n;
 }
 
 void solve()
 {
-
-    int a;
-    cin >> a;
-    cout << "TESTING INPUT : " << a << " OUPUT : " << a << endl;
-    debug(a, "Error checking OK");
-    /*
-
-    -> This is test comment
-    => This is test comment
-    >  This is test
-    |> This is test
-
-    #  This is test comment
-
-    *  This is test comment
-    ** This is test comment
-
-    -  This is test comment
-    _  This is test comment
-
-    !  Warning
-    :  This is test comment
-       TODO: This is test comment
-    */
-
-    string inputFileName;
-    getline(cin, inputFileName);
-    string validFileName = convertToValidFileName(inputFileName);
-    debug(validFileName);
-    createFile(validFileName);
+    int n, k;
+    cin >> n >> k;
+    int last_man_standing = circular(n, k) + 1;
 }
 
 //|> --- MAIN -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -209,9 +156,9 @@ int main()
     cin.tie(0);
 
 #ifndef ONLINE_JUDGE
-    freopen("../Error.txt", "w", stderr);
-    freopen("../output.txt", "w", stdout);
-    freopen("../input.txt", "r", stdin);
+    freopen("../../Error.txt", "w", stderr);
+    freopen("../../output.txt", "w", stdout);
+    freopen("../../input.txt", "r", stdin);
 #endif
     auto start1 = high_resolution_clock::now();
     solve();
