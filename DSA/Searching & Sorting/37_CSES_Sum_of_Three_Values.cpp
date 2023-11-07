@@ -1,16 +1,14 @@
 
 /*
->------------------------------------------------------------------------------------------------------------------------------------------------------------
->                               █▀ ▀█▀ █▀▀ █░░ █░░ █░█ █▀█
->                               ▄█ ░█░ ██▄ █▄▄ █▄▄ █▀█ █▀▄
->------------------------------------------------------------------------------------------------------------------------------------------------------------
+|>------------------------------------------------------------------------------------------------------------------------------------------------------------
+|>                               █▀ ▀█▀ █▀▀ █░░ █░░ █░█ █▀█
+|>                               ▄█ ░█░ ██▄ █▄▄ █▄▄ █▀█ █▀▄
+|>------------------------------------------------------------------------------------------------------------------------------------------------------------
 */
 
 #include <bits/stdc++.h>
 using namespace std;
 using namespace chrono;
-
-//__________________________________________________________________________________________________________________________________________________________________________________________________
 
 #define MOD 1000000007
 #define MOD1 998244353
@@ -18,7 +16,7 @@ using namespace chrono;
 
 typedef long long ll;
 
-//>---DEBUG_TEMPLATE_START---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+// |> --- DEBUG_TEMPLATE_START ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 template <class T1, class T2>
 ostream &operator<<(ostream &os, const pair<T1, T2> &p)
@@ -26,28 +24,32 @@ ostream &operator<<(ostream &os, const pair<T1, T2> &p)
     return os << '{' << p.first << ", " << p.second << '}';
 }
 
-template <class T, class = decay_t<decltype(*begin(declval<T>()))>,
+template <class T, class = decltype(begin(declval<T>())),
           class = enable_if_t<!is_same<T, string>::value>>
 ostream &operator<<(ostream &os, const T &c)
 {
     os << '[';
-    for (auto it = c.begin(); it != c.end(); ++it)
-        os << &", "[2 * (it == c.begin())] << *it;
+    for (auto it = begin(c); it != end(c); ++it)
+        os << (it == begin(c) ? "" : ", ") << *it;
     return os << ']';
 }
-//__support up to 5 args
-#define _NTH_ARG(_1, _2, _3, _4, _5, _6, N, ...) N
-#define _FE_0(_CALL, ...)
+
+#define _NTH_ARG(_1, _2, _3, _4, _5, _6, _7, _8, _9, _10, N, ...) N
 #define _FE_1(_CALL, x) _CALL(x)
 #define _FE_2(_CALL, x, ...) _CALL(x) _FE_1(_CALL, __VA_ARGS__)
 #define _FE_3(_CALL, x, ...) _CALL(x) _FE_2(_CALL, __VA_ARGS__)
 #define _FE_4(_CALL, x, ...) _CALL(x) _FE_3(_CALL, __VA_ARGS__)
 #define _FE_5(_CALL, x, ...) _CALL(x) _FE_4(_CALL, __VA_ARGS__)
-#define FOR_EACH_MACRO(MACRO, ...)                                           \
-    _NTH_ARG(dummy, ##__VA_ARGS__, _FE_5, _FE_4, _FE_3, _FE_2, _FE_1, _FE_0) \
-    (MACRO, ##__VA_ARGS__)
+#define _FE_6(_CALL, x, ...) _CALL(x) _FE_5(_CALL, __VA_ARGS__)
+#define _FE_7(_CALL, x, ...) _CALL(x) _FE_6(_CALL, __VA_ARGS__)
+#define _FE_8(_CALL, x, ...) _CALL(x) _FE_7(_CALL, __VA_ARGS__)
+#define _FE_9(_CALL, x, ...) _CALL(x) _FE_8(_CALL, __VA_ARGS__)
+#define _FE_10(_CALL, x, ...) _CALL(x) _FE_9(_CALL, __VA_ARGS__)
+#define FOR_EACH_MACRO(MACRO, ...)                                                               \
+    _NTH_ARG(__VA_ARGS__, _FE_10, _FE_9, _FE_8, _FE_7, _FE_6, _FE_5, _FE_4, _FE_3, _FE_2, _FE_1) \
+    (MACRO, __VA_ARGS__)
 
-//__Change output format here
+//-- Change output format here ______________________________________________________________________________________________________________________________________________________
 #define out(x) #x " = " << x << "; "
 
 #ifndef ONLINE_JUDGE
@@ -57,7 +59,7 @@ ostream &operator<<(ostream &os, const T &c)
 #define debug(...)
 #endif
 
-//>---DEBUG_TEMPLATE_END-----------------------------------------------------------------------------------------------------------------------------------------------------------
+//|> --- DEBUG_TEMPLATE_END -----------------------------------------------------------------------------------------------------------------------------------------------------------
 
 // #define FOR(i, start, end) for (int i = start; i < end; i++)
 #define FOR(i, begin, end) for (__typeof(end) i = (begin) - ((begin) > (end)); i != (end) - ((begin) > (end)); i += 1 - 2 * ((begin) > (end)))
@@ -86,7 +88,8 @@ typedef map<int, int> mpint;
 typedef pair<int, int> pi;
 typedef priority_queue<int> pqmax;
 typedef priority_queue<int, vector<int>, greater<int>> pqmin;
-//_____________________________
+
+//|> --- GCD -------------------------------------------------------------------
 ll gcd(ll a, ll b)
 {
     if (b > a)
@@ -99,7 +102,8 @@ ll gcd(ll a, ll b)
     }
     return gcd(b, a % b);
 }
-//_____________________________
+
+//|> --- EXPONENTIAL ----------------------------------------------------------
 ll expo(ll a, ll b, ll mod)
 {
     ll res = 1;
@@ -112,7 +116,8 @@ ll expo(ll a, ll b, ll mod)
     }
     return res;
 }
-//__factorial______________________________________________
+
+//|> --- FACTORIAL ------------------------------------------------------------
 vector<ll> fact;
 void factOfN(ll n)
 {
@@ -125,64 +130,64 @@ void factOfN(ll n)
         prod = prod * f;
     }
 }
-//--------------------------------------------------------------------------------------------------------------------------------
 
-//>----------------------------ＳＯＬＶＥ-----------------------------------------------------------------------------------------------------------------------------------------------
-
-vector<int> find3Numbers(vector<int> arr, int n, int x)
+//|> --- SOLVE -----------------------------------------------------------------------------------------------------------------------------------------------
+void solve()
 {
+    ll n, x;
+    cin >> n >> x;
+
+    vector<pair<int, int>> arr(n);
+
+    FOR(i, 0, n)
+    {
+        ll ele;
+        cin >> ele;
+        arr[i] = {ele, i + 1};
+    }
     sort(arr.begin(), arr.end());
 
-    vector<int> res;
+    bool found = false;
 
-    for (int i = 0; i < n; i++)
+    for (ll i = 0; i < n - 2; i++)
     {
-        int j = i + 1;
-        int k = n - 1;
+
+        ll j = i + 1;
+        ll k = n - 1;
 
         while (j < k)
         {
-            int sum = arr[j] + arr[k];
+            ll sum = arr[j].first + arr[k].first;
 
-            if (arr[i] + sum == x)
+            if (arr[i].first + sum == x)
             {
-                res.push_back(arr[i]);
-                res.push_back(arr[j]);
-                res.push_back(arr[k]);
+                found = true;
+                cout << arr[i].second << " " << arr[j].second << " " << arr[k].second << " " << '\n';
+                // cout << i << " " << j << " " << k << " " << '\n';
                 break;
             }
-            else if (arr[i] + sum > x)
+            else if (arr[i].first + sum > x)
             {
                 k--;
             }
-            else if (arr[i] + sum < x)
+            else if (arr[i].first + sum < x)
             {
                 j++;
             }
         }
+        if (found)
+        {
+            break;
+        }
     }
-    return res;
-}
 
-void solve()
-{
-    int n, x;
-    cin >> n >> x;
-
-    vector<int> arr(n);
-
-    FOR(i, 0, n)
+    if (!found)
     {
-        int ele;
-        cin >> ele;
-        arr[i] = ele;
+        cout << "IMPOSSIBLE" << '\n';
     }
-    debug(arr, n, x);
-    auto ans = find3Numbers(arr, n, x);
-    debug(ans);
 }
 
-//>-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+//|> --- MAIN -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 int main()
 {
     ios::sync_with_stdio(0);

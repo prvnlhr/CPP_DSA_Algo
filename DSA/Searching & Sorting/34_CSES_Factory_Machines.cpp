@@ -133,68 +133,91 @@ void factOfN(ll n)
 
 //|> --- SOLVE -----------------------------------------------------------------------------------------------------------------------------------------------
 
+// struct CustomComparator
+// {
+//     bool operator()(const std::pair<ll, ll> &a, const std::pair<ll, ll> &b)
+//     {
+//         if (a.first == b.first)
+//         {
+//             return a.second > b.second; // If first values are the same, compare by the second value in reverse order (smallest second value first).
+//         }
+//         return a.first > b.first; // Compare by the first value in ascending order.
+//     }
+// };
+
+// void solve()
+// {
+//     ll n, t;
+//     cin >> n >> t;
+
+//     // |>  will_complete_at, required_time, avail_at
+
+//     priority_queue<pair<ll, ll>, vector<pair<ll, ll>>, CustomComparator> pqmin;
+//     FOR(i, 0, n)
+//     {
+//         ll mc_time;
+//         cin >> mc_time;
+//         pqmin.push({mc_time, mc_time});
+//     }
+
+//     for (ll prod = 1; prod <= t; prod++)
+//     {
+//         auto [will_complete_at, time_required] = pqmin.top();
+//         pqmin.pop();
+//         pqmin.push({will_complete_at + time_required, time_required});
+//     }
+
+//     ll max_completion_time = 0;
+//     while (!pqmin.empty())
+//     {
+//         ll t = pqmin.top().first;
+//         max_completion_time = max(max_completion_time, t);
+//         pqmin.pop();
+//     }
+
+//     cout << max_completion_time - 1 << '\n';
+// }
+
 void solve()
 {
-    int n;
-    cin >> n;
-
-    vector<pair<pair<int, int>, int>> customers;
-
-    FOR(i, 0, n)
+    int numMachines;
+    ll totalProducts;
+    cin >> numMachines >> totalProducts;
+    vector<ll> machineTimes(numMachines);
+    for (int i = 0; i < numMachines; i++)
     {
-        int a, d;
-        cin >> a >> d;
-        customers.push_back({{a, d}, i});
+        cin >> machineTimes[i];
     }
 
-    sort(customers.begin(), customers.end());
+    ll left = 0;
+    ll right = 1e18;
+    ll minTime = 0;
 
-    int curr_room_no = 0;
-
-    priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> pqmin;
-
-    vector<int> res(n);
-
-    int maxRoomAllocated = 0;
-    int currRoomAvail = 1;
-
-    auto [arr_first, dept_first] = customers[0].first;
-    int indx_first = customers[0].second;
-
-    pqmin.push({dept_first, currRoomAvail});
-
-    res[indx_first] = currRoomAvail;
-
-    for (int i = 1; i < n; i++)
+    while (left <= right)
     {
-        auto [arr_curr, dept_curr] = customers[i].first;
-        int indx_curr = customers[i].second;
+        ll mid = (left + right) / 2;
+        ll productsMade = 0;
 
-        auto [dept_top, room_top] = pqmin.top();
-
-        if (dept_top < arr_curr)
+        for (int i = 0; i < numMachines; i++)
         {
-            pqmin.pop();
-            pqmin.push({dept_curr, room_top});
-            res[indx_curr] = room_top;
+            productsMade += (mid / machineTimes[i]);
+            if (productsMade >= totalProducts)
+            {
+                break;
+            }
+        }
+
+        if (productsMade >= totalProducts)
+        {
+            minTime = mid;
+            right = mid - 1;
         }
         else
         {
-            currRoomAvail++;
-            pqmin.push({dept_curr, currRoomAvail});
-            res[indx_curr] = currRoomAvail;
+            left = mid + 1;
         }
-
-        int sz = pqmin.size();
-        maxRoomAllocated = max(maxRoomAllocated, sz);
     }
-
-    cout << maxRoomAllocated << '\n';
-    for (auto r : res)
-    {
-        cout << r << " ";
-    }
-    cout << '\n';
+    cout << minTime << "\n";
 }
 
 //|> --- MAIN -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
