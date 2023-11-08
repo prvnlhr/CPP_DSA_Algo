@@ -1,16 +1,14 @@
 
 /*
->------------------------------------------------------------------------------------------------------------------------------------------------------------
->                               █▀ ▀█▀ █▀▀ █░░ █░░ █░█ █▀█
->                               ▄█ ░█░ ██▄ █▄▄ █▄▄ █▀█ █▀▄
->------------------------------------------------------------------------------------------------------------------------------------------------------------
+|>------------------------------------------------------------------------------------------------------------------------------------------------------------
+|>                               █▀ ▀█▀ █▀▀ █░░ █░░ █░█ █▀█
+|>                               ▄█ ░█░ ██▄ █▄▄ █▄▄ █▀█ █▀▄
+|>------------------------------------------------------------------------------------------------------------------------------------------------------------
 */
 
 #include <bits/stdc++.h>
 using namespace std;
 using namespace chrono;
-
-//__________________________________________________________________________________________________________________________________________________________________________________________________
 
 #define MOD 1000000007
 #define MOD1 998244353
@@ -18,7 +16,7 @@ using namespace chrono;
 
 typedef long long ll;
 
-//>---DEBUG_TEMPLATE_START---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+// |> --- DEBUG_TEMPLATE_START ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 template <class T1, class T2>
 ostream &operator<<(ostream &os, const pair<T1, T2> &p)
@@ -26,28 +24,32 @@ ostream &operator<<(ostream &os, const pair<T1, T2> &p)
     return os << '{' << p.first << ", " << p.second << '}';
 }
 
-template <class T, class = decay_t<decltype(*begin(declval<T>()))>,
+template <class T, class = decltype(begin(declval<T>())),
           class = enable_if_t<!is_same<T, string>::value>>
 ostream &operator<<(ostream &os, const T &c)
 {
     os << '[';
-    for (auto it = c.begin(); it != c.end(); ++it)
-        os << &", "[2 * (it == c.begin())] << *it;
+    for (auto it = begin(c); it != end(c); ++it)
+        os << (it == begin(c) ? "" : ", ") << *it;
     return os << ']';
 }
-//__support up to 5 args
-#define _NTH_ARG(_1, _2, _3, _4, _5, _6, N, ...) N
-#define _FE_0(_CALL, ...)
+
+#define _NTH_ARG(_1, _2, _3, _4, _5, _6, _7, _8, _9, _10, N, ...) N
 #define _FE_1(_CALL, x) _CALL(x)
 #define _FE_2(_CALL, x, ...) _CALL(x) _FE_1(_CALL, __VA_ARGS__)
 #define _FE_3(_CALL, x, ...) _CALL(x) _FE_2(_CALL, __VA_ARGS__)
 #define _FE_4(_CALL, x, ...) _CALL(x) _FE_3(_CALL, __VA_ARGS__)
 #define _FE_5(_CALL, x, ...) _CALL(x) _FE_4(_CALL, __VA_ARGS__)
-#define FOR_EACH_MACRO(MACRO, ...)                                           \
-    _NTH_ARG(dummy, ##__VA_ARGS__, _FE_5, _FE_4, _FE_3, _FE_2, _FE_1, _FE_0) \
-    (MACRO, ##__VA_ARGS__)
+#define _FE_6(_CALL, x, ...) _CALL(x) _FE_5(_CALL, __VA_ARGS__)
+#define _FE_7(_CALL, x, ...) _CALL(x) _FE_6(_CALL, __VA_ARGS__)
+#define _FE_8(_CALL, x, ...) _CALL(x) _FE_7(_CALL, __VA_ARGS__)
+#define _FE_9(_CALL, x, ...) _CALL(x) _FE_8(_CALL, __VA_ARGS__)
+#define _FE_10(_CALL, x, ...) _CALL(x) _FE_9(_CALL, __VA_ARGS__)
+#define FOR_EACH_MACRO(MACRO, ...)                                                               \
+    _NTH_ARG(__VA_ARGS__, _FE_10, _FE_9, _FE_8, _FE_7, _FE_6, _FE_5, _FE_4, _FE_3, _FE_2, _FE_1) \
+    (MACRO, __VA_ARGS__)
 
-//__Change output format here
+//-- Change output format here ______________________________________________________________________________________________________________________________________________________
 #define out(x) #x " = " << x << "; "
 
 #ifndef ONLINE_JUDGE
@@ -57,7 +59,7 @@ ostream &operator<<(ostream &os, const T &c)
 #define debug(...)
 #endif
 
-//>---DEBUG_TEMPLATE_END-----------------------------------------------------------------------------------------------------------------------------------------------------------
+//|> --- DEBUG_TEMPLATE_END -----------------------------------------------------------------------------------------------------------------------------------------------------------
 
 // #define FOR(i, start, end) for (int i = start; i < end; i++)
 #define FOR(i, begin, end) for (__typeof(end) i = (begin) - ((begin) > (end)); i != (end) - ((begin) > (end)); i += 1 - 2 * ((begin) > (end)))
@@ -86,7 +88,8 @@ typedef map<int, int> mpint;
 typedef pair<int, int> pi;
 typedef priority_queue<int> pqmax;
 typedef priority_queue<int, vector<int>, greater<int>> pqmin;
-//_____________________________
+
+//|> --- GCD -------------------------------------------------------------------
 ll gcd(ll a, ll b)
 {
     if (b > a)
@@ -99,7 +102,8 @@ ll gcd(ll a, ll b)
     }
     return gcd(b, a % b);
 }
-//_____________________________
+
+//|> --- EXPONENTIAL ----------------------------------------------------------
 ll expo(ll a, ll b, ll mod)
 {
     ll res = 1;
@@ -112,7 +116,8 @@ ll expo(ll a, ll b, ll mod)
     }
     return res;
 }
-//__factorial______________________________________________
+
+//|> --- FACTORIAL ------------------------------------------------------------
 vector<ll> fact;
 void factOfN(ll n)
 {
@@ -125,59 +130,53 @@ void factOfN(ll n)
         prod = prod * f;
     }
 }
-//--------------------------------------------------------------------------------------------------------------------------------
 
-//>----------------------------ＳＯＬＶＥ-----------------------------------------------------------------------------------------------------------------------------------------------
-
-int atMostKDistinct(vector<int> nums, int k)
-{
-    int n = nums.size();
-
-    int winStart = 0;
-    int winEnd = 0;
-
-    int res = 0;
-
-    unordered_map<int, int> mpp;
-    
-    while (winStart < n && winEnd < n)
-    {
-        mpp[nums[winEnd]]++;
-
-        while (mpp.size() > k)
-        {
-            mpp[nums[winStart]]--;
-            if (mpp[nums[winStart]] == 0)
-            {
-                mpp.erase(nums[winStart]);
-            }
-            winStart++;
-        }
-
-        res += winEnd - winStart + 1;
-        winEnd++;
-    }
-    return res;
-}
+//|> --- SOLVE -----------------------------------------------------------------------------------------------------------------------------------------------
 
 void solve()
 {
+    ll n, k;
+    cin >> n >> k;
+    unordered_map<ll, ll> mpp;
 
-    int k;
-    cin >> k;
+    vector<ll> arr(n);
 
-    int ele;
-
-    vector<int> nums;
-    while (cin >> k)
+    FOR(i, 0, n)
     {
-        nums.push_back(ele);
+        ll ele;
+        cin >> ele;
+        arr[i] = ele;
     }
-    debug(nums, k);
-    cout << atMostKDistinct(nums, k) << endl;
+
+    ll s = 0;
+    ll e = 0;
+    ll cnt = 0;
+
+    while (e < n)
+    {
+
+        ll ele = arr[e];
+        mpp[ele]++;
+
+        while (mpp.size() > k)
+        {
+            mpp[arr[s]]--;
+            if (mpp[arr[s]] == 0)
+            {
+                mpp.erase(arr[s]);
+            }
+            s++;
+        }
+
+        // debug(mpp);
+
+        cnt += e - s + 1;
+        e++;
+    }
+    cout << cnt << '\n';
 }
 
-//>-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+//|> --- MAIN -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 int main()
 {
     ios::sync_with_stdio(0);
