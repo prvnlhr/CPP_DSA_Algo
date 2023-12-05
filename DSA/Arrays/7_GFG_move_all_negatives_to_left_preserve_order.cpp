@@ -18,7 +18,7 @@ using namespace chrono;
 
 typedef long long ll;
 
-//>---DEBUG_TEMPLATE_START---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+//|>---DEBUG_TEMPLATE_START---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 template <class T1, class T2>
 ostream &operator<<(ostream &os, const pair<T1, T2> &p)
@@ -57,7 +57,7 @@ ostream &operator<<(ostream &os, const T &c)
 #define debug(...)
 #endif
 
-//>---DEBUG_TEMPLATE_END-----------------------------------------------------------------------------------------------------------------------------------------------------------
+//|>---DEBUG_TEMPLATE_END-----------------------------------------------------------------------------------------------------------------------------------------------------------
 
 // #define FOR(i, start, end) for (int i = start; i < end; i++)
 #define FOR(i, begin, end) for (__typeof(end) i = (begin) - ((begin) > (end)); i != (end) - ((begin) > (end)); i += 1 - 2 * ((begin) > (end)))
@@ -127,12 +127,12 @@ void factOfN(ll n)
 }
 //--------------------------------------------------------------------------------------------------------------------------------
 
-//>----------------------------ＳＯＬＶＥ-----------------------------------------------------------------------------------------------------------------------------------------------
+//|>----------------------------ＳＯＬＶＥ-----------------------------------------------------------------------------------------------------------------------------------------------
 
+//|> NAIVE , USING EXTRA ARRAY
+//|> O(N) , O(N)
 
-//> NAIVE , USING EXTRA ARRAY
-//> O(N) , O(N)
-
+//|> Intution : We will swap the elements for negative and positive indices
 void moveAllNegativesToLeftNAV(vector<int> &arr)
 {
     int n = arr.size();
@@ -170,10 +170,26 @@ void moveAllNegativesToLeftNAV(vector<int> &arr)
 : Auxiliary Space: O(1), since no extra space has been taken.
 https://www.geeksforgeeks.org/rearrange-positive-and-negative-numbers/
 */
+
+/*
+
+INTUTION:
+Previously what we did was to pos the negative and positive elements
+at their correct pos by maintaing pointer.
+These pointers does not preserves the order of elements.
+
+In this solution what are we doing is to move elements adjacently
+which will make sure that the order is preserve.
+
+Now the question is how many place a element is to be moved ?
+Well for this we can maintain a window [winStart,winEnd].
+
+Dry run for better understanding.
+*/
 void moveAllNegativesToLeftOP(vector<int> &arr)
 {
 
-    //>   -12 11 -13 -5 6 -7 5 -3 -6
+    //|>   -12 11 -13 -5 6 -7 5 -3 -6
 
     int n = arr.size();
 
@@ -182,14 +198,14 @@ void moveAllNegativesToLeftOP(vector<int> &arr)
 
     while (winEnd < n)
     {
-        //> if pos +, winEnd ++;
+        //|> if arr[winEnd]->pos+, winEnd ++;
         if (arr[winEnd] >= 0)
         {
             winEnd++;
         }
         else
         {
-            //> else neg-, we have windows [winStart --- winEnd]
+            //|> else neg-, we have window : [winStart --- winEnd]
             for (int k = winEnd; k > winStart; k--)
             {
                 swap(arr[k], arr[k - 1]);
@@ -213,7 +229,7 @@ void solve()
     debug(arr);
 }
 
-//>-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+//|>-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 int main()
 {
     ios::sync_with_stdio(0);

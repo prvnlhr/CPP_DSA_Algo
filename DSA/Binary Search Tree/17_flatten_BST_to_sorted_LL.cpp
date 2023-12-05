@@ -279,14 +279,12 @@ BST:
 
 17 4 18 2 9 -1 -1 -1 -1 -1 -1
 
-Output: 4 9 17 18 = 4 +  9 + 17 + 18 = 48
 
 
 
 
 Ex: 6 2 8 1 4 7 9 -1 -1 3 5 -1 -1 -1 -1 -1 -1 -1 -1
- 2 4 -> 2
- 2 6 -> 6
+
                          6
                       /    \
                      2      8
@@ -300,14 +298,7 @@ Ex: 6 2 8 1 4 7 9 -1 -1 3 5 -1 -1 -1 -1 -1 -1 -1 -1
 
 */
 
-/*
-
-               4
-      1  2  3     5  6  7
-
-
-
-*/
+//|> https://www.geeksforgeeks.org/flatten-bst-to-sorted-list-increasing-order/
 
 class ListNode
 {
@@ -362,9 +353,8 @@ void printLL(ListNode *head)
     cout << endl;
 }
 
-//> SOL 1 : O(N) extra space as we are storing inorder in new LL
-// > travelling bSt in inorder fashion and attaching the nodes in respective
-// > mannner
+//|> SOL 1 : O(N) extra space as we are storing inorder in new LL
+//|> travelling BST in inorder fashion and attaching the nodes in respective mannner
 
 ListNode *head = nullptr;
 ListNode *tail = nullptr;
@@ -395,9 +385,10 @@ ListNode *flattenBST(TreeNode<int> *root)
     return head;
 }
 
-//> SOL 2 : Improved space complexity to O(H), modifying existing BST to LL
-// ! NOTE: when are modifying the BST in place, we always gets O(H) space complexity
-// !       where H is max height of BST when flatten
+//|> SOL 2 : Improved space complexity to O(H), modifying existing BST to LL
+// ! NOTE  : When are modifying the BST in place, we always gets O(H) space complexity
+// !         where H is max height of BST when flatten
+
 void inorder(TreeNode<int> *root, TreeNode<int> *&tail)
 {
 
@@ -413,7 +404,7 @@ void inorder(TreeNode<int> *root, TreeNode<int> *&tail)
     root->left = nullptr;
     tail->right = root;
     tail = root;
-
+    printTree(root);
     inorder(root->right, tail);
 }
 
@@ -435,8 +426,8 @@ void solve()
     }
     TreeNode<int> *root = buildTree(input);
     TreeNode<int> *head = flattenBST1(root);
-    // printTree(head);
-    printTree(root);
+    printTree(head);
+    // printTree(root);
 }
 
 //>-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------

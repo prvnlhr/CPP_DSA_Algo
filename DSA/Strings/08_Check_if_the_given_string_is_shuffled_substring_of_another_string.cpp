@@ -143,17 +143,19 @@ bool isPresent1(string s1, string s2)
 {
 
     /*
-    > Ex -> s1 = ABCD, s2 = BACDGABCDA
+
+    |> Ex -> s1 = ABCD, s2 = BACDGABCDA
     - winSize = ABCD  ==  4, so we have to find this window in s2, in suffle form
     - first store all chars of s1 in s1CharCount array
-    - take first window of s2 equal to s1.szie() and  store count in winCharCount
-    - then iterate s2 form next window == s1.size()
+    - take first window of s2 equal to s1.size() and  store count in winCharCount
+    - then iterate s2 for next window == s1.size()
     - if at any movement both cout Array become equal i.e, there chars becomes equal, so we return true
     - at and we also need to check for last window
+    
     */
 
     vector<int> s1CharCount(256, 0);
-    vector<int> winCharCount(256, 0); //> here window size is equal to s1
+    vector<int> winCharCount(256, 0); //|> here window size is equal to s1
 
     int m = s1.size();
     int n = s2.size();

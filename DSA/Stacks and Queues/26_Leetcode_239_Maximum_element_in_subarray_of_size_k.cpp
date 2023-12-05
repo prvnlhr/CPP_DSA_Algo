@@ -129,60 +129,6 @@ void factOfN(ll n)
 
 //>----------------------------ＳＯＬＶＥ-----------------------------------------------------------------------------------------------------------------------------------------------
 
-//> Self solved
-//> 100%
-//> O(N), O(K);
-
-/*
-        5
-        5 2
-        -8 2 3 -6 10
-        5 2
-        5 -3 2 3 -4
-        5 3
-        -1 2 6 -5 -4
-        7 3
-        0 0 0 0 0 0 0
-        8 3
-        12 -1 -7 8 -15 30 16 28
-*/
-
-vector<int> firstNegative(vector<int> arr, int n, int k)
-{
-
-    vector<int> res;
-    queue<int> q;
-    int winStart = 0;
-
-    for (int i = 0; i < n; i++)
-    {
-        q.push(arr[i]);
-
-        if (i - winStart + 1 == k)
-        {
-            while (!q.empty() && q.front() >= 0)
-            {
-                q.pop();
-            }
-            if (q.empty())
-            {
-                res.push_back(0);
-            }
-            else
-            {
-                res.push_back(q.front());
-            }
-
-            if (q.front() == arr[winStart])
-            {
-                q.pop();
-            }
-            winStart++;
-        }
-    }
-    return res;
-}
-
 vector<int> maxSlidingWindow(vector<int> &nums, int k)
 {
 
@@ -200,7 +146,9 @@ vector<int> maxSlidingWindow(vector<int> &nums, int k)
         0 0 0 0 0 0 0
         8 3
         12 -1 -7 8 -15 30 16 28
+
     */
+   
     vector<int> res;
     deque<int> dq;
     int n = nums.size();
@@ -221,6 +169,7 @@ vector<int> maxSlidingWindow(vector<int> &nums, int k)
             if (!dq.empty())
             {
                 res.push_back(dq.front());
+
                 if (dq.front() == nums[winStart])
                 {
                     dq.pop_front();

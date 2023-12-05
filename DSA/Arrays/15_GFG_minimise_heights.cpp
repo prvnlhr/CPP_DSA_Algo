@@ -226,7 +226,7 @@ int getMinDiff(vector<int> arr, int n, int k)
 {
     sort(arr.begin(), arr.end());
 
-    //> Intially our ans, maxEle - minEle , [0 <-> n-1]
+    //|> Intially our ans, maxEle - minEle , [0 <-> n-1]
     int ans = arr[n - 1] - arr[0];
 
     for (int i = 0; i < n; i++)

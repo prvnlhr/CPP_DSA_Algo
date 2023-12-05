@@ -136,10 +136,6 @@ void solve()
         adjList[u].push_back(v);
         adjList[v].push_back(u);
     }
-    // for (auto [node, list] : adjList)
-    // {
-    //     debug(node, list);
-    // }
     auto ans = DFS(V, E, adjList);
     debug(ans);
 }

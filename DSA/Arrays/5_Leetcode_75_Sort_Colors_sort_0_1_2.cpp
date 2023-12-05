@@ -154,7 +154,6 @@ void sortColors(vector<int> &nums)
         }
     }
 
-    debug(cntOnes, cntZero, cntTwos);
 
     int i = 0;
     while (cntZero > 0)

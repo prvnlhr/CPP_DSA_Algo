@@ -266,11 +266,11 @@ void solve()
 {
     // vector<int> inputList{1, 4, 3, 2, 5, 2, -1};
     // vector<int> inputList{5, 4, 3, 8, 5, 9, -1};
-    // vector<int> inputList{1, 2, 3, 3, 2, 1, -1};
-    // int x = 3;
+    vector<int> inputList{1, 2, 3, 3, 2, 1, -1};
+    int x = 3;
 
-    vector<int> inputList{1, -1};
-    int x = 0;
+    // vector<int> inputList{1, -1};
+    // int x = 0;
 
     auto head = buildLL(inputList);
 

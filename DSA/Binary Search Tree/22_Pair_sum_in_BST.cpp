@@ -285,26 +285,16 @@ Output: 4 9 17 18 = 4 +  9 + 17 + 18 = 48
 
 
 Ex: 6 2 8 1 4 7 9 -1 -1 3 5 -1 -1 -1 -1 -1 -1 -1 -1
- 2 4 -> 2
- 2 6 -> 6
-                         6
-                      /    \
-                     2      8
-                    / \    / \
-                   1   4  7   9
+sum = 10
+                        6
+                      /   \
+                     2     8
+                    / \   / \
+                   1   4 7   9
                       / \
                      3   5
 
-
-
-
-*/
-
-/*
-
-               4
-      1  2  3     5  6  7
-
+O/P => 2+8=10, 3+7=8, 1+9=10, 4+6=10,
 
 
 */
@@ -459,8 +449,9 @@ public:
 };
 
 //> Pair sum using BST iterator
-// :T :O(N)
-// :S :O()
+// : T :O(N)
+// : S :O()
+
 void pairSum(TreeNode<int> *root, int target)
 {
     BSTIterator obj;
@@ -500,6 +491,9 @@ void solve()
     }
     TreeNode<int> *root = buildTree(input);
     // printAllPairs(root, 5);
+    // Input => 6 2 8 1 4 7 9 -1 -1 3 5 -1 -1 -1 -1 -1 -1 -1 -1
+    pairSum(root, 10);
+    cout << endl;
     pairSum(root, 12);
 }
 

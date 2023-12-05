@@ -315,14 +315,17 @@ TreeNode<int> *lowestCommonAncestor(TreeNode<int> *root, TreeNode<int> *p, TreeN
     }
     TreeNode<int> *leftLCA = lowestCommonAncestor(root->left, p, q);
     TreeNode<int> *rightLCA = lowestCommonAncestor(root->right, p, q);
+
     if (leftLCA && rightLCA)
     {
         return root;
     }
 
-    TreeNode<int> *r = leftLCA ? leftLCA : rightLCA;
+    // TreeNode<int> *r = leftLCA ? leftLCA : rightLCA;
 
-    return r;
+    return leftLCA ? leftLCA : rightLCA;
+
+    // return r;
 }
 
 // SHORT SYNTAX SOLUTION: SAME AS ABOVE JUST SYNTAX SHORTEN

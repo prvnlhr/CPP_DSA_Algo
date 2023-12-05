@@ -129,7 +129,48 @@ void factOfN(ll n)
 
 //>----------------------------ＳＯＬＶＥ-----------------------------------------------------------------------------------------------------------------------------------------------
 
-//> CN SOL : O(N) ,O(N);
+//|> CN SOL : O(N), O(N);
+/*
+
+    The intuition behind this solution is that it basically checks if there is a expression `a+b`, `a/b`, etc.
+    in between a pair of opening and closing bracket.
+
+    Ex_1.  (a+(b/c))
+    In this example the inner pair of open and close bracket has a expression in-between `b/c` so this inner pair of bracket is valid
+    Similar will be the case for outer pair.
+
+    Ex_2. (a+((b/c)))
+    In this example the innermost pair of open-close brackets has a expression `b/c`, so it is valid pair of bracks.
+    Now the next surrounding pair of open-close brakets  outside the innermost pair is redudant, bcoz it has not valid expression.
+    `b/c` belongs to innermost pair, so  the outer pair has left with nothing, so they are redudant.
+
+    So the intuition is to check if a open-close pair has expression in-between them then they are valid pair.
+    This can be done using stack.
+
+    steps: 1. Open bracket, or operator or operand(we can just skip the operand) then put it in stack
+           2. Closing bracket then check if a expression is present in-between. This can be done by using stack top.
+           3. If stack top has operator or operand followed by a open bracket then this opening-closing bracket is valid pair.
+           4. Else if stack top has immemidiate opening bracket, that means no operator in between then, invalid open-close pair.
+
+
+    Dry-run: (a+((b/c)))
+
+    stack : []
+    index = 0, (  -> put to stack  [ (, ]
+    index = 1, a  -> put to stack  [ (, a ]
+    index = 2, +  -> put to stack  [ (, a, + ]
+    index = 3, (  -> put to stack  [ (, a, +, ( ]
+    index = 4, (  -> put to stack  [ (, a, +, (, ( ]
+    index = 5, b  -> put to stack  [ (, a, +, (, (, b ]
+    index = 6, /  -> put to stack  [ (, a, +, (, (, b, / ]
+    index = 7, c  -> put to stack  [ (, a, +, (, (, b, /, c ]
+    index = 8, )  -> check stack top : `c`, that means there is an expression in-between followed by a open bracket -> (, b, /, c
+                                        so pop stack till open bracket is found. Now stack is -> [ (, a, +, (, ]
+
+    index = 9, )  ->  stack : [ (, a, +, (, ], top : `(`. That means there is not expression in-between so invalid pair, return true
+
+
+*/
 bool checkRedundacny(string s)
 {
     stack<char> st;
@@ -144,8 +185,8 @@ bool checkRedundacny(string s)
         {
             bool isRedundant = true;
 
-            //> if we enter this loop it means that we dont have immediate top element as opening bracket
-            //> means no redundant bracket, so isRedudant == false
+            //|> if we enter this loop it means that we dont have immediate top element as opening bracket
+            //|> means no redundant bracket, so isRedudant == false
             while (st.top() != '(')
             {
                 char top = st.top();
@@ -165,8 +206,8 @@ bool checkRedundacny(string s)
     return false;
 }
 
-//> ON(N),O(1)
-//> GFG SOL
+//|> O(N), O(1)
+//|> GFG SOL
 bool checkRedundacny1(string s)
 {
 
@@ -177,7 +218,7 @@ bool checkRedundacny1(string s)
 
     for (int i = 0; i < n; i++)
     {
-        //> Edge case -> (a)
+        //|> Edge case -> (a)
         if (i + 2 < n && s[i] == '(' && s[i + 2] == ')')
         {
             return true;

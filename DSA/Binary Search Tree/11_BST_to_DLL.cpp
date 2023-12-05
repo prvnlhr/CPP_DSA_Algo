@@ -202,25 +202,26 @@ public:
 
 // ________________________________________________________________
 
-TreeNode *prevNode = NULL;
-TreeNode *headNode = NULL;
-
 /*
   Consider the inorder of BST, which will be in sorted form
  -> 1 2 3 4 5 6 7 8
 
-  we will have a prev pointer
-     prev root
-       |   |
-    1  2   3 4 5 6 7 8
+  we will have a prev pointer and root,
 
-> so to create a a doubly LL
->  1  2 3 4 5 6 7 8
-*  we can do root.left = prev
-*  and,  prevNode.right = root
+     prev   root
+        |   |
+    1   2   3   4   5   6   7   8
+
+> so to create a a doubly LL,
+>  1    2   3   4   5   6   7   8
+*  we can do, root->left = prev
+*  and,  prevNode->right = root
 -> and finally update the prev to next node i.e root => prev = root
 
 */
+
+TreeNode *prevNode = NULL;
+TreeNode *headNode = NULL;
 
 TreeNode *BSTtoDLLHelper(TreeNode *root)
 {
@@ -228,6 +229,7 @@ TreeNode *BSTtoDLLHelper(TreeNode *root)
     {
         return NULL;
     }
+
     BSTtoDLLHelper(root->left);
 
     if (prevNode == NULL)

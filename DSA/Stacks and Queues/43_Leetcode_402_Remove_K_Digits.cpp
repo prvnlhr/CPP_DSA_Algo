@@ -151,7 +151,6 @@ string removeKdigits(string num, int k)
         }
     }
     string res = "";
-    debug(k, st);
 
     while (!st.empty() && k--)
     {

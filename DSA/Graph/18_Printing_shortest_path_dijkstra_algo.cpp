@@ -94,15 +94,15 @@ typedef priority_queue<int, vector<int>, greater<int>> pqmin;
 //>----------------------------ＳＯＬＶＥ-----------------------------------------------------------------------------------------------------------------------------------------------
 /*
  ** Shortest Path in Weighted undirected graph
-> You are given a weighted undirected graph having n+1 vertices numbered
-> from 0 to n and m edges describing there are edges between a to b with
-> some weight, find the shortest path between the vertex 1 and the vertex n
-> and if path does not exist then return a list consisting of only -1.
+|> You are given a weighted undirected graph having n+1 vertices numbered
+|> from 0 to n and m edges describing there are edges between a to b with
+|> some weight, find the shortest path between the vertex 1 and the vertex n
+|> and if path does not exist then return a list consisting of only -1.
 
 */
 vector<int> shortestPath(int n, int m, vector<vector<int>> &edges)
 {
-    //>  1 based index -> n+1
+    //|>  1 based index -> n+1
     vector<pair<int, int>> adjList[n + 1];
     for (int i = 0; i < m; i++)
     {

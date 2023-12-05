@@ -214,12 +214,12 @@ ListNode *reverseBetween(ListNode *head, int m, int n)
     >        |       |
     >    1 2 3 4 5 6 7 8 9 10
     >      |           |
-    >     prevLeft    rightNext
+    >     leftPrev    rightNext
     >
     >
     */
     ListNode *left = NULL;
-    ListNode *prevLeft = NULL;
+    ListNode *leftPrev = NULL;
 
     ListNode *right = NULL;
     ListNode *rightNext = NULL;
@@ -228,7 +228,7 @@ ListNode *reverseBetween(ListNode *head, int m, int n)
 
     while (curr && cnt < m)
     {
-        prevLeft = curr;
+        leftPrev = curr;
         curr = curr->next;
         cnt++;
     }
@@ -244,14 +244,14 @@ ListNode *reverseBetween(ListNode *head, int m, int n)
     right = curr;
     rightNext = curr->next;
 
-    //> break old connections
-    if (prevLeft)
+    //|> break old connections
+    if (leftPrev)
     {
-        prevLeft->next = NULL;
+        leftPrev->next = NULL;
     }
-    
+
     right->next = NULL;
-    //> reversing m to n  nodes
+    //|> reversing m to n  nodes
     curr = left;
     ListNode *prev = NULL;
 
@@ -263,24 +263,25 @@ ListNode *reverseBetween(ListNode *head, int m, int n)
         curr = nextt;
     }
 
-    //> making new connections
-    //> handling four edge cases 
-    if (!prevLeft && !rightNext)
+    // |> making new connections
+    // |> handling four edge cases
+  
+    if (!leftPrev && !rightNext)
     {
         head = right;
     }
-    else if (!rightNext && prevLeft)
+    else if (!rightNext && leftPrev)
     {
-        prevLeft->next = right;
+        leftPrev->next = right;
     }
-    else if (!prevLeft && rightNext)
+    else if (!leftPrev && rightNext)
     {
         head = right;
         left->next = rightNext;
     }
     else
     {
-        prevLeft->next = right;
+        leftPrev->next = right;
         left->next = rightNext;
     }
 
@@ -289,13 +290,15 @@ ListNode *reverseBetween(ListNode *head, int m, int n)
 
 void solve()
 {
-    // vector<int> inputList{1, 2, 3, 4, 5, 6, 7, -1};
-    vector<int> inputList{1, 2, 3, 4, 5, -1};
+
+    vector<int> inputList{1, 2, 3, 4, 5, 6, 7, -1};
+    // vector<int> inputList{1, 2, 3, 4, 5, -1};
     // vector<int> inputList{1, 2, -1};
 
     int left = 2;
     int right = 4;
     auto head = buildLL(inputList);
+    printLL(head);
     ListNode *newHead = reverseBetween(head, left, right);
     printLL(newHead);
 }

@@ -96,6 +96,10 @@ typedef priority_queue<int, vector<int>, greater<int>> pqmin;
 vector<int> dirRow{-1, 0, 1, 0};
 vector<int> dirCol{0, 1, 0, -1};
 
+bool isSafe(int newrow, int newcol, int rows, int cols)
+{
+    return newrow >= 0 && newrow < rows && newcol >= 0 && newcol < cols;
+}
 void dfs(vector<vector<int>> &image, int row, int col, int color, int inColor, vector<vector<int>> &ans)
 {
 
@@ -109,7 +113,7 @@ void dfs(vector<vector<int>> &image, int row, int col, int color, int inColor, v
         int newrow = row + dirRow[i];
         int newcol = col + dirCol[i];
 
-        if (newrow >= 0 && newrow < rows && newcol >= 0 && newcol < cols && image[newrow][newcol] == inColor && ans[newrow][newcol] != color)
+        if (isSafe(newrow, newcol, rows, cols) && image[newrow][newcol] == inColor && ans[newrow][newcol] != color)
         {
             dfs(image, newrow, newcol, color, inColor, ans);
         }

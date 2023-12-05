@@ -326,6 +326,7 @@ OP:
 int res = INT_MAX;
 TreeNode<int> *pre = nullptr;
 vector<int> nd;
+
 void inorderTra(TreeNode<int> *root)
 {
     if (!root)
@@ -347,6 +348,7 @@ void inorderTra(TreeNode<int> *root)
 
     inorderTra(root->right);
 }
+
 int minDiffInBST(TreeNode<int> *root)
 {
     inorderTra(root);

@@ -18,7 +18,7 @@ using namespace chrono;
 
 typedef long long ll;
 
-//>---DEBUG_TEMPLATE_START---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+//|>---DEBUG_TEMPLATE_START---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 template <class T1, class T2>
 ostream &operator<<(ostream &os, const pair<T1, T2> &p)
@@ -60,7 +60,7 @@ ostream &operator<<(ostream &os, const T &c)
 #else
 #define debug(...)
 #endif
-//>---DEBUG_TEMPLATE_END-----------------------------------------------------------------------------------------------------------------------------------------------------------
+//|>---DEBUG_TEMPLATE_END-----------------------------------------------------------------------------------------------------------------------------------------------------------
 
 // #define FOR(i, start, end) for (int i = start; i < end; i++)
 #define FOR(i, begin, end) for (__typeof(end) i = (begin) - ((begin) > (end)); i != (end) - ((begin) > (end)); i += 1 - 2 * ((begin) > (end)))
@@ -91,7 +91,7 @@ typedef priority_queue<int> pqmax;
 typedef priority_queue<int, vector<int>, greater<int>> pqmin;
 //--------------------------------------------------------------------------------------------------------------------------------
 
-//>----------------------------ＳＯＬＶＥ-----------------------------------------------------------------------------------------------------------------------------------------------
+//|>----------------------------ＳＯＬＶＥ-----------------------------------------------------------------------------------------------------------------------------------------------
 int countPaths(int n, vector<vector<int>> &roads)
 {
 
@@ -120,14 +120,14 @@ int countPaths(int n, vector<vector<int>> &roads)
     pq.push({0, 0});
 
     /*
-    > The intution is to use dijkstra algo.
-    > Now we have to count all the ways to reach dest, and also the distance should be minimum
-    > So we can use dijkstra's algo.
-    > Now to find the num of ways at particular node, we should know, the
-    > now to ways of parent node, from where we reched that node. SO we can use a ways[]
-    > Now if we have reached a node previously with same distance, and again we find the same dist in
-    > distArray, then in this case we have to find the no of ways of parent, and for that node will be
-    > ways[parent] + ways[node]
+    |> The intution is to use dijkstra algo.
+    |> Now we have to count all the ways to reach dest, and also the distance should be minimum
+    |> So we can use dijkstra's algo.
+    |> Now to find the num of ways at particular node, we should know, the
+    |> now to ways of parent node, from where we reched that node. SO we can use a ways[]
+    |> Now if we have reached a node previously with same distance, and again we find the same dist in
+    |> distArray, then in this case we have to find the no of ways of parent, and for that node will be
+    |> ways[parent] + ways[node]
 
     */
 
@@ -150,8 +150,8 @@ int countPaths(int n, vector<vector<int>> &roads)
                 ways[adjNode] = ways[parent];
             }
 
-            //> if we distArray[adjNode] == adjWt + dis, have reach this node previously,
-            //> no of ways will be, parent node ways + adjNode ways
+            //|> if we distArray[adjNode] == adjWt + dis, have reach this node previously,
+            //|> no of ways will be, parent node ways + adjNode ways
             else if (adjWt + parentDis == distArray[adjNode])
             {
                 ways[adjNode] = (ways[parent] + ways[adjNode]) % mod;
@@ -179,7 +179,7 @@ void solve()
     cout << countPaths(n, roads) << endl;
 }
 
-//>-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+//|>-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 int main()
 {
     ios::sync_with_stdio(0);

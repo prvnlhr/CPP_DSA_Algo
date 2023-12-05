@@ -48,7 +48,7 @@ ostream &operator<<(ostream &os, const T &c)
 #define FOR_EACH_MACRO(MACRO, ...)                                                               \
     _NTH_ARG(__VA_ARGS__, _FE_10, _FE_9, _FE_8, _FE_7, _FE_6, _FE_5, _FE_4, _FE_3, _FE_2, _FE_1) \
     (MACRO, __VA_ARGS__)
-    
+
 //__Change output format here______________________________________________________________________________________________________________________________________________________
 #define out(x) #x " = " << x << "; "
 
@@ -200,6 +200,10 @@ void solve()
     string validFileName = convertToValidFileName(inputFileName);
     debug(validFileName);
     createFile(validFileName);
+}
+
+void solve()
+{
 }
 
 //|> --- MAIN -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------

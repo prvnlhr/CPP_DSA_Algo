@@ -276,7 +276,7 @@ vector<vector<int>> levelOrder(TreeNode<int> *root)
     {
         int n = q.size();
         vector<int> level;
-        
+
         for (int i = 0; i < n; i++)
         {
             auto currNode = q.front();
@@ -311,7 +311,7 @@ void solve()
         input.push_back(ele);
     }
     auto root = buildTree(input);
-    // printTree(root);
+    printTree(root);
     auto op = levelOrder(root);
     // debug(op.size());
     debug(op);

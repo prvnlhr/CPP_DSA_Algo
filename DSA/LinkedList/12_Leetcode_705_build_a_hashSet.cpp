@@ -186,7 +186,6 @@ public:
 
         if (head == nullptr)
         {
-
             head = newNode;
         }
         else

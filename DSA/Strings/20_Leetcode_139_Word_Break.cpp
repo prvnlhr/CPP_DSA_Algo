@@ -97,16 +97,16 @@ set<string> st;
 bool wordBreakRecursive(string word, int partitionPos)
 {
 
-    //> reached end of word after all possible partition, means we were able to find all segments
+    //|> reached end of word after all possible partition, means we were able to find all segments
     if (partitionPos == word.size())
     {
         return true;
     }
 
     /*
-    > else, create new partitions, from partitionPos
-    > now we are not recuring for all partition created,
-    > we only recurse for valid partition which which is present in set,or map
+    |> else, create new partitions, from partitionPos
+    |> now we are not recuring for all partition created,
+    |> we only recurse for valid partition which which is present in set,or map
     */
 
     for (int i = partitionPos; i < word.size(); i++)
@@ -119,7 +119,6 @@ bool wordBreakRecursive(string word, int partitionPos)
     }
     return false;
 }
-
 
 bool wordBreakHelper(string word, unordered_map<string, bool> mpp)
 {
@@ -136,7 +135,6 @@ bool wordBreakHelper(string word, unordered_map<string, bool> mpp)
     for (int i = 1; i <= word.size(); i++)
     {
         string prefix = word.substr(0, i);
-        debug(prefix, word.substr(i, word.size() - i));
         if (mpp.find(prefix) != mpp.end() && wordBreakHelper(word.substr(i, word.size() - i), mpp))
         {
             return true;
@@ -163,6 +161,7 @@ bool wordBreakDP(string word, unordered_map<string, bool> mpp)
     }
     return false;
 }
+
 bool wordBreak(string word, vector<string> &wordDict)
 {
     unordered_map<string, bool> mpp;
@@ -172,6 +171,46 @@ bool wordBreak(string word, vector<string> &wordDict)
     }
     return wordBreakHelper(word, mpp);
 }
+// ----------------------
+//|> Memoization solution O(n*m)
+bool wordBreakHelper(string word, unordered_map<string, bool> &mpp, vector<int> &dp)
+{
+    if (word == "")
+    {
+        return true;
+    }
+    if (dp[word.size()] != -1)
+    {
+        return dp[word.size()] == 1;
+    }
+
+    for (int i = 1; i <= word.size(); i++)
+    {
+        string prefix = word.substr(0, i);
+        if (mpp.find(prefix) != mpp.end() && wordBreakHelper(word.substr(i, word.size() - i), mpp, dp))
+        {
+            dp[word.size()] = 1;
+            return true;
+        }
+    }
+
+    dp[word.size()] = 0;
+    return false;
+}
+
+bool wordBreak(string word, vector<string> &wordDict)
+{
+    unordered_map<string, bool> mpp;
+    for (auto wrd : wordDict)
+    {
+        mpp[wrd] = true;
+    }
+
+    vector<int> dp(word.size() + 1, -1); // -1 represents not computed yet, 0 represents false, 1 represents true
+
+    return wordBreakHelper(word, mpp, dp);
+}
+// ----------------------
 
 void solve()
 {

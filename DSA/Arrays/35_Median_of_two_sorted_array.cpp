@@ -135,7 +135,7 @@ void factOfN(ll n)
 */
 
 /*
-* 2. Using merge technique but not storing elements in array,rather
+* 2. Using merge technique but not storing elements in array, rather
 * keeping count pointer to reach middle element and taking median
 :TC: O(m+n)
 :SC :O(1)
@@ -145,6 +145,55 @@ void factOfN(ll n)
 * 3. Using Binary search appraoch
 :TC : min(logN, LogM)
 :SC : O(1)
+*/
+
+/*
+
+arr1 => 2   3   6   15           n1 = 4
+arr2 => 1   3   4   7   10  12 , n2 = 6
+
+sorted order merge => 1 2 3 3 4 6 7 10 12 15 , n = 10
+
+median  = (4 + 6)/2 = 5
+
+
+        2   3   6   15
+        1   3   4   7   10  12
+
+total _elements = 10, mid = 5
+
+Now lets take 1 element from arr1, {2}, then how many elements to take from arr2
+element from array = mid - elements_taken from arr1 => 5 - 1 = 4
+
+
+        2 | 3   6   15
+        1   3   4   7 | 10  12
+
+
+        left_half      right_half
+        2 1 3 4 7 | 3 6 15 10 12
+            |                 |-> sorted order => 3 6 10 12 15
+sorted order=> 1 2 3 4 7
+
+so => 1 2 3 4 7 | 3 6 10 12 15, as we see 7 > 3, so this is not a correct partition
+
+Now lets take two elements from arr1, so from arr2 we need to take 5-2 = 3
+
+
+
+        2   3 |   6   15
+        1   3    4  | 7  10  12
+
+so we get => 1 2 3 3 4 |  6 7 10 12 15
+
+we see that 4 < 6, that means we get the correct partition
+
+
+Conclusion :
+We will perform binary search on smaller arr, so that time  complexity can be minimize
+
+
+
 */
 double getMedianBest(vector<int> arr1, vector<int> arr2)
 {
@@ -184,10 +233,10 @@ double getMedianBest(vector<int> arr1, vector<int> arr2)
 
     */
 
-    int lo = 0;
-    int hi = arr1.size();
     int n1 = arr1.size();
     int n2 = arr2.size();
+
+    int lo = 0, hi = arr1.size();
 
     while (lo <= hi)
     {
@@ -210,13 +259,14 @@ double getMedianBest(vector<int> arr1, vector<int> arr2)
         - Total elements in combined array is 10 == (ele in 1st )m + (ele in 2nd)n
 
         - so (m + n - cut1)  will be elements to consider from 2nd array
-        - Now we are taking m + n + 1 , because we want to cut the array equal so one step further
+         ! Now we are taking m + n + 1 , because we want to cut the array equal so one step further
 
         */
 
         int cut1 = (lo + hi) / 2;
-        int cut2 = (n1 + n2 + 1) / 2 - cut1;
-
+        int cut2 = (n1 + n2 + 1) / 2 - cut1; // +1 because we want to take equal elements on both side
+                                             // in case of when total_len(n1+n2) is even, then we wont get equal elements on both side
+                                             // so +1 would compensate for that
         /*
 
           - We want to make cut at cut1-1, but if cut1 == 0 ,

@@ -118,7 +118,7 @@ string infixToPostfix(string s)
     string result;
 
     /*
-    > There can be four conditions if for currChar
+    > There can be four conditions for currChar,
         1. It can be A-Z, a-z,0-9->  Just append to res
         2. It can be opening bracket-> put to stack
         3. It can be closing bracket-> keep popping from stack and append to res till st.top is not '('

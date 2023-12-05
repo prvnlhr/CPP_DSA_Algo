@@ -18,7 +18,7 @@ using namespace chrono;
 
 typedef long long ll;
 
-//>---DEBUG_TEMPLATE_START---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+//|>---DEBUG_TEMPLATE_START---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 template <class T1, class T2>
 ostream &operator<<(ostream &os, const pair<T1, T2> &p)
@@ -57,7 +57,7 @@ ostream &operator<<(ostream &os, const T &c)
 #define debug(...)
 #endif
 
-//>---DEBUG_TEMPLATE_END-----------------------------------------------------------------------------------------------------------------------------------------------------------
+//|>---DEBUG_TEMPLATE_END-----------------------------------------------------------------------------------------------------------------------------------------------------------
 
 // #define FOR(i, start, end) for (int i = start; i < end; i++)
 #define FOR(i, begin, end) for (__typeof(end) i = (begin) - ((begin) > (end)); i != (end) - ((begin) > (end)); i += 1 - 2 * ((begin) > (end)))
@@ -127,7 +127,7 @@ void factOfN(ll n)
 }
 //--------------------------------------------------------------------------------------------------------------------------------
 
-//>----------------------------ＳＯＬＶＥ-----------------------------------------------------------------------------------------------------------------------------------------------
+//|>----------------------------ＳＯＬＶＥ-----------------------------------------------------------------------------------------------------------------------------------------------
 
 /*
 - Sample Input 1 :
@@ -144,9 +144,9 @@ void factOfN(ll n)
 
 */
 
-//> Self Solved 100% CN
-//> O(N)
-//>
+//|> Self Solved 100% CN
+//|> O(N)
+//|>
 
 char kThCharaterOfDecryptedString(string s, long long k)
 {
@@ -176,15 +176,15 @@ char kThCharaterOfDecryptedString(string s, long long k)
 
         cntCharTillNow += currFormedString.size() * currDigit;
 
-        if (cntCharTillNow >= k) //> Now, its for sure our result will be in '''currFormedString'''
+        if (cntCharTillNow >= k) //|> Now, its for sure our result will be in '''currFormedString'''
         {
-            //> if could find what will be the index of resultant kth char in '''currFormedString'''
+            //|> if could find what will be the index of resultant kth char in '''currFormedString'''
 
-            long long startIndxOfFormedStr = (cntCharTillNow - (currFormedString.size() * currDigit)); //> this will give index from where currFormedString starts
+            long long startIndxOfFormedStr = (cntCharTillNow - (currFormedString.size() * currDigit)); //|> this will give index from where currFormedString starts
 
-            long long reqCharIndexInFormedStr = (k - startIndxOfFormedStr) - 1; //> This will give actual char index in currFormedString
+            long long reqCharIndexInFormedStr = (k - startIndxOfFormedStr) - 1; //|> This will give actual char index in currFormedString
 
-            //> doing % modulo because we are not forming the whole currFormedString with repeation.
+            //|> doing % modulo because we are not forming the whole currFormedString with repeation.
             char ANS = currFormedString[reqCharIndexInFormedStr % currFormedString.size()];
             return ANS;
         }
@@ -205,7 +205,7 @@ void solve()
     cout << kThCharaterOfDecryptedString(s, k) << endl;
 }
 
-//>-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+//|>-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 int main()
 {
     ios::sync_with_stdio(0);

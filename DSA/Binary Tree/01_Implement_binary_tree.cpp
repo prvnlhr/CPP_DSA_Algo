@@ -270,6 +270,7 @@ void solve()
     {
         inputList.push_back(ele);
     }
+
     auto root = buildTree(inputList);
     printTree(root);
 }

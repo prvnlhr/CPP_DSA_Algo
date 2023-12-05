@@ -139,7 +139,7 @@ typedef priority_queue<int, vector<int>, greater<int>> pqmin;
 
 // :TC O(N)
 // :SC O(N)
-//> Tricky, for only logic, coders camp video YT, not code(code seems to be wrong)
+//|> Tricky, for only logic, coders camp video YT, not code(code seems to be wrong)
 int longestValidParentheses(string s)
 {
     stack<int> st;

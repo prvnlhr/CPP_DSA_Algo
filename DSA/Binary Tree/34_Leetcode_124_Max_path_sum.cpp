@@ -334,14 +334,14 @@ int maxSumPathHelper(TreeNode<int> *root, int &maxSum)
         return 0;
     }
 
-    //> a minor change in this line is that we wont take sum from
-    //> left or right subtree if it came out to be negative
-    //> so we take so, instead
+    //|> A minor change in this line is that we wont take sum from
+    //|> left or right subtree if it came out to be negative
+    //|> so we take `0` instead
     int leftSum = max(0, maxSumPathHelper(root->left, maxSum));
     int rightSum = max(0, maxSumPathHelper(root->right, maxSum));
 
-    //> This is the only different line of code, when compare to height of BT
-    //> This line will store our ans
+    //|> This is the only different line of code, when compare to height of BT
+    //|> This line will store our ans.
     maxSum = max(leftSum + rightSum + root->val, maxSum);
 
     return max(leftSum, rightSum) + root->val;

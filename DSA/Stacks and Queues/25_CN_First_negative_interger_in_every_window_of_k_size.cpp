@@ -129,22 +129,29 @@ void factOfN(ll n)
 
 //>----------------------------ＳＯＬＶＥ-----------------------------------------------------------------------------------------------------------------------------------------------
 
-//> Self solved
-//> 100%
-//> O(N), O(K);
+//|> Self solved
+//|> 100%
+//|> O(N), O(K)
 
 /*
         5
+
         5 2
-        -8 2 3 -6 10
+        -8  2   3  -6  10
+
         5 2
-        5 -3 2 3 -4
+        5  -3  2   3  -4
+
         5 3
-        -1 2 6 -5 -4
+        -1  2   6  -5  -4
+
         7 3
-        0 0 0 0 0 0 0
+        0   0   0   0   0   0   0
+
         8 3
-        12 -1 -7 8 -15 30 16 28
+        12  -1  -7  8  -15  30  16  28
+
+
 */
 
 vector<int> firstNegative(vector<int> arr, int n, int k)
@@ -152,8 +159,8 @@ vector<int> firstNegative(vector<int> arr, int n, int k)
 
     vector<int> res;
     queue<int> q;
-    int winStart = 0;
 
+    int winStart = 0;
     for (int i = 0; i < n; i++)
     {
         q.push(arr[i]);

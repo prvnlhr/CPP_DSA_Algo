@@ -302,6 +302,7 @@ void helper(TreeNode<int> *root, vector<int> &res, int level)
     {
         res.push_back(root->val);
     }
+
     helper(root->right, res, level + 1);
     helper(root->left, res, level + 1);
 }

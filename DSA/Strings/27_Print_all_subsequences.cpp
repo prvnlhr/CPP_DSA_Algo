@@ -92,7 +92,8 @@ typedef priority_queue<int, vector<int>, greater<int>> pqmin;
 //--------------------------------------------------------------------------------------------------------------------------------
 
 //>----------------------------ＳＯＬＶＥ-----------------------------------------------------------------------------------------------------------------------------------------------
-
+//|> https://takeuforward.org/data-structure/power-set-print-all-the-possible-subsequences-of-the-string/
+//|> https://www.scaler.com/topics/subsequence-of-a-string/
 /*
 -Input : abc
 -Output : a, b, c, ab, bc, ac, abc
@@ -108,13 +109,13 @@ vector<string> generateSubsequence(string s)
 
     debug(pow(2, n), (1 << n));
 
-    //> 1 << n is same as pow(2,n)
+    //|> 1 << n is same as pow(2,n)
     for (int num = 0; num < pow(2, n); num++)
     {
         string sub = "";
         for (int i = 0; i < n; i++)
         {
-            if (num & (1 << i))
+            if (num & (1 << i)) //|> checking set bit
             {
                 sub += s[i];
             }
@@ -126,14 +127,27 @@ vector<string> generateSubsequence(string s)
     }
     return res;
 }
+void subSeqBacktrack(string s, int i, string sub)
+{
+    if (i == s.size())
+    {
+        cout << sub << " ";
+        return;
+    }
+    sub += s[i];
+    subSeqBacktrack(s, i + 1, sub);
+    sub.pop_back();
+    subSeqBacktrack(s, i + 1, sub);
+}
 
 void solve()
 {
     string s = "abc";
-    auto ans = generateSubsequence(s);
-    debug(ans);
-    sort(ans.begin(), ans.end());
-    debug(ans);
+    // auto ans = generateSubsequence(s);
+    // debug(ans);
+    // sort(ans.begin(), ans.end());
+    // debug(ans);
+    subSeqBacktrack(s, 0, "");
 }
 
 //>-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------

@@ -137,13 +137,15 @@ queue<int> interleave(queue<int> &q)
     -> Self solved, better then previously solved python solution(based on stack)
     -> This solution is based on queue
 
-    11 12 13 14 15 16 17 18 19 20
+       11 12 13 14 15 16 17 18 19 20  , n = 10
 
-    16 17 18 19 20
+  FH:  11 12 13 14 15
 
-    11 12 13 14 15
+  SH:  16 17 18 19 20
 
-    16 17 18 19 20 11 16
+
+  O/P: 11 16 12 17 13 18 14 19 15 20
+
     */
 
     queue<int> tempq;

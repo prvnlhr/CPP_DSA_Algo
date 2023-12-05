@@ -334,6 +334,7 @@ void flatten(TreeNode<int> *root)
 
     root->left = nullptr;
     root->right = lft;
+
     TreeNode<int> *temp = root;
     while (temp->right)
     {
@@ -342,6 +343,25 @@ void flatten(TreeNode<int> *root)
     temp->right = rht;
 }
 
+void flattenIterative(TreeNode<int> *root)
+{
+    while (root)
+    {
+        if (root->left)
+        {
+            TreeNode<int> *temp = root->left;
+            while (temp->right)
+            {
+                temp = temp->right;
+            }
+
+            temp->right = root->right;
+            root->right = root->left;
+            root->left = nullptr;
+        }
+        root = root->right;
+    }
+}
 void solve()
 {
     int ele;

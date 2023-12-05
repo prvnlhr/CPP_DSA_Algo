@@ -90,24 +90,7 @@ typedef priority_queue<int, vector<int>, greater<int>> pqmin;
 
 //>----------------------------ＳＯＬＶＥ-----------------------------------------------------------------------------------------------------------------------------------------------
 
-/*
--> Input: str1 = “onetwofour”, str2 = “hellofourtwooneworld”
--> Output: YES
--  Explanation: str1 is substring in shuffled form of str2 as
--  str2 = “hello” + “fourtwoone” + “world”
--  str2 = “hello” + str1 + “world”, where str1 = “fourtwoone” (shuffled form)
--  Hence, str1 is a substring of str2 in shuffled form.
 
-->  Input: str1 = “roseyellow”, str2 = “yellow”
-->  Output: NO
--  Explanation: As the length of str1 is greater than str2. Hence, str1 is not a substring of str2.
-*/
-
-/*
- > This is optimised solution based on Anagram search solution
- :TC O(N)
- :SC: O(1) -> constant
-*/
 
 vector<int> findAllAnagrams(string s1, string s2)
 {
@@ -162,7 +145,7 @@ vector<int> findAllAnagrams1(string s1, string s2)
     */
 
     vector<int> s1CharCount(256, 0);
-    vector<int> winCharCount(256, 0); //> here window size is equal to s1
+    vector<int> winCharCount(256, 0); //|> here window size is equal to s1
 
     if (s1.size() < s2.size())
     {
@@ -172,7 +155,7 @@ vector<int> findAllAnagrams1(string s1, string s2)
     int m = s2.size();
     int n = s1.size();
 
-    //> s1 is of larger size
+    //|> s1 is of larger size
 
     for (int i = 0; i < m; i++)
     {

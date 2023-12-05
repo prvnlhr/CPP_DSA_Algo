@@ -356,6 +356,7 @@ int helper(TreeNode<int> *root)
     }
     return max(lh, rh) + 1;
 }
+
 bool isBalanced(TreeNode<int> *root)
 {
 

@@ -184,17 +184,31 @@ void printLL(LLNode *head)
 
 LLNode *reverseLL(LLNode *head)
 {
-
     if (head == nullptr || head->next == nullptr)
     {
         return head;
     }
-    LLNode *smallHead = reverseLL(head->next);
+
+    LLNode *reversedLLHead = reverseLL(head->next); //|> reversedLLHead will carry the new head of reversed LL
 
     LLNode *tail = head->next;
     tail->next = head;
     head->next = nullptr;
-    return smallHead;
+    return reversedLLHead;
+
+    /*
+
+        Ex.  1->2
+
+         head    tail    tail->next = head
+            |    |       head->next = null
+            1 -> 2       changing directions =>  null <- 1 <- 2
+
+    return reversedLLHead -> which is the newHead of reverse LinkedList
+
+
+
+    */
 }
 
 void solve()

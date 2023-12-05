@@ -114,7 +114,7 @@ string restoreString(string s, vector<int> &indices)
 }
 
 /*
-> Optimised , using cyclic sort technique easy
+|> Optimised , using cyclic sort technique easy
 :TC :O(N)
 :SC:O(1)
 */
@@ -125,8 +125,8 @@ string restoreStringOP(string s, vector<int> &indices)
     {
         if (indices[i] != i)
         {
-            swap(s[i], s[indices[i]]);             //> Swapping string characters
-            swap(indices[i], indices[indices[i]]); //> swapping index in indices array
+            swap(s[i], s[indices[i]]);             //|> Swapping string characters
+            swap(indices[i], indices[indices[i]]); //|> swapping index in indices array
         }
     }
     debug(indices);

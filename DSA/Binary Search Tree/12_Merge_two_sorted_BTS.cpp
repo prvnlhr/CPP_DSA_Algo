@@ -260,13 +260,7 @@ TreeNode<int> *buildTree(vector<int> inputList)
 
 /*
 BST:
-           4
-         /   \
-        2     6
-      /  \   /  \
-     1    3 5    7
 
-4 2 6 1 3 5 7 -1 -1 -1 -1 -1 -1 -1 -1
 
 
 
@@ -279,7 +273,6 @@ BST:
 
 17 4 18 2 9 -1 -1 -1 -1 -1 -1
 
-Output: 4 9 17 18 = 4 +  9 + 17 + 18 = 48
 
 
 
@@ -295,7 +288,9 @@ Output: 4 9 17 18 = 4 +  9 + 17 + 18 = 48
 
 
 
-Ex: 6 2 8 0 4 7 9 -1 -1 3 5 -1 -1 -1 -1 -1 -1 -1 -1
+Ex: Merge BST
+
+BST_1: 6 2 8 0 4 7 9 -1 -1 3 5 -1 -1 -1 -1 -1 -1 -1 -1
 
                          6
                       /    \
@@ -305,23 +300,13 @@ Ex: 6 2 8 0 4 7 9 -1 -1 3 5 -1 -1 -1 -1 -1 -1 -1 -1
                       / \
                      3   5
 
+BST_2: 4 2 6 1 3 5 7 -1 -1 -1 -1 -1 -1 -1 -1
 
-OP:
-        1
-         \
-          2
-           \
-            3
-             \
-              4
-               \
-                5
-                 \
-                  6
-                   \
-                    7
-                     \
-                      8
+                          4
+                        /   \
+                       2     6
+                     /  \   /  \
+                    1    3 5    7
 
 
 */
@@ -336,14 +321,27 @@ OP:
  : SC :O(m+n)
 
 * SOLUTION 2: can be optimised for space complexity O(h1 + h2)
->            1. convert the BST to DLL
+>            1. Convert the BST to DLL
 >            2. Megre the DLL's
 >            3. convert DLL to BST
  : TC: O(m+n)
  : SC :O(h1+h2)
 
 */
+// ----------------------------------------------------------------------------------
+void printInorder(TreeNode<int> *root)
+{
 
+    if (!root)
+    {
+        return;
+    }
+    printInorder(root->left);
+    cout << root->val << " ";
+    printInorder(root->right);
+}
+
+// ---------------------------------------------------------------------------------
 TreeNode<int> *prevNode = NULL;
 void BSTtoDLLHelper(TreeNode<int> *root, TreeNode<int> *&headNode)
 {
@@ -351,6 +349,7 @@ void BSTtoDLLHelper(TreeNode<int> *root, TreeNode<int> *&headNode)
     {
         return;
     }
+
     BSTtoDLLHelper(root->left, headNode);
 
     if (prevNode == NULL)
@@ -373,16 +372,15 @@ void BSTtoDLL(TreeNode<int> *root, TreeNode<int> *&head)
     BSTtoDLLHelper(root, head);
 }
 
+// ---------------------------------------------------------------------------------
 TreeNode<int> *mergeDLL(TreeNode<int> *head1, TreeNode<int> *head2)
 {
 
     TreeNode<int> *head = NULL;
     TreeNode<int> *tail = NULL;
-    
+
     while (head1 && head2)
     {
-        debug(head1->val, head2->val);
-
         if (head1->val < head2->val)
         {
 
@@ -399,9 +397,6 @@ TreeNode<int> *mergeDLL(TreeNode<int> *head1, TreeNode<int> *head2)
                 tail = head1;
                 head1 = head1->right;
             }
-
-            // tail = head1;
-            // head1 = head1->right;
         }
 
         else
@@ -438,6 +433,7 @@ TreeNode<int> *mergeDLL(TreeNode<int> *head1, TreeNode<int> *head2)
     return head;
 }
 
+// ---------------------------------------------------------------------------------
 int countNode(TreeNode<int> *head)
 {
     int cnt = 0;
@@ -449,6 +445,7 @@ int countNode(TreeNode<int> *head)
     }
     return cnt;
 }
+
 TreeNode<int> *DLLtoBST(TreeNode<int> *&head, int n)
 {
     if (n <= 0 || !head)
@@ -472,33 +469,23 @@ TreeNode<int> *DLLtoBST(TreeNode<int> *&head, int n)
 
     return root;
 }
+// ---------------------------------------------------------------------------------
 
-void printInorder(TreeNode<int> *root)
-{
-
-    if (!root)
-    {
-        return;
-    }
-    printInorder(root->left);
-    cout << root->val << " ";
-    printInorder(root->right);
-}
 TreeNode<int> *mergeBTS(TreeNode<int> *root1, TreeNode<int> *root2)
 {
 
     TreeNode<int> *head1 = NULL;
-    BSTtoDLL(root1, head1);
+    BSTtoDLL(root1, head1); //|> Step 1: BST -> DLL
     head1->left = NULL;
 
     TreeNode<int> *head2 = NULL;
     BSTtoDLL(root2, head2);
     head2->left = NULL;
 
-    TreeNode<int> *head = mergeDLL(head1, head2);
+    TreeNode<int> *head = mergeDLL(head1, head2); //|> Step 2: Merge DLL's
 
     int n = countNode(head);
-    TreeNode<int> *root = DLLtoBST(head, n);
+    TreeNode<int> *root = DLLtoBST(head, n); //|> Step 3: DLL -> BST
     return root;
 }
 

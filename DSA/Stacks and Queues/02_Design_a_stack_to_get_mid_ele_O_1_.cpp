@@ -204,7 +204,7 @@ public:
         }
         dq.pop_front();
 
-        //> after poping balancing st && dq
+        //|> after poping balancing st && dq
         if (st.size() > dq.size())
         {
             int temp = st.top();

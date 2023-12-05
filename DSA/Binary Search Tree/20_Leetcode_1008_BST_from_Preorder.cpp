@@ -321,36 +321,11 @@ Ex: 6 2 8 1 4 7 9 -1 -1 3 5 -1 -1 -1 -1 -1 -1 -1 -1
 8 5 1 7 10 12
 */
 
-//> O(N)--> using min max concept
-TreeNode<int> *helper2(vector<int> preorder, int &preIndx, int MIN, int MAX)
-{
+// ----------------------------------------------------------------------------------------
+//|> O(nlogN) --> 1. sort the array -> 2. then sorted array to BST(refer sorted array to BST)
 
-    //> Edge case
-    int n = preorder.size();
-    if (preIndx >= n)
-    {
-        return nullptr;
-    }
-
-    //> cant make a node if, preIndex element is out of range of MIN or MAX
-    if (preorder[preIndx] < MIN || preorder[preIndx] > MAX)
-    {
-        return nullptr;
-    }
-
-    //> Make node
-    TreeNode<int> *root = new TreeNode(preorder[preIndx]);
-    preIndx = preIndx + 1;
-
-    //> Bring left and right Nodes
-    root->left = helper2(preorder, preIndx, MIN, root->val);
-    root->right = helper2(preorder, preIndx, root->val, MAX);
-    return root;
-}
-
-//> O(nlogN) --> 1. sort the array -> 2. then sorted array to BST(refer sorted array to BST)
-
-//> O: (N^2) --> find next greater element of root then divide and conqure
+// ----------------------------------------------------------------------------------------
+//|> O: (N^2) --> find next greater element of root then divide and conqure
 TreeNode<int> *helper1(vector<int> &preorder, int &preIndex, int low, int high, int size)
 {
 
@@ -383,12 +358,40 @@ TreeNode<int> *helper1(vector<int> &preorder, int &preIndex, int low, int high, 
     return root;
 }
 
+// ----------------------------------------------------------------------------------------
+//|> O(N)--> using min max concept
+TreeNode<int> *helper2(vector<int> preorder, int &preIndx, int MIN, int MAX)
+{
+
+    //|> Edge case
+    int n = preorder.size();
+    if (preIndx >= n)
+    {
+        return nullptr;
+    }
+
+    //|> cant make a node if, preIndex element is out of range of MIN or MAX
+    if (preorder[preIndx] < MIN || preorder[preIndx] > MAX)
+    {
+        return nullptr;
+    }
+
+    //|> Make node
+    TreeNode<int> *root = new TreeNode(preorder[preIndx]);
+    preIndx = preIndx + 1;
+
+    //|> Bring left and right Nodes
+    root->left = helper2(preorder, preIndx, MIN, root->val);
+    root->right = helper2(preorder, preIndx, root->val, MAX);
+    return root;
+}
+
 TreeNode<int> *bstFromPreorder(vector<int> &preorder)
 {
 
     int preIndx = 0;
-    int low = 0;
     int n = preorder.size();
+    int low = 0;
     int high = n - 1;
 
     return helper1(preorder, preIndx, low, high, n);

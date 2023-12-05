@@ -149,15 +149,15 @@ bool validStackPermutation(vector<int> &first, vector<int> &other)
 
     if (st.size() > 0)
     {
-        return true;
+        return false;
     }
-    return false;
+    return true;
 }
 void solve()
 {
 
     /*
-   > CN formatt input
+   |> CN formatt input
 
     2
     3

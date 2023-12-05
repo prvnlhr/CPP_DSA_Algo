@@ -181,13 +181,13 @@ bool containsDups3(string s)
 
         int bitIndex = ch - 'a';
 
-        //> check if a bit is set or not
+        //|> check if a bit is set or not
         if ((checkerNum & (1 << bitIndex)))
         {
             return true;
         }
 
-        //> set bit for curr ch
+        //|> set bit for curr ch
         checkerNum = checkerNum | (1 << bitIndex);
     }
 

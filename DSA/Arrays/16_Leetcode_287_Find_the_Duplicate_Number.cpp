@@ -132,7 +132,7 @@ void factOfN(ll n)
 1 3 4 2 2
 
 
->SOL1: APPROACH, SELF SOLVED 100%
+|> SOL1: APPROACH, SELF SOLVED 100%
 : TC: O(N)
 : SC :O(N)
 
@@ -162,8 +162,8 @@ int findDuplicate1(vector<int> &nums)
 }
 
 /*
->SOL2: O(N);
-> manuplating array itself
+|>SOL2: O(N);
+|> manuplating array itself
 - There are n + 1 positive numbers in the array (nums) (all in the range [1, n]).
 - Since the array only contains positive integers, we can track each number (num)
 - that has been seen before by flipping the sign of the number located at
@@ -185,14 +185,13 @@ int findDuplicate2(vector<int> &nums)
     for (int i = 0; i < n; i++)
     {
         int curr = abs(nums[i]);
-        debug(curr, nums[curr]);
         if (nums[curr] < 0)
         {
             ans = curr;
             break;
         }
 
-        //> fliping sign of curr Number
+        //|> fliping sign of curr Number
         nums[i] *= -1;
         debug(nums);
     }

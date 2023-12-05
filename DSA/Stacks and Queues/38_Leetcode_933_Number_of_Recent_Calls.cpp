@@ -129,7 +129,7 @@ void factOfN(ll n)
 
 //>----------------------------ＳＯＬＶＥ-----------------------------------------------------------------------------------------------------------------------------------------------
 
-//> SLIDING WINDOW APPRAOCH USING QUEUE
+//|> SLIDING WINDOW APPRAOCH USING QUEUE
 class RecentCounter
 {
 public:

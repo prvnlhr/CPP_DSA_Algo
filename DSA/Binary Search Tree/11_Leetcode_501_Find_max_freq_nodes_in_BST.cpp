@@ -305,7 +305,7 @@ vector<int> res;
 ->  5 5 5 6 10 12 12 16
 
 > now maintain two pointer, root and pre,
-> if root->val == pre -> the currFreq++
+> if root->val == pre, then currFreq++
 > if not equal means, we have got a new element so, currFreq = 1,
 > but store the previously store frequency(if any) to maxFreq and also put the element to  res
 > now , if we got another element with more freq, the clear the res vector and put that element
@@ -322,7 +322,7 @@ void inorder(TreeNode<int> *root)
     inorder(root->left);
     debug(root->val);
 
-    //> id prev element is smae as root , increase currFreq++
+    //> if prev element is smae as root , increase currFreq++
     if (pre == root->val)
     {
         currFreq++;

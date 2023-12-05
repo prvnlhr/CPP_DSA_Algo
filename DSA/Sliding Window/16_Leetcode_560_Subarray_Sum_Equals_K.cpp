@@ -131,7 +131,6 @@ void factOfN(ll n)
 
 int subarraySum(vector<int> &nums, int k)
 {
-
     //> Since the array can contains negative elements, sliding window technique will not
     //> work, It only works for non-negative elements
     int subCnt = 0;
@@ -164,10 +163,13 @@ int subarraySum(vector<int> &nums, int k)
     return subCnt;
 }
 
-//> Tech Dose YT channel
+//|> Tech Dose YT channel
+
 int subarraySum1(vector<int> &nums, int k)
 {
+
     unordered_map<int, int> mpp;
+
     int ans = 0, sum = 0;
 
     for (int i = 0; i < nums.size(); i++)

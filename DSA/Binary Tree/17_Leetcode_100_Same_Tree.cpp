@@ -300,6 +300,16 @@ Ex_2: 1 2 3 4 5 6 7 -1 -1 8 9 -1 -1 -1 -1 -1 -1 -1 -1
 
 */
 
+/*
+
+|> Given the roots of two binary trees p and q, write a function
+|> to check if they are the same or not.
+
+|> Two binary trees are considered the same if they are structurally
+|> identical, and the nodes have the same value.
+
+*/
+
 bool isSameTree(TreeNode<int> *p, TreeNode<int> *q)
 {
 
@@ -312,6 +322,7 @@ bool isSameTree(TreeNode<int> *p, TreeNode<int> *q)
     {
         return false;
     }
+
     if (p->val != q->val)
     {
         return false;

@@ -213,8 +213,8 @@ LLNode *remove_Dups(LLNode *head)
 }
 void solve()
 {
-    // vector<int> input{4, 2, 5, 1, 3, 1, 4, 4, 7, 8, 7, -1};
-    vector<int> input{4, 4, 4, 4, -1};
+    vector<int> input{4, 2, 5, 1, 3, 1, 4, 4, 7, 8, 7, -1};
+    // vector<int> input{4, 4, 4, 4, -1};
 
     int t;
     cin >> t;

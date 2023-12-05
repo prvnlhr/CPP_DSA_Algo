@@ -261,18 +261,18 @@ TreeNode<int> *buildTree(vector<int> inputList)
     return root;
 }
 
-void printLeaftNode(TreeNode<int> *root)
+void printLeafNode(TreeNode<int> *root)
 {
     if (!root)
     {
         return;
     }
-    printLeaftNode(root->left);
+    printLeafNode(root->left);
     if (!root->left && !root->right)
     {
         cout << root->val << " ";
     }
-    printLeaftNode(root->right);
+    printLeafNode(root->right);
 }
 
 void printRightBoundary(TreeNode<int> *root)
@@ -346,8 +346,8 @@ void boundaryTaversal(TreeNode<int> *root)
     cout << root->val << " ";
 
     printLeftBoundary(root->left);
-    printLeaftNode(root->left);
-    printLeaftNode(root->right);
+    printLeafNode(root->left);
+    printLeafNode(root->right);
     printRightBoundary(root->right);
 }
 

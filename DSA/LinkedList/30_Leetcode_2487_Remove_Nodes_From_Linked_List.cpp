@@ -145,6 +145,7 @@ void printLL(ListNode *head)
 }
 
 int maxi = 0;
+
 ListNode *removeNodes(ListNode *head)
 {
     if (head == nullptr)

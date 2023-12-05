@@ -338,6 +338,7 @@ bool findPath(TreeNode<int> *root, TreeNode<int> *node, vector<int> &path)
     {
         return true;
     }
+    
     path.pop_back();
     return false;
 }

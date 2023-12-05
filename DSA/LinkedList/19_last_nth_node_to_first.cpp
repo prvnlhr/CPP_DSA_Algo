@@ -189,6 +189,7 @@ ListNode *lastNthToFirst(ListNode *head, int n)
 
     ListNode *curr = head;
     int cnt = 0;
+
     while (curr && cnt < n)
     {
         curr = curr->next;
@@ -199,8 +200,10 @@ ListNode *lastNthToFirst(ListNode *head, int n)
     {
         return head;
     }
+
     ListNode *main = head;
     ListNode *prev = head;
+    
     while (curr)
     {
         prev = main;

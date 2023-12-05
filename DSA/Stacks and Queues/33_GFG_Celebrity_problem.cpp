@@ -180,6 +180,14 @@ int celebrity(vector<vector<int>> &M, int n)
 /*
 >- TC: O(N) SC: O(N)
 : using stack elimination technique
+Steps:
+1. Put all candidates into stack , 0 -> n
+2. pop top two candidates from stack, A and B
+3. If A knows B, B can be potential celeb. so put B back to stack
+   else, put A to stack
+4. At the end there will be only one candidate in stack, who can be potential celeb
+5. At the end run a loop and verify if the stack candidate is celeb or not.
+
 */
 int celebrity1(vector<vector<int>> &M, int n)
 {
@@ -202,19 +210,19 @@ int celebrity1(vector<vector<int>> &M, int n)
 
         if (knows(A, B, M))
         {
-            //> B could be potentional celebrity
+            //|> B could be potentional celebrity
             st.push(B);
         }
         else
         {
-            //> else A would be potentional celebrity
+            //|> else A would be potentional celebrity
             st.push(A);
         }
     }
     int celebrity = st.top();
     st.pop();
 
-    //> finally verifying if st.top() is really a celebrity or not
+    //|> finally verifying if st.top() is really a celebrity or not
     for (int i = 0; i < n; i++)
     {
         if (celebrity != i && (knows(celebrity, i, M) || !knows(i, celebrity, M)))
@@ -226,7 +234,7 @@ int celebrity1(vector<vector<int>> &M, int n)
 }
 
 /*
-> TC: O(N), SC: O(1)
+|> TC: O(N), SC: O(1)
 : Using two pointer approach
 */
 int celebrity2(vector<vector<int>> &M, int n)
@@ -249,7 +257,7 @@ int celebrity2(vector<vector<int>> &M, int n)
 
     int celebrity = A;
 
-    //> finally verifying if st.top() is really a celebrity or not
+    //|> finally verifying if st.top() is really a celebrity or not
     for (int i = 0; i < n; i++)
     {
         if (celebrity != i && (knows(celebrity, i, M) || !knows(i, celebrity, M)))
@@ -262,76 +270,10 @@ int celebrity2(vector<vector<int>> &M, int n)
 
 //> ---------------------------------------------------------------------------------
 
-struct qObj
-{
-    int x, y, time;
-};
-
-vector<pair<int, int>> dir{{-1, 0}, {1, 0}, {0, 1}, {0, -1}};
-
-bool isValid(int i, int j, int rows, int cols)
-{
-    return i >= 0 && i < rows && j >= 0 && j < cols;
-}
-
-int orangesRotting(vector<vector<int>> &grid)
-{
-    queue<qObj> q;
-
-    int freshOrangesCnt = 0;
-    int rows = grid.size();
-    int cols = grid[0].size();
-
-    for (int i = 0; i < rows; i++)
-    {
-        for (int j = 0; j < cols; j++)
-        {
-            if (grid[i][j] == 2)
-            {
-                q.push({i, j, 0});
-            }
-            if (grid[i][j] == 1)
-            {
-                freshOrangesCnt++;
-            }
-        }
-    }
-
-    int MIN_TIME = 0;
-
-    while (!q.empty())
-    {
-        auto [x, y, time] = q.front();
-        MIN_TIME = time;
-        q.pop();
-
-        for (int i = 0; i < dir.size(); i++)
-        {
-            auto [adj_x, adj_y] = dir[i];
-            
-            adj_x += x;
-            adj_y += y;
-
-            if (isValid(adj_x, adj_y, rows, cols) && grid[adj_x][adj_y] == 1)
-            {
-                freshOrangesCnt = freshOrangesCnt - 1;
-                grid[adj_x][adj_y] = 2;
-                q.push({adj_x, adj_y, time + 1});
-            }
-        }
-    }
-
-    if (freshOrangesCnt > 0)
-    {
-        return -1;
-    }
-    return MIN_TIME;
-}
-
 void solve()
 {
     vector<vector<int>> grid{{2, 1, 1}, {1, 1, 0}, {0, 1, 1}};
-    cout << orangesRotting(grid) << endl;
+    cout << celebrity2(grid, 3) << endl;
 }
 
 //>-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------

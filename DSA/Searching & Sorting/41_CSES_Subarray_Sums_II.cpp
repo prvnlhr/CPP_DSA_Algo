@@ -146,9 +146,11 @@ void solve()
         cin >> ele;
         arr[i] = ele;
     }
+
     unordered_map<ll, int> mpp;
 
     ll preSum = 0;
+  
     mpp[preSum] = 1;
 
     ll res = 0;

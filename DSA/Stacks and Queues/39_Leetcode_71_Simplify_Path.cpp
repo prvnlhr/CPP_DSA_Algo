@@ -131,21 +131,38 @@ void factOfN(ll n)
 string simplifyPath(string path)
 {
 
-    //> LEETCODE : DISCUSSION
-    vector<string> st;
-    int n = path.size();
+    //|> LEETCODE : DISCUSSION
 
     /*
+
     [, a, ., b, .., .., c];
 
     "", . , .. , ...
+
+    INTTUTION :
+    We try to split input string on basis of `/`.
+    Now when splitting we can have different sub-strings
+    1. .
+    2. ..
+    3. alphabets
+    4. ""->(empty)
+
+    What we are doing it to split the string in basis of `/` and put only words or alphabets to
+    stack. At the end we form the output using stack elements.
+
     */
 
+    vector<string> st;
+    int n = path.size();
     stringstream ss(path);
     string curr;
+    //
+    //          curr split  delimeter
+    //   string-stream  |      |
+    //             |    |      |
     while (getline(ss, curr, '/'))
     {
-
+        debug(curr, st);
         if (!st.empty() && curr == "..")
         {
             st.pop_back();
@@ -155,6 +172,7 @@ string simplifyPath(string path)
             st.push_back(curr);
         }
     }
+    debug(st);
     string res = "";
     if (st.empty())
     {
@@ -170,6 +188,61 @@ string simplifyPath(string path)
 
     return res;
 }
+
+//|> Without using string stream
+string simplifyPath(string path)
+{
+
+    stack<string> st;
+    string res;
+
+    for (int i = 0; i < path.size(); ++i)
+    {
+        if (path[i] == '/')
+        {
+            continue;
+        }
+        string temp;
+        // iterate till we doesn't traverse the whole string and doesn't encounter the last /
+        while (i < path.size() && path[i] != '/')
+        {
+            // add path to temp string
+            temp += path[i];
+            ++i;
+        }
+        if (temp == ".")
+        {
+            continue;
+        }
+        // pop the top element from stack if exists
+        else if (temp == "..")
+        {
+            if (!st.empty())
+                st.pop();
+        }
+        else
+        {
+            // push the directory file name to stack
+            st.push(temp);
+        }
+    }
+
+    // adding all the stack elements to res
+    while (!st.empty())
+    {
+        res = "/" + st.top() + res;
+        st.pop();
+    }
+
+    // if no directory or file is present
+    if (res.size() == 0)
+    {
+        return "/";
+    }
+
+    return res;
+}
+
 void solve()
 {
     string s;

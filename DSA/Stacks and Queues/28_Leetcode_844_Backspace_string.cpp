@@ -164,6 +164,63 @@ bool backspaceCompare(string s, string t)
 
     return true ? s1 == s2 : false;
 }
+
+bool backspaceCompare(string s, string t)
+{
+    int sIndex = s.length() - 1;
+    int tIndex = t.length() - 1;
+
+    int skipSCount = 0, skipTCount = 0;
+
+    while (sIndex >= 0 || tIndex >= 0)
+    {
+        // Skip backspaces in string s
+        while (sIndex >= 0 && (s[sIndex] == '#' || skipSCount > 0))
+        {
+            if (s[sIndex] == '#')
+            {
+                skipSCount++;
+            }
+            else // we have a alphabet at s[sIndex] , so skip and decrease value of skipSCount
+            {
+                skipSCount--;
+            }
+            sIndex--;
+        }
+
+        // Skip backspaces in string t
+        while (tIndex >= 0 && (t[tIndex] == '#' || skipTCount > 0))
+        {
+            if (t[tIndex] == '#')
+            {
+                skipTCount++;
+            }
+            else // we have a alphabet at t[tIndex] , so skip and decrease value of skipTCount
+            {
+                skipTCount--;
+            }
+            tIndex--;
+        }
+
+        // Compare characters at valid indices
+        if (sIndex >= 0 && tIndex >= 0 && s[sIndex] != t[tIndex])
+        {
+            return false;
+        }
+
+        // If one string is exhausted, the other should also be exhausted
+        if ((sIndex >= 0) != (tIndex >= 0))
+        {
+            return false;
+        }
+
+        sIndex--;
+        tIndex--;
+    }
+
+    return true;
+}
+
 void solve()
 {
 

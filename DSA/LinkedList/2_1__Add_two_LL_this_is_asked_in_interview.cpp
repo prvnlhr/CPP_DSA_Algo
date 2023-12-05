@@ -167,6 +167,66 @@ ListNode *reverseLL(ListNode *head)
 //> O(N+M)
 //> O(N+M)
 
+ListNode *add2(ListNode *head1, ListNode *head2)
+{
+    ListNode *sumLL = NULL;
+    ListNode *tail = NULL;
+    int carry = 0;
+    ListNode *curr1 = head1;
+    ListNode *curr2 = head2;
+
+    while (curr1 && curr2)
+    {
+
+        debug(curr1->val, curr2->val, carry);
+        int sum = curr1->val + curr2->val + carry;
+        int nodeVal = sum % 10;
+        carry = sum / 10;
+        debug(nodeVal, carry);
+
+        ListNode *newNode = new ListNode(nodeVal);
+        if (!sumLL)
+        {
+            sumLL = newNode;
+            tail = newNode;
+        }
+        else
+        {
+            tail->next = newNode;
+            tail = newNode;
+        }
+        curr1 = curr1->next;
+        curr2 = curr2->next;
+    }
+    while (curr1)
+    {
+        int sum = curr1->val + carry;
+        int nodeVal = sum % 10;
+        carry = sum / 10;
+        ListNode *newNode = new ListNode(nodeVal);
+        tail->next = newNode;
+        tail = newNode;
+        curr1 = curr1->next;
+    }
+    while (curr2)
+    {
+        int sum = curr2->val + carry;
+        int nodeVal = sum % 10;
+        carry = sum / 10;
+        ListNode *newNode = new ListNode(nodeVal);
+        tail->next = newNode;
+        tail = newNode;
+        curr2 = curr2->next;
+    }
+
+    if (carry)
+    {
+        ListNode *newNode = new ListNode(carry);
+        tail->next = newNode;
+    }
+    return sumLL;
+}
+
 ListNode *add(ListNode *head1, ListNode *head2)
 {
     ListNode *sumLL = NULL;
@@ -179,6 +239,7 @@ ListNode *add(ListNode *head1, ListNode *head2)
     {
         int num1 = curr1->val;
         int num2 = curr2->val;
+        debug(num1, num2);
         int currSum = num1 + num2 + carry;
         int sum = currSum % 10;
         carry = currSum / 10;
@@ -232,6 +293,8 @@ ListNode *addTwoLL(ListNode *head1, ListNode *head2)
 {
     head1 = reverseLL(head1);
     head2 = reverseLL(head2);
+    printLL(head1);
+    printLL(head2);
     ListNode *sumLL = add(head1, head2);
     sumLL = reverseLL(sumLL);
     return sumLL;
@@ -241,13 +304,14 @@ void solve()
     // vector<int> arr1{5, 7, 5, -1};
     // vector<int> arr2{9, 5, 5, 6, -1};
 
-    // vector<int> arr1{4, 5, -1};
-    // vector<int> arr2{3, 4, 5, -1};
+    vector<int> arr1{4, 5, -1};
+    vector<int> arr2{3, 4, 5, -1};
 
-    vector<int> arr1{6, 3, -1};
-    vector<int> arr2{7, -1};
+    // vector<int> arr1{6, 3, -1};
+    // vector<int> arr2{7, -1};
     ListNode *head1 = buildLL(arr1);
     ListNode *head2 = buildLL(arr2);
+
     ListNode *sumLL = addTwoLL(head1, head2);
     printLL(sumLL);
 }

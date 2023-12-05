@@ -104,8 +104,8 @@ vector<int> bfs(int V, vector<int> adjList[])
     while (!q.empty())
     {
         int node = q.front();
+
         q.pop();
-        visited[node] = true;
         bfsPath.push_back(node);
 
         for (auto adjNode : adjList[node])
@@ -132,6 +132,7 @@ void solve()
         int u, v;
         cin >> u >> v;
         adjList[u].push_back(v);
+        adjList[v].push_back(u);
     }
     auto ans = bfs(V, adjList);
     debug(ans);

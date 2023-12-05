@@ -328,33 +328,35 @@ Ex_2: 1 2 3 4 5 6 7 -1 -1 8 9 -1 -1 -1 -1 -1 -1 -1 -1
 
 */
 
-void k_paths(TreeNode<int> *root, int k, unordered_map<long, long> &mpp, long sum, int &res)
+void k_paths(TreeNode<int> *root, int targetSum, unordered_map<long, long> &mpp, long sum, int &res)
 {
 
     if (root)
     {
-        if (sum + root->val == k)
+        if (sum + root->val == targetSum)
         {
             res++;
         }
 
-        res += mpp[sum + root->val - k];
+        res += mpp[sum + root->val - targetSum];
+
         mpp[sum + root->val]++;
-        k_paths(root->left, k, mpp, sum + root->val, res);
-        k_paths(root->right, k, mpp, sum + root->val, res);
+
+        k_paths(root->left, targetSum, mpp, sum + root->val, res);
+        k_paths(root->right, targetSum, mpp, sum + root->val, res);
 
         //> Backtrack
         mpp[sum + root->val]--;
     }
 }
 
-int pathSum(TreeNode<int> *root, int k)
+int pathSum(TreeNode<int> *root, int targetSum)
 {
     int res = 0;
 
     unordered_map<long, long> p;
 
-    k_paths(root, k, p, 0, res);
+    k_paths(root, targetSum, p, 0, res);
 
     return res;
 }

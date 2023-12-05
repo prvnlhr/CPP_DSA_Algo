@@ -129,6 +129,26 @@ void factOfN(ll n)
 
 //>----------------------------ＳＯＬＶＥ-----------------------------------------------------------------------------------------------------------------------------------------------
 
+/*
+Consider heights as buildings
+for a particular bar we will try to find the index towards its left and right
+let say these indexes are leftSmallest and rightSmallest.
+Now What does these indexes specify ?
+These are the indexes of building, when we found the first dip.
+Let say a bar is height of 5.
+What areas can we make using this bar, 5*1.
+But we can also extend this area towards left and right.
+But what is the condition of extending this area to adjacent bar.
+The adjacent bar should have height greater or equal.
+So we keep on extending the bar towards both direction till there is a bar which has 
+height less then curr bar i.e a dip in height.
+So now our area will be (height of curr bar * width till we extended).
+as our width of every bar is 1, we can find the width till we extended using indexes.
+We repeat this process by maximising the area.
+
+
+*/
+
 int largestRectangleArea(vector<int> &heights)
 {
     int n = heights.size();
@@ -150,12 +170,13 @@ int largestRectangleArea(vector<int> &heights)
         }
         else
         {
-            leftSmallest[i] = st.top() + 1;
+            leftSmallest[i] = st.top() + 1; //|> let say we get leftSmallest at  index = 2,
+                                            //|> then our ans lies between  2+1 to -> curr index `i` i.e,  2+1 <--> curr `i`., so +1
         }
         st.push(i);
     }
 
-    //> clearing stack
+    //|> clearing stack
     while (!st.empty())
     {
         st.pop();
@@ -174,7 +195,8 @@ int largestRectangleArea(vector<int> &heights)
         }
         else
         {
-            rightSmallest[i] = st.top() - 1;
+            rightSmallest[i] = st.top() - 1; //|> let say we get rightSmallest at  index = 5,
+                                             //|> then our ans lies between  curr `i` to -> rightIndex-1 i.e,  i <--> 5-1(i.e we are excluding 5)., so -1
         }
         st.push(i);
     }

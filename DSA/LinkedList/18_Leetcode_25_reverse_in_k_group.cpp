@@ -131,12 +131,12 @@ void factOfN(ll n)
 class ListNode
 {
 public:
-    int data;
+    int val;
     ListNode *next;
 
-    ListNode(int data)
+    ListNode(int val)
     {
-        this->data = data;
+        this->val = val;
         this->next = nullptr;
     }
 };
@@ -175,10 +175,10 @@ void printLL(ListNode *head)
     ListNode *curr = head;
     while (curr)
     {
-        cout << curr->data << " ";
+        cerr << curr->val << " ";
         curr = curr->next;
     }
-    cout << endl;
+    cerr << endl;
 }
 
 ListNode *reverseLL(ListNode *head)
@@ -198,10 +198,52 @@ ListNode *reverseLL(ListNode *head)
     return prev;
 }
 
-//_ SELF SOLVED AFTER WHOLE DAY OF BRAINSTROMING
-//> TIME COMPLEXITY: 2N --> N
+ListNode *reverseKGroup2(ListNode *head, int k)
+{
+    printLL(head);
+
+    int cnt = 1;
+    ListNode *curr = head;
+    ListNode *grpStart = curr;
+    ListNode *nextt = nullptr;
+    ListNode *finalHead = nullptr;
+    ListNode *grpEnd = new ListNode(0);
+
+    while (curr)
+    {
+        if (cnt == k)
+        {
+
+            nextt = curr->next;
+            curr->next = nullptr;
+
+            ListNode *revHead = reverseLL(grpStart);
+
+            grpStart->next = nextt;
+            grpEnd->next = revHead;
+
+            grpEnd = grpStart;
+            grpStart = nextt;
+            curr = nextt;
+            cnt = 1;
+
+            if (!finalHead)
+            {
+                finalHead = revHead;
+            }
+        }
+        else
+        {
+            cnt++;
+            curr = curr->next;
+        }
+    }
+    return finalHead;
+}
+
 ListNode *reverseKGroup(ListNode *head, int k)
 {
+    printLL(head);
     ListNode *ptr = head;            // main ptr for interating LL
     ListNode *start = head;          // start head of every group
     ListNode *end = new ListNode(0); // for reversing connections
@@ -223,7 +265,7 @@ ListNode *reverseKGroup(ListNode *head, int k)
         if (cnt == k)
         {
             ListNode *nextGrphHead = ptr->next;
-
+            // debug(ptr->val);
             ptr->next = nullptr;
 
             //> Reversing k nodes or group staring from grphHead
@@ -265,7 +307,7 @@ void solve()
 
     auto head = buildLL(inputList);
     // printLL(head);
-    ListNode *newHead = reverseKGroup(head, k);
+    ListNode *newHead = reverseKGroup2(head, k);
     cout << endl;
 
     printLL(newHead);

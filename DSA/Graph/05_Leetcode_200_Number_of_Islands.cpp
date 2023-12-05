@@ -92,52 +92,45 @@ typedef priority_queue<int, vector<int>, greater<int>> pqmin;
 //--------------------------------------------------------------------------------------------------------------------------------
 
 //>----------------------------ＳＯＬＶＥ-----------------------------------------------------------------------------------------------------------------------------------------------
-// vector<int> dirRow{-1, 1, 0, 0, -1, 1, -1, 1};
-// vector<int> dirCol{0, 0, -1, 1, -1, 1, 1, -1};
-
-bool isSafe(int x, int y, vector<vector<char>> &adjmatrix, vector<vector<bool>> &visited)
+bool isSafe(int x, int y, const vector<vector<char>> &adjmatrix, const vector<vector<bool>> &visited)
 {
     return x >= 0 && y >= 0 && x < adjmatrix.size() && y < adjmatrix[0].size() && !visited[x][y] && adjmatrix[x][y] == '1';
 }
+
 void dfs(vector<vector<char>> &adjmatrix, int i, int j, int m, int n, vector<vector<bool>> &visited)
 {
+    // Directions: up, down, left, right
+    int dx[] = {-1, 1, 0, 0};
+    int dy[] = {0, 0, -1, 1};
 
-    //> DFS in all four adjacent dirs
     visited[i][j] = true;
-    if (j - 1 >= 0 && adjmatrix[i][j - 1] == '1' && visited[i][j - 1] == false)
+
+    for (int k = 0; k < 4; ++k)
     {
-        dfs(adjmatrix, i, j - 1, m, n, visited);
-    }
-    if (i - 1 >= 0 && adjmatrix[i - 1][j] == '1' && visited[i - 1][j] == false)
-    {
-        dfs(adjmatrix, i - 1, j, m, n, visited);
-    }
-    if (j + 1 < n && adjmatrix[i][j + 1] == '1' && visited[i][j + 1] == false)
-    {
-        dfs(adjmatrix, i, j + 1, m, n, visited);
-    }
-    if (i + 1 < m && adjmatrix[i + 1][j] == '1' && visited[i + 1][j] == false)
-    {
-        dfs(adjmatrix, i + 1, j, m, n, visited);
+        int ni = i + dx[k];
+        int nj = j + dy[k];
+        if (isSafe(ni, nj, adjmatrix, visited))
+        {
+            dfs(adjmatrix, ni, nj, m, n, visited);
+        }
     }
 }
 
 int numIslands(vector<vector<char>> &grid)
 {
-
     int rows = grid.size();
     int cols = grid[0].size();
-    vector<vector<bool>> visited(grid.size(), vector<bool>(grid[0].size(), false));
+    vector<vector<bool>> visited(rows, vector<bool>(cols, false));
     int numIsland = 0;
 
-    for (int i = 0; i < rows; i++)
+    for (int i = 0; i < rows; ++i)
     {
-        for (int j = 0; j < cols; j++)
+        for (int j = 0; j < cols; ++j)
         {
             if (!visited[i][j] && grid[i][j] == '1')
             {
                 dfs(grid, i, j, rows, cols, visited);
-                numIsland++;
+                ++numIsland;
             }
         }
     }

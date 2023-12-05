@@ -136,7 +136,6 @@ void cyclicRotateArrayByOne(vector<int> &arr)
     int i = 0;
     while (i < n)
     {
-
         swap(arr[i], arr[end]);
         i++;
     }

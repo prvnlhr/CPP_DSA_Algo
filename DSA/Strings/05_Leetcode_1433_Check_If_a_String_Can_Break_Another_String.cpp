@@ -90,7 +90,7 @@ typedef priority_queue<int, vector<int>, greater<int>> pqmin;
 
 //>----------------------------ＳＯＬＶＥ-----------------------------------------------------------------------------------------------------------------------------------------------
 
-//> __O(nlogn)
+//|> __O(nlogn)
 bool canbreak(string &a, string &b)
 {
     int n = a.size();
@@ -115,15 +115,18 @@ bool checkIfCanBreak(string s1, string s2)
     sort(s2.begin(), s2.end());
 
     if (canbreak(s1, s2))
+    {
         return true;
+    }
     return false;
 }
+
 class Solution
 {
 public:
     /*
        - n: length of s1 + length of s2
-       > Time Complexity: O(n)
+       |> Time Complexity: O(n)
        - Space Complexity: O(1)
     */
     bool canBreak(const int v1[], const int v2[])
@@ -152,16 +155,16 @@ public:
         {
             letters2[c - 'a']++;
         }
-        for (auto x : letters1)
-        {
-            cout << x << " ";
-        }
-        cout << endl;
-        for (auto x : letters2)
-        {
-            cout << x << " ";
-        }
-        cout << endl;
+        // for (auto x : letters1)
+        // {
+        //     cout << x << " ";
+        // }
+        // cout << endl;
+        // for (auto x : letters2)
+        // {
+        //     cout << x << " ";
+        // }
+        // cout << endl;
 
         return canBreak(letters1, letters2) || canBreak(letters2, letters1);
     }

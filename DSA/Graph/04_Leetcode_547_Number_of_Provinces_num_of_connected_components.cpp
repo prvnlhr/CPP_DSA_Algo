@@ -114,7 +114,6 @@ int findCircleNum(vector<vector<int>> &isConnected)
 
     for (int i = 0; i < n; i++)
     {
-
         if (!visited[i])
         {
             numProvinces++;

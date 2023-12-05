@@ -275,6 +275,7 @@ Ex_1: 20 8 22 4 12 -1 25 -1 -1 10 14 -1 -1 -1 -1 -1 -1
 OP: 20 8 4 10 14 25 22
 
 Ex_2: 1 2 3 4 5 6 7 -1 -1 8 9 -1 -1 -1 -1 -1 -1 -1 -1
+
         1
       /   \
      2     3
@@ -292,12 +293,33 @@ Ex_2: 1 2 3 4 5 6 7 -1 -1 8 9 -1 -1 -1 -1 -1 -1 -1 -1
 
 
 */
+void printLeftView(TreeNode<int> *root, int &lvl, int prntLvl)
+{
+
+    if (!root)
+    {
+        return;
+    }
+
+    if (lvl == prntLvl)
+    {
+        cout << root->val << " ";
+        lvl++;
+    }
+
+    printLeftView(root->left, lvl, prntLvl + 1);
+    printLeftView(root->right, lvl, prntLvl + 1);
+}
+
 void helper(TreeNode<int> *root, vector<int> &res, int level)
 {
     if (!root)
     {
         return;
     }
+
+    debug(res.size(), level);
+
     if (res.size() == level)
     {
         res.push_back(root->val);
@@ -324,8 +346,12 @@ void solve()
     }
     auto root = buildTree(input);
     // printTree(root);
-    vector<int> ans = leftSideView(root);
-    debug(ans);
+
+    int lvl = 0;
+    int prntLvl = 0;
+    printLeftView(root, lvl, prntLvl);
+    // vector<int> ans = leftSideView(root);
+    // debug(ans);
 }
 
 //>-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
