@@ -1,0 +1,36 @@
+
+- Array
+- String
+- Linked List
+- Searching Algorithms
+- Divide and Conquer
+- Stack
+- Queue
+- Map
+- Tree - Binary Tree, BST
+- Graph
+- Greedy 
+- Recursion
+- Backtracking
+- Dynamic Programming
+
+- Two Pointers
+- Island (Matrix traversal)
+- Fast & Slow Pointers
+- Sliding window
+- Merge Intervals
+- Cyclic sort
+- In-place reversal of a Linked List
+- Tree BFS
+- Tree DFS
+- Two Heaps
+- Subsets
+- Modified Binary Search
+- Top 'K' Elements
+- Bitwise XOR
+- Backtracking
+- 0/1 knapsack (DP)
+- Topological Sort (Graph)
+- K-way Merge
+- Monotonic stack
+- Multi-threaded

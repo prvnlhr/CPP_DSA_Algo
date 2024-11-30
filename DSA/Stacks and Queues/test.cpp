@@ -10,15 +10,13 @@
 using namespace std;
 using namespace chrono;
 
-//__________________________________________________________________________________________________________________________________________________________________________________________________
-
 #define MOD 1000000007
 #define MOD1 998244353
 #define PI 3.141592653589793238462
 
 typedef long long ll;
 
-//>---DEBUG_TEMPLATE_START---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+// |> --- DEBUG_TEMPLATE_START ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 template <class T1, class T2>
 ostream &operator<<(ostream &os, const pair<T1, T2> &p)
@@ -51,7 +49,7 @@ ostream &operator<<(ostream &os, const T &c)
     _NTH_ARG(__VA_ARGS__, _FE_10, _FE_9, _FE_8, _FE_7, _FE_6, _FE_5, _FE_4, _FE_3, _FE_2, _FE_1) \
     (MACRO, __VA_ARGS__)
 
-//__Change output format here
+//-- Change output format here ______________________________________________________________________________________________________________________________________________________
 #define out(x) #x " = " << x << "; "
 
 #ifndef ONLINE_JUDGE
@@ -60,7 +58,8 @@ ostream &operator<<(ostream &os, const T &c)
 #else
 #define debug(...)
 #endif
-//>---DEBUG_TEMPLATE_END-----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+//|> --- DEBUG_TEMPLATE_END -----------------------------------------------------------------------------------------------------------------------------------------------------------
 
 // #define FOR(i, start, end) for (int i = start; i < end; i++)
 #define FOR(i, begin, end) for (__typeof(end) i = (begin) - ((begin) > (end)); i != (end) - ((begin) > (end)); i += 1 - 2 * ((begin) > (end)))
@@ -89,58 +88,92 @@ typedef map<int, int> mpint;
 typedef pair<int, int> pi;
 typedef priority_queue<int> pqmax;
 typedef priority_queue<int, vector<int>, greater<int>> pqmin;
-//--------------------------------------------------------------------------------------------------------------------------------
 
-//>----------------------------ＳＯＬＶＥ-----------------------------------------------------------------------------------------------------------------------------------------------
-void transpose(vector<vector<int>> &mat)
+//|> --- GCD -------------------------------------------------------------------
+ll gcd(ll a, ll b)
 {
-    int rows = mat.size();
-    int cols = mat[0].size();
-
-    for (int i = 0; i < rows; i++)
+    if (b > a)
     {
-        for (int j = i; j < cols; j++)
-        {
-            swap(mat[i][j], mat[j][i]);
-        }
+        return gcd(b, a);
+    }
+    if (b == 0)
+    {
+        return a;
+    }
+    return gcd(b, a % b);
+}
+
+//|> --- EXPONENTIAL ----------------------------------------------------------
+ll expo(ll a, ll b, ll mod)
+{
+    ll res = 1;
+    while (b > 0)
+    {
+        if (b & 1)
+            res = (res * a) % mod;
+        a = (a * a) % mod;
+        b = b >> 1;
+    }
+    return res;
+}
+
+//|> --- FACTORIAL ------------------------------------------------------------
+vector<ll> fact;
+void factOfN(ll n)
+{
+    ll prod = 1;
+    fact.resize(n + 1);
+    for (int f = 1; f <= n; f++)
+    {
+
+        fact[f] = prod * f;
+        prod = prod * f;
     }
 }
 
-void swapCols(vector<vector<int>> &mat)
+//|> --- SOLVE -----------------------------------------------------------------------------------------------------------------------------------------------
+
+bool compare(const pair<int, int> &a, pair<int, int> &b)
 {
-    int rows = mat.size();
-    int cols = mat[0].size();
-    for (int i = 0; i < cols; i++)
-    {
-        int s = 0;
-        int e = cols - 1;
-        while (s < e)
-        {
-            swap(mat[i][s], mat[i][e]);
-            s++;
-            e--;
-        }
-    }
+    return b.second < a.second;
 }
-void rotate(vector<vector<int>> &mat)
+
+void clamp(int minWidth, int maxWidth, float minFontSize, float maxFontSize)
 {
+    float n = maxFontSize - minFontSize;
+    float m = (maxWidth / 16.0f) - (minWidth / 16.0f);
+    float slope = n / m;
 
-    transpose(mat);
-    swapCols(mat);
+    cout << "Slope: " << slope << endl;
 
-    debug(mat);
+    float x = minWidth / 16.0f;
+    float yInter = (-x * slope + minFontSize);
+
+    cout << fixed << setprecision(2);
+    cout << minFontSize << "rem , " << yInter << "rem + " << slope * 100 << "vw, " << maxFontSize << "rem" << endl;
 }
 void solve()
 {
-    vector<vector<int>> mat{
-        {1, 2, 3},
-        {4, 5, 6},
-        {7, 8, 9}};
 
-    rotate(mat);
+    int minWidth, maxWidth;
+    float minFontSize, maxFontSize;
+
+    cout << "Enter minimum width: ";
+    cin >> minWidth;
+
+    cout << "Enter maximum width: ";
+    cin >> maxWidth;
+
+    cout << "Enter minimum font size: ";
+    cin >> minFontSize;
+
+    cout << "Enter maximum font size: ";
+    cin >> maxFontSize;
+
+    clamp(minWidth, maxWidth, minFontSize, maxFontSize);
 }
 
-//>-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+//|> --- MAIN -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 int main()
 {
     ios::sync_with_stdio(0);

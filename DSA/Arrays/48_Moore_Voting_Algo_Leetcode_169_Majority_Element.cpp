@@ -1,16 +1,14 @@
 
 /*
-
- ▄▀█ █░█ █▀▄▀█ █▄░█ █▀█ █▀▄▀█
- █▀█ █▄█ █░▀░█ █░▀█ █▄█ █░▀░█
-
+|>------------------------------------------------------------------------------------------------------------------------------------------------------------
+|>                               █▀ ▀█▀ █▀▀ █░░ █░░ █░█ █▀█
+|>                               ▄█ ░█░ ██▄ █▄▄ █▄▄ █▀█ █▀▄
+|>------------------------------------------------------------------------------------------------------------------------------------------------------------
 */
 
 #include <bits/stdc++.h>
 using namespace std;
 using namespace chrono;
-
-//__________________________________________________________________________________________________________________________________________________________________________________________________
 
 #define MOD 1000000007
 #define MOD1 998244353
@@ -18,7 +16,7 @@ using namespace chrono;
 
 typedef long long ll;
 
-//>---DEBUG_TEMPLATE_START---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+// |> ---DEBUG_TEMPLATE_START---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 template <class T1, class T2>
 ostream &operator<<(ostream &os, const pair<T1, T2> &p)
@@ -51,7 +49,7 @@ ostream &operator<<(ostream &os, const T &c)
     _NTH_ARG(__VA_ARGS__, _FE_10, _FE_9, _FE_8, _FE_7, _FE_6, _FE_5, _FE_4, _FE_3, _FE_2, _FE_1) \
     (MACRO, __VA_ARGS__)
 
-//__Change output format here
+//__Change output format here______________________________________________________________________________________________________________________________________________________
 #define out(x) #x " = " << x << "; "
 
 #ifndef ONLINE_JUDGE
@@ -60,7 +58,8 @@ ostream &operator<<(ostream &os, const T &c)
 #else
 #define debug(...)
 #endif
-//>---DEBUG_TEMPLATE_END-----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+//|> ---DEBUG_TEMPLATE_END-----------------------------------------------------------------------------------------------------------------------------------------------------------
 
 // #define FOR(i, start, end) for (int i = start; i < end; i++)
 #define FOR(i, begin, end) for (__typeof(end) i = (begin) - ((begin) > (end)); i != (end) - ((begin) > (end)); i += 1 - 2 * ((begin) > (end)))
@@ -89,58 +88,172 @@ typedef map<int, int> mpint;
 typedef pair<int, int> pi;
 typedef priority_queue<int> pqmax;
 typedef priority_queue<int, vector<int>, greater<int>> pqmin;
-//--------------------------------------------------------------------------------------------------------------------------------
 
-//>----------------------------ＳＯＬＶＥ-----------------------------------------------------------------------------------------------------------------------------------------------
-void transpose(vector<vector<int>> &mat)
+//|> ---ＳＯＬＶＥ-----------------------------------------------------------------------------------------------------------------------------------------------
+
+/*
+
+ n = 1
+ n = 5 * 10^4
+
+-10^9 <-> 10^9
+
+- find the element which appears more then n/2
+    n = 4 -> n/2 => 2 , so 2 or more then 2
+    n = 5 -> n/2 => 2, so 2 or more then 2
+    n = 7 -> n/2 => 3, so 3 or more then 3
+
+
+n = 7 , n/2 = 3
+
+5 5 7 8 5 5 6
+
+4 -> 1
+5 -> 3
+7 -> 1
+8 -> 1
+6 -> 2
+
+2 2 1 1 1 2 2
+
+maj = 0
+count = 0;
+
+|
+2   2   1   1   1   2   2
+count = 1
+maj = 2
+
+    |
+2   2   1   1   1   2   2
+count = 2
+maj = 2
+
+        |
+2   2   1   1   1   2   2
+count = 1
+maj = 2
+
+            |
+2   2   1   1   1   2   2
+count = 1
+maj = 2
+
+                |
+2   2   1   1   1   2   2
+count = 0
+maj = 2
+
+                        |
+2   2   1   1   1   2   2
+count = 1
+maj = 2
+count = 2
+
+
+Ex 2:
+
+3   2   3   2   2   2
+
+count=0
+maj=0
+
+|
+3   2   3   2   2   2
+count=1
+maj=3
+
+    |
+3   2   3   2   2   2
+count=0
+maj=3
+
+        |
+3   2   3   2   2   2
+count=1
+maj=3
+
+            |
+3   2   3   2   2   2
+count=0
+maj=3
+
+                |
+3   2   3   2   2   2
+count=1
+maj=2
+
+                    |
+3   2   3   2   2   2
+count=2
+maj=2
+
+
+
+*/
+
+int majorityElement(vector<int> &nums)
 {
-    int rows = mat.size();
-    int cols = mat[0].size();
+    unordered_map<int, int> mpp;
 
-    for (int i = 0; i < rows; i++)
+    for (auto ele : nums)
     {
-        for (int j = i; j < cols; j++)
+        mpp[ele]++;
+    }
+
+    int half = nums.size() / 2;
+    for (auto ele : mpp)
+    {
+        if (ele.second > half)
         {
-            swap(mat[i][j], mat[j][i]);
+            return ele.first;
         }
     }
+    return 0;
 }
 
-void swapCols(vector<vector<int>> &mat)
+int majorityMooreAlgo(vector<int> &nums)
 {
-    int rows = mat.size();
-    int cols = mat[0].size();
-    for (int i = 0; i < cols; i++)
+    int count = 0;
+    int maj = 0;
+
+    for (int ele : nums)
     {
-        int s = 0;
-        int e = cols - 1;
-        while (s < e)
+        if (count == 0)
         {
-            swap(mat[i][s], mat[i][e]);
-            s++;
-            e--;
+            count = 1;
+            maj = ele;
+        }
+        else
+        {
+            if (maj == ele)
+            {
+                count++;
+            }
+            else
+            {
+                count--;
+            }
         }
     }
+    return maj;
 }
-void rotate(vector<vector<int>> &mat)
-{
 
-    transpose(mat);
-    swapCols(mat);
-
-    debug(mat);
-}
 void solve()
 {
-    vector<vector<int>> mat{
-        {1, 2, 3},
-        {4, 5, 6},
-        {7, 8, 9}};
-
-    rotate(mat);
+    int ele;
+    vector<int> nums;
+    while (cin >> ele)
+    {
+        nums.push_back(ele);
+    }
+    int res = majorityElement(nums);
+    int res1 = majorityMooreAlgo(nums);
+    cout << res << '\n';
+    cout << res1 << '\n';
 }
 
-//>-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+//|> ---MAIN-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 int main()
 {
     ios::sync_with_stdio(0);

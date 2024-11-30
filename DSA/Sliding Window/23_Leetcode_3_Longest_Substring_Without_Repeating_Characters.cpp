@@ -107,7 +107,7 @@ int lengthOfLongestSubstring(string s)
         char curr = s[winEnd];
 
         if (mpp.find(curr) != mpp.end() && mpp[curr] >= winStart) //>  here the condition mpp[curr] >= winStart states that the
-        {                                                         //> to reapeated char index+1;
+        {                                                         //> to repeated char index+1;
             winStart = mpp[curr] + 1;
         }
 

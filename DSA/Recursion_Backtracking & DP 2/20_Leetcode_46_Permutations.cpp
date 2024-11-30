@@ -163,12 +163,12 @@ permute([1, 2, 3])              pos=0
 
 */
 //: TC O(N * N!)
-void helper(vector<int> &nums, vector<vector<int>> &res, int pos)
+void helper(vector<int> &nums, set<vector<int>> &res, int pos)
 {
-
     if (pos == nums.size() - 1)
     {
-        res.push_back(nums);
+        res.insert(nums);
+        // res.push_back(nums);
         return;
     }
     for (int i = pos; i < nums.size(); i++)
@@ -179,9 +179,10 @@ void helper(vector<int> &nums, vector<vector<int>> &res, int pos)
     }
 }
 
-vector<vector<int>> permute(vector<int> &nums)
+set<vector<int>> permute(vector<int> &nums)
 {
-    vector<vector<int>> res;
+    // vector<vector<int>> res;
+    set<vector<int>> res;
     helper(nums, res, 0);
     return res;
 }
@@ -195,7 +196,7 @@ void solve()
         nums.push_back(ele);
     }
     auto res = permute(nums);
-    debug(res);
+    debug(res.size());
 }
 
 //|> ---MAIN-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------

@@ -151,6 +151,7 @@ void printTree(TreeNode<int> *root)
     {
         return;
     }
+
     queue<TreeNode<int> *> q;
     q.push(root);
 
@@ -211,15 +212,17 @@ vector<int> inputList{1 ,2 3, 4, 5, 6, 7, -1, -1, 8, 9, -1, -1, -1, -1, 12 ,-1, 
 
 
 
+
+3 9 20 -1 -1 15 7 -1 -1 -1 -1
+
 */
 
 TreeNode<int> *buildTree(vector<int> inputList)
 {
-
     int currIndex = 0;
-    int n = inputList.size();
 
-    if (n == 0 || inputList[0] == -1)
+    int n = inputList.size();
+    if (n <= 0 || inputList[0] == -1)
     {
         return nullptr;
     }
@@ -238,6 +241,7 @@ TreeNode<int> *buildTree(vector<int> inputList)
 
         int leftChild = inputList[currIndex];
         currIndex++;
+
         if (leftChild != -1)
         {
             TreeNode<int> *leftNode = new TreeNode(leftChild);
@@ -254,103 +258,34 @@ TreeNode<int> *buildTree(vector<int> inputList)
             q.push(rightNode);
         }
     }
-
     return root;
 }
 
-/*
-BST:
-           4
-         /   \
-        2     6
-      /  \   /  \
-     1    3 6    7
-
-4 2 6 1 3 5 7 -1 -1 -1 -1 -1 -1 -1 -1
-
-OP -> 6
-
-
-
-Ex: 6 5 7 4 5 7 7 -1 -1 -1 -1 -1 -1 -1 -1
-                         6
-                      /    \
-                     5      7
-                    / \    / \
-                   4   5  7   7
-
-
-OP -> 7
-
-*/
-
-/*
-- Given a Binary Search Tree (BST) with duplicates, find the node (the most frequently occurred element)
-- in the given BST. If the BST contains two or more such nodes, print any of them.
-
-
--> 10 5 12 5 5 12 16 -1 -1 -1 -1 -1 -1 -1 -1
-=> OP : 5
-
-*/
-
-int pre = INT_MIN;
-int maxFreq = 0;
-int currFreq = 0;
-vector<int> res;
-
-/*
-- visualise the tree in sorted array form
-    10 5 12 5 5 12 16 -1 -1 -1 -1 -1 -1 -1 -1
-->  5 5 5 6 10 12 12 16
-
-> now maintain two pointer, root and pre,
-> if root->val == pre, then currFreq++
-> if not equal means, we have got a new element so, currFreq = 1,
-> but store the previously store frequency(if any) to maxFreq and also put the element to  res
-> now , if we got another element with more freq, the clear the res vector and put that element
-* if we try to visualise the tree in form of sorted array the it becomes easy
-*/
-
-void inorder(TreeNode<int> *root)
+int res = INT_MAX;
+int minDepth(TreeNode<int> *root)
 {
     if (!root)
     {
-        return;
+        return 0;
+    }
+    if (!root->left && !root->right)
+    {
+        return 1;
+    }
+    int a = INT_MAX;
+    int b = INT_MAX;
+    if (root->left)
+    {
+        a = minDepth(root->left);
+    }
+    if (root->right)
+    {
+        b = minDepth(root->right);
     }
 
-    inorder(root->left);
-
-    //> if prev element is same as root , increase currFreq++
-    if (pre == root->val)
-    {
-        currFreq++;
-    }
-    else
-    {
-        currFreq = 1;
-    }
-
-    if (currFreq > maxFreq)
-    {
-        res.clear();
-        res.push_back(root->val);
-        maxFreq = currFreq;
-    }
-    else if (currFreq == maxFreq)
-    {
-        res.push_back(root->val);
-    }
-    pre = root->val;
-
-    inorder(root->right);
+    return 1 + min(a, b);
 }
 
-vector<int> findMode(TreeNode<int> *root)
-{
-    inorder(root);
-    return res;
-}
 void solve()
 {
     int ele;
@@ -359,8 +294,11 @@ void solve()
     {
         input.push_back(ele);
     }
-    TreeNode<int> *root = buildTree(input);
-    auto ans = findMode(root);
+
+    debug(input);
+    auto root = buildTree(input);
+    int res = minDepth(root);
+    cout << res << '\n';
 }
 
 //>-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------

@@ -1,7 +1,9 @@
 
 /*
- ▄▀█ █░█ █▀▄▀█ █▄░█ █▀█ █▀▄▀█
- █▀█ █▄█ █░▀░█ █░▀█ █▄█ █░▀░█
+|>------------------------------------------------------------------------------------------------------------------------------------------------------------
+|>                               █▀ ▀█▀ █▀▀ █░░ █░░ █░█ █▀█
+|>                               ▄█ ░█░ ██▄ █▄▄ █▄▄ █▀█ █▀▄
+|>------------------------------------------------------------------------------------------------------------------------------------------------------------
 */
 
 #include <bits/stdc++.h>
@@ -87,89 +89,128 @@ typedef pair<int, int> pi;
 typedef priority_queue<int> pqmax;
 typedef priority_queue<int, vector<int>, greater<int>> pqmin;
 
-//|> ---GCD -------------------------------------------------------------------
-ll gcd(ll a, ll b)
-{
-    if (b > a)
-    {
-        return gcd(b, a);
-    }
-    if (b == 0)
-    {
-        return a;
-    }
-    return gcd(b, a % b);
-}
+//|> ---ＳＯＬＶＥ-----------------------------------------------------------------------------------------------------------------------------------------------
 
-//|> ---EXPONENTIAL ----------------------------------------------------------
-ll expo(ll a, ll b, ll mod)
+/*
+
+    flower    flow    flight
+    LCP(LCP(flower,flow), flight))
+
+    flow
+    flower
+    flight
+
+
+
+
+
+*/
+
+string LCPFinder(string &s1, string &s2)
 {
-    ll res = 1;
-    while (b > 0)
+    int i = 0;
+    int j = 0;
+    string res = "";
+    while (i < s1.size() && j < s2.size() && s1[i] == s2[j])
     {
-        if (b & 1)
-            res = (res * a) % mod;
-        a = (a * a) % mod;
-        b = b >> 1;
+        res += s1[i];
+        i++;
+        j++;
     }
     return res;
 }
 
-//|> ---FACTORIAL ------------------------------------------------------------
-vector<ll> fact;
-void factOfN(ll n)
+string longestCommonPrefix(vector<string> &strs)
 {
-    ll prod = 1;
-    fact.resize(n + 1);
-    for (int f = 1; f <= n; f++)
-    {
 
-        fact[f] = prod * f;
-        prod = prod * f;
+    string pref = strs[0];
+    for (int i = 1; i < strs.size(); i++)
+    {
+        pref = LCPFinder(pref, strs[i]);
     }
+    return pref;
 }
 
-//|> ---ＳＯＬＶＥ-----------------------------------------------------------------------------------------------------------------------------------------------
+// Method 2 : sorting and compare
+/*
+
+    If the array is sorted alphabetically then you can assume that the first element
+    of the array and the last element of the array will have most different prefixes
+    of all comparisons that could be made between strings in the array.
+    If this is true, you only have to compare these two strings.
+
+    flight
+    flow
+    flower
+
+    - When we sort the input array we will get the strings in lexicographicall order of their characters
+
+    - When we observe closely this sorted strings, we find that first element
+      of the array and the last element of the array will have most different prefixes
+      of all comparisons that could be made between strings in the array
+
+    - If this is true, we only have to compare these two strings(first and last).
+
+
+
+
+*/
+
+/*
+
+: TC :  O(N ∗ M ∗ Log(M))
+
+ arrLen = M
+ string of maxLen = N
+
+ so sorting arr of length of size  M  and also comparisions of each string character
+ which would eventually be equal to maxLen string.
+ So overall time complexity of sorting would be O(N*M*logM)
+
+*/
+
+string LCPOptimize(vector<string> &strs)
+{
+    sort(strs.begin(), strs.end()); // sorted based on lexicographicall order of charactes, not size of strings
+
+    string first = strs[0];
+    string last = strs[strs.size() - 1];
+    string res = "";
+    for (int i = 0; i < min(first.size(), last.size()); i++)
+    {
+        if (first[i] != last[i])
+        {
+            return res;
+        }
+        else
+        {
+            res += first[i];
+        }
+    }
+    return res;
+}
 void solve()
 {
-
-    int a;
-    cin >> a;
-    cout << "Input  -> " << a << endl;
-    cout << "Output -> " << a << endl;
-    cout << "Logging check : OK " << endl;
-    debug(a, "Error checking OK");
-    /*
-
-    -> This is test comment
-    => This is test comment
-    >  This is test
-    |> This is test
-
-    #  This is test comment
-
-    *  This is test comment
-    ** This is test comment
-
-    -  This is test comment
-    _  This is test comment
-
-    !  Warning
-    :  This is test comment
-       TODO: This is test comment
-    */
+    vector<string> arr;
+    string st;
+    while (cin >> st)
+    {
+        arr.push_back(st);
+    }
+    string res = longestCommonPrefix(arr);
+    cout << res << endl;
 }
 
-//|> --- MAIN -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+//|> ---MAIN-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 int main()
 {
     ios::sync_with_stdio(0);
     cin.tie(0);
 
 #ifndef ONLINE_JUDGE
-    freopen("../Error.txt", "w", stderr);
-    freopen("../output.txt", "w", stdout);
-    freopen("../input.txt", "r", stdin);
+    freopen("../../Error.txt", "w", stderr);
+    freopen("../../output.txt", "w", stdout);
+    freopen("../../input.txt", "r", stdin);
 #endif
     auto start1 = high_resolution_clock::now();
     solve();

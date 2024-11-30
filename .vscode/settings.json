@@ -31,13 +31,14 @@
         "functional": "cpp",
         "random": "cpp"
     },
-    "editor.fontFamily": "\"FiraCode Nerd Font\"",
+    "editor.fontFamily": "Hasklug Nerd Font",
     "editor.fontLigatures": true,
     "files.autoSave": "afterDelay",
     "editor.fontVariations": false,
-    "editor.fontSize": 12.5,
+    "editor.fontSize": 14,
     "editor.fontWeight": "normal",
     "terminal.integrated.automationProfile.linux": {},
     "terminal.integrated.automationProfile.osx": {},
-    "editor.cursorBlinking": "blink"
+    "editor.cursorBlinking": "blink",
+    "code-runner.runInTerminal": true
 }

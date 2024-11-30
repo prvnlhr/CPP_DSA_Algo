@@ -140,7 +140,6 @@ vector<int> twoSum(vector<int> &numbers, int target)
 
     while (i < j)
     {
-
         int sum = numbers[i] + numbers[j];
         if (sum == target)
         {
