@@ -1,2 +1,2 @@
-Line 199: res.size() = 12; 
+Line 144: arr = [1, 2, 4, 8]; 
 Time: 0
