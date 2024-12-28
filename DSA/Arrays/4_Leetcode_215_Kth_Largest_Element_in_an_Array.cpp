@@ -133,8 +133,6 @@ void factOfN(ll n)
 
 int findKthLargest(vector<int> &nums, int k)
 {
-
-
     priority_queue<int, vector<int>, greater<int>> pqmin;
 
     int n = nums.size();
@@ -150,20 +148,12 @@ int findKthLargest(vector<int> &nums, int k)
 
     for (int i = k; i < n; i++)
     {
-        if (pqmin.size() >= k)
+        if (pqmin.top() < nums[i])
         {
-            if (pqmin.top() < nums[i])
-            {
-                pqmin.pop();
-                pqmin.push(nums[i]);
-            }
-        }
-        else
-        {
+            pqmin.pop();
             pqmin.push(nums[i]);
         }
     }
-
     return pqmin.top();
 }
 void solve()
@@ -175,7 +165,6 @@ void solve()
     {
         nums.push_back(ele);
     }
-    debug(nums, k);
     cout << findKthLargest(nums, k) << endl;
 }
 
