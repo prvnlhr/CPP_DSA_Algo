@@ -149,7 +149,6 @@ void merge(vector<int> &arr1, vector<int> &arr2)
 
     for (int i = 0; i < n; i++)
     {
-
         if (arr1[i] > arr2[0])
         {
             swap(arr1[i], arr2[0]);
@@ -157,6 +156,45 @@ void merge(vector<int> &arr1, vector<int> &arr2)
         }
     }
 }
+
+void mergeOp(vector<int> &nums1, int m, vector<int> &nums2, int n)
+{
+
+    int i = m - 1;
+    int j = n - 1;
+
+    int pos = m + n - 1;
+
+    while (i >= 0 && j >= 0)
+    {
+        int num1 = nums1[i];
+        int num2 = nums2[j];
+
+        if (num1 < num2)
+        {
+            nums1[pos] = num2;
+            j--;
+            pos--;
+        }
+        else if (num1 > num2)
+        {
+            nums1[pos] = num1;
+            i--;
+            pos--;
+        }
+        else
+        {
+            nums1[pos] = num1;
+        }
+    }
+    while (j >= 0)
+    {
+        nums1[pos] = nums2[j];
+        j--;
+        pos--;
+    }
+}
+
 void solve()
 {
     vector<int> arr1{1, 5, 9, 10, 15, 20};

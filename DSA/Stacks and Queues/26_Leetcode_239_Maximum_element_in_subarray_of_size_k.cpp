@@ -148,23 +148,23 @@ vector<int> maxSlidingWindow(vector<int> &nums, int k)
         12 -1 -7 8 -15 30 16 28
 
     */
-   
+
     vector<int> res;
     deque<int> dq;
     int n = nums.size();
 
     int winStart = 0;
 
-    for (int i = 0; i < n; i++)
+    for (int winEnd = 0; winEnd < n; winEnd++)
     {
-        while (!dq.empty() && dq.back() < nums[i])
+        while (!dq.empty() && dq.back() < nums[winEnd])
         {
             dq.pop_back();
         }
 
-        dq.push_back(nums[i]);
+        dq.push_back(nums[winEnd]);
 
-        if (i - winStart + 1 == k)
+        if (winEnd - winStart + 1 == k)
         {
             if (!dq.empty())
             {
