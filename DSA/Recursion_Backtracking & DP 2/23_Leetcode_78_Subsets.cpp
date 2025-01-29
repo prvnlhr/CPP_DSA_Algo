@@ -90,12 +90,19 @@ typedef priority_queue<int> pqmax;
 typedef priority_queue<int, vector<int>, greater<int>> pqmin;
 
 //|> ---ＳＯＬＶＥ-----------------------------------------------------------------------------------------------------------------------------------------------
-vector<vector<int>> res;
 
-void helper(vector<int> &nums, vector<int> &sub, int pos)
+/*
+
+sol1 and sol2 are both correct. They both give correct solutions.
+One uses the for loop to explorer the options while other uses two recursive calls to do so.
+The difference lies in how they traverse the decision tree.
+
+*/
+
+void sol2(vector<int> &nums, vector<int> &sub, int pos, vector<vector<int>> &res)
 {
-    res.push_back(sub);
 
+    res.push_back(sub);
     if (pos >= nums.size())
     {
         return;
@@ -104,16 +111,34 @@ void helper(vector<int> &nums, vector<int> &sub, int pos)
     for (int i = pos; i < nums.size(); i++)
     {
         sub.push_back(nums[i]);
-        helper(nums, sub, i + 1);
+        sol2(nums, sub, i + 1, res);
         sub.pop_back();
     }
 }
+
+void sol1(vector<int> &nums, vector<int> &sub, int pos, vector<vector<int>> &res)
+{
+
+    if (pos >= nums.size())
+    {
+        res.push_back(sub);
+        return;
+    }
+
+    sub.push_back(nums[pos]);
+    sol1(nums, sub, pos + 1, res);
+    sub.pop_back();
+    sol1(nums, sub, pos + 1, res);
+}
+
 vector<vector<int>> subsets(vector<int> &nums)
 {
+    vector<vector<int>> res;
     vector<int> sub;
-    helper(nums, sub, 0);
+    sol2(nums, sub, 0, res);
     return res;
 }
+
 void solve()
 {
     vector<int> nums;
