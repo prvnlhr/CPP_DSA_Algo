@@ -132,9 +132,8 @@ void factOfN(ll n)
 void solve()
 {
 
-
-//> MY SOLUTION DOES NOT PASSSES AS THERE IS INTERGER OVERFLOW, IN IF LOOS
-//> LOGIC SEEM TO BE CORRECT
+    //> MY SOLUTION DOES NOT PASSSES AS THERE IS INTERGER OVERFLOW, IN IF LOOS
+    //> LOGIC SEEM TO BE CORRECT
     // vector<int> nums{3, 4, -1, 1};
     // vector<int> nums{7, 8, 9, 11, 12};
     // vector<int> nums{-100, 3, 100};
@@ -187,9 +186,8 @@ void solve()
     }
     cout << ans << endl;
 
-
     ////////>ANOTHER SOLUTION FROM DISCUSSION PAGE
-     int ans = 1;
+    int ans = 1;
 
     int n = nums.size();
 
@@ -221,7 +219,15 @@ int main()
     solve();
     auto stop1 = high_resolution_clock::now();
     auto duration = duration_cast<microseconds>(stop1 - start1);
+    auto now = system_clock::to_time_t(system_clock::now());
+    stringstream timeStream;
+
+    timeStream << put_time(localtime(&now), "%d %b %Y %H:%M:%S");
+    string formatted_time = timeStream.str();
+
 #ifndef ONLINE_JUDGE
-    cerr << "Time: " << duration.count() / 1000 << endl;
+    cerr << endl;
+    cerr << "Exec Time: " << duration.count() / 1000 << " ms" << endl;
+    cerr << "Curr Time: " << formatted_time << endl;
 #endif
 }

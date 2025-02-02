@@ -137,7 +137,7 @@ vector<int> shortestPath(int N, int M, vector<vector<int>> &edges)
         int wt = edges[i][2];
         adj[u].push_back({v, wt});
     }
-    
+
     // A visited array is created with initially
     // all the nodes marked as unvisited (0).
     int vis[N] = {0};
@@ -221,7 +221,15 @@ int main()
     solve();
     auto stop1 = high_resolution_clock::now();
     auto duration = duration_cast<microseconds>(stop1 - start1);
+    auto now = system_clock::to_time_t(system_clock::now());
+    stringstream timeStream;
+
+    timeStream << put_time(localtime(&now), "%d %b %Y %H:%M:%S");
+    string formatted_time = timeStream.str();
+
 #ifndef ONLINE_JUDGE
-    cerr << "Time: " << duration.count() / 1000 << endl;
+    cerr << endl;
+    cerr << "Exec Time: " << duration.count() / 1000 << " ms" << endl;
+    cerr << "Curr Time: " << formatted_time << endl;
 #endif
 }

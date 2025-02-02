@@ -59,7 +59,7 @@ ostream &operator<<(ostream &os, const T &c)
 #define cout2(x, y) cout << x << " " << y << endl;
 #define cout3(x, y, z) cout << x << " " << y << " " << z << endl;
 
-#define SUMOFN(arr) accumulate(arr.begin(), arr.end(), 0LL);   
+#define SUMOFN(arr) accumulate(arr.begin(), arr.end(), 0LL);
 #define SORTASC(arr) sort(arr.begin(), arr.end());
 #define SORTDSC(arr) sort(arr.begin(), arr.end(), greater<int>());
 
@@ -76,7 +76,7 @@ typedef map<int, int> mpint;
 typedef pair<int, int> pi;
 typedef priority_queue<int> pqmax;
 typedef priority_queue<int, vector<int>, greater<int>> pqmin;
-//GCD(a,b)____________________________
+// GCD(a,b)____________________________
 ll gcd(ll a, ll b)
 {
     if (b > a)
@@ -89,7 +89,7 @@ ll gcd(ll a, ll b)
     }
     return gcd(b, a % b);
 }
-//MOD EXPO_____________________________
+// MOD EXPO_____________________________
 ll expo(ll a, ll b, ll mod)
 {
     ll res = 1;
@@ -147,7 +147,15 @@ int main()
     solve();
     auto stop1 = high_resolution_clock::now();
     auto duration = duration_cast<microseconds>(stop1 - start1);
+    auto now = system_clock::to_time_t(system_clock::now());
+    stringstream timeStream;
+
+    timeStream << put_time(localtime(&now), "%d %b %Y %H:%M:%S");
+    string formatted_time = timeStream.str();
+
 #ifndef ONLINE_JUDGE
-    cerr << "Time: " << duration.count() / 1000 << endl;
+    cerr << endl;
+    cerr << "Exec Time: " << duration.count() / 1000 << " ms" << endl;
+    cerr << "Curr Time: " << formatted_time << endl;
 #endif
 }

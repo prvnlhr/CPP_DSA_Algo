@@ -299,7 +299,6 @@ Ex: 6 2 8 1 4 7 9 -1 -1 3 5 -1 -1 -1 -1 -1 -1 -1 -1
 
 */
 
-
 bool isBstHepler(TreeNode<int> *root, long MIN, long MAX)
 {
     if (!root)
@@ -312,7 +311,7 @@ bool isBstHepler(TreeNode<int> *root, long MIN, long MAX)
         return false;
     }
 
-    return isBstHepler(root->left, MIN, root->val) && isBstHepler(root->right, root->val , MAX);
+    return isBstHepler(root->left, MIN, root->val) && isBstHepler(root->right, root->val, MAX);
 }
 
 bool isValidBST(TreeNode<int> *root)
@@ -346,7 +345,15 @@ int main()
     solve();
     auto stop1 = high_resolution_clock::now();
     auto duration = duration_cast<microseconds>(stop1 - start1);
+    auto now = system_clock::to_time_t(system_clock::now());
+    stringstream timeStream;
+
+    timeStream << put_time(localtime(&now), "%d %b %Y %H:%M:%S");
+    string formatted_time = timeStream.str();
+
 #ifndef ONLINE_JUDGE
-    cerr << "Time: " << duration.count() / 1000 << endl;
+    cerr << endl;
+    cerr << "Exec Time: " << duration.count() / 1000 << " ms" << endl;
+    cerr << "Curr Time: " << formatted_time << endl;
 #endif
 }

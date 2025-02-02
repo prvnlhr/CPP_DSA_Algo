@@ -1,4 +1,6 @@
-Line 260: arr = [-1, 0, 1, 2, -1, -4]; 
-Line 264: vec = [-1, -1, 2]; 
-Line 264: vec = [-1, 0, 1]; 
-Time: 0
+Line 267: arr = [-1, 0, 1, 2, -1, -1]; 
+Line 271: vec = [-1, -1, 2]; 
+Line 271: vec = [-1, 0, 1]; 
+
+Exec Time: 0 ms
+Curr Time: 02 Feb 2025 14:21:14

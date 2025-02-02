@@ -274,7 +274,7 @@ Ex_1: 20 8 22 4 12 -1 25 -1 -1 10 14 -1 -1 -1 -1 -1 -1
 
 OP: 20 8 4 10 14 25 22
 
-Ex_2:   
+Ex_2:
 
         1
       /   \
@@ -385,7 +385,15 @@ int main()
     solve();
     auto stop1 = high_resolution_clock::now();
     auto duration = duration_cast<microseconds>(stop1 - start1);
+    auto now = system_clock::to_time_t(system_clock::now());
+    stringstream timeStream;
+
+    timeStream << put_time(localtime(&now), "%d %b %Y %H:%M:%S");
+    string formatted_time = timeStream.str();
+
 #ifndef ONLINE_JUDGE
-    cerr << "Time: " << duration.count() / 1000 << endl;
+    cerr << endl;
+    cerr << "Exec Time: " << duration.count() / 1000 << " ms" << endl;
+    cerr << "Curr Time: " << formatted_time << endl;
 #endif
 }

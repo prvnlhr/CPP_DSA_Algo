@@ -110,7 +110,7 @@ void moveUntil(int x, int y, vector<vector<int>> &maze, vector<vector<int>> &vis
     if (x == N - 1 && y == N - 1)
     {
         res.push_back(path);
-        return; 
+        return;
     }
 
     for (int i = 0; i < 4; i++)
@@ -122,7 +122,7 @@ void moveUntil(int x, int y, vector<vector<int>> &maze, vector<vector<int>> &vis
         {
             visited[nextX][nextY] = true;
             moveUntil(nextX, nextY, maze, visited, res, path + dir[i]);
-            
+
             //> backTrackStep
             visited[nextX][nextY] = false;
         }
@@ -159,7 +159,15 @@ int main()
     solve();
     auto stop1 = high_resolution_clock::now();
     auto duration = duration_cast<microseconds>(stop1 - start1);
+    auto now = system_clock::to_time_t(system_clock::now());
+    stringstream timeStream;
+
+    timeStream << put_time(localtime(&now), "%d %b %Y %H:%M:%S");
+    string formatted_time = timeStream.str();
+
 #ifndef ONLINE_JUDGE
-    cerr << "Time: " << duration.count() / 1000 << endl;
+    cerr << endl;
+    cerr << "Exec Time: " << duration.count() / 1000 << " ms" << endl;
+    cerr << "Curr Time: " << formatted_time << endl;
 #endif
 }

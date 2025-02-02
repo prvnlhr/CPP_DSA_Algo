@@ -29,7 +29,8 @@
         "numbers": "cpp",
         "bitset": "cpp",
         "functional": "cpp",
-        "random": "cpp"
+        "random": "cpp",
+        "iomanip": "cpp"
     },
     "editor.fontFamily": "Hasklug Nerd Font",
     "editor.fontLigatures": true,

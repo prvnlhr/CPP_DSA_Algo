@@ -151,7 +151,7 @@ bool isPresent1(string s1, string s2)
     - then iterate s2 for next window == s1.size()
     - if at any movement both cout Array become equal i.e, there chars becomes equal, so we return true
     - at and we also need to check for last window
-    
+
     */
 
     vector<int> s1CharCount(256, 0);
@@ -211,7 +211,15 @@ int main()
     solve();
     auto stop1 = high_resolution_clock::now();
     auto duration = duration_cast<microseconds>(stop1 - start1);
+    auto now = system_clock::to_time_t(system_clock::now());
+    stringstream timeStream;
+
+    timeStream << put_time(localtime(&now), "%d %b %Y %H:%M:%S");
+    string formatted_time = timeStream.str();
+
 #ifndef ONLINE_JUDGE
-    cerr << "Time: " << duration.count() / 1000 << endl;
+    cerr << endl;
+    cerr << "Exec Time: " << duration.count() / 1000 << " ms" << endl;
+    cerr << "Curr Time: " << formatted_time << endl;
 #endif
 }

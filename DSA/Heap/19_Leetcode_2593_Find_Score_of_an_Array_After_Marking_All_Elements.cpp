@@ -93,51 +93,51 @@ typedef priority_queue<int, vector<int>, greater<int>> pqmin;
 
 long long findScore(vector<int> &nums)
 {
-        unordered_map<int, int> mpp;
+    unordered_map<int, int> mpp;
 
-        int n = nums.size();
-        for (int i = 0; i < n; i++)
+    int n = nums.size();
+    for (int i = 0; i < n; i++)
+    {
+        mpp[i] = 0;
+    }
+    // pair<int, int> p;
+    priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> pq;
+
+    for (int i = 0; i < n; i++)
+    {
+        pq.push({nums[i], i});
+    }
+
+    long long score = 0;
+
+    while (!pq.empty())
+    {
+        auto [num, index] = pq.top();
+        pq.pop();
+        // debug(num);
+
+        if (mpp[index] == 0)
         {
-            mpp[i] = 0;
-        }
-        // pair<int, int> p;
-        priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> pq;
+            score += num;
+            mpp[index] = 1;
 
-        for (int i = 0; i < n; i++)
-        {
-            pq.push({nums[i], i});
-        }
-
-        long long score = 0;
-
-        while (!pq.empty())
-        {
-            auto [num, index] = pq.top();
-            pq.pop();
-            // debug(num);
-
-            if (mpp[index] == 0)
+            if (index == 0)
             {
-                score += num;
-                mpp[index] = 1;
-
-                if (index == 0)
-                {
-                    mpp[index + 1] = 1;
-                }
-                else if (index == n - 1)
-                {
-                    mpp[index - 1] = 1;
-                }
-                else if (index + 1 < n && index - 1 >= 0)
-                {
-                    mpp[index + 1] = 1;
-                    mpp[index - 1] = 1;
-                }
+                mpp[index + 1] = 1;
+            }
+            else if (index == n - 1)
+            {
+                mpp[index - 1] = 1;
+            }
+            else if (index + 1 < n && index - 1 >= 0)
+            {
+                mpp[index + 1] = 1;
+                mpp[index - 1] = 1;
             }
         }
+    }
 
-        return score;
+    return score;
 }
 void solve()
 {
@@ -167,7 +167,15 @@ int main()
     solve();
     auto stop1 = high_resolution_clock::now();
     auto duration = duration_cast<microseconds>(stop1 - start1);
+    auto now = system_clock::to_time_t(system_clock::now());
+    stringstream timeStream;
+
+    timeStream << put_time(localtime(&now), "%d %b %Y %H:%M:%S");
+    string formatted_time = timeStream.str();
+
 #ifndef ONLINE_JUDGE
-    cerr << "Time: " << duration.count() / 1000 << endl;
+    cerr << endl;
+    cerr << "Exec Time: " << duration.count() / 1000 << " ms" << endl;
+    cerr << "Curr Time: " << formatted_time << endl;
 #endif
 }

@@ -314,7 +314,7 @@ vector<int> topView(TreeNode<int> *root)
 
         min_lvl = min(level, min_lvl);
         max_lvl = max(level, max_lvl);
-        
+
         if (mpp.find(level) == mpp.end())
         {
             mpp[level] = node->val;
@@ -365,7 +365,15 @@ int main()
     solve();
     auto stop1 = high_resolution_clock::now();
     auto duration = duration_cast<microseconds>(stop1 - start1);
+    auto now = system_clock::to_time_t(system_clock::now());
+    stringstream timeStream;
+
+    timeStream << put_time(localtime(&now), "%d %b %Y %H:%M:%S");
+    string formatted_time = timeStream.str();
+
 #ifndef ONLINE_JUDGE
-    cerr << "Time: " << duration.count() / 1000 << endl;
+    cerr << endl;
+    cerr << "Exec Time: " << duration.count() / 1000 << " ms" << endl;
+    cerr << "Curr Time: " << formatted_time << endl;
 #endif
 }

@@ -140,7 +140,7 @@ What areas can we make using this bar, 5*1.
 But we can also extend this area towards left and right.
 But what is the condition of extending this area to adjacent bar.
 The adjacent bar should have height greater or equal.
-So we keep on extending the bar towards both direction till there is a bar which has 
+So we keep on extending the bar towards both direction till there is a bar which has
 height less then curr bar i.e a dip in height.
 So now our area will be (height of curr bar * width till we extended).
 as our width of every bar is 1, we can find the width till we extended using indexes.
@@ -242,7 +242,15 @@ int main()
     solve();
     auto stop1 = high_resolution_clock::now();
     auto duration = duration_cast<microseconds>(stop1 - start1);
+    auto now = system_clock::to_time_t(system_clock::now());
+    stringstream timeStream;
+
+    timeStream << put_time(localtime(&now), "%d %b %Y %H:%M:%S");
+    string formatted_time = timeStream.str();
+
 #ifndef ONLINE_JUDGE
-    cerr << "Time: " << duration.count() / 1000 << endl;
+    cerr << endl;
+    cerr << "Exec Time: " << duration.count() / 1000 << " ms" << endl;
+    cerr << "Curr Time: " << formatted_time << endl;
 #endif
 }

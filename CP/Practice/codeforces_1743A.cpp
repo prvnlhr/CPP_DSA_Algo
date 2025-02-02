@@ -162,7 +162,7 @@ void solve()
             int x1 = fact[rm];
             int x2 = fact[rm - 2];
             int x3 = fact[2];
-            
+
             debug(x1, x2, x3);
             int ans = x1 / (x2 * x3);
             cout << ans * 6 << endl;
@@ -185,7 +185,15 @@ int main()
     solve();
     auto stop1 = high_resolution_clock::now();
     auto duration = duration_cast<microseconds>(stop1 - start1);
+    auto now = system_clock::to_time_t(system_clock::now());
+    stringstream timeStream;
+
+    timeStream << put_time(localtime(&now), "%d %b %Y %H:%M:%S");
+    string formatted_time = timeStream.str();
+
 #ifndef ONLINE_JUDGE
-    cerr << "Time: " << duration.count() / 1000 << endl;
+    cerr << endl;
+    cerr << "Exec Time: " << duration.count() / 1000 << " ms" << endl;
+    cerr << "Curr Time: " << formatted_time << endl;
 #endif
 }
