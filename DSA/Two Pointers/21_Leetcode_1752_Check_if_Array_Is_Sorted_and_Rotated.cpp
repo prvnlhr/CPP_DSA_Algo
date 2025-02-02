@@ -1,7 +1,9 @@
 
 /*
- ▄▀█ █░█ █▀▄▀█ █▄░█ █▀█ █▀▄▀█
- █▀█ █▄█ █░▀░█ █░▀█ █▄█ █░▀░█
+|>------------------------------------------------------------------------------------------------------------------------------------------------------------
+|>                               █▀ ▀█▀ █▀▀ █░░ █░░ █░█ █▀█
+|>                               ▄█ ░█░ ██▄ █▄▄ █▄▄ █▀█ █▀▄
+|>------------------------------------------------------------------------------------------------------------------------------------------------------------
 */
 
 #include <bits/stdc++.h>
@@ -87,139 +89,74 @@ typedef pair<int, int> pi;
 typedef priority_queue<int> pqmax;
 typedef priority_queue<int, vector<int>, greater<int>> pqmin;
 
-//|> ---GCD -------------------------------------------------------------------
-ll gcd(ll a, ll b)
-{
-    if (b > a)
-    {
-        return gcd(b, a);
-    }
-    if (b == 0)
-    {
-        return a;
-    }
-    return gcd(b, a % b);
-}
-
-//|> ---EXPONENTIAL ----------------------------------------------------------
-ll expo(ll a, ll b, ll mod)
-{
-    ll res = 1;
-    while (b > 0)
-    {
-        if (b & 1)
-            res = (res * a) % mod;
-        a = (a * a) % mod;
-        b = b >> 1;
-    }
-    return res;
-}
-
-//|> ---FACTORIAL ------------------------------------------------------------
-vector<ll> fact;
-void factOfN(ll n)
-{
-    ll prod = 1;
-    fact.resize(n + 1);
-    for (int f = 1; f <= n; f++)
-    {
-
-        fact[f] = prod * f;
-        prod = prod * f;
-    }
-}
-
 //|> ---ＳＯＬＶＥ-----------------------------------------------------------------------------------------------------------------------------------------------
 
-string formatFileName(string &input)
+// SELF SOLVED  Beats 100%
+// Approach : carefull  observation
+bool check(vector<int> &nums)
 {
-    stringstream ss(input);
-    string number, title, word, formattedName;
-    getline(ss, number, '.');
-    ss.ignore();
-    while (ss >> word)
+
+    int n = nums.size();
+
+    int i = 0;
+    while (i < n - 1 && nums[i] <= nums[i + 1])
     {
-        for (char &c : word)
+        i++;
+    }
+    if (i == n - 1)
+    {
+        return true;
+    }
+
+    i++;
+
+    while (i < n - 1)
+    {
+        if (nums[i] <= nums[i + 1])
         {
-            if (!std::isalnum(c))
-            { // Replace non-alphanumeric characters with '_'
-                c = '_';
-            }
+            i++;
         }
-        title += word + "_";
+        else
+        {
+            return false;
+        }
     }
 
-    if (!title.empty())
+    if (nums[0] >= nums[n - 1])
     {
-        title.pop_back();
+        return true;
     }
-    formattedName = "01_Leetcode_" + number + "_" + title + ".cpp";
 
-    return formattedName;
+    return false;
 }
 void solve()
 {
-
-    // ----------
-    string input;
-    getline(cin, input);
-    string fileName = formatFileName(input);
-    debug(fileName);
-
-    // ----------
-
-    int a;
-    cin >> a;
-    cout << "Input  -> " << a << endl;
-    cout << "Output -> " << a << endl;
-    cout << "Logging check : OK " << endl;
-    debug(a, "Error checking OK");
-    /*
-
-    -> This is test comment
-    => This is test comment
-    >  This is test
-    |> This is test
-
-    #  This is test comment
-
-    *  This is test comment
-    ** This is test comment
-
-    -  This is test comment
-    _  This is test comment
-
-    !  Warning
-    :  This is test comment
-       TODO: This is test comment
-
-    */
+    vector<int> arr;
+    int ele;
+    while (cin >> ele)
+    {
+        arr.push_back(ele);
+    }
+    bool ans = check(arr);
+    debug(ans);
 }
 
-//|> --- MAIN -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+//|> ---MAIN-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 int main()
 {
     ios::sync_with_stdio(0);
     cin.tie(0);
 
 #ifndef ONLINE_JUDGE
-    freopen("../Error.txt", "w", stderr);
-    freopen("../output.txt", "w", stdout);
-    freopen("../input.txt", "r", stdin);
+    freopen("../../Error.txt", "w", stderr);
+    freopen("../../output.txt", "w", stdout);
+    freopen("../../input.txt", "r", stdin);
 #endif
     auto start1 = high_resolution_clock::now();
     solve();
     auto stop1 = high_resolution_clock::now();
     auto duration = duration_cast<microseconds>(stop1 - start1);
-    auto now = system_clock::to_time_t(system_clock::now());
-    stringstream timeStream;
-
-    timeStream << put_time(localtime(&now), "%d %b %Y %H:%M:%S");
-    string formatted_time = timeStream.str();
-
 #ifndef ONLINE_JUDGE
-    cerr << endl;
-    cerr << "Exec Time: " << duration.count() / 1000 << " ms" << endl;
-    cerr << "Curr Time: " << formatted_time << endl;
+    cerr << "Time: " << duration.count() / 1000 << endl;
 #endif
 }

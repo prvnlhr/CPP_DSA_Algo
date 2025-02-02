@@ -1,6 +1,2 @@
-Line 267: arr = [-1, 0, 1, 2, -1, -1]; 
-Line 271: vec = [-1, -1, 2]; 
-Line 271: vec = [-1, 0, 1]; 
-
-Exec Time: 0 ms
-Curr Time: 02 Feb 2025 14:21:14
+Line 149: res = [4, 2, 1, 3]; 
+Time: 0

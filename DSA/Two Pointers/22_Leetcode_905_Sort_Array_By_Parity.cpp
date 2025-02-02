@@ -1,7 +1,9 @@
 
 /*
- ▄▀█ █░█ █▀▄▀█ █▄░█ █▀█ █▀▄▀█
- █▀█ █▄█ █░▀░█ █░▀█ █▄█ █░▀░█
+|>------------------------------------------------------------------------------------------------------------------------------------------------------------
+|>                               █▀ ▀█▀ █▀▀ █░░ █░░ █░█ █▀█
+|>                               ▄█ ░█░ ██▄ █▄▄ █▄▄ █▀█ █▀▄
+|>------------------------------------------------------------------------------------------------------------------------------------------------------------
 */
 
 #include <bits/stdc++.h>
@@ -87,139 +89,93 @@ typedef pair<int, int> pi;
 typedef priority_queue<int> pqmax;
 typedef priority_queue<int, vector<int>, greater<int>> pqmin;
 
-//|> ---GCD -------------------------------------------------------------------
-ll gcd(ll a, ll b)
-{
-    if (b > a)
-    {
-        return gcd(b, a);
-    }
-    if (b == 0)
-    {
-        return a;
-    }
-    return gcd(b, a % b);
-}
+//|> ---ＳＯＬＶＥ-----------------------------------------------------------------------------------------------------------------------------------------------
 
-//|> ---EXPONENTIAL ----------------------------------------------------------
-ll expo(ll a, ll b, ll mod)
+vector<int> sortArrayByParity(vector<int> &nums)
 {
-    ll res = 1;
-    while (b > 0)
+    vector<int> res(nums.size());
+    set<int> st;
+
+    int pos = 0;
+    for (int i = 0; i < nums.size(); i++)
     {
-        if (b & 1)
-            res = (res * a) % mod;
-        a = (a * a) % mod;
-        b = b >> 1;
+        if (nums[i] % 2 == 0)
+        {
+            res[pos++] = nums[i];
+            st.insert(i);
+        }
     }
+
+    for (int i = 0; i < nums.size(); i++)
+    {
+        if (!st.count(i))
+        {
+            res[pos++] = nums[i];
+        }
+    }
+
     return res;
 }
 
-//|> ---FACTORIAL ------------------------------------------------------------
-vector<ll> fact;
-void factOfN(ll n)
+/*
+
+Given an integer array nums, move all the even integers at the beginning of the array followed by all the odd integers.
+
+Return any array that satisfies this condition.
+
+Ex : [3,1,2,4]
+-> [2,4,3,1]
+-> [4,2,3,1], [2,4,1,3], and [4,2,1,3] all are corret
+*/
+
+vector<int> sortArrayByParityInPlace(vector<int> &nums)
 {
-    ll prod = 1;
-    fact.resize(n + 1);
-    for (int f = 1; f <= n; f++)
+    int n = nums.size();
+    int i = 0;
+    int j = n - 1;
+    while (i < j)
     {
-
-        fact[f] = prod * f;
-        prod = prod * f;
-    }
-}
-
-//|> ---ＳＯＬＶＥ-----------------------------------------------------------------------------------------------------------------------------------------------
-
-string formatFileName(string &input)
-{
-    stringstream ss(input);
-    string number, title, word, formattedName;
-    getline(ss, number, '.');
-    ss.ignore();
-    while (ss >> word)
-    {
-        for (char &c : word)
+        if (nums[i] % 2 == 0)
         {
-            if (!std::isalnum(c))
-            { // Replace non-alphanumeric characters with '_'
-                c = '_';
-            }
+            i++;
         }
-        title += word + "_";
+        else
+        {
+            swap(nums[i], nums[j]);
+            j--;
+        }
     }
-
-    if (!title.empty())
-    {
-        title.pop_back();
-    }
-    formattedName = "01_Leetcode_" + number + "_" + title + ".cpp";
-
-    return formattedName;
+    return nums;
 }
+
 void solve()
 {
-
-    // ----------
-    string input;
-    getline(cin, input);
-    string fileName = formatFileName(input);
-    debug(fileName);
-
-    // ----------
-
-    int a;
-    cin >> a;
-    cout << "Input  -> " << a << endl;
-    cout << "Output -> " << a << endl;
-    cout << "Logging check : OK " << endl;
-    debug(a, "Error checking OK");
-    /*
-
-    -> This is test comment
-    => This is test comment
-    >  This is test
-    |> This is test
-
-    #  This is test comment
-
-    *  This is test comment
-    ** This is test comment
-
-    -  This is test comment
-    _  This is test comment
-
-    !  Warning
-    :  This is test comment
-       TODO: This is test comment
-
-    */
+    int ele;
+    vector<int> nums;
+    while (cin >> ele)
+    {
+        nums.push_back(ele);
+    }
+    auto res = sortArrayByParityInPlace(nums);
+    debug(res);
 }
 
-//|> --- MAIN -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+//|> ---MAIN-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 int main()
 {
     ios::sync_with_stdio(0);
     cin.tie(0);
 
 #ifndef ONLINE_JUDGE
-    freopen("../Error.txt", "w", stderr);
-    freopen("../output.txt", "w", stdout);
-    freopen("../input.txt", "r", stdin);
+    freopen("../../Error.txt", "w", stderr);
+    freopen("../../output.txt", "w", stdout);
+    freopen("../../input.txt", "r", stdin);
 #endif
     auto start1 = high_resolution_clock::now();
     solve();
     auto stop1 = high_resolution_clock::now();
     auto duration = duration_cast<microseconds>(stop1 - start1);
-    auto now = system_clock::to_time_t(system_clock::now());
-    stringstream timeStream;
-
-    timeStream << put_time(localtime(&now), "%d %b %Y %H:%M:%S");
-    string formatted_time = timeStream.str();
-
 #ifndef ONLINE_JUDGE
-    cerr << endl;
-    cerr << "Exec Time: " << duration.count() / 1000 << " ms" << endl;
-    cerr << "Curr Time: " << formatted_time << endl;
+    cerr << "Time: " << duration.count() / 1000 << endl;
 #endif
 }
