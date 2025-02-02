@@ -133,6 +133,7 @@ void factOfN(ll n)
 :TC : O(N^2) -->  time complexity can't be further improved
 :SC : O(N) --> for set
 */
+
 vector<vector<int>> threeSum(vector<int> &nums)
 {
 
@@ -149,18 +150,22 @@ vector<vector<int>> threeSum(vector<int> &nums)
         int j = i + 1;
         int k = n - 1;
 
+        int num1 = nums[i];
+
         while (j < k)
         {
-            int sum = nums[j] + nums[k];
+            int num2 = nums[j];
+            int num3 = nums[k];
 
-            if (sum + nums[i] == 0)
+            int sum = num1 + num2 + num3;
+
+            if (sum == 0)
             {
-                tuple<int, int, int> tp{nums[i], nums[j], nums[k]};
+                tuple<int, int, int> tp{num1, num2, num3};
 
-                if (st.find(tp) == st.end()) // # if tuple not present in set,then only consider
-                                             // # it as a three sum pair, to avoid duplicates
+                if (st.find(tp) == st.end()) // # Add the triplet if it's not already in the set to avoid duplicates
                 {
-                    res.push_back({nums[i], nums[j], nums[k]});
+                    res.push_back({num1, num2, num3});
                     st.insert(tp);
                 }
                 else
@@ -168,11 +173,11 @@ vector<vector<int>> threeSum(vector<int> &nums)
                     j++;
                 }
             }
-            else if (sum + nums[i] < 0)
+            else if (sum < 0)
             {
                 j++;
             }
-            else if (sum + nums[i] > 0)
+            else if (sum > 0)
             {
                 k--;
             }
@@ -196,38 +201,45 @@ vector<vector<int>> threeSumBetter(vector<int> &nums)
 
     vector<vector<int>> res;
 
-    for (int i = 0; i < n; i++)
+    for (int i = 0; i < n - 2; i++)
     {
-        //> EDGE CASE 1 :
-        if (nums[i] > 0) // # as array is sorted, all the elements to right
-                         // # of nums[i] ->right -> {...},  would be greater then 0
-                         // # so we cant make three sum == zero, hence break
+
+        // If nums[i] > 0, i.e., it's a positive number, then pairing a positive num1 with num2 and num3 will never result in a sum of 0.
+        if (nums[i] > 0)
         {
             break;
         }
 
-        //> EDGE CASE 2 : Skipping first consec, duplicates
+        // Skip consecutive duplicates for `i`
         if (i > 0 && nums[i - 1] == nums[i])
         {
             continue;
         }
 
-        //> Classical two pointer
+        int num1 = nums[i];
+
         int j = i + 1;
         int k = n - 1;
+
         while (j < k)
         {
-            int sum = nums[j] + nums[k];
 
-            if (nums[i] + sum == 0)
+            int num2 = nums[j];
+            int num3 = nums[k];
+
+            int sum = num1 + num2 + num3;
+
+            if (sum == 0)
             {
-                res.push_back({nums[i], nums[j], nums[k]});
+                res.push_back({num1, num2, num3});
 
-                //> Now skipping consec, duplicates
+                // Skip consecutive duplicates for `j`
                 while (j < k && nums[j] == nums[j + 1])
                 {
                     j++;
                 }
+
+                // Skip consecutive duplicates for `k`
                 while (j < k && nums[k - 1] == nums[k])
                 {
                     k--;
@@ -236,11 +248,11 @@ vector<vector<int>> threeSumBetter(vector<int> &nums)
                 j++;
                 k--;
             }
-            else if (nums[i] + sum < 0)
+            else if (sum < 0)
             {
                 j++;
             }
-            else if (nums[i] + sum > 0)
+            else if (sum > 0)
             {
                 k--;
             }
@@ -280,7 +292,16 @@ int main()
     solve();
     auto stop1 = high_resolution_clock::now();
     auto duration = duration_cast<microseconds>(stop1 - start1);
+
+    auto now = system_clock::to_time_t(system_clock::now());
+    stringstream timeStream;
+
+    timeStream << put_time(localtime(&now), "%d %b %Y %H:%M:%S");
+    string formatted_time = timeStream.str();
+
 #ifndef ONLINE_JUDGE
-    cerr << "Time: " << duration.count() / 1000 << endl;
+    cerr << endl;
+    cerr << "Exec Time: " << duration.count() / 1000 << " ms" << endl;
+    cerr << "Curr Time: " << formatted_time << endl;
 #endif
 }
