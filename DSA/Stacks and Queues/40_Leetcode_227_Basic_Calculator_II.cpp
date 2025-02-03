@@ -128,88 +128,159 @@ void factOfN(ll n)
 //--------------------------------------------------------------------------------------------------------------------------------
 
 //>----------------------------ＳＯＬＶＥ-----------------------------------------------------------------------------------------------------------------------------------------------
+
 int calculate(string s)
 {
-    int ans = 0;
-    vector<char> oprators;
-    vector<int> operands;
-
     int n = s.size();
-    int i = 0;
-    while (i < s.size())
+    int iter = 0;
+
+    string snew = "";
+    while (iter < n)
     {
-        if (s[i] == '+' || s[i] == '-')
+        if (s[iter] != ' ')
         {
-            oprators.push_back(s[i]);
-            i++;
+            snew += s[iter];
         }
+        iter++;
+    }
 
-        else if (s[i] == '*' || s[i] == '/')
+    s = snew;
+    n = snew.size();
+
+    vector<int> operands;
+    vector<char> operators;
+    int res = 0;
+    long long num = 0;
+
+    for (int i = 0; i < n; i++)
+    {
+        if (isdigit(s[i]))
         {
-            char op = s[i];
-            i++;
-
-            int val1 = operands.back();
-            operands.pop_back();
-
-            int val2 = s[i] - '0';
-
-            debug(val1, val2);
-            if (op == '*')
+            while (i < n && isdigit(s[i]))
             {
-                operands.push_back(val1 * val2);
+                num = (num * 10) + (s[i] - '0');
+                i++;
+            }
+            operands.push_back(num);
+            num = 0;
+            i--;
+        }
+        else if (!isdigit(s[i]) && s[i] != ' ' || i == s.size() - 1)
+        {
+            if (s[i] == '+')
+            {
+                operators.push_back(s[i]);
+            }
+            else if (s[i] == '-')
+            {
+                operators.push_back(-s[i]);
             }
             else
             {
-                operands.push_back(val1 / val2);
+                char op = s[i];
+                i++;
+                int num1 = 0;
+                while (i < n && isdigit(s[i]))
+                {
+                    num1 = (num1 * 10) + (s[i] - '0');
+                    i++;
+                }
+                i--;
+                int num2 = operands.back();
+                operands.pop_back();
+                long long currRes = 0;
+                if (op == '*')
+                {
+                    currRes = num1 * num2;
+                }
+                else
+                {
+                    currRes = num2 / num1;
+                }
+                operands.push_back(currRes);
             }
-            i++;
-        }
-
-        else if (isdigit(s[i]))
-        {
-            operands.push_back(s[i] - '0');
-            i++;
         }
     }
 
-    debug(operands);
-    debug(oprators);
-    while (!oprators.empty())
+    int result = operands[0];
+
+    // calculating result from left to right according to BODMASS( if add or sub then do operations from left to right)
+    for (int i = 0; i < operators.size(); i++)
     {
-        debug(oprators.size());
-        if (oprators.back() == '+')
+        if (operators[i] == '+')
         {
-            int val1 = operands.back();
-            operands.pop_back();
-            int val2 = operands.back();
-            operands.pop_back();
-
-            operands.push_back(val1 + val2);
+            result += operands[i + 1];
         }
-        else if (oprators.back() == '-')
+        else if (operators[i] == '-')
         {
-            int val1 = operands.back();
-            operands.pop_back();
-            int val2 = operands.back();
-            operands.pop_back();
-
-            operands.push_back(val1 - val2);
+            result -= operands[i + 1];
         }
-        oprators.pop_back();
-        debug(operands.back(), oprators);
     }
 
-    debug(operands.back());
-    return operands.back();
+    return result;
+}
+
+int calculateBetter(string s)
+{
+
+    int n = s.size();
+
+    stack<int> operands;
+    int currNum = 0;
+    char op = '+';
+
+    for (int i = 0; i < n; i++)
+    {
+        if (isdigit(s[i]))
+        {
+            currNum = (currNum * 10) + int(s[i] - '0');
+        }
+        if (!isdigit(s[i]) && s[i] != ' ' || i == n - 1)
+        {
+            if (op == '+')
+            {
+                operands.push(currNum);
+            }
+            else if (op == '-')
+            {
+                operands.push(-currNum);
+            }
+            else
+            {
+                int currRes;
+                if (op == '*')
+                {
+                    currRes = operands.top() * currNum;
+                }
+                else
+                {
+                    currRes = operands.top() / currNum;
+                }
+                operands.pop();
+                operands.push(currRes);
+            }
+            op = s[i];
+            currNum = 0;
+        }
+    }
+
+    int result = 0;
+
+    while (!operands.empty())
+    {
+        result += operands.top();
+        operands.pop();
+    }
+    return result;
 }
 
 void solve()
 {
+    // string s = "0-2147483647";
+    // string s = "1-1+1";
+    string s = "3+2*2";
 
-    string s;
-    cin >> s;
-    cout << calculate(s) << endl;
+    cout << calculateBetter(s) << endl;
 }
 
 //>-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
