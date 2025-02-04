@@ -222,9 +222,7 @@ int calculate(string s)
 
 int calculateBetter(string s)
 {
-
     int n = s.size();
-
     stack<int> operands;
     int currNum = 0;
     char op = '+';

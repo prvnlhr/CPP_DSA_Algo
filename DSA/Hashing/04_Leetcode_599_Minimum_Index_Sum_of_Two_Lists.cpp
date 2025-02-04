@@ -1,7 +1,9 @@
 
 /*
- ▄▀█ █░█ █▀▄▀█ █▄░█ █▀█ █▀▄▀█
- █▀█ █▄█ █░▀░█ █░▀█ █▄█ █░▀░█
+|>------------------------------------------------------------------------------------------------------------------------------------------------------------
+|>                               █▀ ▀█▀ █▀▀ █░░ █░░ █░█ █▀█
+|>                               ▄█ ░█░ ██▄ █▄▄ █▄▄ █▀█ █▀▄
+|>------------------------------------------------------------------------------------------------------------------------------------------------------------
 */
 
 #include <bits/stdc++.h>
@@ -87,139 +89,67 @@ typedef pair<int, int> pi;
 typedef priority_queue<int> pqmax;
 typedef priority_queue<int, vector<int>, greater<int>> pqmin;
 
-//|> ---GCD -------------------------------------------------------------------
-ll gcd(ll a, ll b)
-{
-    if (b > a)
-    {
-        return gcd(b, a);
-    }
-    if (b == 0)
-    {
-        return a;
-    }
-    return gcd(b, a % b);
-}
-
-//|> ---EXPONENTIAL ----------------------------------------------------------
-ll expo(ll a, ll b, ll mod)
-{
-    ll res = 1;
-    while (b > 0)
-    {
-        if (b & 1)
-            res = (res * a) % mod;
-        a = (a * a) % mod;
-        b = b >> 1;
-    }
-    return res;
-}
-
-//|> ---FACTORIAL ------------------------------------------------------------
-vector<ll> fact;
-void factOfN(ll n)
-{
-    ll prod = 1;
-    fact.resize(n + 1);
-    for (int f = 1; f <= n; f++)
-    {
-
-        fact[f] = prod * f;
-        prod = prod * f;
-    }
-}
-
 //|> ---ＳＯＬＶＥ-----------------------------------------------------------------------------------------------------------------------------------------------
 
-string formatFileName(string &input)
+vector<string> findRestaurant(vector<string> &list1, vector<string> &list2)
 {
-    stringstream ss(input);
-    string number, title, word, formattedName;
-    getline(ss, number, '.');
-    ss.ignore();
-    while (ss >> word)
+    unordered_map<string, int> list1Mpp;
+
+    for (int i = 0; i < list1.size(); i++)
     {
-        for (char &c : word)
+        list1Mpp[list1[i]] = i;
+    }
+
+    map<int, vector<string>> tempMpp;
+
+    for (int j = 0; j < list2.size(); j++)
+    {
+        string str = list2[j];
+
+        if (list1Mpp.find(str) != list1Mpp.end())
         {
-            if (!std::isalnum(c))
-            { // Replace non-alphanumeric characters with '_'
-                c = '_';
-            }
+            int i = list1Mpp[str];
+            int indexSum = i + j;
+            tempMpp[indexSum].push_back(str);
         }
-        title += word + "_";
     }
+    vector<string> res;
 
-    if (!title.empty())
+    for (auto [minIndex, strVec] : tempMpp)
     {
-        title.pop_back();
+        if (strVec.size() > 0)
+        {
+            return strVec;
+        }
     }
-    formattedName = "01_Leetcode_" + number + "_" + title + ".cpp";
 
-    return formattedName;
+    return {};
 }
 void solve()
 {
 
-    // ----------
-    string input;
-    getline(cin, input);
-    string fileName = formatFileName(input);
-    cout << fileName << endl;
-
-    // ----------
-
-    int a;
-    cin >> a;
-    cout << "Input  -> " << a << endl;
-    cout << "Output -> " << a << endl;
-    cout << "Logging check : OK " << endl;
-    debug(a, "Error checking OK");
-    /*
-
-    -> This is test comment
-    => This is test comment
-    >  This is test
-    |> This is test
-
-    #  This is test comment
-
-    *  This is test comment
-    ** This is test comment
-
-    -  This is test comment
-    _  This is test comment
-
-    !  Warning
-    :  This is test comment
-       TODO: This is test comment
-
-    */
+    vector<string> list1{"happy", "sad", "good"};
+    vector<string> list2{"sad", "happy", "good"};
+    vector<string> res = findRestaurant(list1, list2);
+    debug(res);
 }
 
-//|> --- MAIN -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+//|> ---MAIN-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 int main()
 {
     ios::sync_with_stdio(0);
     cin.tie(0);
 
 #ifndef ONLINE_JUDGE
-    freopen("../Error.txt", "w", stderr);
-    freopen("../output.txt", "w", stdout);
-    freopen("../input.txt", "r", stdin);
+    freopen("../../Error.txt", "w", stderr);
+    freopen("../../output.txt", "w", stdout);
+    freopen("../../input.txt", "r", stdin);
 #endif
     auto start1 = high_resolution_clock::now();
     solve();
     auto stop1 = high_resolution_clock::now();
     auto duration = duration_cast<microseconds>(stop1 - start1);
-    auto now = system_clock::to_time_t(system_clock::now());
-    stringstream timeStream;
-
-    timeStream << put_time(localtime(&now), "%d %b %Y %H:%M:%S");
-    string formatted_time = timeStream.str();
-
 #ifndef ONLINE_JUDGE
-    cerr << endl;
-    cerr << "Exec Time: " << duration.count() / 1000 << " ms" << endl;
-    cerr << "Curr Time: " << formatted_time << endl;
+    cerr << "Time: " << duration.count() / 1000 << endl;
 #endif
 }

@@ -1,2 +1,2 @@
-Line 149: res = [4, 2, 1, 3]; 
+Line 134: res = [sad, happy]; 
 Time: 0
