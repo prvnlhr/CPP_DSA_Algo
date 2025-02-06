@@ -1,7 +1,9 @@
 
 /*
- ▄▀█ █░█ █▀▄▀█ █▄░█ █▀█ █▀▄▀█
- █▀█ █▄█ █░▀░█ █░▀█ █▄█ █░▀░█
+|>------------------------------------------------------------------------------------------------------------------------------------------------------------
+|>                               █▀ ▀█▀ █▀▀ █░░ █░░ █░█ █▀█
+|>                               ▄█ ░█░ ██▄ █▄▄ █▄▄ █▀█ █▀▄
+|>------------------------------------------------------------------------------------------------------------------------------------------------------------
 */
 
 #include <bits/stdc++.h>
@@ -87,139 +89,70 @@ typedef pair<int, int> pi;
 typedef priority_queue<int> pqmax;
 typedef priority_queue<int, vector<int>, greater<int>> pqmin;
 
-//|> ---GCD -------------------------------------------------------------------
-ll gcd(ll a, ll b)
-{
-    if (b > a)
-    {
-        return gcd(b, a);
-    }
-    if (b == 0)
-    {
-        return a;
-    }
-    return gcd(b, a % b);
-}
-
-//|> ---EXPONENTIAL ----------------------------------------------------------
-ll expo(ll a, ll b, ll mod)
-{
-    ll res = 1;
-    while (b > 0)
-    {
-        if (b & 1)
-            res = (res * a) % mod;
-        a = (a * a) % mod;
-        b = b >> 1;
-    }
-    return res;
-}
-
-//|> ---FACTORIAL ------------------------------------------------------------
-vector<ll> fact;
-void factOfN(ll n)
-{
-    ll prod = 1;
-    fact.resize(n + 1);
-    for (int f = 1; f <= n; f++)
-    {
-
-        fact[f] = prod * f;
-        prod = prod * f;
-    }
-}
-
 //|> ---ＳＯＬＶＥ-----------------------------------------------------------------------------------------------------------------------------------------------
 
-string formatFileName(string &input)
+string mostCommonWord(string paragraph, vector<string> &banned)
 {
-    stringstream ss(input);
-    string number, title, word, formattedName;
-    getline(ss, number, '.');
-    ss.ignore();
-    while (ss >> word)
+
+    unordered_map<string, int> wordCount;
+    unordered_set<string> bannedSet(banned.begin(), banned.end());
+
+    string word = "";
+
+    for (char ch : paragraph)
     {
-        for (char &c : word)
+        if (isalpha(ch))
         {
-            if (!std::isalnum(c))
-            { // Replace non-alphanumeric characters with '_'
-                c = '_';
-            }
+            word += tolower(ch);
         }
-        title += word + "_";
+        else if (!word.empty())
+        {
+            if (bannedSet.find(word) == bannedSet.end()) // Only store if not banned
+            {
+                wordCount[word]++;
+            }
+            word = "";
+        }
     }
 
-    if (!title.empty())
+    if (!word.empty() && bannedSet.find(word) == bannedSet.end())
     {
-        title.pop_back();
+        wordCount[word]++;
     }
-    formattedName = "00_Leetcode_" + number + "_" + title + ".cpp";
 
-    return formattedName;
+    return max_element(wordCount.begin(), wordCount.end(),
+                       [](const auto &a, const auto &b)
+                       {
+                           return a.second < b.second;
+                       })
+        ->first;
 }
+
 void solve()
 {
+    string paragraph = "Bob hit a ball, the hit BALL flew far after it was hit.";
+    vector<string> banned{"hit"};
 
-    // ----------
-    string input;
-    getline(cin, input);
-    string fileName = formatFileName(input);
-    cout << fileName << endl;
-
-    // ----------
-
-    int a;
-    cin >> a;
-    cout << "Input  -> " << a << endl;
-    cout << "Output -> " << a << endl;
-    cout << "Logging check : OK " << endl;
-    debug(a, "Error checking OK");
-    /*
-
-    -> This is test comment
-    => This is test comment
-    >  This is test
-    |> This is test
-
-    #  This is test comment
-
-    *  This is test comment
-    ** This is test comment
-
-    -  This is test comment
-    _  This is test comment
-
-    !  Warning
-    :  This is test comment
-       TODO: This is test comment
-
-    */
+    string res = mostCommonWord(paragraph, banned);
+    debug(res);
 }
 
-//|> --- MAIN -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+//|> ---MAIN-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 int main()
 {
     ios::sync_with_stdio(0);
     cin.tie(0);
 
 #ifndef ONLINE_JUDGE
-    freopen("../Error.txt", "w", stderr);
-    freopen("../output.txt", "w", stdout);
-    freopen("../input.txt", "r", stdin);
+    freopen("../../Error.txt", "w", stderr);
+    freopen("../../output.txt", "w", stdout);
+    freopen("../../input.txt", "r", stdin);
 #endif
     auto start1 = high_resolution_clock::now();
     solve();
     auto stop1 = high_resolution_clock::now();
     auto duration = duration_cast<microseconds>(stop1 - start1);
-    auto now = system_clock::to_time_t(system_clock::now());
-    stringstream timeStream;
-
-    timeStream << put_time(localtime(&now), "%d %b %Y %H:%M:%S");
-    string formatted_time = timeStream.str();
-
 #ifndef ONLINE_JUDGE
-    cerr << endl;
-    cerr << "Exec Time: " << duration.count() / 1000 << " ms" << endl;
-    cerr << "Curr Time: " << formatted_time << endl;
+    cerr << "Time: " << duration.count() / 1000 << endl;
 #endif
 }

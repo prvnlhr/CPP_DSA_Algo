@@ -30,7 +30,8 @@
         "bitset": "cpp",
         "functional": "cpp",
         "random": "cpp",
-        "iomanip": "cpp"
+        "iomanip": "cpp",
+        "format": "cpp"
     },
     "editor.fontFamily": "Hasklug Nerd Font",
     "editor.fontLigatures": true,

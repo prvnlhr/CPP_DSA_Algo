@@ -1,7 +1,9 @@
 
 /*
- ▄▀█ █░█ █▀▄▀█ █▄░█ █▀█ █▀▄▀█
- █▀█ █▄█ █░▀░█ █░▀█ █▄█ █░▀░█
+|>------------------------------------------------------------------------------------------------------------------------------------------------------------
+|>                               █▀ ▀█▀ █▀▀ █░░ █░░ █░█ █▀█
+|>                               ▄█ ░█░ ██▄ █▄▄ █▄▄ █▀█ █▀▄
+|>------------------------------------------------------------------------------------------------------------------------------------------------------------
 */
 
 #include <bits/stdc++.h>
@@ -87,139 +89,82 @@ typedef pair<int, int> pi;
 typedef priority_queue<int> pqmax;
 typedef priority_queue<int, vector<int>, greater<int>> pqmin;
 
-//|> ---GCD -------------------------------------------------------------------
-ll gcd(ll a, ll b)
+//|> ---ＳＯＬＶＥ-----------------------------------------------------------------------------------------------------------------------------------------------
+
+bool isComplete(const vector<int> &freqLP, const string &word)
 {
-    if (b > a)
+    vector<int> freqWord(26, 0);
+
+    for (char ch : word)
     {
-        return gcd(b, a);
+        if (isalpha(ch))
+        {
+            freqWord[tolower(ch) - 'a']++;
+        }
     }
-    if (b == 0)
+
+    for (int i = 0; i < 26; i++)
     {
-        return a;
+        if (freqLP[i] > freqWord[i])
+        {
+            return false;
+        }
     }
-    return gcd(b, a % b);
+    return true;
 }
 
-//|> ---EXPONENTIAL ----------------------------------------------------------
-ll expo(ll a, ll b, ll mod)
+string shortestCompletingWord(const string &licensePlate, const vector<string> &words)
 {
-    ll res = 1;
-    while (b > 0)
+    vector<int> freqLP(26, 0);
+
+    for (char ch : licensePlate)
     {
-        if (b & 1)
-            res = (res * a) % mod;
-        a = (a * a) % mod;
-        b = b >> 1;
+        if (isalpha(ch))
+        {
+            freqLP[tolower(ch) - 'a']++;
+        }
+    }
+
+    string res = "";
+    int minLen = INT_MAX;
+
+    for (const string &word : words)
+    {
+        if (word.size() >= minLen)
+            continue;
+
+        if (isComplete(freqLP, word))
+        {
+            res = word;
+            minLen = word.size();
+        }
     }
     return res;
 }
-
-//|> ---FACTORIAL ------------------------------------------------------------
-vector<ll> fact;
-void factOfN(ll n)
-{
-    ll prod = 1;
-    fact.resize(n + 1);
-    for (int f = 1; f <= n; f++)
-    {
-
-        fact[f] = prod * f;
-        prod = prod * f;
-    }
-}
-
-//|> ---ＳＯＬＶＥ-----------------------------------------------------------------------------------------------------------------------------------------------
-
-string formatFileName(string &input)
-{
-    stringstream ss(input);
-    string number, title, word, formattedName;
-    getline(ss, number, '.');
-    ss.ignore();
-    while (ss >> word)
-    {
-        for (char &c : word)
-        {
-            if (!std::isalnum(c))
-            { // Replace non-alphanumeric characters with '_'
-                c = '_';
-            }
-        }
-        title += word + "_";
-    }
-
-    if (!title.empty())
-    {
-        title.pop_back();
-    }
-    formattedName = "00_Leetcode_" + number + "_" + title + ".cpp";
-
-    return formattedName;
-}
 void solve()
 {
-
-    // ----------
-    string input;
-    getline(cin, input);
-    string fileName = formatFileName(input);
-    cout << fileName << endl;
-
-    // ----------
-
-    int a;
-    cin >> a;
-    cout << "Input  -> " << a << endl;
-    cout << "Output -> " << a << endl;
-    cout << "Logging check : OK " << endl;
-    debug(a, "Error checking OK");
-    /*
-
-    -> This is test comment
-    => This is test comment
-    >  This is test
-    |> This is test
-
-    #  This is test comment
-
-    *  This is test comment
-    ** This is test comment
-
-    -  This is test comment
-    _  This is test comment
-
-    !  Warning
-    :  This is test comment
-       TODO: This is test comment
-
-    */
+    string licensePlate = "1s3 456";
+    vector<string> words{"looks", "pest", "stew", "show"};
+    string res = shortestCompletingWord(licensePlate, words);
+    cout << res << endl;
 }
 
-//|> --- MAIN -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+//|> ---MAIN-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 int main()
 {
     ios::sync_with_stdio(0);
     cin.tie(0);
 
 #ifndef ONLINE_JUDGE
-    freopen("../Error.txt", "w", stderr);
-    freopen("../output.txt", "w", stdout);
-    freopen("../input.txt", "r", stdin);
+    freopen("../../Error.txt", "w", stderr);
+    freopen("../../output.txt", "w", stdout);
+    freopen("../../input.txt", "r", stdin);
 #endif
     auto start1 = high_resolution_clock::now();
     solve();
     auto stop1 = high_resolution_clock::now();
     auto duration = duration_cast<microseconds>(stop1 - start1);
-    auto now = system_clock::to_time_t(system_clock::now());
-    stringstream timeStream;
-
-    timeStream << put_time(localtime(&now), "%d %b %Y %H:%M:%S");
-    string formatted_time = timeStream.str();
-
 #ifndef ONLINE_JUDGE
-    cerr << endl;
-    cerr << "Exec Time: " << duration.count() / 1000 << " ms" << endl;
-    cerr << "Curr Time: " << formatted_time << endl;
+    cerr << "Time: " << duration.count() / 1000 << endl;
 #endif
 }
