@@ -38,7 +38,6 @@ vector<vector<int>> merge(vector<vector<int>> &intervals)
 
     for (auto interval : intervals)
     {
-
         vector<int> stackTop = stack.back();
 
         if (stackTop[1] < interval[0])

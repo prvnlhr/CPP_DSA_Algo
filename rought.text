@@ -1,16 +1,22 @@
-1s3 PSt
--> s s p t
 
-step =>  s t e p
-s p t 
-s
+interval -> x
+interval -> y
 
-steps
-s s p t
+x -> inside y
+
+interval merging
 
 
-stripe
--> s p t
+1 2
+2 5
+3 4
+1 10
+3 6
 
-stepple
--> s p t 
+
+
+1 2    1 2   -> 1 10 -> 1 10
+1 10   1 10  
+2 5 
+3 4
+3 6
